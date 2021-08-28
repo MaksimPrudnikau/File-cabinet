@@ -12,11 +12,13 @@ namespace FileCabinetApp
         private const int ExplanationHelpIndex = 2;
 
         private static bool isRunning = true;
+        private static FileCabinetService fileCabinetService = new FileCabinetService();
 
         private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
         {
             new Tuple<string, Action<string>>("help", PrintHelp),
             new Tuple<string, Action<string>>("exit", Exit),
+            new Tuple<string, Action<string>>("Stat", Stat)
         };
 
         private static string[][] helpMessages = new string[][]
@@ -47,8 +49,10 @@ namespace FileCabinetApp
                 var index = Array.FindIndex(commands, 0, commands.Length, i => i.Item1.Equals(command, StringComparison.InvariantCultureIgnoreCase));
                 if (index >= 0)
                 {
-                    const int parametersIndex = 1;
-                    var parameters = inputs.Length > 1 ? inputs[parametersIndex] : string.Empty;
+                    const int parametersIndex = 0;
+                    var parameters = inputs.Length >= 1 
+                        ? inputs[parametersIndex] 
+                        : string.Empty;
                     commands[index].Item2(parameters);
                 }
                 else
@@ -90,6 +94,16 @@ namespace FileCabinetApp
             }
 
             Console.WriteLine();
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameters"></param>
+        private static void Stat(string parameters)
+        {
+            var recordsCount = Program.fileCabinetService.GetStat();
+            Console.WriteLine($"{recordsCount} record(s).");
         }
 
         private static void Exit(string parameters)

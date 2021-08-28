@@ -19,10 +19,13 @@ namespace FileCabinetApp
             return Array.Empty<FileCabinetRecord>();
         }
 
+        /// <summary>
+        /// Returns number of records that the service stores
+        /// </summary>
+        /// <returns><see cref="int"/> number</returns>
         public int GetStat()
         {
-            // TODO: добавьте реализацию метода
-            return 0;
+            return list.Count;
         }
     }
 }
