@@ -5,7 +5,7 @@ namespace FileCabinetApp
 {
     public class FileCabinetService
     {
-        private readonly List<FileCabinetRecord> list = new List<FileCabinetRecord>();
+        private readonly List<FileCabinetRecord> list = new();
 
         public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth)
         {
