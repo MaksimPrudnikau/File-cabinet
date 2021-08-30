@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
+using System.Resources;
 
 [assembly:CLSCompliant(true)]
 namespace FileCabinetApp
@@ -17,7 +21,8 @@ namespace FileCabinetApp
         private static Tuple<string, Action<string>>[] commands = {
             new("help", PrintHelp),
             new("exit", Exit),
-            new("Stat", Stat)
+            new("stat", Stat),
+            new("create", Create)
         };
 
         private static string[][] helpMessages = {
@@ -95,13 +100,42 @@ namespace FileCabinetApp
         }
         
         /// <summary>
-        /// 
+        /// Prints the amount of records
         /// </summary>
-        /// <param name="parameters"></param>
         private static void Stat(string parameters)
         {
             var recordsCount = fileCabinetService.GetStat();
             Console.WriteLine($"{recordsCount} record(s).");
+        }
+
+        /// <summary>
+        /// Create a new record according to data user entered
+        /// </summary>
+        private static void Create(string parameters)
+        {
+            Console.Write("First name: ");
+            var firstName = Console.ReadLine();
+            Console.Write("Last name: ");
+            var lastName = Console.ReadLine();
+            Console.Write("Date of birth: ");
+            
+            var dateOfBirth = Console.ReadLine()?.Split('/');
+
+            Console.WriteLine(
+                $"#Record #{fileCabinetService.CreateRecord(firstName, lastName, ConvertToDateTime(dateOfBirth))} is created", CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Converts string in format dd/mm/yyyy to <see cref="DateTime"/>
+        /// </summary>
+        /// <param name="date">Array of date { day, month, year }</param>
+        /// <returns>Data time parsed from input array </returns>
+        private static DateTime ConvertToDateTime(IReadOnlyList<string> date)
+        {
+            var dayOfBirth = int.Parse(date[0], CultureInfo.InvariantCulture);
+            var monthOfBirth = int.Parse(date[1], CultureInfo.InvariantCulture);
+            var yearOfBirth = int.Parse(date[1], CultureInfo.InvariantCulture);
+            return new DateTime(yearOfBirth, monthOfBirth, dayOfBirth);
         }
 
         private static void Exit(string parameters)
