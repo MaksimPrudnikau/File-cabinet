@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 
 [assembly:CLSCompliant(true)]
@@ -21,6 +20,7 @@ namespace FileCabinetApp
             new("exit", Exit),
             new("stat", Stat),
             new("create", Create),
+            new("list", List)
         };
 
         private static string[][] helpMessages = {
@@ -122,6 +122,17 @@ namespace FileCabinetApp
             Console.WriteLine(
                 $"#Record #{fileCabinetService.CreateRecord(firstName, lastName, DateTime.ParseExact(dateOfBirth!, "dd/mm/yyyy", CultureInfo.InvariantCulture))} is created",
                 CultureInfo.CurrentCulture);
+        }
+        
+        /// <summary>
+        /// Return list of records added to service
+        /// </summary>
+        private static void List(string parameters)
+        {
+            foreach (var record in fileCabinetService.GetRecords())
+            {
+                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MMM-d}");
+            }
         }
 
         private static void Exit(string parameters)
