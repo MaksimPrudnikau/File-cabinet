@@ -28,7 +28,7 @@ namespace FileCabinetApp
             new[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
 
-        public static void Main(string[] args)
+        public static void Main()
         {
             Console.WriteLine($"File Cabinet Application, developed by {DeveloperName}");
             Console.WriteLine(HintMessage);
@@ -47,7 +47,7 @@ namespace FileCabinetApp
                     continue;
                 }
 
-                var index = Array.FindIndex(commands, 0, commands.Length, i => i.Item1.Equals(command, StringComparison.InvariantCultureIgnoreCase));
+                var index = Array.FindIndex(commands, 0, commands.Length, i => i.Item1.Equals(command, StringComparison.OrdinalIgnoreCase));
                 if (index >= 0)
                 {
                     const int parametersIndex = 0;
@@ -74,7 +74,7 @@ namespace FileCabinetApp
         {
             if (!string.IsNullOrEmpty(parameters))
             {
-                var index = Array.FindIndex(helpMessages, 0, helpMessages.Length, i => string.Equals(i[CommandHelpIndex], parameters, StringComparison.InvariantCultureIgnoreCase));
+                var index = Array.FindIndex(helpMessages, 0, helpMessages.Length, i => string.Equals(i[CommandHelpIndex], parameters, StringComparison.OrdinalIgnoreCase));
                 if (index >= 0)
                 {
                     Console.WriteLine(helpMessages[index][ExplanationHelpIndex]);
@@ -102,8 +102,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void Stat(string parameters)
         {
-            var recordsCount = fileCabinetService.GetStat();
-            Console.WriteLine($"{recordsCount} record(s).");
+            Console.WriteLine($"{fileCabinetService.Stat} record(s).");
         }
 
         /// <summary>
@@ -113,15 +112,26 @@ namespace FileCabinetApp
         {
             Console.Write("First name: ");
             var firstName = Console.ReadLine();
+            
             Console.Write("Last name: ");
             var lastName = Console.ReadLine();
+            
             Console.Write("Date of birth: ");
-
             var dateOfBirth = Console.ReadLine();
+            
+            Console.Write("Job experience: ");
+            var jobExperience = Console.ReadLine();
 
-            Console.WriteLine(
-                $"#Record #{fileCabinetService.CreateRecord(firstName, lastName, DateTime.ParseExact(dateOfBirth!, "dd/mm/yyyy", CultureInfo.InvariantCulture))} is created",
-                CultureInfo.CurrentCulture);
+            Console.Write("Wage: ");
+            var wage = Console.ReadLine();
+
+            Console.Write("Rank: ");
+            var rank = Console.ReadKey().KeyChar;
+            Console.WriteLine(Environment.NewLine);
+            
+            Console.WriteLine($@"Record #{fileCabinetService.CreateRecord(firstName, lastName,
+                DateTime.ParseExact(dateOfBirth!, "dd/mm/yyyy", CultureInfo.InvariantCulture),
+                jobExperience, wage, rank)} is created");
         }
         
         /// <summary>
@@ -131,7 +141,14 @@ namespace FileCabinetApp
         {
             foreach (var record in fileCabinetService.GetRecords())
             {
-                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MMM-d}");
+                Console.WriteLine(
+                    $"#{record.Id}," +
+                    $" {record.FirstName}," +
+                    $" {record.LastName}," +
+                    $" {record.DateOfBirth:yyyy-MMM-d}," +
+                    $" {record.JobExperience}," +
+                    $" {record.Wage}," +
+                    $" {record.Rank}");
             }
         }
 
