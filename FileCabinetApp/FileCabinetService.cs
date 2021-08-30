@@ -29,10 +29,13 @@ namespace FileCabinetApp
             return record.Id;
         }
 
+        /// <summary>
+        /// Return a copy of internal service`s list 
+        /// </summary>
+        /// <returns><see cref="list"/> converted to char array</returns>
         public FileCabinetRecord[] GetRecords()
         {
-            // TODO: добавьте реализацию метода
-            return Array.Empty<FileCabinetRecord>();
+            return list.ToArray();
         }
 
         /// <summary>

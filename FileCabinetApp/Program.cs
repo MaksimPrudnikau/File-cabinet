@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
-using System.Resources;
 
 [assembly:CLSCompliant(true)]
 namespace FileCabinetApp
@@ -22,7 +20,7 @@ namespace FileCabinetApp
             new("help", PrintHelp),
             new("exit", Exit),
             new("stat", Stat),
-            new("create", Create)
+            new("create", Create),
         };
 
         private static string[][] helpMessages = {
@@ -118,24 +116,12 @@ namespace FileCabinetApp
             Console.Write("Last name: ");
             var lastName = Console.ReadLine();
             Console.Write("Date of birth: ");
-            
-            var dateOfBirth = Console.ReadLine()?.Split('/');
+
+            var dateOfBirth = Console.ReadLine();
 
             Console.WriteLine(
-                $"#Record #{fileCabinetService.CreateRecord(firstName, lastName, ConvertToDateTime(dateOfBirth))} is created", CultureInfo.CurrentCulture);
-        }
-
-        /// <summary>
-        /// Converts string in format dd/mm/yyyy to <see cref="DateTime"/>
-        /// </summary>
-        /// <param name="date">Array of date { day, month, year }</param>
-        /// <returns>Data time parsed from input array </returns>
-        private static DateTime ConvertToDateTime(IReadOnlyList<string> date)
-        {
-            var dayOfBirth = int.Parse(date[0], CultureInfo.InvariantCulture);
-            var monthOfBirth = int.Parse(date[1], CultureInfo.InvariantCulture);
-            var yearOfBirth = int.Parse(date[1], CultureInfo.InvariantCulture);
-            return new DateTime(yearOfBirth, monthOfBirth, dayOfBirth);
+                $"#Record #{fileCabinetService.CreateRecord(firstName, lastName, DateTime.ParseExact(dateOfBirth!, "dd/mm/yyyy", CultureInfo.InvariantCulture))} is created",
+                CultureInfo.CurrentCulture);
         }
 
         private static void Exit(string parameters)
