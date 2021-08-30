@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 
+[assembly:CLSCompliant(true)]
 namespace FileCabinetApp
 {
     public static class Program
@@ -11,23 +13,25 @@ namespace FileCabinetApp
         private const int ExplanationHelpIndex = 2;
 
         private static bool isRunning = true;
+        private static FileCabinetService fileCabinetService = new();
 
-        private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
-        {
-            new Tuple<string, Action<string>>("help", PrintHelp),
-            new Tuple<string, Action<string>>("exit", Exit),
+        private static Tuple<string, Action<string>>[] commands = {
+            new("help", PrintHelp),
+            new("exit", Exit),
+            new("stat", Stat),
+            new("create", Create),
+            new("list", List)
         };
 
-        private static string[][] helpMessages = new string[][]
-        {
-            new string[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
-            new string[] { "exit", "exits the application", "The 'exit' command exits the application." },
+        private static string[][] helpMessages = {
+            new[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
+            new[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
 
-        public static void Main(string[] args)
+        public static void Main()
         {
-            Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
-            Console.WriteLine(Program.HintMessage);
+            Console.WriteLine($"File Cabinet Application, developed by {DeveloperName}");
+            Console.WriteLine(HintMessage);
             Console.WriteLine();
 
             do
@@ -39,15 +43,17 @@ namespace FileCabinetApp
 
                 if (string.IsNullOrEmpty(command))
                 {
-                    Console.WriteLine(Program.HintMessage);
+                    Console.WriteLine(HintMessage);
                     continue;
                 }
 
-                var index = Array.FindIndex(commands, 0, commands.Length, i => i.Item1.Equals(command, StringComparison.InvariantCultureIgnoreCase));
+                var index = Array.FindIndex(commands, 0, commands.Length, i => i.Item1.Equals(command, StringComparison.OrdinalIgnoreCase));
                 if (index >= 0)
                 {
-                    const int parametersIndex = 1;
-                    var parameters = inputs.Length > 1 ? inputs[parametersIndex] : string.Empty;
+                    const int parametersIndex = 0;
+                    var parameters = inputs.Length >= 1 
+                        ? inputs[parametersIndex] 
+                        : string.Empty;
                     commands[index].Item2(parameters);
                 }
                 else
@@ -68,10 +74,10 @@ namespace FileCabinetApp
         {
             if (!string.IsNullOrEmpty(parameters))
             {
-                var index = Array.FindIndex(helpMessages, 0, helpMessages.Length, i => string.Equals(i[Program.CommandHelpIndex], parameters, StringComparison.InvariantCultureIgnoreCase));
+                var index = Array.FindIndex(helpMessages, 0, helpMessages.Length, i => string.Equals(i[CommandHelpIndex], parameters, StringComparison.OrdinalIgnoreCase));
                 if (index >= 0)
                 {
-                    Console.WriteLine(helpMessages[index][Program.ExplanationHelpIndex]);
+                    Console.WriteLine(helpMessages[index][ExplanationHelpIndex]);
                 }
                 else
                 {
@@ -84,11 +90,66 @@ namespace FileCabinetApp
 
                 foreach (var helpMessage in helpMessages)
                 {
-                    Console.WriteLine("\t{0}\t- {1}", helpMessage[Program.CommandHelpIndex], helpMessage[Program.DescriptionHelpIndex]);
+                    Console.WriteLine("\t{0}\t- {1}", helpMessage[CommandHelpIndex], helpMessage[DescriptionHelpIndex]);
                 }
             }
 
             Console.WriteLine();
+        }
+        
+        /// <summary>
+        /// Prints the amount of records
+        /// </summary>
+        private static void Stat(string parameters)
+        {
+            Console.WriteLine($"{fileCabinetService.Stat} record(s).");
+        }
+
+        /// <summary>
+        /// Create a new record according to data user entered
+        /// </summary>
+        private static void Create(string parameters)
+        {
+            Console.Write("First name: ");
+            var firstName = Console.ReadLine();
+            
+            Console.Write("Last name: ");
+            var lastName = Console.ReadLine();
+            
+            Console.Write("Date of birth: ");
+            var dateOfBirth = Console.ReadLine();
+            
+            Console.Write("Job experience: ");
+            var jobExperience = Console.ReadLine();
+
+            Console.Write("Wage: ");
+            var wage = Console.ReadLine();
+
+            Console.Write("Rank: ");
+            var rank = Console.ReadKey().KeyChar;
+            Console.WriteLine(Environment.NewLine);
+            
+            Console.WriteLine($@"Record #{fileCabinetService.CreateRecord(firstName, lastName,
+                DateTime.ParseExact(dateOfBirth!, "dd/mm/yyyy", CultureInfo.InvariantCulture),
+                jobExperience, wage, rank)} is created");
+        }
+        
+        /// <summary>
+        /// Return list of records added to service
+        /// </summary>
+        private static void List(string parameters)
+        {
+            foreach (var record in fileCabinetService.GetRecords())
+            {
+                Console.WriteLine(
+                    $"#{record.Id}," +
+                    $" {record.FirstName}," +
+                    $" {record.LastName}," +
+                    $" {record.DateOfBirth:yyyy-MMM-d}," +
+                    $" {record.JobExperience}," +
+                    $" {record.Wage}," +
+                    $" {record.Rank}");
+            }
         }
 
         private static void Exit(string parameters)
