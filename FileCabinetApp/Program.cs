@@ -20,7 +20,8 @@ namespace FileCabinetApp
             new("stat", Stat),
             new("create", Create),
             new("list", List),
-            new ("edit", Edit)
+            new("edit", Edit),
+            new("find", Find)
         };
 
         private static readonly string[][] helpMessages = {
@@ -146,6 +147,18 @@ namespace FileCabinetApp
             
             fileCabinetService.EditRecord(id - 1);
             Console.WriteLine($"Record #{id} is updated");
+        }
+
+        private static void Find(string parameters)
+        {
+            var inputs = parameters.Split(' ', 2);
+            var attribute = inputs[0];
+            var searchValue = inputs[1];
+            
+            foreach (var item in fileCabinetService.FindByFirstName(searchValue))
+            {
+                PrintRecord(item);
+            }
         }
 
         private static void Exit(string parameters)

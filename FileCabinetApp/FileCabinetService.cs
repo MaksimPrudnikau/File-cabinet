@@ -11,7 +11,7 @@ namespace FileCabinetApp
         /// <summary>
         /// The method create new record from input data and return its id
         /// </summary>
-        /// <exception cref="ArgumentException"> either firstName or lastName are incorrect <see cref="InputName"/>.
+        /// <exception cref="ArgumentException"> either firstName or lastName are incorrect <see cref="InputFirstName"/>.
         ///  Date of birth is incorrect <see cref="InputDateOfBirth"/>.
         ///  Job experience is incorrect <see cref="InputJobExperience"/>.
         ///  Wage is incorrect <see cref="InputWage"/>.
@@ -36,7 +36,7 @@ namespace FileCabinetApp
                 Wage = wage,
                 Rank = rank
             });
-            
+
             return list[^1].Id;
         }
 
@@ -278,6 +278,20 @@ namespace FileCabinetApp
             list[id].JobExperience = InputJobExperience();
             list[id].Wage = InputWage();
             list[id].Rank = InputRank();
+        }
+
+        public FileCabinetRecord[] FindByFirstName(string firstName)
+        {
+            var records = new List<FileCabinetRecord>();
+            foreach (var item in list)
+            {
+                if (item.FirstName == firstName)
+                {
+                    records.Add(item);
+                }
+            }
+
+            return records.ToArray();
         }
     }
 }
