@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Globalization;
 
 [assembly:CLSCompliant(true)]
 namespace FileCabinetApp
@@ -53,9 +51,10 @@ namespace FileCabinetApp
                 if (index >= 0)
                 {
                     const int parametersIndex = 0;
-                    var parameters = inputs.Length >= 1 
-                        ? inputs[parametersIndex] 
-                        : string.Empty;
+                    var parameters = inputs.Length == 2
+                        ? inputs[parametersIndex + 1] 
+                        : inputs[parametersIndex];
+                    
                     commands[index].Item2(parameters);
                 }
                 else
@@ -131,7 +130,7 @@ namespace FileCabinetApp
                 $"#{record.Id}," +
                 $" {record.FirstName}," +
                 $" {record.LastName}," +
-                $" {record.DateOfBirth:yyyy-MMMM-dd}," +
+                $" {record.DateOfBirth:yyyy-MMM-dd}," +
                 $" {record.JobExperience}," +
                 $" {record.Wage}," +
                 $" {record.Rank}");
@@ -139,7 +138,14 @@ namespace FileCabinetApp
 
         private static void Edit(string parameters)
         {
+            if (!int.TryParse(parameters, out var id))
+            {
+                Console.WriteLine("Entered id is not an integer");
+                return;
+            }
             
+            fileCabinetService.EditRecord(id - 1);
+            Console.WriteLine($"Record #{id} is updated");
         }
 
         private static void Exit(string parameters)

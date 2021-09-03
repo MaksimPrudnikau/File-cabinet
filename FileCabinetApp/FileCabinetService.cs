@@ -19,12 +19,8 @@ namespace FileCabinetApp
         /// <returns>An id of current record</returns>
         public int CreateRecord()
         {
-            Console.Write("First name: ");
-            var firstName = InputName();
-            
-            Console.Write("Last name: ");
-            var lastName = InputName();
-            
+            var firstName = InputFirstName();
+            var lastName = InputLastName();
             var dateOfBirth = InputDateOfBirth();
             var jobExperience = InputJobExperience();
             var wage =  InputWage();
@@ -79,11 +75,24 @@ namespace FileCabinetApp
             return output;
         }
 
-        private static string InputName()
+        /// <summary>
+        /// Get first name from keyboard
+        /// </summary>
+        private static string InputFirstName()
         {
+            Console.Write("First name: ");
             return InputData(GetNameFromKeyboard);
         }
-
+        
+        /// <summary>
+        /// Get last name from keyboard
+        /// </summary>
+        private static string InputLastName()
+        {
+            Console.Write("Last name: ");
+            return InputData(GetNameFromKeyboard);
+        }
+        
         /// <summary>
         /// Get name from keyboard
         /// </summary>
@@ -247,7 +256,7 @@ namespace FileCabinetApp
                 return defaultRank;
             }
             
-            if (Array.IndexOf(grades, rank) == -1)
+            if (rank.Length != 1 || Array.IndexOf(grades, rank[0]) == -1)
             {
                 throw new ArgumentException("Rank is not defined in current rank system [F..A]");
             }
@@ -255,21 +264,20 @@ namespace FileCabinetApp
             return rank![0];
         }
 
-        public void EditRecord(
-            int id,
-            string firstName,
-            string lastName,
-            DateTime dateOfBirth,
-            short jobExperience,
-            decimal wage,
-            char rank)
+        public void EditRecord(int id)
         {
-            list[id].FirstName = firstName;
-            list[id].LastName = lastName;
-            list[id].DateOfBirth = dateOfBirth;
-            list[id].JobExperience = jobExperience;
-            list[id].Wage = wage;
-            list[id].Rank = rank;
+            if (id >= list.Count)
+            {
+                Console.WriteLine($"#{id} record is not found.");
+                return;
+            }
+            
+            list[id].FirstName = InputFirstName();
+            list[id].LastName = InputLastName();
+            list[id].DateOfBirth = InputDateOfBirth();
+            list[id].JobExperience = InputJobExperience();
+            list[id].Wage = InputWage();
+            list[id].Rank = InputRank();
         }
     }
 }
