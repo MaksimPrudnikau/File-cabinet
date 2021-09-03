@@ -19,12 +19,16 @@ namespace FileCabinetApp
         /// <returns>An id of current record</returns>
         public int CreateRecord()
         {
-            InputName(Person.FirstName, out string firstName);
-            InputName(Person.LastName, out string lastName);
-            InputDateOfBirth(out DateTime dateOfBirth);
-            InputJobExperience(out short jobExperience);
-            InputWage(out decimal wage);
-            InputRank(out char rank);
+            Console.Write("First name: ");
+            var firstName = InputName();
+            
+            Console.Write("Last name: ");
+            var lastName = InputName();
+            
+            var dateOfBirth = InputDateOfBirth();
+            var jobExperience = InputJobExperience();
+            var wage =  InputWage();
+            var rank = InputRank();
             
             list.Add(new FileCabinetRecord
             {
@@ -55,26 +59,6 @@ namespace FileCabinetApp
         /// <value>An ordinal number of the last record</value>
         public int Stat => list.Count;
 
-        private static T InputData<TIn, T>(Func<TIn, T> func, TIn parameter)
-        {
-            var inputIsCorrect = false;
-            T output = default;
-            do
-            {
-                try
-                {
-                    output = func(parameter);
-                    inputIsCorrect = true;
-                }
-                catch (ArgumentException exception)
-                {
-                    Console.WriteLine(exception.Message);
-                }
-            } while (!inputIsCorrect);
-            
-            return output;
-        }
-        
         private static T InputData<T>(Func<T> func)
         {
             var inputIsCorrect = false;
@@ -95,24 +79,17 @@ namespace FileCabinetApp
             return output;
         }
 
-        /// <summary>
-        /// Get name from keyboard
-        /// </summary>
-        /// <param name="person">Parameter indicating if name is either first or last</param>
-        /// <param name="name">Correct name of person</param>
-        private static void InputName(Person person, out string name)
+        private static string InputName()
         {
-            name = InputData(GetNameFromKeyboard, person);
+            return InputData(GetNameFromKeyboard);
         }
-        
+
         /// <summary>
         /// Get name from keyboard
         /// </summary>
-        /// <param name="person">Parameter indicating if name is either first or last</param>
         /// <exception cref="ArgumentException">Name is null or whitespace or it`s length is less than 2 or greater than 60.</exception>
-        private static string GetNameFromKeyboard(Person person)
+        private static string GetNameFromKeyboard()
         {
-            Console.Write($"{person.ToString()}: ");
             var name = Console.ReadLine();
             
             if (string.IsNullOrWhiteSpace(name) || name.Length is < 2 or > 60 )
@@ -127,10 +104,9 @@ namespace FileCabinetApp
         /// <summary>
         /// Get date of birth from keyboard and parse it from dd/mm/yyyy format to <see cref="DateTime"/>
         /// </summary>
-        /// <param name="dateOfBirth">Parsed date of birth by <see cref="GetNameFromKeyboard"/></param>
-        private static void InputDateOfBirth(out DateTime dateOfBirth)
+        private static DateTime InputDateOfBirth()
         {
-            dateOfBirth = InputData(GetDateOfBirthFromKeyboard);
+            return InputData(GetDateOfBirthFromKeyboard);
         } 
         
         /// <summary>
@@ -170,10 +146,9 @@ namespace FileCabinetApp
         /// <summary>
         /// Get job experience from keyboard
         /// </summary>
-        /// <param name="jobExperience">Parsed job experience</param>
-        private static void InputJobExperience(out short jobExperience)
+        private static short InputJobExperience()
         {
-            jobExperience = InputData(GetJobExperienceFromKeyboard);
+            return InputData(GetJobExperienceFromKeyboard);
         }
 
         /// <summary>
@@ -209,10 +184,9 @@ namespace FileCabinetApp
         /// <summary>
         /// Get wage from keyboard
         /// </summary>
-        /// <param name="wage">Parsed wage</param>
-        private static void InputWage(out decimal wage)
+        private static decimal InputWage()
         {
-            wage = InputData(GetWageFromKeyboard);
+            return InputData(GetWageFromKeyboard);
         }
 
         /// <summary>
@@ -251,10 +225,9 @@ namespace FileCabinetApp
         /// <summary>
         /// Get rank from keyboard
         /// </summary>
-        /// <param name="rank">Rank in current rank system</param>
-        private static void InputRank(out char rank)
+        private static char InputRank()
         {
-            rank = InputData(GetRankFromKeyboard);
+            return InputData(GetRankFromKeyboard);
         }
 
         /// <summary>
@@ -280,6 +253,23 @@ namespace FileCabinetApp
             }
 
             return rank![0];
+        }
+
+        public void EditRecord(
+            int id,
+            string firstName,
+            string lastName,
+            DateTime dateOfBirth,
+            short jobExperience,
+            decimal wage,
+            char rank)
+        {
+            list[id].FirstName = firstName;
+            list[id].LastName = lastName;
+            list[id].DateOfBirth = dateOfBirth;
+            list[id].JobExperience = jobExperience;
+            list[id].Wage = wage;
+            list[id].Rank = rank;
         }
     }
 }

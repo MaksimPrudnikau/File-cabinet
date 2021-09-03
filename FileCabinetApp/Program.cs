@@ -21,7 +21,8 @@ namespace FileCabinetApp
             new("exit", Exit),
             new("stat", Stat),
             new("create", Create),
-            new("list", List)
+            new("list", List),
+            new ("edit", Edit)
         };
 
         private static readonly string[][] helpMessages = {
@@ -134,6 +135,11 @@ namespace FileCabinetApp
                 $" {record.JobExperience}," +
                 $" {record.Wage}," +
                 $" {record.Rank}");
+        }
+
+        private static void Edit(string parameters)
+        {
+            
         }
 
         private static void Exit(string parameters)
