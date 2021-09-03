@@ -293,5 +293,33 @@ namespace FileCabinetApp
 
             return records.ToArray();
         }
+        
+        public FileCabinetRecord[] FindByLastName(string lastName)
+        {
+            var records = new List<FileCabinetRecord>();
+            foreach (var item in list)
+            {
+                if (item.LastName == lastName)
+                {
+                    records.Add(item);
+                }
+            }
+
+            return records.ToArray();
+        }
+        
+        public FileCabinetRecord[] FindByDateOfBirth(string dateOfBirth)
+        {
+            var records = new List<FileCabinetRecord>();
+            foreach (var item in list)
+            {
+                if (item.DateOfBirth == DateTime.ParseExact(dateOfBirth, "yyyy-MMM-dd", CultureInfo.InvariantCulture))
+                {
+                    records.Add(item);
+                }
+            }
+
+            return records.ToArray();
+        }
     }
 }

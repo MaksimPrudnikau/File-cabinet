@@ -115,9 +115,18 @@ namespace FileCabinetApp
         /// </summary>
         private static void List(string parameters)
         {
-            foreach (var record in fileCabinetService.GetRecords())
+            PrintFileCabinetRecordArray(fileCabinetService.GetRecords());
+        }
+
+        /// <summary>
+        /// Prints <see cref="FileCabinetRecord"/> array
+        /// </summary>
+        /// <param name="source">Source array</param>
+        private static void PrintFileCabinetRecordArray(FileCabinetRecord[] source)
+        {
+            foreach (var item in source)
             {
-                PrintRecord(record);
+                PrintRecord(item);
             }
         }
 
@@ -154,8 +163,14 @@ namespace FileCabinetApp
             var inputs = parameters.Split(' ', 2);
             var attribute = inputs[0];
             var searchValue = inputs[1];
-            
-            foreach (var item in fileCabinetService.FindByFirstName(searchValue))
+
+            var records = attribute.ToUpperInvariant() switch
+            {
+                "FIRSTNAME" => fileCabinetService.FindByFirstName(searchValue),
+                _ => throw new ArgumentException("Entered attribute is not exist.")
+            };
+
+            foreach (var item in records)
             {
                 PrintRecord(item);
             }
