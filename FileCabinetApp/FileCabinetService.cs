@@ -9,6 +9,7 @@ namespace FileCabinetApp
         private readonly List<FileCabinetRecord> list = new();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new();
         private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new();
+        private readonly Dictionary<DateTime, List<FileCabinetRecord>> dateOfBirthDictionary = new();
 
         /// <summary>
         /// The method create new record from input data and return its id
@@ -264,6 +265,7 @@ namespace FileCabinetApp
         {
             AppendToFirstNameDictionary(record);
             AppendToLastNameDictionary(record);
+            AppendToDateOfBirthDicrionary(record);
         }
 
         private void AppendToFirstNameDictionary(FileCabinetRecord record)
@@ -290,10 +292,23 @@ namespace FileCabinetApp
             }
         }
 
+        private void AppendToDateOfBirthDicrionary(FileCabinetRecord record)
+        {
+            if (!dateOfBirthDictionary.ContainsKey(record.DateOfBirth))
+            {
+                dateOfBirthDictionary.Add(record.DateOfBirth, new List<FileCabinetRecord> { record });
+            }
+            else
+            {
+                dateOfBirthDictionary[record.DateOfBirth].Add(record);
+            }
+        }
+
         private void RemoveFromAllDictionaries(FileCabinetRecord record)
         {
             firstNameDictionary[record.FirstName].Remove(record);
             lastNameDictionary[record.LastName].Remove(record);
+            dateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
         public void EditRecord(int id)
