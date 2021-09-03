@@ -7,11 +7,14 @@ namespace FileCabinetApp
     public class FileCabinetService
     {
         private readonly List<FileCabinetRecord> list = new();
+        private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new();
+        private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new();
+        private readonly Dictionary<DateTime, List<FileCabinetRecord>> dateOfBirthDictionary = new();
 
         /// <summary>
         /// The method create new record from input data and return its id
         /// </summary>
-        /// <exception cref="ArgumentException"> either firstName or lastName are incorrect <see cref="InputName"/>.
+        /// <exception cref="ArgumentException"> either firstName or lastName are incorrect <see cref="InputFirstName"/>.
         ///  Date of birth is incorrect <see cref="InputDateOfBirth"/>.
         ///  Job experience is incorrect <see cref="InputJobExperience"/>.
         ///  Wage is incorrect <see cref="InputWage"/>.
@@ -19,24 +22,18 @@ namespace FileCabinetApp
         /// <returns>An id of current record</returns>
         public int CreateRecord()
         {
-            var firstName = InputFirstName();
-            var lastName = InputLastName();
-            var dateOfBirth = InputDateOfBirth();
-            var jobExperience = InputJobExperience();
-            var wage =  InputWage();
-            var rank = InputRank();
-            
             list.Add(new FileCabinetRecord
             {
                 Id = list.Count + 1,
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = dateOfBirth,
-                JobExperience = jobExperience,
-                Wage = wage,
-                Rank = rank
+                FirstName = InputFirstName(),
+                LastName = InputLastName(),
+                DateOfBirth = InputDateOfBirth(),
+                JobExperience = InputJobExperience(),
+                Wage = InputWage(),
+                Rank = InputRank()
             });
             
+            AppendToAllDictionaries(list[^1]);
             return list[^1].Id;
         }
 
@@ -78,7 +75,7 @@ namespace FileCabinetApp
         /// <summary>
         /// Get first name from keyboard
         /// </summary>
-        private static string InputFirstName()
+        private string InputFirstName()
         {
             Console.Write("First name: ");
             return InputData(GetNameFromKeyboard);
@@ -87,7 +84,7 @@ namespace FileCabinetApp
         /// <summary>
         /// Get last name from keyboard
         /// </summary>
-        private static string InputLastName()
+        private string InputLastName()
         {
             Console.Write("Last name: ");
             return InputData(GetNameFromKeyboard);
@@ -97,7 +94,7 @@ namespace FileCabinetApp
         /// Get name from keyboard
         /// </summary>
         /// <exception cref="ArgumentException">Name is null or whitespace or it`s length is less than 2 or greater than 60.</exception>
-        private static string GetNameFromKeyboard()
+        private string GetNameFromKeyboard()
         {
             var name = Console.ReadLine();
             
@@ -113,7 +110,7 @@ namespace FileCabinetApp
         /// <summary>
         /// Get date of birth from keyboard and parse it from dd/mm/yyyy format to <see cref="DateTime"/>
         /// </summary>
-        private static DateTime InputDateOfBirth()
+        private DateTime InputDateOfBirth()
         {
             return InputData(GetDateOfBirthFromKeyboard);
         } 
@@ -124,7 +121,7 @@ namespace FileCabinetApp
         /// <exception cref="ArgumentException">Date of birth is null.
         /// Date of birth is not in dd/mm/yyyy format.
         /// Date of birth is less than 01-Jan-1950 or greater than current date time.</exception>
-        private static DateTime GetDateOfBirthFromKeyboard()
+        private DateTime GetDateOfBirthFromKeyboard()
         {
             const string inputFormat = "dd/MM/yyyy";
             
@@ -155,7 +152,7 @@ namespace FileCabinetApp
         /// <summary>
         /// Get job experience from keyboard
         /// </summary>
-        private static short InputJobExperience()
+        private short InputJobExperience()
         {
             return InputData(GetJobExperienceFromKeyboard);
         }
@@ -166,7 +163,7 @@ namespace FileCabinetApp
         /// <exception cref="ArgumentException">Job experience is null.
         /// Job experience is not an integer or less than zero or greater than short.MaxValue.
         /// Job experience is less than zero or greater than 100.</exception>
-        private static short GetJobExperienceFromKeyboard()
+        private short GetJobExperienceFromKeyboard()
         {
             Console.Write("Job experience: ");
             var input = Console.ReadLine();
@@ -193,7 +190,7 @@ namespace FileCabinetApp
         /// <summary>
         /// Get wage from keyboard
         /// </summary>
-        private static decimal InputWage()
+        private decimal InputWage()
         {
             return InputData(GetWageFromKeyboard);
         }
@@ -204,7 +201,7 @@ namespace FileCabinetApp
         /// <exception cref="ArgumentException">Wage is null.
         /// Wage is not an integer or greater than decimal.MaxValue.
         /// Wage is less than zero</exception>
-        private static decimal GetWageFromKeyboard()
+        private decimal GetWageFromKeyboard()
         {
             const decimal defaultWage = (decimal)250.0;
             
@@ -234,7 +231,7 @@ namespace FileCabinetApp
         /// <summary>
         /// Get rank from keyboard
         /// </summary>
-        private static char InputRank()
+        private char InputRank()
         {
             return InputData(GetRankFromKeyboard);
         }
@@ -243,7 +240,7 @@ namespace FileCabinetApp
         /// Get rank from keyboard
         /// </summary>
         /// <exception cref="ArgumentException">Rank is not in current rank system</exception>
-        private static char GetRankFromKeyboard()
+        private char GetRankFromKeyboard()
         {
             const char defaultRank = 'F';
             char[] grades = {'F', 'D', 'C', 'B', 'A'}; // in ascending order 
@@ -264,6 +261,56 @@ namespace FileCabinetApp
             return rank![0];
         }
 
+        private void AppendToAllDictionaries(FileCabinetRecord record)
+        {
+            AppendToFirstNameDictionary(record);
+            AppendToLastNameDictionary(record);
+            AppendToDateOfBirthDicrionary(record);
+        }
+
+        private void AppendToFirstNameDictionary(FileCabinetRecord record)
+        {
+            if (!firstNameDictionary.ContainsKey(record.FirstName))
+            {
+                firstNameDictionary.Add(record.FirstName, new List<FileCabinetRecord> { record });
+            }
+            else
+            {
+                firstNameDictionary[record.FirstName].Add(record);
+            }
+        }
+
+        private void AppendToLastNameDictionary(FileCabinetRecord record)
+        {
+            if (!lastNameDictionary.ContainsKey(record.LastName))
+            {
+                lastNameDictionary.Add(record.LastName, new List<FileCabinetRecord> { record });
+            }
+            else
+            {
+                lastNameDictionary[record.LastName].Add(record);
+            }
+        }
+
+        private void AppendToDateOfBirthDicrionary(FileCabinetRecord record)
+        {
+            if (!dateOfBirthDictionary.ContainsKey(record.DateOfBirth))
+            {
+                dateOfBirthDictionary.Add(record.DateOfBirth, new List<FileCabinetRecord> { record });
+            }
+            else
+            {
+                dateOfBirthDictionary[record.DateOfBirth].Add(record);
+            }
+        }
+
+        private void RemoveFromAllDictionaries(FileCabinetRecord record)
+        {
+            firstNameDictionary[record.FirstName].Remove(record);
+            lastNameDictionary[record.LastName].Remove(record);
+            dateOfBirthDictionary[record.DateOfBirth].Remove(record);
+        }
+
         public void EditRecord(int id)
         {
             if (id >= list.Count)
@@ -272,12 +319,49 @@ namespace FileCabinetApp
                 return;
             }
             
+            RemoveFromAllDictionaries(list[id]);
+
             list[id].FirstName = InputFirstName();
             list[id].LastName = InputLastName();
             list[id].DateOfBirth = InputDateOfBirth();
             list[id].JobExperience = InputJobExperience();
             list[id].Wage = InputWage();
             list[id].Rank = InputRank();
+            
+            AppendToAllDictionaries(list[id]);
+        }
+
+        public FileCabinetRecord[] FindByFirstName(string firstName)
+        {
+            return firstNameDictionary[firstName].ToArray();
+        }
+        
+        public FileCabinetRecord[] FindByLastName(string lastName)
+        {
+            var records = new List<FileCabinetRecord>();
+            foreach (var item in list)
+            {
+                if (item.LastName == lastName)
+                {
+                    records.Add(item);
+                }
+            }
+
+            return records.ToArray();
+        }
+        
+        public FileCabinetRecord[] FindByDateOfBirth(string dateOfBirth)
+        {
+            var records = new List<FileCabinetRecord>();
+            foreach (var item in list)
+            {
+                if (item.DateOfBirth == DateTime.ParseExact(dateOfBirth, "yyyy-MMM-dd", CultureInfo.InvariantCulture))
+                {
+                    records.Add(item);
+                }
+            }
+
+            return records.ToArray();
         }
     }
 }

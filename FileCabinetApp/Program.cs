@@ -20,7 +20,8 @@ namespace FileCabinetApp
             new("stat", Stat),
             new("create", Create),
             new("list", List),
-            new ("edit", Edit)
+            new("edit", Edit),
+            new("find", Find)
         };
 
         private static readonly string[][] helpMessages = {
@@ -114,9 +115,18 @@ namespace FileCabinetApp
         /// </summary>
         private static void List(string parameters)
         {
-            foreach (var record in fileCabinetService.GetRecords())
+            PrintFileCabinetRecordArray(fileCabinetService.GetRecords());
+        }
+
+        /// <summary>
+        /// Prints <see cref="FileCabinetRecord"/> array
+        /// </summary>
+        /// <param name="source">Source array</param>
+        private static void PrintFileCabinetRecordArray(FileCabinetRecord[] source)
+        {
+            foreach (var item in source)
             {
-                PrintRecord(record);
+                PrintRecord(item);
             }
         }
 
@@ -146,6 +156,26 @@ namespace FileCabinetApp
             
             fileCabinetService.EditRecord(id - 1);
             Console.WriteLine($"Record #{id} is updated");
+        }
+
+        private static void Find(string parameters)
+        {
+            var inputs = parameters.Split(' ', 2);
+            var attribute = inputs[0];
+            var searchValue = inputs[1];
+
+            var records = attribute.ToUpperInvariant() switch
+            {
+                "FIRSTNAME" => fileCabinetService.FindByFirstName(searchValue),
+                "LASTNAME" => fileCabinetService.FindByLastName(searchValue),
+                "DATEOFBIRTH" => fileCabinetService.FindByDateOfBirth(searchValue),
+                _ => throw new ArgumentException("Entered attribute is not exist.")
+            };
+
+            foreach (var item in records)
+            {
+                PrintRecord(item);
+            }
         }
 
         private static void Exit(string parameters)
