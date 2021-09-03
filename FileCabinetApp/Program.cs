@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 
 [assembly:CLSCompliant(true)]
 namespace FileCabinetApp
@@ -13,17 +12,18 @@ namespace FileCabinetApp
         private const int ExplanationHelpIndex = 2;
 
         private static bool isRunning = true;
-        private static FileCabinetService fileCabinetService = new();
+        private static readonly FileCabinetService fileCabinetService = new();
 
-        private static Tuple<string, Action<string>>[] commands = {
+        private static readonly Tuple<string, Action<string>>[] commands = {
             new("help", PrintHelp),
             new("exit", Exit),
             new("stat", Stat),
             new("create", Create),
-            new("list", List)
+            new("list", List),
+            new ("edit", Edit)
         };
 
-        private static string[][] helpMessages = {
+        private static readonly string[][] helpMessages = {
             new[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
             new[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
@@ -37,9 +37,9 @@ namespace FileCabinetApp
             do
             {
                 Console.Write("> ");
-                var inputs = Console.ReadLine().Split(' ', 2);
+                var inputs = Console.ReadLine()?.Split(' ', 2);
                 const int commandIndex = 0;
-                var command = inputs[commandIndex];
+                var command = inputs![commandIndex];
 
                 if (string.IsNullOrEmpty(command))
                 {
@@ -51,9 +51,10 @@ namespace FileCabinetApp
                 if (index >= 0)
                 {
                     const int parametersIndex = 0;
-                    var parameters = inputs.Length >= 1 
-                        ? inputs[parametersIndex] 
-                        : string.Empty;
+                    var parameters = inputs.Length == 2
+                        ? inputs[parametersIndex + 1] 
+                        : inputs[parametersIndex];
+                    
                     commands[index].Item2(parameters);
                 }
                 else
@@ -75,14 +76,9 @@ namespace FileCabinetApp
             if (!string.IsNullOrEmpty(parameters))
             {
                 var index = Array.FindIndex(helpMessages, 0, helpMessages.Length, i => string.Equals(i[CommandHelpIndex], parameters, StringComparison.OrdinalIgnoreCase));
-                if (index >= 0)
-                {
-                    Console.WriteLine(helpMessages[index][ExplanationHelpIndex]);
-                }
-                else
-                {
-                    Console.WriteLine($"There is no explanation for '{parameters}' command.");
-                }
+                Console.WriteLine(index >= 0
+                    ? helpMessages[index][ExplanationHelpIndex]
+                    : $"There is no explanation for '{parameters}' command.");
             }
             else
             {
@@ -110,28 +106,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void Create(string parameters)
         {
-            Console.Write("First name: ");
-            var firstName = Console.ReadLine();
-            
-            Console.Write("Last name: ");
-            var lastName = Console.ReadLine();
-            
-            Console.Write("Date of birth: ");
-            var dateOfBirth = Console.ReadLine();
-            
-            Console.Write("Job experience: ");
-            var jobExperience = Console.ReadLine();
-
-            Console.Write("Wage: ");
-            var wage = Console.ReadLine();
-
-            Console.Write("Rank: ");
-            var rank = Console.ReadKey().KeyChar;
-            Console.WriteLine(Environment.NewLine);
-            
-            Console.WriteLine($@"Record #{fileCabinetService.CreateRecord(firstName, lastName,
-                DateTime.ParseExact(dateOfBirth!, "dd/mm/yyyy", CultureInfo.InvariantCulture),
-                jobExperience, wage, rank)} is created");
+            Console.WriteLine($"Record #{fileCabinetService.CreateRecord()} is created");
         }
         
         /// <summary>
@@ -141,15 +116,36 @@ namespace FileCabinetApp
         {
             foreach (var record in fileCabinetService.GetRecords())
             {
-                Console.WriteLine(
-                    $"#{record.Id}," +
-                    $" {record.FirstName}," +
-                    $" {record.LastName}," +
-                    $" {record.DateOfBirth:yyyy-MMM-d}," +
-                    $" {record.JobExperience}," +
-                    $" {record.Wage}," +
-                    $" {record.Rank}");
+                PrintRecord(record);
             }
+        }
+
+        /// <summary>
+        /// Prints record into console
+        /// </summary>
+        /// <param name="record">Record to print</param>
+        private static void PrintRecord(FileCabinetRecord record)
+        {
+            Console.WriteLine(
+                $"#{record.Id}," +
+                $" {record.FirstName}," +
+                $" {record.LastName}," +
+                $" {record.DateOfBirth:yyyy-MMM-dd}," +
+                $" {record.JobExperience}," +
+                $" {record.Wage}," +
+                $" {record.Rank}");
+        }
+
+        private static void Edit(string parameters)
+        {
+            if (!int.TryParse(parameters, out var id))
+            {
+                Console.WriteLine("Entered id is not an integer");
+                return;
+            }
+            
+            fileCabinetService.EditRecord(id - 1);
+            Console.WriteLine($"Record #{id} is updated");
         }
 
         private static void Exit(string parameters)
