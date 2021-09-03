@@ -8,6 +8,7 @@ namespace FileCabinetApp
     {
         private readonly List<FileCabinetRecord> list = new();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new();
+        private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new();
 
         /// <summary>
         /// The method create new record from input data and return its id
@@ -262,13 +263,14 @@ namespace FileCabinetApp
         private void AppendToAllDictionaries(FileCabinetRecord record)
         {
             AppendToFirstNameDictionary(record);
+            AppendToLastNameDictionary(record);
         }
 
         private void AppendToFirstNameDictionary(FileCabinetRecord record)
         {
             if (!firstNameDictionary.ContainsKey(record.FirstName))
             {
-                firstNameDictionary.Add(record.FirstName, new List<FileCabinetRecord> {list[^1]});
+                firstNameDictionary.Add(record.FirstName, new List<FileCabinetRecord> { record });
             }
             else
             {
@@ -276,9 +278,22 @@ namespace FileCabinetApp
             }
         }
 
+        private void AppendToLastNameDictionary(FileCabinetRecord record)
+        {
+            if (!lastNameDictionary.ContainsKey(record.LastName))
+            {
+                lastNameDictionary.Add(record.LastName, new List<FileCabinetRecord> { record });
+            }
+            else
+            {
+                lastNameDictionary[record.LastName].Add(record);
+            }
+        }
+
         private void RemoveFromAllDictionaries(FileCabinetRecord record)
         {
             firstNameDictionary[record.FirstName].Remove(record);
+            lastNameDictionary[record.LastName].Remove(record);
         }
 
         public void EditRecord(int id)
