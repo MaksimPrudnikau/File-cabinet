@@ -1,27 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Resources;
 
 [assembly:CLSCompliant(true)]
+[assembly:NeutralResourcesLanguage("en")]
 namespace FileCabinetApp
 {
     public static class Program
     {
         private const string DeveloperName = "Maksim Prudnikau";
-        private const string HintMessage = "Enter your command, or enter 'help' to get help.";
         private const int CommandHelpIndex = 0;
-        private const int DescriptionHelpIndex = 1;
         private const int ExplanationHelpIndex = 2;
 
         private static bool isRunning = true;
         private static readonly FileCabinetService fileCabinetService = new();
 
-        private static readonly Tuple<string, Action<string>>[] commands = {
-            new("help", PrintHelp),
-            new("exit", Exit),
-            new("stat", Stat),
-            new("create", Create),
-            new("list", List),
-            new("edit", Edit),
-            new("find", Find)
+        private static readonly Dictionary<string, Action<string>> commands = new()
+        {
+            {"help", PrintHelp},
+            {"exit", Exit},
+            {"stat", Stat},
+            {"create", Create},
+            {"list", List},
+            {"edit", Edit},
+            {"find", Find}
         };
 
         private static readonly string[][] helpMessages = {
@@ -31,32 +33,31 @@ namespace FileCabinetApp
 
         public static void Main()
         {
-            Console.WriteLine($"File Cabinet Application, developed by {DeveloperName}");
-            Console.WriteLine(HintMessage);
+            Console.WriteLine(EnglishSource.developed_by, DeveloperName);
+            Console.WriteLine(EnglishSource.hint);
             Console.WriteLine();
 
             do
             {
-                Console.Write("> ");
+                Console.Write(EnglishSource.console);
                 var inputs = Console.ReadLine()?.Split(' ', 2);
                 const int commandIndex = 0;
                 var command = inputs![commandIndex];
 
                 if (string.IsNullOrEmpty(command))
                 {
-                    Console.WriteLine(HintMessage);
+                    Console.WriteLine(EnglishSource.hint);
                     continue;
                 }
-
-                var index = Array.FindIndex(commands, 0, commands.Length, i => i.Item1.Equals(command, StringComparison.OrdinalIgnoreCase));
-                if (index >= 0)
+                
+                if (commands.ContainsKey(command))
                 {
                     const int parametersIndex = 0;
                     var parameters = inputs.Length == 2
                         ? inputs[parametersIndex + 1] 
                         : inputs[parametersIndex];
                     
-                    commands[index].Item2(parameters);
+                    commands[command](parameters);
                 }
                 else
                 {
@@ -68,30 +69,18 @@ namespace FileCabinetApp
 
         private static void PrintMissedCommandInfo(string command)
         {
-            Console.WriteLine($"There is no '{command}' command.");
+            Console.WriteLine(EnglishSource.no_command, command);
             Console.WriteLine();
         }
 
         private static void PrintHelp(string parameters)
         {
-            if (!string.IsNullOrEmpty(parameters))
-            {
-                var index = Array.FindIndex(helpMessages, 0, helpMessages.Length, i => string.Equals(i[CommandHelpIndex], parameters, StringComparison.OrdinalIgnoreCase));
-                Console.WriteLine(index >= 0
-                    ? helpMessages[index][ExplanationHelpIndex]
-                    : $"There is no explanation for '{parameters}' command.");
-            }
-            else
-            {
-                Console.WriteLine("Available commands:");
-
-                foreach (var helpMessage in helpMessages)
-                {
-                    Console.WriteLine("\t{0}\t- {1}", helpMessage[CommandHelpIndex], helpMessage[DescriptionHelpIndex]);
-                }
-            }
-
-            Console.WriteLine();
+            var index = Array.FindIndex(helpMessages, 0, helpMessages.Length,
+                i => string.Equals(i[CommandHelpIndex], parameters, StringComparison.OrdinalIgnoreCase));
+            
+            Console.WriteLine(index >= 0
+                ? helpMessages[index][ExplanationHelpIndex]
+                : $"There is no explanation for '{parameters}' command.");
         }
         
         /// <summary>
@@ -99,7 +88,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void Stat(string parameters)
         {
-            Console.WriteLine($"{fileCabinetService.Stat} record(s).");
+            Console.WriteLine(EnglishSource.stat, fileCabinetService.Stat);
         }
 
         /// <summary>
@@ -107,7 +96,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void Create(string parameters)
         {
-            Console.WriteLine($"Record #{fileCabinetService.CreateRecord()} is created");
+            Console.WriteLine(EnglishSource.create, fileCabinetService.CreateRecord());
         }
         
         /// <summary>
@@ -122,7 +111,7 @@ namespace FileCabinetApp
         /// Prints <see cref="FileCabinetRecord"/> array
         /// </summary>
         /// <param name="source">Source array</param>
-        private static void PrintFileCabinetRecordArray(FileCabinetRecord[] source)
+        private static void PrintFileCabinetRecordArray(IEnumerable<FileCabinetRecord> source)
         {
             foreach (var item in source)
             {
@@ -136,51 +125,80 @@ namespace FileCabinetApp
         /// <param name="record">Record to print</param>
         private static void PrintRecord(FileCabinetRecord record)
         {
-            Console.WriteLine(
-                $"#{record.Id}," +
-                $" {record.FirstName}," +
-                $" {record.LastName}," +
-                $" {record.DateOfBirth:yyyy-MMM-dd}," +
-                $" {record.JobExperience}," +
-                $" {record.Wage}," +
-                $" {record.Rank}");
+            Console.WriteLine(EnglishSource.print_record,
+                record.Id,
+                record.FirstName,
+                record.LastName,
+                record.DateOfBirth,
+                record.JobExperience,
+                record.Wage,
+                record.Rank);
         }
 
+        /// <summary>
+        /// Edit the record with entered id
+        /// </summary>
+        /// <param name="parameters">Id of the record to edit</param>
         private static void Edit(string parameters)
         {
             if (!int.TryParse(parameters, out var id))
             {
-                Console.WriteLine("Entered id is not an integer");
+                Console.WriteLine(EnglishSource.id_is_not_an_integer);
                 return;
             }
             
             fileCabinetService.EditRecord(id - 1);
-            Console.WriteLine($"Record #{id} is updated");
+            Console.WriteLine(EnglishSource.update, id);
         }
 
+        /// <summary>
+        /// Prints all the records with entered attribute equals searchValue
+        /// </summary>
+        /// <param name="parameters">Parameter in format "attribute searchValue"</param>
         private static void Find(string parameters)
         {
+            const int attributeIndex = 0;
+            const int searchValueIndex = 1;
             var inputs = parameters.Split(' ', 2);
-            var attribute = inputs[0];
-            var searchValue = inputs[1];
+            var attribute = inputs[attributeIndex];
+            var searchValue = inputs[searchValueIndex];
 
+            try
+            {
+                foreach (var record in FindByAttribute(attribute, searchValue))
+                {
+                    PrintRecord(record);
+                }
+            }
+            catch (ArgumentException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Create an array where any attribute element equals <see cref="searchValue"/> 
+        /// </summary>
+        /// <param name="attribute">Search property</param>
+        /// <param name="searchValue">Value to search</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Entered attribute is not exist</exception>
+        private static IEnumerable<FileCabinetRecord> FindByAttribute(string attribute, string searchValue)
+        {
             var records = attribute.ToUpperInvariant() switch
             {
                 "FIRSTNAME" => fileCabinetService.FindByFirstName(searchValue),
                 "LASTNAME" => fileCabinetService.FindByLastName(searchValue),
                 "DATEOFBIRTH" => fileCabinetService.FindByDateOfBirth(searchValue),
-                _ => throw new ArgumentException("Entered attribute is not exist.")
+                _ => throw new ArgumentException("Entered attribute is not exist")
             };
 
-            foreach (var item in records)
-            {
-                PrintRecord(item);
-            }
+            return records;
         }
-
+        
         private static void Exit(string parameters)
         {
-            Console.WriteLine("Exiting an application...");
+            Console.WriteLine(EnglishSource.exit);
             isRunning = false;
         }
     }
