@@ -177,7 +177,7 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Create an array where any attribute element equals <see cref="searchValue"/> 
+        /// Create an array where any attribute element equals searchValue
         /// </summary>
         /// <param name="attribute">Search property</param>
         /// <param name="searchValue">Value to search</param>
