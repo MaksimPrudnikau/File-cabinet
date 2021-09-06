@@ -4,16 +4,38 @@
         <name>FileCabinetApp</name>
     </assembly>
     <members>
-        <member name="M:FileCabinetApp.FileCabinetService.CreateRecord">
+        <member name="M:FileCabinetApp.FileCabinetService.CreateRecord(FileCabinetApp.Parameter)">
             <summary>
             The method create new record from input data and return its id
             </summary>
-            <exception cref="T:System.ArgumentException"> either firstName or lastName are incorrect <see cref="M:FileCabinetApp.FileCabinetService.InputFirstName"/>.
-             Date of birth is incorrect <see cref="M:FileCabinetApp.FileCabinetService.InputDateOfBirth"/>.
-             Job experience is incorrect <see cref="M:FileCabinetApp.FileCabinetService.InputJobExperience"/>.
-             Wage is incorrect <see cref="M:FileCabinetApp.FileCabinetService.InputWage"/>.
-             Rank is incorrect <see cref="M:FileCabinetApp.FileCabinetService.InputRank"/></exception>
+            <exception cref="T:System.ArgumentException"> either firstName or lastName are incorrect <see cref="!:InputFirstName"/>.
+             Date of birth is incorrect <see cref="!:InputDateOfBirth"/>.
+             Job experience is incorrect <see cref="!:InputJobExperience"/>.
+             Wage is incorrect <see cref="!:InputWage"/>.
+             Rank is incorrect <see cref="!:InputRank"/></exception>
             <returns>An id of current record</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.ValidateJobExperience(System.String)">
+            <summary>
+            Get job experience from keyboard
+            </summary>
+            <exception cref="T:System.ArgumentException">Job experience is null.
+            Job experience is not an integer or less than zero or greater than short.MaxValue.
+            Job experience is less than zero or greater than 100.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.ValidateWage(System.String)">
+            <summary>
+            Get wage from keyboard
+            </summary>
+            <exception cref="T:System.ArgumentException">Wage is null.
+            Wage is not an integer or greater than decimal.MaxValue.
+            Wage is less than zero</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.ValidateRank(System.String)">
+            <summary>
+            Get rank from keyboard
+            </summary>
+            <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.GetRecords">
             <summary>
@@ -26,72 +48,6 @@
             Returns number of records that the service stores
             </summary>
             <value>An ordinal number of the last record</value>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.InputFirstName">
-            <summary>
-            Get first name from keyboard
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.InputLastName">
-            <summary>
-            Get last name from keyboard
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.GetNameFromKeyboard">
-            <summary>
-            Get name from keyboard
-            </summary>
-            <exception cref="T:System.ArgumentException">Name is null or whitespace or it`s length is less than 2 or greater than 60.</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.InputDateOfBirth">
-            <summary>
-            Get date of birth from keyboard and parse it from dd/mm/yyyy format to <see cref="T:System.DateTime"/>
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.GetDateOfBirthFromKeyboard">
-            <summary>
-            Get date of birth from keyboard and parse it from dd/mm/yyyy format to <see cref="T:System.DateTime"/>
-            </summary>
-            <exception cref="T:System.ArgumentException">Date of birth is null.
-            Date of birth is not in dd/mm/yyyy format.
-            Date of birth is less than 01-Jan-1950 or greater than current date time.</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.InputJobExperience">
-            <summary>
-            Get job experience from keyboard
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.GetJobExperienceFromKeyboard">
-            <summary>
-            Get job experience from keyboard
-            </summary>
-            <exception cref="T:System.ArgumentException">Job experience is null.
-            Job experience is not an integer or less than zero or greater than short.MaxValue.
-            Job experience is less than zero or greater than 100.</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.InputWage">
-            <summary>
-            Get wage from keyboard
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.GetWageFromKeyboard">
-            <summary>
-            Get wage from keyboard
-            </summary>
-            <exception cref="T:System.ArgumentException">Wage is null.
-            Wage is not an integer or greater than decimal.MaxValue.
-            Wage is less than zero</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.InputRank">
-            <summary>
-            Get rank from keyboard
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.GetRankFromKeyboard">
-            <summary>
-            Get rank from keyboard
-            </summary>
-            <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
         </member>
         <member name="M:FileCabinetApp.Program.Stat(System.String)">
             <summary>

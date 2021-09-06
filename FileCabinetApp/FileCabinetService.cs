@@ -4,12 +4,13 @@ using System.Globalization;
 
 namespace FileCabinetApp
 {
-    public class FileCabinetService
+    public abstract class FileCabinetService
     {
-        private readonly List<FileCabinetRecord> list = new();
-        private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new();
-        private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new();
-        private readonly Dictionary<DateTime, List<FileCabinetRecord>> dateOfBirthDictionary = new();
+        private const string inputFormat = "dd/MM/yyyy";
+        private static readonly List<FileCabinetRecord> list = new();
+        private static readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new();
+        private static readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new();
+        private static readonly Dictionary<DateTime, List<FileCabinetRecord>> dateOfBirthDictionary = new();
 
         /// <summary>
         /// The method create new record from input data and return its id
@@ -20,17 +21,19 @@ namespace FileCabinetApp
         ///  Wage is incorrect <see cref="InputWage"/>.
         ///  Rank is incorrect <see cref="InputRank"/></exception>
         /// <returns>An id of current record</returns>
-        public int CreateRecord()
+        public static int CreateRecord(Parameter parameters)
         {
+            ValidateParameters(parameters);
+            
             list.Add(new FileCabinetRecord
             {
-                Id = list.Count + 1,
-                FirstName = InputFirstName(),
-                LastName = InputLastName(),
-                DateOfBirth = InputDateOfBirth(),
-                JobExperience = InputJobExperience(),
-                Wage = InputWage(),
-                Rank = InputRank()
+                Id = parameters.Id,
+                FirstName = parameters.FirstName,
+                LastName = parameters.LastName,
+                DateOfBirth = DateTime.ParseExact(parameters.DateOfBirth, inputFormat, CultureInfo.InvariantCulture),
+                JobExperience = short.Parse(parameters.JobExperience, CultureInfo.InvariantCulture),
+                Wage = decimal.Parse(parameters.Wage, CultureInfo.InvariantCulture),
+                Rank = char.Parse(parameters.Rank)
             });
             
             AppendToAllDictionaries(list[^1]);
@@ -38,102 +41,49 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Return a copy of internal service`s list 
+        /// Validate all parameters
         /// </summary>
-        /// <returns><see cref="list"/> converted to char array</returns>
-        public IEnumerable<FileCabinetRecord> GetRecords()
+        /// <param name="parameters">Entered parameters</param>
+        protected static void ValidateParameters(Parameter parameters)
         {
-            return list.ToArray();
+            NameValidator(parameters.FirstName);
+            NameValidator(parameters.LastName);
+            DateOfBirthValidator(parameters.DateOfBirth);
+            JobExperienceValidator(parameters.JobExperience);
+            WageValidator(parameters.Wage);
+            RankValidator(parameters.Rank);
         }
 
         /// <summary>
-        /// Returns number of records that the service stores
+        /// Validate name either first or last
         /// </summary>
-        /// <value>An ordinal number of the last record</value>
-        public int Stat => list.Count;
-
-        private static T InputData<T>(Func<T> func)
+        /// <param name="name">first or last name</param>
+        /// <exception cref="ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
+        private static void NameValidator(string name)
         {
-            var inputIsCorrect = false;
-            T output = default;
-            do
-            {
-                try
-                {
-                    output = func();
-                    inputIsCorrect = true;
-                }
-                catch (ArgumentException exception)
-                {
-                    Console.WriteLine(exception.Message);
-                }
-            } while (!inputIsCorrect);
-
-            return output;
-        }
-
-        /// <summary>
-        /// Get first name from keyboard
-        /// </summary>
-        private static string InputFirstName()
-        {
-            Console.Write(EnglishSource.first_name);
-            return InputData(GetNameFromKeyboard);
-        }
-        
-        /// <summary>
-        /// Get last name from keyboard
-        /// </summary>
-        private static string InputLastName()
-        {
-            Console.Write(EnglishSource.last_name);
-            return InputData(GetNameFromKeyboard);
-        }
-        
-        /// <summary>
-        /// Get name from keyboard
-        /// </summary>
-        /// <exception cref="ArgumentException">Name is null or whitespace or it`s length is less than 2 or greater than 60.</exception>
-        private static string GetNameFromKeyboard()
-        {
-            var name = Console.ReadLine();
-            
             if (string.IsNullOrWhiteSpace(name) || name.Length is < 2 or > 60 )
             {
                 throw new ArgumentException(
-                    "Input name is null or whitespace or it`s length is less than 2 or greater than 60");
+                    "Entered name is null or whitespace or it`s length is less than 2 or greater than 60");
+            }
+        }
+
+        /// <summary>
+        /// Validate date of birth in format "dd/MM/yyyy"
+        /// </summary>
+        /// <param name="source">entered date of birth</param>
+        /// <exception cref="ArgumentNullException">Date of birth is null or whitespace</exception>
+        /// <exception cref="ArgumentException">Date of birth is not in dd/mm/yyyy format.
+        /// Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
+        private static void DateOfBirthValidator(string source)
+        {
+            const string inputDateFormat = "dd/MM/yyyy";
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                throw new ArgumentNullException(nameof(source), EnglishSource.Date_birth_is_null_or_whitespace);
             }
 
-            return name;
-        }
-        
-        /// <summary>
-        /// Get date of birth from keyboard and parse it from dd/mm/yyyy format to <see cref="DateTime"/>
-        /// </summary>
-        private static DateTime InputDateOfBirth()
-        {
-            return InputData(GetDateOfBirthFromKeyboard);
-        } 
-        
-        /// <summary>
-        /// Get date of birth from keyboard and parse it from dd/mm/yyyy format to <see cref="DateTime"/>
-        /// </summary>
-        /// <exception cref="ArgumentException">Date of birth is null.
-        /// Date of birth is not in dd/mm/yyyy format.
-        /// Date of birth is less than 01-Jan-1950 or greater than current date time.</exception>
-        private static DateTime GetDateOfBirthFromKeyboard()
-        {
-            const string inputFormat = "dd/MM/yyyy";
-            
-            Console.Write(EnglishSource.date_of_birth);
-            var input = Console.ReadLine();
-            
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                throw new ArgumentException("Date birth is null or whitespace");
-            }
-            
-            if (!DateTime.TryParseExact(input!, inputFormat, CultureInfo.InvariantCulture, DateTimeStyles.None,
+            if (!DateTime.TryParseExact(source, inputDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None,
                 out var dateOfBirth))
             {
                 throw new ArgumentException("Date of birth is not in dd/mm/yyyy format");
@@ -145,35 +95,22 @@ namespace FileCabinetApp
             {
                 throw new ArgumentException("Date of birth is less than 01-Jan-1950 or greater than current date time");
             }
-
-            return dateOfBirth;
         }
         
-        /// <summary>
-        /// Get job experience from keyboard
-        /// </summary>
-        private static short InputJobExperience()
-        {
-            return InputData(GetJobExperienceFromKeyboard);
-        }
-
         /// <summary>
         /// Get job experience from keyboard
         /// </summary>
         /// <exception cref="ArgumentException">Job experience is null.
         /// Job experience is not an integer or less than zero or greater than short.MaxValue.
         /// Job experience is less than zero or greater than 100.</exception>
-        private static short GetJobExperienceFromKeyboard()
+        private static void JobExperienceValidator(string source)
         {
-            Console.Write(EnglishSource.job_experience);
-            var input = Console.ReadLine();
-            
-            if (string.IsNullOrWhiteSpace(input))
+            if (string.IsNullOrWhiteSpace(source))
             {
-                return 0;
+                throw new ArgumentNullException(nameof(source));
             }
 
-            if (!short.TryParse(input, out var jobExperience))
+            if (!short.TryParse(source, out var jobExperience))
             {
                 throw new ArgumentException(
                     "Job experience is not an integer or less than zero or greater than short.MaxValue");
@@ -183,38 +120,23 @@ namespace FileCabinetApp
             {
                 throw new ArgumentException("Job experience is less than zero or greater than 100");
             }
-
-            return jobExperience;
         }
-
-        /// <summary>
-        /// Get wage from keyboard
-        /// </summary>
-        private static decimal InputWage()
-        {
-            return InputData(GetWageFromKeyboard);
-        }
-
+        
         /// <summary>
         /// Get wage from keyboard
         /// </summary>
         /// <exception cref="ArgumentException">Wage is null.
         /// Wage is not an integer or greater than decimal.MaxValue.
         /// Wage is less than zero</exception>
-        private static decimal GetWageFromKeyboard()
+        private static void WageValidator(string source)
         {
-            const decimal defaultWage = (decimal)250.0;
-            
-            Console.Write(EnglishSource.wage);
-            var input = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(input))
+            if (string.IsNullOrWhiteSpace(source))
             {
-                return defaultWage;
+                throw new ArgumentNullException(nameof(source));
             }
             
 
-            if (!decimal.TryParse(input, out var wage))
+            if (!decimal.TryParse(source, out var wage))
             {
                 throw new ArgumentException(
                     "Wage is not an integer or greater than decimal.MaxValue");
@@ -224,51 +146,73 @@ namespace FileCabinetApp
             {
                 throw new ArgumentException("Wage is less than zero");
             }
-
-            return wage;
         }
-
-        /// <summary>
-        /// Get rank from keyboard
-        /// </summary>
-        private static char InputRank()
-        {
-            return InputData(GetRankFromKeyboard);
-        }
-
+        
         /// <summary>
         /// Get rank from keyboard
         /// </summary>
         /// <exception cref="ArgumentException">Rank is not in current rank system</exception>
-        private static char GetRankFromKeyboard()
+        private static void RankValidator(string source)
         {
-            const char defaultRank = 'F';
             var grades = new []{'F', 'D', 'C', 'B', 'A'};
             
-            Console.Write(EnglishSource.rank);
-            var rank = Console.ReadLine();
-            
-            if (string.IsNullOrWhiteSpace(rank))
+            if (string.IsNullOrWhiteSpace(source))
             {
-                return defaultRank;
+                throw new ArgumentNullException(nameof(source));
             }
             
-            if (rank.Length != 1 || Array.IndexOf(grades, rank[0]) == -1)
+            if (source.Length != 1 || Array.IndexOf(grades, source[0]) == -1)
             {
                 throw new ArgumentException("Rank is not defined in current rank system [F..A]");
             }
-
-            return rank![0];
         }
 
-        private void AppendToAllDictionaries(FileCabinetRecord record)
+        /// <summary>
+        /// Return a copy of internal service`s list 
+        /// </summary>
+        /// <returns><see cref="list"/> converted to char array</returns>
+        public static IEnumerable<FileCabinetRecord> GetRecords()
+        {
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// Returns number of records that the service stores
+        /// </summary>
+        /// <value>An ordinal number of the last record</value>
+        public static int Stat => list.Count;
+        
+        public static void EditRecord(Parameter parameters)
+        {
+            ValidateParameters(parameters);
+            
+            if (parameters.Id >= list.Count)
+            {
+                Console.WriteLine(EnglishSource.record_not_found, parameters.Id);
+                return;
+            }
+
+            list[parameters.Id].FirstName = parameters.FirstName;
+            list[parameters.Id].LastName = parameters.LastName;
+            list[parameters.Id].DateOfBirth =
+                DateTime.ParseExact(parameters.DateOfBirth, inputFormat, CultureInfo.InvariantCulture);
+            list[parameters.Id].JobExperience = short.Parse(parameters.JobExperience, CultureInfo.InvariantCulture);
+            list[parameters.Id].Wage = decimal.Parse(parameters.Wage, CultureInfo.InvariantCulture);
+            list[parameters.Id].Wage = char.Parse(parameters.Rank);
+
+            RemoveFromAllDictionaries(list[parameters.Id]);
+
+            AppendToAllDictionaries(list[parameters.Id]);
+        }
+
+        private static void AppendToAllDictionaries(FileCabinetRecord record)
         {
             AppendToFirstNameDictionary(record);
             AppendToLastNameDictionary(record);
             AppendToDateOfBirthDictionary(record);
         }
 
-        private void AppendToFirstNameDictionary(FileCabinetRecord record)
+        private static void AppendToFirstNameDictionary(FileCabinetRecord record)
         {
             if (!firstNameDictionary.ContainsKey(record.FirstName))
             {
@@ -280,7 +224,7 @@ namespace FileCabinetApp
             }
         }
 
-        private void AppendToLastNameDictionary(FileCabinetRecord record)
+        private static void AppendToLastNameDictionary(FileCabinetRecord record)
         {
             if (!lastNameDictionary.ContainsKey(record.LastName))
             {
@@ -292,7 +236,7 @@ namespace FileCabinetApp
             }
         }
 
-        private void AppendToDateOfBirthDictionary(FileCabinetRecord record)
+        private static void AppendToDateOfBirthDictionary(FileCabinetRecord record)
         {
             if (!dateOfBirthDictionary.ContainsKey(record.DateOfBirth))
             {
@@ -304,39 +248,20 @@ namespace FileCabinetApp
             }
         }
 
-        private void RemoveFromAllDictionaries(FileCabinetRecord record)
+        private static void RemoveFromAllDictionaries(FileCabinetRecord record)
         {
             firstNameDictionary[record.FirstName].Remove(record);
             lastNameDictionary[record.LastName].Remove(record);
             dateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
+        
 
-        public void EditRecord(int id)
-        {
-            if (id >= list.Count)
-            {
-                Console.WriteLine(EnglishSource.record_not_found, id);
-                return;
-            }
-            
-            RemoveFromAllDictionaries(list[id]);
-
-            list[id].FirstName = InputFirstName();
-            list[id].LastName = InputLastName();
-            list[id].DateOfBirth = InputDateOfBirth();
-            list[id].JobExperience = InputJobExperience();
-            list[id].Wage = InputWage();
-            list[id].Rank = InputRank();
-            
-            AppendToAllDictionaries(list[id]);
-        }
-
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
+        public static IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
         {
             return firstNameDictionary[firstName].ToArray();
         }
         
-        public IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
+        public static IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
         {
             var records = new List<FileCabinetRecord>();
             foreach (var item in list)
@@ -350,7 +275,7 @@ namespace FileCabinetApp
             return records.ToArray();
         }
         
-        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string dateOfBirth)
+        public static IEnumerable<FileCabinetRecord> FindByDateOfBirth(string dateOfBirth)
         {
             var records = new List<FileCabinetRecord>();
             foreach (var item in list)

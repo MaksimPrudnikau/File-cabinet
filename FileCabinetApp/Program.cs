@@ -13,7 +13,6 @@ namespace FileCabinetApp
         private const int ExplanationHelpIndex = 2;
 
         private static bool isRunning = true;
-        private static readonly FileCabinetService fileCabinetService = new();
 
         private static readonly Dictionary<string, Action<string>> commands = new()
         {
@@ -69,7 +68,7 @@ namespace FileCabinetApp
 
         private static void PrintMissedCommandInfo(string command)
         {
-            Console.WriteLine(EnglishSource.no_command, command);
+            Console.Error.WriteLine(EnglishSource.no_command, command);
             Console.WriteLine();
         }
 
@@ -88,7 +87,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void Stat(string parameters)
         {
-            Console.WriteLine(EnglishSource.stat, fileCabinetService.Stat);
+            Console.WriteLine(EnglishSource.stat, FileCabinetService.Stat);
         }
 
         /// <summary>
@@ -96,7 +95,43 @@ namespace FileCabinetApp
         /// </summary>
         private static void Create(string parameters)
         {
-            Console.WriteLine(EnglishSource.create, fileCabinetService.CreateRecord());
+            Console.Write(EnglishSource.first_name);
+            var firstName = Console.ReadLine();
+
+            Console.Write(EnglishSource.last_name);
+            var lastName = Console.ReadLine();
+            
+            Console.Write(EnglishSource.date_of_birth);
+            var dateOfBirth = Console.ReadLine();
+            
+            Console.Write(EnglishSource.job_experience);
+            var jobExperience = Console.ReadLine();
+            
+            Console.Write(EnglishSource.wage);
+            var wage = Console.ReadLine();
+            
+            Console.Write(EnglishSource.rank);
+            var rank = Console.ReadLine();
+
+            try
+            {
+                Console.WriteLine(EnglishSource.create,
+                    FileCabinetService.CreateRecord(new Parameter
+                    {
+                        Id = FileCabinetService.Stat + 1,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        DateOfBirth = dateOfBirth,
+                        JobExperience = jobExperience,
+                        Wage = wage,
+                        Rank = rank
+                    }));
+            }
+            catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
+            {
+                Console.Error.WriteLine(exception.Message);
+                Create(parameters);
+            }
         }
         
         /// <summary>
@@ -104,7 +139,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void List(string parameters)
         {
-            PrintFileCabinetRecordArray(fileCabinetService.GetRecords());
+            PrintFileCabinetRecordArray(FileCabinetService.GetRecords());
         }
 
         /// <summary>
@@ -129,7 +164,7 @@ namespace FileCabinetApp
                 record.Id,
                 record.FirstName,
                 record.LastName,
-                record.DateOfBirth,
+                record.DateOfBirth.ToString("yyyy-MMM-dd"),
                 record.JobExperience,
                 record.Wage,
                 record.Rank);
@@ -143,12 +178,18 @@ namespace FileCabinetApp
         {
             if (!int.TryParse(parameters, out var id))
             {
-                Console.WriteLine(EnglishSource.id_is_not_an_integer);
+                Console.Error.WriteLine(EnglishSource.id_is_not_an_integer);
                 return;
             }
-            
-            fileCabinetService.EditRecord(id - 1);
-            Console.WriteLine(EnglishSource.update, id);
+
+            try
+            {
+                Console.WriteLine(EnglishSource.update, id);
+            }
+            catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
+            {
+                Console.Error.WriteLine(exception.Message);
+            }
         }
 
         /// <summary>
@@ -172,7 +213,7 @@ namespace FileCabinetApp
             }
             catch (ArgumentException exception)
             {
-                Console.WriteLine(exception.Message);
+                Console.Error.WriteLine(exception.Message);
             }
         }
 
@@ -187,9 +228,9 @@ namespace FileCabinetApp
         {
             var records = attribute.ToUpperInvariant() switch
             {
-                "FIRSTNAME" => fileCabinetService.FindByFirstName(searchValue),
-                "LASTNAME" => fileCabinetService.FindByLastName(searchValue),
-                "DATEOFBIRTH" => fileCabinetService.FindByDateOfBirth(searchValue),
+                "FIRSTNAME" => FileCabinetService.FindByFirstName(searchValue),
+                "LASTNAME" => FileCabinetService.FindByLastName(searchValue),
+                "DATEOFBIRTH" => FileCabinetService.FindByDateOfBirth(searchValue),
                 _ => throw new ArgumentException("Entered attribute is not exist")
             };
 
