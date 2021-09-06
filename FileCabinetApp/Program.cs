@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Resources;
 
 [assembly:CLSCompliant(true)]
 [assembly:NeutralResourcesLanguage("en")]
 namespace FileCabinetApp
 {
-    public static class Program
+    public class Program
     {
         private const string DeveloperName = "Maksim Prudnikau";
         private const int CommandHelpIndex = 0;
@@ -14,7 +15,7 @@ namespace FileCabinetApp
 
         private static bool isRunning = true;
 
-        private static readonly Dictionary<string, Action<string>> commands = new()
+        private readonly Dictionary<string, Action<string>> commands = new()
         {
             {"help", PrintHelp},
             {"exit", Exit},
@@ -24,13 +25,13 @@ namespace FileCabinetApp
             {"edit", Edit},
             {"find", Find}
         };
-
+        
         private static readonly string[][] helpMessages = {
             new[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
             new[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
 
-        public static void Main()
+        public void Main()
         {
             Console.WriteLine(EnglishSource.developed_by, DeveloperName);
             Console.WriteLine(EnglishSource.hint);
@@ -95,37 +96,10 @@ namespace FileCabinetApp
         /// </summary>
         private static void Create(string parameters)
         {
-            Console.Write(EnglishSource.first_name);
-            var firstName = Console.ReadLine();
-
-            Console.Write(EnglishSource.last_name);
-            var lastName = Console.ReadLine();
-            
-            Console.Write(EnglishSource.date_of_birth);
-            var dateOfBirth = Console.ReadLine();
-            
-            Console.Write(EnglishSource.job_experience);
-            var jobExperience = Console.ReadLine();
-            
-            Console.Write(EnglishSource.wage);
-            var wage = Console.ReadLine();
-            
-            Console.Write(EnglishSource.rank);
-            var rank = Console.ReadLine();
-
+            var inputParameters = FileCabinetService.InputParameters();
             try
             {
-                Console.WriteLine(EnglishSource.create,
-                    FileCabinetService.CreateRecord(new Parameter
-                    {
-                        Id = FileCabinetService.Stat + 1,
-                        FirstName = firstName,
-                        LastName = lastName,
-                        DateOfBirth = dateOfBirth,
-                        JobExperience = jobExperience,
-                        Wage = wage,
-                        Rank = rank
-                    }));
+                Console.WriteLine(EnglishSource.create, FileCabinetService.CreateRecord(inputParameters));
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {
@@ -164,7 +138,7 @@ namespace FileCabinetApp
                 record.Id,
                 record.FirstName,
                 record.LastName,
-                record.DateOfBirth.ToString("yyyy-MMM-dd"),
+                record.DateOfBirth.ToString("yyyy-MMM-dd", CultureInfo.InvariantCulture),
                 record.JobExperience,
                 record.Wage,
                 record.Rank);
