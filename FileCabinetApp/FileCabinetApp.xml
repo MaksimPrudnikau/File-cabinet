@@ -4,18 +4,23 @@
         <name>FileCabinetApp</name>
     </assembly>
     <members>
-        <member name="M:FileCabinetApp.FileCabinetService.CreateRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetCustomService.NameValidator(System.String)">
             <summary>
-            The method create new record from input data and return its id
+            Validate name either first or last
             </summary>
-            <exception cref="T:System.ArgumentException"> either firstName or lastName are incorrect <see cref="!:InputFirstName"/>.
-             Date of birth is incorrect <see cref="!:InputDateOfBirth"/>.
-             Job experience is incorrect <see cref="!:InputJobExperience"/>.
-             Wage is incorrect <see cref="!:InputWage"/>.
-             Rank is incorrect <see cref="!:InputRank"/></exception>
-            <returns>An id of current record</returns>
+            <param name="name">first or last name</param>
+            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.ValidateJobExperience(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetCustomService.DateOfBirthValidator(System.String)">
+            <summary>
+            Validate date of birth in format "dd/MM/yyyy"
+            </summary>
+            <param name="source">entered date of birth</param>
+            <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
+            <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
+            Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetCustomService.JobExperienceValidator(System.String)">
             <summary>
             Get job experience from keyboard
             </summary>
@@ -23,7 +28,7 @@
             Job experience is not an integer or less than zero or greater than short.MaxValue.
             Job experience is less than zero or greater than 100.</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.ValidateWage(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetCustomService.WageValidator(System.String)">
             <summary>
             Get wage from keyboard
             </summary>
@@ -31,11 +36,45 @@
             Wage is not an integer or greater than decimal.MaxValue.
             Wage is less than zero</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.ValidateRank(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetCustomService.RankValidator(System.String)">
             <summary>
             Get rank from keyboard
             </summary>
             <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetDefaultService.NameValidator(System.String)">
+            <summary>
+            Validate name either first or last
+            </summary>
+            <param name="name">first or last name</param>
+            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetDefaultService.DateOfBirthValidator(System.String)">
+            <summary>
+            Validate date of birth in format "dd/MM/yyyy"
+            </summary>
+            <param name="source">entered date of birth</param>
+            <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
+            <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
+            Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.InputParameters(System.Int32)">
+            <summary>
+            Create <see cref="T:FileCabinetApp.Parameter"/> object from data entered from keyboard
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.CreateRecord(FileCabinetApp.Parameter)">
+            <summary>
+            The method create new record from input data and return its id
+            </summary>
+            <returns>An id of current record</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.ValidateParameters(FileCabinetApp.Parameter)">
+            <summary>
+            Validate all parameters
+            </summary>
+            <param name="parameters">Entered parameters</param>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.GetRecords">
             <summary>

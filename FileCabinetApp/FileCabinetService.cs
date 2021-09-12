@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace FileCabinetApp
@@ -16,9 +17,14 @@ namespace FileCabinetApp
         /// Create <see cref="Parameter"/> object from data entered from keyboard
         /// </summary>
         /// <returns></returns>
-        public static Parameter InputParameters()
+        public static Parameter InputParameters(int id = -1)
         {
-            var parameter = new Parameter{Id = Stat + 1};
+            var parameter = new Parameter
+            {
+                Id = id == -1 
+                    ? Stat + 1
+                    : id
+            };
 
             Console.Write(EnglishSource.first_name);
             parameter.FirstName = Console.ReadLine();
@@ -45,8 +51,10 @@ namespace FileCabinetApp
         /// The method create new record from input data and return its id
         /// </summary>
         /// <returns>An id of current record</returns>
-        public static int CreateRecord(Parameter parameters)
+        public int CreateRecord(Parameter parameters)
         {
+            ValidateParameters(parameters);
+            
             list.Add(new FileCabinetRecord
             {
                 Id = parameters.Id,
@@ -57,7 +65,7 @@ namespace FileCabinetApp
                 Wage = decimal.Parse(parameters.Wage, CultureInfo.InvariantCulture),
                 Rank = char.Parse(parameters.Rank)
             });
-            
+
             AppendToAllDictionaries(list[^1]);
             return list[^1].Id;
         }
@@ -66,7 +74,7 @@ namespace FileCabinetApp
         /// Validate all parameters
         /// </summary>
         /// <param name="parameters">Entered parameters</param>
-        protected virtual void ValidateParameters(Parameter parameters) { }
+        protected abstract void ValidateParameters(Parameter parameters);
 
         /// <summary>
         /// Return a copy of internal service`s list 
@@ -86,6 +94,8 @@ namespace FileCabinetApp
         public void EditRecord(Parameter parameters)
         {
             ValidateParameters(parameters);
+
+            parameters.Id -= 1;
             
             if (parameters.Id >= list.Count)
             {
@@ -98,8 +108,8 @@ namespace FileCabinetApp
             list[parameters.Id].DateOfBirth =
                 DateTime.ParseExact(parameters.DateOfBirth, inputFormat, CultureInfo.InvariantCulture);
             list[parameters.Id].JobExperience = short.Parse(parameters.JobExperience, CultureInfo.InvariantCulture);
-            list[parameters.Id].Wage = decimal.Parse(parameters.Wage, CultureInfo.InvariantCulture);
-            list[parameters.Id].Wage = char.Parse(parameters.Rank);
+            list[parameters.Id].Wage = (decimal)double.Parse(parameters.Wage, CultureInfo.InvariantCulture);
+            list[parameters.Id].Rank = parameters.Rank[0];
 
             RemoveFromAllDictionaries(list[parameters.Id]);
 
@@ -151,11 +161,21 @@ namespace FileCabinetApp
 
         private static void RemoveFromAllDictionaries(FileCabinetRecord record)
         {
-            firstNameDictionary[record.FirstName].Remove(record);
-            lastNameDictionary[record.LastName].Remove(record);
-            dateOfBirthDictionary[record.DateOfBirth].Remove(record);
+            if (firstNameDictionary.Count != 1)
+            {
+              firstNameDictionary[record.FirstName].Remove(record);  
+            }
+            
+            if (lastNameDictionary.Count != 1)
+            {
+                lastNameDictionary[record.LastName].Remove(record);  
+            }
+            
+            if (dateOfBirthDictionary.Count != 1)
+            {
+                dateOfBirthDictionary[record.DateOfBirth].Remove(record);  
+            }
         }
-        
 
         public static IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
         {

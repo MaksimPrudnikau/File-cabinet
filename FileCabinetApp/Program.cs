@@ -7,15 +7,16 @@ using System.Resources;
 [assembly:NeutralResourcesLanguage("en")]
 namespace FileCabinetApp
 {
-    public class Program
+    public static class Program
     {
         private const string DeveloperName = "Maksim Prudnikau";
         private const int CommandHelpIndex = 0;
         private const int ExplanationHelpIndex = 2;
 
         private static bool isRunning = true;
+        private static FileCabinetService ValidationService = new FileCabinetDefaultService();
 
-        private readonly Dictionary<string, Action<string>> commands = new()
+        private static readonly Dictionary<string, Action<string>> commands = new()
         {
             {"help", PrintHelp},
             {"exit", Exit},
@@ -31,12 +32,22 @@ namespace FileCabinetApp
             new[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
 
-        public void Main()
+        public static void Main(string[] args)
         {
             Console.WriteLine(EnglishSource.developed_by, DeveloperName);
             Console.WriteLine(EnglishSource.hint);
-            Console.WriteLine();
-
+            
+            try
+            {
+                args ??= Array.Empty<string>();
+                SetValidationRule(args);
+            }
+            catch (ArgumentException exception)
+            {
+                Console.Error.WriteLine(exception.Message);
+                Exit(string.Empty);
+            }
+            
             do
             {
                 Console.Write(EnglishSource.console);
@@ -46,7 +57,7 @@ namespace FileCabinetApp
 
                 if (string.IsNullOrEmpty(command))
                 {
-                    Console.WriteLine(EnglishSource.hint);
+                    Console.Error.WriteLine(EnglishSource.hint);
                     continue;
                 }
                 
@@ -67,6 +78,37 @@ namespace FileCabinetApp
             while (isRunning);
         }
 
+        private static void SetValidationRule(string[] args)
+        {
+            const string defaultValidationRuleFullForm = "--VALIDATION-RULES=DEFAULT";
+            const string customValidationRuleFullForm = "--VALIDATION-RULES=CUSTOM";
+            const int fullFormParameterIndex = 0;
+            const int shortFormParameterIndex = 1;
+
+            ValidationService = args.Length switch
+            {
+                0 => new FileCabinetDefaultService(),
+                
+                1 => args[fullFormParameterIndex].ToUpperInvariant() switch
+                {
+                    defaultValidationRuleFullForm => new FileCabinetDefaultService(),
+                    customValidationRuleFullForm => new FileCabinetCustomService(),
+                    
+                    _ => throw new ArgumentException("No such command parameter")
+                },
+                
+                2 => args[shortFormParameterIndex].ToUpperInvariant() switch
+                {
+                    "DEFAULT" => new FileCabinetDefaultService(),
+                    "CUSTOM" => new FileCabinetCustomService(),
+                    
+                    _ => throw new ArgumentException("No such command parameter")
+                },
+                
+                _ => throw new ArgumentException("Too much command parameters")
+            };
+        }
+
         private static void PrintMissedCommandInfo(string command)
         {
             Console.Error.WriteLine(EnglishSource.no_command, command);
@@ -78,7 +120,7 @@ namespace FileCabinetApp
             var index = Array.FindIndex(helpMessages, 0, helpMessages.Length,
                 i => string.Equals(i[CommandHelpIndex], parameters, StringComparison.OrdinalIgnoreCase));
             
-            Console.WriteLine(index >= 0
+            Console.Error.WriteLine(index >= 0
                 ? helpMessages[index][ExplanationHelpIndex]
                 : $"There is no explanation for '{parameters}' command.");
         }
@@ -99,7 +141,7 @@ namespace FileCabinetApp
             var inputParameters = FileCabinetService.InputParameters();
             try
             {
-                Console.WriteLine(EnglishSource.create, FileCabinetService.CreateRecord(inputParameters));
+                Console.WriteLine(EnglishSource.create, ValidationService.CreateRecord(inputParameters));
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {
@@ -158,6 +200,9 @@ namespace FileCabinetApp
 
             try
             {
+                var inputParameters = FileCabinetService.InputParameters(id);
+
+                ValidationService.EditRecord(inputParameters);
                 Console.WriteLine(EnglishSource.update, id);
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)

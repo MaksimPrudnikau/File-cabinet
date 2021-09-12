@@ -12,7 +12,7 @@ namespace FileCabinetApp
             DateOfBirthValidator(parameters.DateOfBirth);
         }
         
-         /// <summary>
+        /// <summary>
         /// Validate name either first or last
         /// </summary>
         /// <param name="name">first or last name</param>
