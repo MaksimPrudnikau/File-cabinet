@@ -13,8 +13,8 @@ namespace FileCabinetApp
         private const int CommandHelpIndex = 0;
         private const int ExplanationHelpIndex = 2;
 
-        private static bool isRunning = true;
-        private static FileCabinetService ValidationService = new (new DefaultValidator());
+        private static bool _isRunning = true;
+        private static IFileCabinetService _validationService = new FileCabinetService(new DefaultValidator());
 
         private static readonly Dictionary<string, Action<string>> Commands = new()
         {
@@ -75,7 +75,7 @@ namespace FileCabinetApp
                     PrintMissedCommandInfo(command);
                 }
             }
-            while (isRunning);
+            while (_isRunning);
         }
 
         private static void SetValidationRule(string[] args)
@@ -85,7 +85,7 @@ namespace FileCabinetApp
             const int fullFormParameterIndex = 0;
             const int shortFormParameterIndex = 1;
 
-            ValidationService = args.Length switch
+            _validationService = args.Length switch
             {
                 0 => new FileCabinetService(new DefaultValidator()),
                 
@@ -142,7 +142,7 @@ namespace FileCabinetApp
             
             try
             {
-                Console.WriteLine(EnglishSource.create, ValidationService.CreateRecord(inputParameters));
+                Console.WriteLine(EnglishSource.create, _validationService.CreateRecord(inputParameters));
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {
@@ -203,7 +203,7 @@ namespace FileCabinetApp
             {
                 var inputParameters = FileCabinetService.InputParameters(id);
 
-                ValidationService.EditRecord(inputParameters);
+                _validationService.EditRecord(inputParameters);
                 Console.WriteLine(EnglishSource.update, id);
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
@@ -260,7 +260,7 @@ namespace FileCabinetApp
         private static void Exit(string parameters)
         {
             Console.WriteLine(EnglishSource.exit);
-            isRunning = false;
+            _isRunning = false;
         }
     }
 }

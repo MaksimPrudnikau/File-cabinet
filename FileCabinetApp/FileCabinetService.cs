@@ -4,18 +4,18 @@ using System.Globalization;
 
 namespace FileCabinetApp
 {
-    public class FileCabinetService
+    public class FileCabinetService : IFileCabinetService
     {
-        private readonly IRecordValidator validator;
-        private const string inputFormat = "dd/MM/yyyy";
-        private static readonly List<FileCabinetRecord> list = new();
-        private static readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new();
-        private static readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new();
-        private static readonly Dictionary<DateTime, List<FileCabinetRecord>> dateOfBirthDictionary = new();
+        private readonly IRecordValidator _validator;
+        private const string InputFormat = "dd/MM/yyyy";
+        private static readonly List<FileCabinetRecord> List = new();
+        private static readonly Dictionary<string, List<FileCabinetRecord>> FirstNameDictionary = new();
+        private static readonly Dictionary<string, List<FileCabinetRecord>> LastNameDictionary = new();
+        private static readonly Dictionary<DateTime, List<FileCabinetRecord>> DateOfBirthDictionary = new();
 
         public FileCabinetService(IRecordValidator validator)
         {
-            this.validator = validator;
+            this._validator = validator;
         }
 
         /// <summary>
@@ -51,61 +51,61 @@ namespace FileCabinetApp
         /// <returns>An id of current record</returns>
         public int CreateRecord(Parameter parameters)
         {
-            validator.ValidateParameters(parameters);
+            _validator.ValidateParameters(parameters);
             
-            list.Add(new FileCabinetRecord
+            List.Add(new FileCabinetRecord
             {
                 Id = parameters.Id,
                 FirstName = parameters.FirstName,
                 LastName = parameters.LastName,
-                DateOfBirth = DateTime.ParseExact(parameters.DateOfBirth, inputFormat, CultureInfo.InvariantCulture),
+                DateOfBirth = DateTime.ParseExact(parameters.DateOfBirth, InputFormat, CultureInfo.InvariantCulture),
                 JobExperience = short.Parse(parameters.JobExperience, CultureInfo.InvariantCulture),
                 Wage = decimal.Parse(parameters.Wage, CultureInfo.InvariantCulture),
                 Rank = char.Parse(parameters.Rank)
             });
 
-            AppendToAllDictionaries(list[^1]);
-            return list[^1].Id;
+            AppendToAllDictionaries(List[^1]);
+            return List[^1].Id;
         }
 
         /// <summary>
         /// Return a copy of internal service`s list 
         /// </summary>
-        /// <returns><see cref="list"/> converted to char array</returns>
+        /// <returns><see cref="List"/> converted to char array</returns>
         public static IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            return list.ToArray();
+            return List.ToArray();
         }
 
         /// <summary>
         /// Returns number of records that the service stores
         /// </summary>
         /// <value>An ordinal number of the last record</value>
-        public static int Stat => list.Count;
+        public static int Stat => List.Count;
         
         public void EditRecord(Parameter parameters)
         {
-            validator.ValidateParameters(parameters);
+            _validator.ValidateParameters(parameters);
 
             parameters.Id -= 1;
             
-            if (parameters.Id >= list.Count)
+            if (parameters.Id >= List.Count)
             {
                 Console.WriteLine(EnglishSource.record_not_found, parameters.Id);
                 return;
             }
 
-            list[parameters.Id].FirstName = parameters.FirstName;
-            list[parameters.Id].LastName = parameters.LastName;
-            list[parameters.Id].DateOfBirth =
-                DateTime.ParseExact(parameters.DateOfBirth, inputFormat, CultureInfo.InvariantCulture);
-            list[parameters.Id].JobExperience = short.Parse(parameters.JobExperience, CultureInfo.InvariantCulture);
-            list[parameters.Id].Wage = (decimal)double.Parse(parameters.Wage, CultureInfo.InvariantCulture);
-            list[parameters.Id].Rank = parameters.Rank[0];
+            List[parameters.Id].FirstName = parameters.FirstName;
+            List[parameters.Id].LastName = parameters.LastName;
+            List[parameters.Id].DateOfBirth =
+                DateTime.ParseExact(parameters.DateOfBirth, InputFormat, CultureInfo.InvariantCulture);
+            List[parameters.Id].JobExperience = short.Parse(parameters.JobExperience, CultureInfo.InvariantCulture);
+            List[parameters.Id].Wage = (decimal)double.Parse(parameters.Wage, CultureInfo.InvariantCulture);
+            List[parameters.Id].Rank = parameters.Rank[0];
 
-            RemoveFromAllDictionaries(list[parameters.Id]);
+            RemoveFromAllDictionaries(List[parameters.Id]);
 
-            AppendToAllDictionaries(list[parameters.Id]);
+            AppendToAllDictionaries(List[parameters.Id]);
         }
 
         private static void AppendToAllDictionaries(FileCabinetRecord record)
@@ -117,67 +117,67 @@ namespace FileCabinetApp
 
         private static void AppendToFirstNameDictionary(FileCabinetRecord record)
         {
-            if (!firstNameDictionary.ContainsKey(record.FirstName))
+            if (!FirstNameDictionary.ContainsKey(record.FirstName))
             {
-                firstNameDictionary.Add(record.FirstName, new List<FileCabinetRecord> { record });
+                FirstNameDictionary.Add(record.FirstName, new List<FileCabinetRecord> { record });
             }
             else
             {
-                firstNameDictionary[record.FirstName].Add(record);
+                FirstNameDictionary[record.FirstName].Add(record);
             }
         }
 
         private static void AppendToLastNameDictionary(FileCabinetRecord record)
         {
-            if (!lastNameDictionary.ContainsKey(record.LastName))
+            if (!LastNameDictionary.ContainsKey(record.LastName))
             {
-                lastNameDictionary.Add(record.LastName, new List<FileCabinetRecord> { record });
+                LastNameDictionary.Add(record.LastName, new List<FileCabinetRecord> { record });
             }
             else
             {
-                lastNameDictionary[record.LastName].Add(record);
+                LastNameDictionary[record.LastName].Add(record);
             }
         }
 
         private static void AppendToDateOfBirthDictionary(FileCabinetRecord record)
         {
-            if (!dateOfBirthDictionary.ContainsKey(record.DateOfBirth))
+            if (!DateOfBirthDictionary.ContainsKey(record.DateOfBirth))
             {
-                dateOfBirthDictionary.Add(record.DateOfBirth, new List<FileCabinetRecord> { record });
+                DateOfBirthDictionary.Add(record.DateOfBirth, new List<FileCabinetRecord> { record });
             }
             else
             {
-                dateOfBirthDictionary[record.DateOfBirth].Add(record);
+                DateOfBirthDictionary[record.DateOfBirth].Add(record);
             }
         }
 
         private static void RemoveFromAllDictionaries(FileCabinetRecord record)
         {
-            if (firstNameDictionary.Count != 1)
+            if (FirstNameDictionary.Count != 1)
             {
-              firstNameDictionary[record.FirstName].Remove(record);  
+              FirstNameDictionary[record.FirstName].Remove(record);  
             }
             
-            if (lastNameDictionary.Count != 1)
+            if (LastNameDictionary.Count != 1)
             {
-                lastNameDictionary[record.LastName].Remove(record);  
+                LastNameDictionary[record.LastName].Remove(record);  
             }
             
-            if (dateOfBirthDictionary.Count != 1)
+            if (DateOfBirthDictionary.Count != 1)
             {
-                dateOfBirthDictionary[record.DateOfBirth].Remove(record);  
+                DateOfBirthDictionary[record.DateOfBirth].Remove(record);  
             }
         }
 
         public static IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
         {
-            return firstNameDictionary[firstName].ToArray();
+            return FirstNameDictionary[firstName].ToArray();
         }
         
         public static IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
         {
             var records = new List<FileCabinetRecord>();
-            foreach (var item in list)
+            foreach (var item in List)
             {
                 if (item.LastName == lastName)
                 {
@@ -191,7 +191,7 @@ namespace FileCabinetApp
         public static IEnumerable<FileCabinetRecord> FindByDateOfBirth(string dateOfBirth)
         {
             var records = new List<FileCabinetRecord>();
-            foreach (var item in list)
+            foreach (var item in List)
             {
                 if (item.DateOfBirth == DateTime.ParseExact(dateOfBirth, "yyyy-MMM-dd", CultureInfo.InvariantCulture))
                 {
