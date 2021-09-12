@@ -14,9 +14,9 @@ namespace FileCabinetApp
         private const int ExplanationHelpIndex = 2;
 
         private static bool isRunning = true;
-        private static FileCabinetService ValidationService = new FileCabinetDefaultService();
+        private static FileCabinetService ValidationService = new (new DefaultValidator());
 
-        private static readonly Dictionary<string, Action<string>> commands = new()
+        private static readonly Dictionary<string, Action<string>> Commands = new()
         {
             {"help", PrintHelp},
             {"exit", Exit},
@@ -27,7 +27,7 @@ namespace FileCabinetApp
             {"find", Find}
         };
         
-        private static readonly string[][] helpMessages = {
+        private static readonly string[][] HelpMessages = {
             new[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
             new[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
@@ -61,14 +61,14 @@ namespace FileCabinetApp
                     continue;
                 }
                 
-                if (commands.ContainsKey(command))
+                if (Commands.ContainsKey(command))
                 {
                     const int parametersIndex = 0;
                     var parameters = inputs.Length == 2
                         ? inputs[parametersIndex + 1] 
                         : inputs[parametersIndex];
                     
-                    commands[command](parameters);
+                    Commands[command](parameters);
                 }
                 else
                 {
@@ -87,20 +87,20 @@ namespace FileCabinetApp
 
             ValidationService = args.Length switch
             {
-                0 => new FileCabinetDefaultService(),
+                0 => new FileCabinetService(new DefaultValidator()),
                 
                 1 => args[fullFormParameterIndex].ToUpperInvariant() switch
                 {
-                    defaultValidationRuleFullForm => new FileCabinetDefaultService(),
-                    customValidationRuleFullForm => new FileCabinetCustomService(),
+                    defaultValidationRuleFullForm => new FileCabinetService(new DefaultValidator()),
+                    customValidationRuleFullForm => new FileCabinetService(new CustomValidator()),
                     
                     _ => throw new ArgumentException("No such command parameter")
                 },
                 
                 2 => args[shortFormParameterIndex].ToUpperInvariant() switch
                 {
-                    "DEFAULT" => new FileCabinetDefaultService(),
-                    "CUSTOM" => new FileCabinetCustomService(),
+                    "DEFAULT" => new FileCabinetService(new DefaultValidator()),
+                    "CUSTOM" => new FileCabinetService(new DefaultValidator()),
                     
                     _ => throw new ArgumentException("No such command parameter")
                 },
@@ -117,11 +117,11 @@ namespace FileCabinetApp
 
         private static void PrintHelp(string parameters)
         {
-            var index = Array.FindIndex(helpMessages, 0, helpMessages.Length,
+            var index = Array.FindIndex(HelpMessages, 0, HelpMessages.Length,
                 i => string.Equals(i[CommandHelpIndex], parameters, StringComparison.OrdinalIgnoreCase));
             
             Console.Error.WriteLine(index >= 0
-                ? helpMessages[index][ExplanationHelpIndex]
+                ? HelpMessages[index][ExplanationHelpIndex]
                 : $"There is no explanation for '{parameters}' command.");
         }
         

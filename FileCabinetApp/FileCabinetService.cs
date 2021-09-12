@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace FileCabinetApp
 {
-    public abstract class FileCabinetService
+    public class FileCabinetService
     {
         private readonly IRecordValidator validator;
         private const string inputFormat = "dd/MM/yyyy";
@@ -13,7 +13,7 @@ namespace FileCabinetApp
         private static readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new();
         private static readonly Dictionary<DateTime, List<FileCabinetRecord>> dateOfBirthDictionary = new();
 
-        protected FileCabinetService(IRecordValidator validator)
+        public FileCabinetService(IRecordValidator validator)
         {
             this.validator = validator;
         }
@@ -67,8 +67,6 @@ namespace FileCabinetApp
             AppendToAllDictionaries(list[^1]);
             return list[^1].Id;
         }
-
-        protected abstract IRecordValidator CreateValidator();
 
         /// <summary>
         /// Return a copy of internal service`s list 
