@@ -6,8 +6,7 @@ namespace FileCabinetApp
 {
     public class FileCabinetService : IFileCabinetService
     {
-        private readonly IRecordValidator _validator;
-        private const string InputFormat = "dd/MM/yyyy";
+        private static IRecordValidator _validator;
         private static readonly List<FileCabinetRecord> List = new();
         private static readonly Dictionary<string, List<FileCabinetRecord>> FirstNameDictionary = new();
         private static readonly Dictionary<string, List<FileCabinetRecord>> LastNameDictionary = new();
@@ -15,34 +14,7 @@ namespace FileCabinetApp
 
         public FileCabinetService(IRecordValidator validator)
         {
-            this._validator = validator;
-        }
-
-        /// <summary>
-        /// Create <see cref="Parameter"/> object from data entered from keyboard
-        /// </summary>
-        /// <returns></returns>
-        public static Parameter InputParameters(int id = -1)
-        {
-            Console.Write(EnglishSource.first_name);
-            var firstName = Console.ReadLine();
-
-            Console.Write(EnglishSource.last_name);
-            var lastName = Console.ReadLine();
-            
-            Console.Write(EnglishSource.date_of_birth);
-            var dateOfBirth = Console.ReadLine();
-            
-            Console.Write(EnglishSource.job_experience);
-            var jobExperience = Console.ReadLine();
-            
-            Console.Write(EnglishSource.wage);
-            var wage = Console.ReadLine();
-            
-            Console.Write(EnglishSource.rank);
-            var rank = Console.ReadLine();
-
-            return new Parameter(id == -1 ? Stat + 1 : id, firstName, lastName, dateOfBirth, jobExperience, wage, rank);
+            _validator = validator;
         }
 
         /// <summary>
@@ -51,21 +23,90 @@ namespace FileCabinetApp
         /// <returns>An id of current record</returns>
         public int CreateRecord(Parameter parameters)
         {
-            _validator.ValidateParameters(parameters);
+            if (parameters is null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
             
             List.Add(new FileCabinetRecord
             {
-                Id = parameters.Id,
+                Id = Stat + 1,
                 FirstName = parameters.FirstName,
                 LastName = parameters.LastName,
-                DateOfBirth = DateTime.ParseExact(parameters.DateOfBirth, InputFormat, CultureInfo.InvariantCulture),
-                JobExperience = short.Parse(parameters.JobExperience, CultureInfo.InvariantCulture),
-                Wage = decimal.Parse(parameters.Wage, CultureInfo.InvariantCulture),
-                Rank = char.Parse(parameters.Rank)
+                DateOfBirth = parameters!.DateOfBirth,
+                JobExperience = parameters.JobExperience,
+                Wage = parameters.Wage,
+                Rank = parameters.Rank
             });
-
+            
             AppendToAllDictionaries(List[^1]);
+            
             return List[^1].Id;
+        }
+
+        public Parameter ReadParameters(int id = -1)
+        {
+            const int minimalJobExperience = 0;
+            const int minimalWage = 250;
+            const char minimalRank = 'F';
+            
+            var record = new Parameter
+            {
+                Id = id == -1 ? Stat + 1 : id,
+                JobExperience = minimalJobExperience,
+                Wage = minimalWage,
+                Rank = minimalRank
+            };
+
+            Console.Write(EnglishSource.first_name);
+            record.FirstName = ReadInput(InputConverter.NameConverter, _validator.NameValidator);
+            
+            Console.Write(EnglishSource.last_name);
+            record.LastName = ReadInput(InputConverter.NameConverter, _validator.NameValidator);
+            
+            Console.Write(EnglishSource.date_of_birth);
+            record.DateOfBirth = ReadInput(InputConverter.DateOfBirthConverter, _validator.DateOfBirthValidator);
+
+            if (_validator is CustomValidator)
+            {
+                Console.Write(EnglishSource.job_experience);
+                record.JobExperience = ReadInput(InputConverter.JobExperienceConverter,
+                    _validator.JobExperienceValidator);
+                
+                Console.Write(EnglishSource.wage);
+                record.Wage = ReadInput(InputConverter.WageConverter, _validator.WageValidator);
+                
+                Console.Write(EnglishSource.rank);
+                record.Rank = ReadInput(InputConverter.RankConverter, _validator.RankValidator);
+            }
+
+            return record;
+        }
+
+        private static T ReadInput<T>(Func<string, ConversionResult<T>> converter, Func<T, ValidationResult> validator)
+        {
+            do
+            {
+                var input = Console.ReadLine();
+                var conversionResult = converter(input);
+
+                if (!conversionResult.Parsed)
+                {
+                    Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
+                    continue;
+                }
+
+                var value = conversionResult.Result;
+
+                var validationResult = validator(value);
+                if (validationResult.Parsed)
+                {
+                    return value;
+                }
+                
+                Console.WriteLine(EnglishSource.Validation_failed, validationResult.StringRepresentation);
+            }
+            while (true);
         }
 
         /// <summary>
@@ -85,25 +126,21 @@ namespace FileCabinetApp
         
         public void EditRecord(Parameter parameters)
         {
-            _validator.ValidateParameters(parameters);
+            if (parameters is null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
 
             parameters.Id -= 1;
             
-            if (parameters.Id >= List.Count)
-            {
-                Console.WriteLine(EnglishSource.record_not_found, parameters.Id);
-                return;
-            }
-
+            RemoveFromAllDictionaries(List[parameters.Id]);
+            
             List[parameters.Id].FirstName = parameters.FirstName;
             List[parameters.Id].LastName = parameters.LastName;
-            List[parameters.Id].DateOfBirth =
-                DateTime.ParseExact(parameters.DateOfBirth, InputFormat, CultureInfo.InvariantCulture);
-            List[parameters.Id].JobExperience = short.Parse(parameters.JobExperience, CultureInfo.InvariantCulture);
-            List[parameters.Id].Wage = (decimal)double.Parse(parameters.Wage, CultureInfo.InvariantCulture);
-            List[parameters.Id].Rank = parameters.Rank[0];
-
-            RemoveFromAllDictionaries(List[parameters.Id]);
+            List[parameters.Id].DateOfBirth = parameters.DateOfBirth;
+            List[parameters.Id].JobExperience = parameters.JobExperience;
+            List[parameters.Id].Wage = parameters.Wage;
+            List[parameters.Id].Rank = parameters.Rank;
 
             AppendToAllDictionaries(List[parameters.Id]);
         }
@@ -153,20 +190,11 @@ namespace FileCabinetApp
 
         private static void RemoveFromAllDictionaries(FileCabinetRecord record)
         {
-            if (FirstNameDictionary.Count != 1)
-            {
-              FirstNameDictionary[record.FirstName].Remove(record);  
-            }
-            
-            if (LastNameDictionary.Count != 1)
-            {
-                LastNameDictionary[record.LastName].Remove(record);  
-            }
-            
-            if (DateOfBirthDictionary.Count != 1)
-            {
-                DateOfBirthDictionary[record.DateOfBirth].Remove(record);  
-            }
+            FirstNameDictionary[record.FirstName].Remove(record);
+
+            LastNameDictionary[record.LastName].Remove(record);
+
+            DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
         public static IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)

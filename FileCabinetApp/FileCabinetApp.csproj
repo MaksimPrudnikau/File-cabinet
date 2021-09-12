@@ -8,6 +8,7 @@
     <CodeAnalysisRuleSet>code-analysis.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
+    <StartupObject>FileCabinetApp.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

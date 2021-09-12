@@ -11,16 +11,16 @@
             <param name="name">first or last name</param>
             <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
         </member>
-        <member name="M:FileCabinetApp.CustomValidator.DateOfBirthValidator(System.String)">
+        <member name="M:FileCabinetApp.CustomValidator.DateOfBirthValidator(System.DateTime)">
             <summary>
             Validate date of birth in format "dd/MM/yyyy"
             </summary>
-            <param name="source">entered date of birth</param>
+            <param name="dateOfBirth">entered date of birth</param>
             <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
             <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
             Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
         </member>
-        <member name="M:FileCabinetApp.CustomValidator.JobExperienceValidator(System.String)">
+        <member name="M:FileCabinetApp.CustomValidator.JobExperienceValidator(System.Int16)">
             <summary>
             Get job experience from keyboard
             </summary>
@@ -28,7 +28,7 @@
             Job experience is not an integer or less than zero or greater than short.MaxValue.
             Job experience is less than zero or greater than 100.</exception>
         </member>
-        <member name="M:FileCabinetApp.CustomValidator.WageValidator(System.String)">
+        <member name="M:FileCabinetApp.CustomValidator.WageValidator(System.Decimal)">
             <summary>
             Get wage from keyboard
             </summary>
@@ -36,7 +36,7 @@
             Wage is not an integer or greater than decimal.MaxValue.
             Wage is less than zero</exception>
         </member>
-        <member name="M:FileCabinetApp.CustomValidator.RankValidator(System.String)">
+        <member name="M:FileCabinetApp.CustomValidator.RankValidator(System.Char)">
             <summary>
             Get rank from keyboard
             </summary>
@@ -49,20 +49,135 @@
             <param name="name">first or last name</param>
             <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
         </member>
-        <member name="M:FileCabinetApp.DefaultValidator.DateOfBirthValidator(System.String)">
+        <member name="M:FileCabinetApp.DefaultValidator.DateOfBirthValidator(System.DateTime)">
             <summary>
             Validate date of birth in format "dd/MM/yyyy"
             </summary>
-            <param name="source">entered date of birth</param>
+            <param name="dateOfBirth">entered date of birth</param>
             <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
             <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
             Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.InputParameters(System.Int32)">
+        <member name="T:FileCabinetApp.EnglishSource">
             <summary>
-            Create <see cref="T:FileCabinetApp.Parameter"/> object from data entered from keyboard
+              Класс ресурса со строгой типизацией для поиска локализованных строк и т.д.
             </summary>
-            <returns></returns>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.ResourceManager">
+            <summary>
+              Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Culture">
+            <summary>
+              Перезаписывает свойство CurrentUICulture текущего потока для всех
+              обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.console">
+            <summary>
+              Ищет локализованную строку, похожую на &gt; .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.create">
+            <summary>
+              Ищет локализованную строку, похожую на Record #{0} is created.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Date_birth_is_null_or_whitespace">
+            <summary>
+              Ищет локализованную строку, похожую на Date birth is null or whitespace.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.date_of_birth">
+            <summary>
+              Ищет локализованную строку, похожую на Date of birth: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.developed_by">
+            <summary>
+              Ищет локализованную строку, похожую на File Cabinet Application, developed by {0}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.exit">
+            <summary>
+              Ищет локализованную строку, похожую на Exiting an application....
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.first_name">
+            <summary>
+              Ищет локализованную строку, похожую на First name: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.hint">
+            <summary>
+              Ищет локализованную строку, похожую на Enter your command, or enter &apos;help&apos; to get help..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.id_is_not_an_integer">
+            <summary>
+              Ищет локализованную строку, похожую на Entered id is not an integer.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.job_experience">
+            <summary>
+              Ищет локализованную строку, похожую на Job experience: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.last_name">
+            <summary>
+              Ищет локализованную строку, похожую на Last name: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.no_command">
+            <summary>
+              Ищет локализованную строку, похожую на There is no &apos;{0}&apos; command..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.print_record">
+            <summary>
+              Ищет локализованную строку, похожую на {0}, {1}, {2}, {3:yyyy-MMM-dd}, {4}, {5}, {6}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.rank">
+            <summary>
+              Ищет локализованную строку, похожую на Rank: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.ReadInput_Conversion_failed">
+            <summary>
+              Ищет локализованную строку, похожую на Conversion failed: {0}. Please, correct your input..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.record_not_found">
+            <summary>
+              Ищет локализованную строку, похожую на #{0} record is not found..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.stat">
+            <summary>
+              Ищет локализованную строку, похожую на {0} record(s)..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.update">
+            <summary>
+              Ищет локализованную строку, похожую на Record #{0} is updated.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Validation_failed">
+            <summary>
+              Ищет локализованную строку, похожую на Validation failed: {0}. Please, correct your input..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.validation_rules">
+            <summary>
+              Ищет локализованную строку, похожую на Validation rules = {0}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.wage">
+            <summary>
+              Ищет локализованную строку, похожую на Wage: .
+            </summary>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.CreateRecord(FileCabinetApp.Parameter)">
             <summary>
@@ -74,13 +189,48 @@
             <summary>
             Return a copy of internal service`s list 
             </summary>
-            <returns><see cref="F:FileCabinetApp.FileCabinetService.list"/> converted to char array</returns>
+            <returns><see cref="F:FileCabinetApp.FileCabinetService.List"/> converted to char array</returns>
         </member>
         <member name="P:FileCabinetApp.FileCabinetService.Stat">
             <summary>
             Returns number of records that the service stores
             </summary>
             <value>An ordinal number of the last record</value>
+        </member>
+        <member name="M:FileCabinetApp.InputConverter.NameConverter(System.String)">
+            <summary>
+            Convert source string to its string representation
+            </summary>
+            <param name="source">Source name either first or last</param>
+            <returns>Parsed <see cref="T:System.String"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.InputConverter.DateOfBirthConverter(System.String)">
+            <summary>
+            Converts source date of birth representation into it`s <see cref="T:System.DateTime"/> equivalent 
+            </summary>
+            <param name="dateOfBirth">Source date of birth</param>
+            <returns>Parsed <see cref="T:System.DateTime"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.InputConverter.JobExperienceConverter(System.String)">
+            <summary>
+            Converts source job experience representation into it`s <see cref="T:System.Int16"/> equivalent 
+            </summary>
+            <param name="jobExperience">Source job experience</param>
+            <returns>Parsed <see cref="T:System.Int16"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.InputConverter.WageConverter(System.String)">
+            <summary>
+            Converts source wage representation into it`s <see cref="T:System.Decimal"/> equivalent 
+            </summary>
+            <param name="wage">Source wage</param>
+            <returns>Parsed <see cref="T:System.Decimal"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.InputConverter.RankConverter(System.String)">
+            <summary>
+            Converts source rank representation into it`s <see cref="T:System.Char"/> equivalent
+            </summary>
+            <param name="rank">Source rank</param>
+            <returns>Parsed <see cref="T:System.Char"/> object</returns>
         </member>
         <member name="M:FileCabinetApp.Program.Stat(System.String)">
             <summary>
@@ -129,12 +279,6 @@
             <param name="searchValue">Value to search</param>
             <returns></returns>
             <exception cref="T:System.ArgumentException">Entered attribute is not exist</exception>
-        </member>
-        <member name="M:FileCabinetApp.IRecordValidator.ValidateParameters(FileCabinetApp.Parameter)">
-            <summary>
-            Validate all parameters
-            </summary>
-            <param name="parameters">Entered parameters</param>
         </member>
     </members>
 </doc>

@@ -14,7 +14,7 @@ namespace FileCabinetApp
         private const int ExplanationHelpIndex = 2;
 
         private static bool _isRunning = true;
-        private static IFileCabinetService _validationService = new FileCabinetService(new DefaultValidator());
+        private static IFileCabinetService _validationService;
 
         private static readonly Dictionary<string, Action<string>> Commands = new()
         {
@@ -34,21 +34,21 @@ namespace FileCabinetApp
 
         public static void Main(string[] args)
         {
-            Console.WriteLine(EnglishSource.developed_by, DeveloperName);
-            Console.WriteLine(EnglishSource.hint);
-            
             try
             {
                 args ??= Array.Empty<string>();
-                SetValidationRule(args);
+                _validationService = SetValidationRule(args);
             }
             catch (ArgumentException exception)
             {
                 Console.Error.WriteLine(exception.Message);
                 Exit(string.Empty);
             }
+
+            Console.WriteLine(EnglishSource.developed_by, DeveloperName);
+            Console.WriteLine(EnglishSource.hint);
             
-            do
+            while (_isRunning)
             {
                 Console.Write(EnglishSource.console);
                 var inputs = Console.ReadLine()?.Split(' ', 2);
@@ -75,38 +75,46 @@ namespace FileCabinetApp
                     PrintMissedCommandInfo(command);
                 }
             }
-            while (_isRunning);
         }
 
-        private static void SetValidationRule(string[] args)
+        private static FileCabinetService SetValidationRule(IReadOnlyList<string> args)
         {
             const string defaultValidationRuleFullForm = "--VALIDATION-RULES=DEFAULT";
             const string customValidationRuleFullForm = "--VALIDATION-RULES=CUSTOM";
             const int fullFormParameterIndex = 0;
             const int shortFormParameterIndex = 1;
 
-            _validationService = args.Length switch
+            var validationRules = args.Count switch
             {
-                0 => new FileCabinetService(new DefaultValidator()),
+                0 => "default",
                 
                 1 => args[fullFormParameterIndex].ToUpperInvariant() switch
                 {
-                    defaultValidationRuleFullForm => new FileCabinetService(new DefaultValidator()),
-                    customValidationRuleFullForm => new FileCabinetService(new CustomValidator()),
+                    defaultValidationRuleFullForm => "default",
+                    customValidationRuleFullForm => "custom",
                     
                     _ => throw new ArgumentException("No such command parameter")
                 },
                 
                 2 => args[shortFormParameterIndex].ToUpperInvariant() switch
                 {
-                    "DEFAULT" => new FileCabinetService(new DefaultValidator()),
-                    "CUSTOM" => new FileCabinetService(new DefaultValidator()),
+                    "DEFAULT" => "default",
+                    "CUSTOM" => "custom",
                     
                     _ => throw new ArgumentException("No such command parameter")
                 },
                 
                 _ => throw new ArgumentException("Too much command parameters")
             };
+
+            Console.WriteLine(EnglishSource.validation_rules, validationRules);
+
+            if (validationRules == "custom")
+            {
+                return new FileCabinetService(new CustomValidator());
+            }
+
+            return new FileCabinetService(new DefaultValidator());
         }
 
         private static void PrintMissedCommandInfo(string command)
@@ -138,11 +146,11 @@ namespace FileCabinetApp
         /// </summary>
         private static void Create(string parameters)
         {
-            var inputParameters = FileCabinetService.InputParameters();
-            
             try
             {
-                Console.WriteLine(EnglishSource.create, _validationService.CreateRecord(inputParameters));
+                var parameter = _validationService.ReadParameters();
+                
+                Console.WriteLine(EnglishSource.create, _validationService.CreateRecord(parameter));
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {
@@ -150,7 +158,7 @@ namespace FileCabinetApp
                 Create(parameters);
             }
         }
-        
+
         /// <summary>
         /// Return list of records added to service
         /// </summary>
@@ -200,13 +208,14 @@ namespace FileCabinetApp
             }
 
             try
-            {
-                var inputParameters = FileCabinetService.InputParameters(id);
-
+            { 
+                var inputParameters = _validationService.ReadParameters(id);
+                
                 _validationService.EditRecord(inputParameters);
+                
                 Console.WriteLine(EnglishSource.update, id);
             }
-            catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
+            catch (ArgumentException exception)
             {
                 Console.Error.WriteLine(exception.Message);
             }

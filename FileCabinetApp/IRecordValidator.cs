@@ -1,9 +1,17 @@
+using System;
+
 namespace FileCabinetApp
 {
     public interface IRecordValidator
     {
-        public void NameValidator(string name);
+        public ValidationResult NameValidator(string name);
 
-        public void DateOfBirthValidator(string source);
+        public ValidationResult DateOfBirthValidator(DateTime dateOfBirth);
+
+        public ValidationResult JobExperienceValidator(short jobExperience);
+        
+        public ValidationResult WageValidator(decimal wage);
+        
+        public ValidationResult RankValidator(char rank);
     }
 }

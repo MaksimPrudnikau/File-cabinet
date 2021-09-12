@@ -1,13 +1,6 @@
 namespace FileCabinetApp
 {
-    public struct ValidationResult
+    public class ValidationResult : OperationResult
     {
-        public bool Parsed { get; }
-        public string StringRepresentation { get; }
-
-        public ValidationResult(bool parsed, string stringRepresentation)
-        {
-            Parsed = parsed
-        }
     }
 }
