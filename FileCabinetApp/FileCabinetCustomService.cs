@@ -2,11 +2,8 @@ namespace FileCabinetApp
 {
     public class FileCabinetCustomService : FileCabinetService
     {
-        protected static DefaultValidator CreateValidator(IRecordValidator validator)
-        {
-            return new DefaultValidator();
-        }
-
+        public FileCabinetCustomService() : base(new CustomValidator()) { }
+        
         protected override IRecordValidator CreateValidator()
         {
             return new CustomValidator();

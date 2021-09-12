@@ -1,17 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace FileCabinetApp
 {
     public abstract class FileCabinetService
     {
+        private readonly IRecordValidator validator;
         private const string inputFormat = "dd/MM/yyyy";
         private static readonly List<FileCabinetRecord> list = new();
         private static readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new();
         private static readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new();
         private static readonly Dictionary<DateTime, List<FileCabinetRecord>> dateOfBirthDictionary = new();
+
+        protected FileCabinetService(IRecordValidator validator)
+        {
+            this.validator = validator;
+        }
 
         /// <summary>
         /// Create <see cref="Parameter"/> object from data entered from keyboard
@@ -46,7 +51,7 @@ namespace FileCabinetApp
         /// <returns>An id of current record</returns>
         public int CreateRecord(Parameter parameters)
         {
-            CreateValidator().ValidateParameters(parameters);
+            validator.ValidateParameters(parameters);
             
             list.Add(new FileCabinetRecord
             {
@@ -82,7 +87,7 @@ namespace FileCabinetApp
         
         public void EditRecord(Parameter parameters)
         {
-            CreateValidator().ValidateParameters(parameters);
+            validator.ValidateParameters(parameters);
 
             parameters.Id -= 1;
             
