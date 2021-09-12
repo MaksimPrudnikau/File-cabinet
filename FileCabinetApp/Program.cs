@@ -139,6 +139,7 @@ namespace FileCabinetApp
         private static void Create(string parameters)
         {
             var inputParameters = FileCabinetService.InputParameters();
+            
             try
             {
                 Console.WriteLine(EnglishSource.create, ValidationService.CreateRecord(inputParameters));

@@ -46,7 +46,7 @@ namespace FileCabinetApp
         /// <returns>An id of current record</returns>
         public int CreateRecord(Parameter parameters)
         {
-            ValidateParameters(parameters);
+            CreateValidator().ValidateParameters(parameters);
             
             list.Add(new FileCabinetRecord
             {
@@ -63,11 +63,7 @@ namespace FileCabinetApp
             return list[^1].Id;
         }
 
-        /// <summary>
-        /// Validate all parameters
-        /// </summary>
-        /// <param name="parameters">Entered parameters</param>
-        protected abstract void ValidateParameters(Parameter parameters);
+        protected abstract IRecordValidator CreateValidator();
 
         /// <summary>
         /// Return a copy of internal service`s list 
@@ -86,7 +82,7 @@ namespace FileCabinetApp
         
         public void EditRecord(Parameter parameters)
         {
-            ValidateParameters(parameters);
+            CreateValidator().ValidateParameters(parameters);
 
             parameters.Id -= 1;
             
