@@ -19,32 +19,25 @@ namespace FileCabinetApp
         /// <returns></returns>
         public static Parameter InputParameters(int id = -1)
         {
-            var parameter = new Parameter
-            {
-                Id = id == -1 
-                    ? Stat + 1
-                    : id
-            };
-
             Console.Write(EnglishSource.first_name);
-            parameter.FirstName = Console.ReadLine();
+            var firstName = Console.ReadLine();
 
             Console.Write(EnglishSource.last_name);
-            parameter.LastName = Console.ReadLine();
+            var lastName = Console.ReadLine();
             
             Console.Write(EnglishSource.date_of_birth);
-            parameter.DateOfBirth = Console.ReadLine();
+            var dateOfBirth = Console.ReadLine();
             
             Console.Write(EnglishSource.job_experience);
-            parameter.JobExperience = Console.ReadLine();
+            var jobExperience = Console.ReadLine();
             
             Console.Write(EnglishSource.wage);
-            parameter.Wage = Console.ReadLine();
+            var wage = Console.ReadLine();
             
             Console.Write(EnglishSource.rank);
-            parameter.Rank = Console.ReadLine();
+            var rank = Console.ReadLine();
 
-            return parameter;
+            return new Parameter(id == -1 ? Stat + 1 : id, firstName, lastName, dateOfBirth, jobExperience, wage, rank);
         }
 
         /// <summary>
