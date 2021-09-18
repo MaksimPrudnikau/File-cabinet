@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Resources;
 
 [assembly:CLSCompliant(true)]
@@ -9,10 +8,6 @@ namespace FileCabinetApp
 {
     public static class Program
     {
-        private const string DeveloperName = "Maksim Prudnikau";
-        private const int CommandHelpIndex = 0;
-        private const int ExplanationHelpIndex = 2;
-
         private static bool _isRunning = true;
         private static IFileCabinetService _validationService;
 
@@ -25,11 +20,6 @@ namespace FileCabinetApp
             {"list", List},
             {"edit", Edit},
             {"find", Find}
-        };
-        
-        private static readonly string[][] HelpMessages = {
-            new[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
-            new[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
 
         public static void Main(string[] args)
@@ -45,7 +35,7 @@ namespace FileCabinetApp
                 Exit(string.Empty);
             }
 
-            Console.WriteLine(EnglishSource.developed_by, DeveloperName);
+            Console.WriteLine(EnglishSource.developed_by, FileCabinetConsts.DeveloperName); 
             Console.WriteLine(EnglishSource.hint);
             
             while (_isRunning)
@@ -79,24 +69,19 @@ namespace FileCabinetApp
 
         private static FileCabinetService SetValidationRule(IReadOnlyList<string> args)
         {
-            const string defaultValidationRuleFullForm = "--VALIDATION-RULES=DEFAULT";
-            const string customValidationRuleFullForm = "--VALIDATION-RULES=CUSTOM";
-            const int fullFormParameterIndex = 0;
-            const int shortFormParameterIndex = 1;
-
             var validationRules = args.Count switch
             {
                 0 => "default",
                 
-                1 => args[fullFormParameterIndex].ToUpperInvariant() switch
+                1 => args[FileCabinetConsts.ParameterIndexFullForm].ToUpperInvariant() switch
                 {
-                    defaultValidationRuleFullForm => "default",
-                    customValidationRuleFullForm => "custom",
+                    FileCabinetConsts.DefaultValidationRuleFullForm => "default",
+                    FileCabinetConsts.CustomValidationRuleFullForm => "custom",
                     
                     _ => throw new ArgumentException("No such command parameter")
                 },
                 
-                2 => args[shortFormParameterIndex].ToUpperInvariant() switch
+                2 => args[FileCabinetConsts.ParameterIndexShortForm].ToUpperInvariant() switch
                 {
                     "DEFAULT" => "default",
                     "CUSTOM" => "custom",
@@ -125,11 +110,11 @@ namespace FileCabinetApp
 
         private static void PrintHelp(string parameters)
         {
-            var index = Array.FindIndex(HelpMessages, 0, HelpMessages.Length,
-                i => string.Equals(i[CommandHelpIndex], parameters, StringComparison.OrdinalIgnoreCase));
+            var index = Array.FindIndex(FileCabinetConsts.HelpMessages, 0, FileCabinetConsts.HelpMessages.Length,
+                i => string.Equals(i[FileCabinetConsts.CommandHelpIndex ], parameters, StringComparison.OrdinalIgnoreCase));
             
             Console.Error.WriteLine(index >= 0
-                ? HelpMessages[index][ExplanationHelpIndex]
+                ? FileCabinetConsts.HelpMessages[index][FileCabinetConsts.ExplanationHelpIndex]
                 : $"There is no explanation for '{parameters}' command.");
         }
         
@@ -164,35 +149,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void List(string parameters)
         {
-            PrintFileCabinetRecordArray(FileCabinetService.GetRecords());
-        }
-
-        /// <summary>
-        /// Prints <see cref="FileCabinetRecord"/> array
-        /// </summary>
-        /// <param name="source">Source array</param>
-        private static void PrintFileCabinetRecordArray(IEnumerable<FileCabinetRecord> source)
-        {
-            foreach (var item in source)
-            {
-                PrintRecord(item);
-            }
-        }
-
-        /// <summary>
-        /// Prints record into console
-        /// </summary>
-        /// <param name="record">Record to print</param>
-        private static void PrintRecord(FileCabinetRecord record)
-        {
-            Console.WriteLine(EnglishSource.print_record,
-                record.Id,
-                record.FirstName,
-                record.LastName,
-                record.DateOfBirth.ToString("yyyy-MMM-dd", CultureInfo.InvariantCulture),
-                record.JobExperience,
-                record.Wage,
-                record.Rank);
+            _validationService.PrintRecords();
         }
 
         /// <summary>
@@ -237,7 +194,7 @@ namespace FileCabinetApp
             {
                 foreach (var record in FindByAttribute(attribute, searchValue))
                 {
-                    PrintRecord(record);
+                    record.Print();
                 }
             }
             catch (ArgumentException exception)
@@ -257,9 +214,9 @@ namespace FileCabinetApp
         {
             var records = attribute.ToUpperInvariant() switch
             {
-                "FIRSTNAME" => FileCabinetService.FindByFirstName(searchValue),
-                "LASTNAME" => FileCabinetService.FindByLastName(searchValue),
-                "DATEOFBIRTH" => FileCabinetService.FindByDateOfBirth(searchValue),
+                "FIRSTNAME" => FileCabinetService.Find(searchValue, FindCriteria.Firstname),
+                "LASTNAME" => FileCabinetService.Find(searchValue),
+                "DATEOFBIRTH" => FileCabinetService.Find(searchValue, FindCriteria.DateOfBirth),
                 _ => throw new ArgumentException("Entered attribute is not exist")
             };
 

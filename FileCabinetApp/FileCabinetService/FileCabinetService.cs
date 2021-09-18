@@ -67,18 +67,20 @@ namespace FileCabinetApp
             Console.Write(EnglishSource.date_of_birth);
             record.DateOfBirth = ReadInput(InputConverter.DateOfBirthConverter, _validator.DateOfBirthValidator);
 
-            if (_validator is CustomValidator)
+            if (_validator is not CustomValidator)
             {
-                Console.Write(EnglishSource.job_experience);
-                record.JobExperience = ReadInput(InputConverter.JobExperienceConverter,
-                    _validator.JobExperienceValidator);
-                
-                Console.Write(EnglishSource.wage);
-                record.Wage = ReadInput(InputConverter.WageConverter, _validator.WageValidator);
-                
-                Console.Write(EnglishSource.rank);
-                record.Rank = ReadInput(InputConverter.RankConverter, _validator.RankValidator);
+                return record;
             }
+            
+            Console.Write(EnglishSource.job_experience);
+            record.JobExperience = ReadInput(InputConverter.JobExperienceConverter,
+                _validator.JobExperienceValidator);
+                
+            Console.Write(EnglishSource.wage);
+            record.Wage = ReadInput(InputConverter.WageConverter, _validator.WageValidator);
+                
+            Console.Write(EnglishSource.rank);
+            record.Rank = ReadInput(InputConverter.RankConverter, _validator.RankValidator);
 
             return record;
         }
@@ -107,6 +109,17 @@ namespace FileCabinetApp
                 Console.WriteLine(EnglishSource.Validation_failed, validationResult.StringRepresentation);
             }
             while (true);
+        }
+        
+        /// <summary>
+        /// Prints <see cref="FileCabinetRecord"/> array
+        /// </summary>
+        public void PrintRecords()
+        {
+            foreach (var item in List)
+            {
+                item.Print();
+            }
         }
 
         /// <summary>
@@ -197,31 +210,20 @@ namespace FileCabinetApp
             DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
-        public static IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
-        {
-            return FirstNameDictionary[firstName].ToArray();
-        }
-        
-        public static IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
+        public static IReadOnlyCollection<FileCabinetRecord> Find(string searchValue, FindCriteria criteria = FindCriteria.Lastname)
         {
             var records = new List<FileCabinetRecord>();
             foreach (var item in List)
             {
-                if (item.LastName == lastName)
+                var record = criteria switch
                 {
-                    records.Add(item);
-                }
-            }
+                    FindCriteria.Firstname => item.FirstName,
+                    FindCriteria.Lastname => item.LastName,
+                    FindCriteria.DateOfBirth => item.DateOfBirth.ToString(CultureInfo.InvariantCulture),
+                    _ => throw new ArgumentException("Wrong find attribute"),
+                };
 
-            return records.ToArray();
-        }
-        
-        public static IEnumerable<FileCabinetRecord> FindByDateOfBirth(string dateOfBirth)
-        {
-            var records = new List<FileCabinetRecord>();
-            foreach (var item in List)
-            {
-                if (item.DateOfBirth == DateTime.ParseExact(dateOfBirth, "yyyy-MMM-dd", CultureInfo.InvariantCulture))
+                if (record == searchValue)
                 {
                     records.Add(item);
                 }
