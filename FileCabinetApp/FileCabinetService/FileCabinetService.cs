@@ -67,18 +67,20 @@ namespace FileCabinetApp
             Console.Write(EnglishSource.date_of_birth);
             record.DateOfBirth = ReadInput(InputConverter.DateOfBirthConverter, _validator.DateOfBirthValidator);
 
-            if (_validator is CustomValidator)
+            if (_validator is not CustomValidator)
             {
-                Console.Write(EnglishSource.job_experience);
-                record.JobExperience = ReadInput(InputConverter.JobExperienceConverter,
-                    _validator.JobExperienceValidator);
-                
-                Console.Write(EnglishSource.wage);
-                record.Wage = ReadInput(InputConverter.WageConverter, _validator.WageValidator);
-                
-                Console.Write(EnglishSource.rank);
-                record.Rank = ReadInput(InputConverter.RankConverter, _validator.RankValidator);
+                return record;
             }
+            
+            Console.Write(EnglishSource.job_experience);
+            record.JobExperience = ReadInput(InputConverter.JobExperienceConverter,
+                _validator.JobExperienceValidator);
+                
+            Console.Write(EnglishSource.wage);
+            record.Wage = ReadInput(InputConverter.WageConverter, _validator.WageValidator);
+                
+            Console.Write(EnglishSource.rank);
+            record.Rank = ReadInput(InputConverter.RankConverter, _validator.RankValidator);
 
             return record;
         }
@@ -107,6 +109,17 @@ namespace FileCabinetApp
                 Console.WriteLine(EnglishSource.Validation_failed, validationResult.StringRepresentation);
             }
             while (true);
+        }
+        
+        /// <summary>
+        /// Prints <see cref="FileCabinetRecord"/> array
+        /// </summary>
+        public void PrintRecords()
+        {
+            foreach (var item in List)
+            {
+                item.Print();
+            }
         }
 
         /// <summary>
@@ -197,37 +210,30 @@ namespace FileCabinetApp
             DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
-        public static IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
+        public static IReadOnlyCollection<FileCabinetRecord> Find(string searchValue, FindCriteria criteria = FindCriteria.Lastname)
         {
-            return FirstNameDictionary[firstName].ToArray();
-        }
-        
-        public static IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
-        {
-            var records = new List<FileCabinetRecord>();
-            foreach (var item in List)
+            const string inputDateFormat = "yyyy-MMM-dd";
+            var dateTime = new DateTime();
+            if (criteria is FindCriteria.DateOfBirth)
             {
-                if (item.LastName == lastName)
-                {
-                    records.Add(item);
-                }
+                dateTime = DateTime.ParseExact(searchValue, inputDateFormat, CultureInfo.InvariantCulture,
+                    DateTimeStyles.None);
             }
-
-            return records.ToArray();
-        }
-        
-        public static IEnumerable<FileCabinetRecord> FindByDateOfBirth(string dateOfBirth)
-        {
-            var records = new List<FileCabinetRecord>();
-            foreach (var item in List)
+            
+            try
             {
-                if (item.DateOfBirth == DateTime.ParseExact(dateOfBirth, "yyyy-MMM-dd", CultureInfo.InvariantCulture))
+                return criteria switch
                 {
-                    records.Add(item);
-                }
+                    FindCriteria.Firstname => FirstNameDictionary[searchValue],
+                    FindCriteria.Lastname => LastNameDictionary[searchValue],
+                    FindCriteria.DateOfBirth => DateOfBirthDictionary[dateTime],
+                    _ => throw new ArgumentException("Wrong find criteria")
+                };
             }
-
-            return records.ToArray();
+            catch (KeyNotFoundException)
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
         }
     }
 }

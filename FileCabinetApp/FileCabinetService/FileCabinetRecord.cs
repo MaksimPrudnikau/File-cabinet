@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace FileCabinetApp
 {
@@ -17,5 +18,17 @@ namespace FileCabinetApp
         public decimal Wage { get; set; }
         
         public char Rank { get; set; }
+
+        public void Print()
+        {
+            Console.WriteLine(EnglishSource.print_record,
+                Id,
+                FirstName,
+                LastName,
+                DateOfBirth.ToString("yyyy-MMM-dd", CultureInfo.InvariantCulture),
+                JobExperience,
+                Wage,
+                Rank);
+        }
     }
 }
