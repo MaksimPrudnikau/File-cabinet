@@ -212,24 +212,28 @@ namespace FileCabinetApp
 
         public static IReadOnlyCollection<FileCabinetRecord> Find(string searchValue, FindCriteria criteria = FindCriteria.Lastname)
         {
-            var records = new List<FileCabinetRecord>();
-            foreach (var item in List)
+            const string inputDateFormat = "yyyy-MMM-dd";
+            var dateTime = new DateTime();
+            if (criteria is FindCriteria.DateOfBirth)
             {
-                var record = criteria switch
-                {
-                    FindCriteria.Firstname => item.FirstName,
-                    FindCriteria.Lastname => item.LastName,
-                    FindCriteria.DateOfBirth => item.DateOfBirth.ToString(CultureInfo.InvariantCulture),
-                    _ => throw new ArgumentException("Wrong find attribute"),
-                };
-
-                if (record == searchValue)
-                {
-                    records.Add(item);
-                }
+                dateTime = DateTime.ParseExact(searchValue, inputDateFormat, CultureInfo.InvariantCulture,
+                    DateTimeStyles.None);
             }
-
-            return records.ToArray();
+            
+            try
+            {
+                return criteria switch
+                {
+                    FindCriteria.Firstname => FirstNameDictionary[searchValue],
+                    FindCriteria.Lastname => LastNameDictionary[searchValue],
+                    FindCriteria.DateOfBirth => DateOfBirthDictionary[dateTime],
+                    _ => throw new ArgumentException("Wrong find criteria")
+                };
+            }
+            catch (KeyNotFoundException)
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
         }
     }
 }

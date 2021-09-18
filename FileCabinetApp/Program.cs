@@ -197,7 +197,7 @@ namespace FileCabinetApp
                     record.Print();
                 }
             }
-            catch (ArgumentException exception)
+            catch (Exception exception) when (exception is ArgumentException or FormatException)
             {
                 Console.Error.WriteLine(exception.Message);
             }
@@ -212,15 +212,13 @@ namespace FileCabinetApp
         /// <exception cref="ArgumentException">Entered attribute is not exist</exception>
         private static IEnumerable<FileCabinetRecord> FindByAttribute(string attribute, string searchValue)
         {
-            var records = attribute.ToUpperInvariant() switch
+            return attribute.ToUpperInvariant() switch
             {
                 "FIRSTNAME" => FileCabinetService.Find(searchValue, FindCriteria.Firstname),
                 "LASTNAME" => FileCabinetService.Find(searchValue),
                 "DATEOFBIRTH" => FileCabinetService.Find(searchValue, FindCriteria.DateOfBirth),
                 _ => throw new ArgumentException("Entered attribute is not exist")
             };
-
-            return records;
         }
         
         private static void Exit(string parameters)
