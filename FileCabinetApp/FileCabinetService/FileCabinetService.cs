@@ -235,5 +235,10 @@ namespace FileCabinetApp
                 return Array.Empty<FileCabinetRecord>();
             }
         }
+
+        public static FileCabinetServiceSnapshot MakeSnapshot()
+        {
+            return new FileCabinetServiceSnapshot(GetRecords());
+        }
     }
 }

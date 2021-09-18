@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Resources;
 
 [assembly:CLSCompliant(true)]
@@ -19,7 +20,8 @@ namespace FileCabinetApp
             {"create", Create},
             {"list", List},
             {"edit", Edit},
-            {"find", Find}
+            {"find", Find},
+            {"export", Export}
         };
 
         public static void Main(string[] args)
@@ -225,6 +227,52 @@ namespace FileCabinetApp
         {
             Console.WriteLine(EnglishSource.exit);
             _isRunning = false;
+        }
+
+        private static void Export(string parameters)
+        {
+            var parametersSplited = parameters.Split(' ');
+            
+            if (parametersSplited.Length != 2)
+            {
+                Console.Error.WriteLine("Wrong data format");
+                return;
+            }
+            
+            var exportFormat = parametersSplited[0];
+            var directory =  parametersSplited[1];
+            if (File.Exists(directory))
+            {
+                Console.Error.WriteLine(EnglishSource.Export_File_is_exist, directory);
+                
+                if (Console.ReadKey().KeyChar == 'n')
+                {
+                    return;
+                }
+
+                Console.WriteLine();
+            }
+
+            using (var file = new StreamWriter(directory))
+            {
+                if (!File.Exists(directory))
+                {
+                    Console.Error.WriteLine($"Export failed: can`t open file {directory}");
+                }
+
+                var snapshot = FileCabinetService.MakeSnapshot();
+
+                switch (exportFormat)
+                {
+                    case "csv":
+                        snapshot.SaveToCsv(file);
+                        break;
+                    case "xml":
+                        break;
+                }
+            }
+
+            Console.WriteLine(EnglishSource.All_records_are_exported_to_file, directory);
         }
     }
 }

@@ -170,5 +170,17 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("validation_rules", resourceCulture);
             }
         }
+        
+        internal static string Export_File_is_exist {
+            get {
+                return ResourceManager.GetString("Export_File_is_exist", resourceCulture);
+            }
+        }
+        
+        internal static string All_records_are_exported_to_file {
+            get {
+                return ResourceManager.GetString("All_records_are_exported_to_file", resourceCulture);
+            }
+        }
     }
 }
