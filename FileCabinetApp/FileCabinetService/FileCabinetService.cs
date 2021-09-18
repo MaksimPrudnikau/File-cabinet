@@ -210,16 +210,16 @@ namespace FileCabinetApp
             DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
-        public static IReadOnlyCollection<FileCabinetRecord> Find(string searchValue, FindAttribute attribute = FindAttribute.Lastname)
+        public static IReadOnlyCollection<FileCabinetRecord> Find(string searchValue, FindCriteria criteria = FindCriteria.Lastname)
         {
             var records = new List<FileCabinetRecord>();
             foreach (var item in List)
             {
-                var record = attribute switch
+                var record = criteria switch
                 {
-                    FindAttribute.Firstname => item.FirstName,
-                    FindAttribute.Lastname => item.LastName,
-                    FindAttribute.DateOfBirth => item.DateOfBirth.ToString(CultureInfo.InvariantCulture),
+                    FindCriteria.Firstname => item.FirstName,
+                    FindCriteria.Lastname => item.LastName,
+                    FindCriteria.DateOfBirth => item.DateOfBirth.ToString(CultureInfo.InvariantCulture),
                     _ => throw new ArgumentException("Wrong find attribute"),
                 };
 

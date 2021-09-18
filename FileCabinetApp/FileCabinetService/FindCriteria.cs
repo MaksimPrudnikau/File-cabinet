@@ -1,6 +1,6 @@
 namespace FileCabinetApp
 {
-    public enum FindAttribute
+    public enum FindCriteria
     {
         Firstname,
         Lastname,

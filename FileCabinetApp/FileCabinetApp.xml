@@ -131,6 +131,11 @@
             </summary>
             <returns>An id of current record</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetService.PrintRecords">
+            <summary>
+            Prints <see cref="T:FileCabinetApp.FileCabinetRecord"/> array
+            </summary>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetService.GetRecords">
             <summary>
             Return a copy of internal service`s list 
@@ -192,18 +197,6 @@
             <summary>
             Return list of records added to service
             </summary>
-        </member>
-        <member name="M:FileCabinetApp.Program.PrintFileCabinetRecordArray(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
-            <summary>
-            Prints <see cref="T:FileCabinetApp.FileCabinetRecord"/> array
-            </summary>
-            <param name="source">Source array</param>
-        </member>
-        <member name="M:FileCabinetApp.Program.PrintRecord(FileCabinetApp.FileCabinetRecord)">
-            <summary>
-            Prints record into console
-            </summary>
-            <param name="record">Record to print</param>
         </member>
         <member name="M:FileCabinetApp.Program.Edit(System.String)">
             <summary>

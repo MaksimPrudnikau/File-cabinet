@@ -214,9 +214,9 @@ namespace FileCabinetApp
         {
             var records = attribute.ToUpperInvariant() switch
             {
-                "FIRSTNAME" => FileCabinetService.Find(searchValue, FindAttribute.Firstname),
-                "LASTNAME" => FileCabinetService.Find(searchValue, FindAttribute.Lastname),
-                "DATEOFBIRTH" => FileCabinetService.Find(searchValue, FindAttribute.DateOfBirth),
+                "FIRSTNAME" => FileCabinetService.Find(searchValue, FindCriteria.Firstname),
+                "LASTNAME" => FileCabinetService.Find(searchValue),
+                "DATEOFBIRTH" => FileCabinetService.Find(searchValue, FindCriteria.DateOfBirth),
                 _ => throw new ArgumentException("Entered attribute is not exist")
             };
 
