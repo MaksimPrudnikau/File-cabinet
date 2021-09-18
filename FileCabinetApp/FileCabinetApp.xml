@@ -4,60 +4,6 @@
         <name>FileCabinetApp</name>
     </assembly>
     <members>
-        <member name="M:FileCabinetApp.CustomValidator.NameValidator(System.String)">
-            <summary>
-            Validate name either first or last
-            </summary>
-            <param name="name">first or last name</param>
-            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
-        </member>
-        <member name="M:FileCabinetApp.CustomValidator.DateOfBirthValidator(System.DateTime)">
-            <summary>
-            Validate date of birth in format "dd/MM/yyyy"
-            </summary>
-            <param name="dateOfBirth">entered date of birth</param>
-            <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
-            <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
-            Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
-        </member>
-        <member name="M:FileCabinetApp.CustomValidator.JobExperienceValidator(System.Int16)">
-            <summary>
-            Get job experience from keyboard
-            </summary>
-            <exception cref="T:System.ArgumentException">Job experience is null.
-            Job experience is not an integer or less than zero or greater than short.MaxValue.
-            Job experience is less than zero or greater than 100.</exception>
-        </member>
-        <member name="M:FileCabinetApp.CustomValidator.WageValidator(System.Decimal)">
-            <summary>
-            Get wage from keyboard
-            </summary>
-            <exception cref="T:System.ArgumentException">Wage is null.
-            Wage is not an integer or greater than decimal.MaxValue.
-            Wage is less than zero</exception>
-        </member>
-        <member name="M:FileCabinetApp.CustomValidator.RankValidator(System.Char)">
-            <summary>
-            Get rank from keyboard
-            </summary>
-            <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
-        </member>
-        <member name="M:FileCabinetApp.DefaultValidator.NameValidator(System.String)">
-            <summary>
-            Validate name either first or last
-            </summary>
-            <param name="name">first or last name</param>
-            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
-        </member>
-        <member name="M:FileCabinetApp.DefaultValidator.DateOfBirthValidator(System.DateTime)">
-            <summary>
-            Validate date of birth in format "dd/MM/yyyy"
-            </summary>
-            <param name="dateOfBirth">entered date of birth</param>
-            <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
-            <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
-            Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
-        </member>
         <member name="T:FileCabinetApp.EnglishSource">
             <summary>
               Класс ресурса со строгой типизацией для поиска локализованных строк и т.д.
@@ -279,6 +225,60 @@
             <param name="searchValue">Value to search</param>
             <returns></returns>
             <exception cref="T:System.ArgumentException">Entered attribute is not exist</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.NameValidator(System.String)">
+            <summary>
+            Validate name either first or last
+            </summary>
+            <param name="name">first or last name</param>
+            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.DateOfBirthValidator(System.DateTime)">
+            <summary>
+            Validate date of birth in format "dd/MM/yyyy"
+            </summary>
+            <param name="dateOfBirth">entered date of birth</param>
+            <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
+            <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
+            Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.JobExperienceValidator(System.Int16)">
+            <summary>
+            Get job experience from keyboard
+            </summary>
+            <exception cref="T:System.ArgumentException">Job experience is null.
+            Job experience is not an integer or less than zero or greater than short.MaxValue.
+            Job experience is less than zero or greater than 100.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.WageValidator(System.Decimal)">
+            <summary>
+            Get wage from keyboard
+            </summary>
+            <exception cref="T:System.ArgumentException">Wage is null.
+            Wage is not an integer or greater than decimal.MaxValue.
+            Wage is less than zero</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.RankValidator(System.Char)">
+            <summary>
+            Get rank from keyboard
+            </summary>
+            <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
+        </member>
+        <member name="M:FileCabinetApp.DefaultValidator.NameValidator(System.String)">
+            <summary>
+            Validate name either first or last
+            </summary>
+            <param name="name">first or last name</param>
+            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
+        </member>
+        <member name="M:FileCabinetApp.DefaultValidator.DateOfBirthValidator(System.DateTime)">
+            <summary>
+            Validate date of birth in format "dd/MM/yyyy"
+            </summary>
+            <param name="dateOfBirth">entered date of birth</param>
+            <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
+            <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
+            Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
         </member>
     </members>
 </doc>

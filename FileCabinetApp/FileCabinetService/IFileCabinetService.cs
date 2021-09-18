@@ -7,5 +7,7 @@ namespace FileCabinetApp
         public int CreateRecord(Parameter parameters);
 
         public void EditRecord(Parameter parameters);
+
+        public void PrintRecords();
     }
 }

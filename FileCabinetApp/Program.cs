@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Resources;
 
 [assembly:CLSCompliant(true)]
@@ -150,35 +149,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void List(string parameters)
         {
-            PrintFileCabinetRecordArray(FileCabinetService.GetRecords());
-        }
-
-        /// <summary>
-        /// Prints <see cref="FileCabinetRecord"/> array
-        /// </summary>
-        /// <param name="source">Source array</param>
-        private static void PrintFileCabinetRecordArray(IEnumerable<FileCabinetRecord> source)
-        {
-            foreach (var item in source)
-            {
-                PrintRecord(item);
-            }
-        }
-
-        /// <summary>
-        /// Prints record into console
-        /// </summary>
-        /// <param name="record">Record to print</param>
-        private static void PrintRecord(FileCabinetRecord record)
-        {
-            Console.WriteLine(EnglishSource.print_record,
-                record.Id,
-                record.FirstName,
-                record.LastName,
-                record.DateOfBirth.ToString("yyyy-MMM-dd", CultureInfo.InvariantCulture),
-                record.JobExperience,
-                record.Wage,
-                record.Rank);
+            _validationService.PrintRecords();
         }
 
         /// <summary>
@@ -223,7 +194,7 @@ namespace FileCabinetApp
             {
                 foreach (var record in FindByAttribute(attribute, searchValue))
                 {
-                    PrintRecord(record);
+                    record.Print();
                 }
             }
             catch (ArgumentException exception)
@@ -243,9 +214,9 @@ namespace FileCabinetApp
         {
             var records = attribute.ToUpperInvariant() switch
             {
-                "FIRSTNAME" => FileCabinetService.FindByFirstName(searchValue),
-                "LASTNAME" => FileCabinetService.FindByLastName(searchValue),
-                "DATEOFBIRTH" => FileCabinetService.FindByDateOfBirth(searchValue),
+                "FIRSTNAME" => FileCabinetService.Find(searchValue, FindAttribute.Firstname),
+                "LASTNAME" => FileCabinetService.Find(searchValue, FindAttribute.Lastname),
+                "DATEOFBIRTH" => FileCabinetService.Find(searchValue, FindAttribute.DateOfBirth),
                 _ => throw new ArgumentException("Entered attribute is not exist")
             };
 
