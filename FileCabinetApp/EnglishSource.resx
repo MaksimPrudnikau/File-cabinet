@@ -180,4 +180,10 @@
   <data name="validation_rules" xml:space="preserve">
     <value>Validation rules = {0}</value>
   </data>
+  <data name="Export_File_is_exist" xml:space="preserve">
+    <value>File is exist - rewrite {0}? [Y/n]</value>
+  </data>
+  <data name="All_records_are_exported_to_file" xml:space="preserve">
+    <value>All records are exported to file {0}</value>
+  </data>
 </root>
