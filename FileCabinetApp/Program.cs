@@ -22,12 +22,6 @@ namespace FileCabinetApp
             {"edit", Edit},
             {"find", Find},
             {"export", Export}
-=======
-            {"find", Find}
->>>>>>> 653a67014bd1709c41321c0d6bc9582a7717ba2f
-=======
-            {"find", Find}
->>>>>>> 653a67014bd1709c41321c0d6bc9582a7717ba2f
         };
 
         public static void Main(string[] args)
