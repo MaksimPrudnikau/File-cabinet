@@ -245,12 +245,17 @@ namespace FileCabinetApp
             {
                 Console.Error.WriteLine(EnglishSource.Export_File_is_exist, directory);
                 
-                if (Console.ReadKey().KeyChar == 'n')
+                switch (Console.ReadLine())
                 {
-                    return;
+                    case "Y":
+                        break;
+                    case "n":
+                        Console.WriteLine();
+                        return;
+                    default:
+                        Console.Error.WriteLine("Answer must be either Y or n");
+                        return;
                 }
-
-                Console.WriteLine();
             }
 
             using (var file = new StreamWriter(directory))
@@ -259,7 +264,7 @@ namespace FileCabinetApp
                 {
                     Console.Error.WriteLine($"Export failed: can`t open file {directory}");
                 }
-
+                
                 var snapshot = FileCabinetService.MakeSnapshot();
 
                 switch (exportFormat)
@@ -268,10 +273,13 @@ namespace FileCabinetApp
                         snapshot.SaveToCsv(file);
                         break;
                     case "xml":
+                        snapshot.SaveToXml(file);
                         break;
                 }
+                
+                file.Close();
             }
-
+            
             Console.WriteLine(EnglishSource.All_records_are_exported_to_file, directory);
         }
     }
