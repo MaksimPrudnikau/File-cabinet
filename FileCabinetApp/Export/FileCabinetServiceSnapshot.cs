@@ -16,6 +16,10 @@ namespace FileCabinetApp
             _records = new List<FileCabinetRecord>(source);
         }
 
+        /// <summary>
+        /// Create csv file to source <see cref="StreamWriter"/> file
+        /// </summary>
+        /// <param name="file">Source file</param>
         public void SaveToCsv(StreamWriter file)
         {
             var csvWriter = new FIleCabinetCsvWriter(file);
@@ -24,7 +28,11 @@ namespace FileCabinetApp
                 csvWriter.Write(item);
             }
         }
-        
+
+        /// <summary>
+        /// Create xml file to source <see cref="StreamWriter"/> file
+        /// </summary>
+        /// <param name="file">Source file</param>
         public void SaveToXml(StreamWriter file)
         {
             if (file is null)

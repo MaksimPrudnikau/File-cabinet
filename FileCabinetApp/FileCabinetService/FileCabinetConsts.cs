@@ -19,7 +19,10 @@ namespace FileCabinetApp
         public const string CustomValidationRuleFullForm = "--VALIDATION-RULES=CUSTOM";
         public const int ParameterIndexFullForm = 0;
         public const int ParameterIndexShortForm = 1;
-        
-        
+
+        // Constants for 'ReadParameters'
+        public const int minimalJobExperience = 0;
+        public const int minimalWage = 250;
+        public const char minimalRank = 'F';
     }
 }
