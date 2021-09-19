@@ -216,6 +216,7 @@ namespace FileCabinetApp
             var dateTime = new DateTime();
             if (criteria is FindCriteria.DateOfBirth)
             {
+<<<<<<< HEAD:FileCabinetApp/FileCabinetService/FileCabinetService.cs
                 dateTime = DateTime.ParseExact(searchValue, inputDateFormat, CultureInfo.InvariantCulture,
                     DateTimeStyles.None);
             }
@@ -223,6 +224,17 @@ namespace FileCabinetApp
             try
             {
                 return criteria switch
+=======
+                var record = criteria switch
+                {
+                    FindCriteria.Firstname => item.FirstName,
+                    FindCriteria.Lastname => item.LastName,
+                    FindCriteria.DateOfBirth => item.DateOfBirth.ToString(CultureInfo.InvariantCulture),
+                    _ => throw new ArgumentException("Wrong find attribute"),
+                };
+
+                if (record == searchValue)
+>>>>>>> 653a67014bd1709c41321c0d6bc9582a7717ba2f:FileCabinetApp/FileCabinetService.cs
                 {
                     FindCriteria.Firstname => FirstNameDictionary[searchValue],
                     FindCriteria.Lastname => LastNameDictionary[searchValue],
