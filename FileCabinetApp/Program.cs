@@ -69,6 +69,12 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Create <see cref="IFileCabinetService"/> object according to entered command parameter
+        /// </summary>
+        /// <param name="args">Source command parameter</param>
+        /// <exception cref="ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
+        /// <returns></returns>
         private static FileCabinetService SetValidationRule(IReadOnlyList<string> args)
         {
             var validationRules = args.Count switch
@@ -229,6 +235,10 @@ namespace FileCabinetApp
             _isRunning = false;
         }
 
+        /// <summary>
+        /// Serialize all records in file with entered format
+        /// </summary>
+        /// <param name="parameters">Output file format</param>
         private static void Export(string parameters)
         {
             var parametersSplited = parameters.Split(' ');

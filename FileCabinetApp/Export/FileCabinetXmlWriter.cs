@@ -13,6 +13,10 @@ namespace FileCabinetApp
             _writer = file;
         }
 
+        /// <summary>
+        /// Serialize record to xml format
+        /// </summary>
+        /// <param name="record">Source record</param>
         public void Write(FileCabinetRecord record)
         {
             if (record is null)

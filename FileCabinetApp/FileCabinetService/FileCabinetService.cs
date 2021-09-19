@@ -44,18 +44,19 @@ namespace FileCabinetApp
             return List[^1].Id;
         }
 
+        /// <summary>
+        /// Read parameters from keyboard and parse it to <see cref="Parameter"/> object
+        /// </summary>
+        /// <param name="id">Source id of read parameter</param>
+        /// <returns><see cref="Parameter"/> object equivalent for read parameters</returns>
         public Parameter ReadParameters(int id = -1)
-        {
-            const int minimalJobExperience = 0;
-            const int minimalWage = 250;
-            const char minimalRank = 'F';
-            
+        {   
             var record = new Parameter
             {
                 Id = id == -1 ? Stat + 1 : id,
-                JobExperience = minimalJobExperience,
-                Wage = minimalWage,
-                Rank = minimalRank
+                JobExperience = FileCabinetConsts.minimalJobExperience,
+                Wage = FileCabinetConsts.minimalWage,
+                Rank = FileCabinetConsts.minimalRank
             };
 
             Console.Write(EnglishSource.first_name);
@@ -85,6 +86,13 @@ namespace FileCabinetApp
             return record;
         }
 
+        /// <summary>
+        /// Read data from keyboard, convert it by source converter and validate with source validator
+        /// </summary>
+        /// <typeparam name="T">Type of read data</typeparam>
+        /// <param name="converter">Source converter</param>
+        /// <param name="validator">Source validator</param>
+        /// <returns>Correct input object</returns>
         private static T ReadInput<T>(Func<string, ConversionResult<T>> converter, Func<T, ValidationResult> validator)
         {
             do
@@ -137,6 +145,10 @@ namespace FileCabinetApp
         /// <value>An ordinal number of the last record</value>
         public static int Stat => List.Count;
         
+        /// <summary>
+        /// Edit record with the source one
+        /// </summary>
+        /// <param name="parameters">Parameter contains new data</param>
         public void EditRecord(Parameter parameters)
         {
             if (parameters is null)
@@ -158,6 +170,10 @@ namespace FileCabinetApp
             AppendToAllDictionaries(List[parameters.Id]);
         }
 
+        /// <summary>
+        /// Appen record to all dictoinaries
+        /// </summary>
+        /// <param name="record">Source record</param>
         private static void AppendToAllDictionaries(FileCabinetRecord record)
         {
             AppendToFirstNameDictionary(record);
@@ -165,6 +181,10 @@ namespace FileCabinetApp
             AppendToDateOfBirthDictionary(record);
         }
 
+        /// <summary>
+        /// Append record to FirstNameDictionary
+        /// </summary>
+        /// <param name="record">Source record</param>
         private static void AppendToFirstNameDictionary(FileCabinetRecord record)
         {
             if (!FirstNameDictionary.ContainsKey(record.FirstName))
@@ -177,6 +197,10 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Append record to LastNameDictionary
+        /// </summary>
+        /// <param name="record">Source record</param>
         private static void AppendToLastNameDictionary(FileCabinetRecord record)
         {
             if (!LastNameDictionary.ContainsKey(record.LastName))
@@ -189,6 +213,10 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Append record to DateOfBirthDictionary
+        /// </summary>
+        /// <param name="record">Source record</param>
         private static void AppendToDateOfBirthDictionary(FileCabinetRecord record)
         {
             if (!DateOfBirthDictionary.ContainsKey(record.DateOfBirth))
@@ -201,6 +229,10 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Remove record from all dictionaries
+        /// </summary>
+        /// <param name="record">Source record to remove</param>
         private static void RemoveFromAllDictionaries(FileCabinetRecord record)
         {
             FirstNameDictionary[record.FirstName].Remove(record);
@@ -210,6 +242,12 @@ namespace FileCabinetApp
             DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
+        /// <summary>
+        /// Create an array with all occurences of searchValue with appropriate criteria
+        /// </summary>
+        /// <param name="searchValue">value to search</param>
+        /// <param name="criteria">Criteria to search (first name, </param>
+        /// <returns></returns>
         public static IReadOnlyCollection<FileCabinetRecord> Find(string searchValue, FindCriteria criteria = FindCriteria.Lastname)
         {
             const string inputDateFormat = "yyyy-MMM-dd";
@@ -236,6 +274,10 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Create <see cref="FileCabinetServiceSnapshot"/> object with current record array
+        /// </summary>
+        /// <returns><see cref="FileCabinetServiceSnapshot"/> object</returns>
         public static FileCabinetServiceSnapshot MakeSnapshot()
         {
             return new FileCabinetServiceSnapshot(GetRecords());
