@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.IO;
-=======
->>>>>>> 653a67014bd1709c41321c0d6bc9582a7717ba2f
 using System.Resources;
 
 [assembly:CLSCompliant(true)]
@@ -23,9 +20,11 @@ namespace FileCabinetApp
             {"create", Create},
             {"list", List},
             {"edit", Edit},
-<<<<<<< HEAD
             {"find", Find},
             {"export", Export}
+=======
+            {"find", Find}
+>>>>>>> 653a67014bd1709c41321c0d6bc9582a7717ba2f
 =======
             {"find", Find}
 >>>>>>> 653a67014bd1709c41321c0d6bc9582a7717ba2f
