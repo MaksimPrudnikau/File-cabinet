@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace FileCabinetApp
 {
-    public class FileCabinetService : IFileCabinetService
+    public class FileCabinetMemoryService : IFileCabinetService
     {
         private static IRecordValidator _validator;
         private static readonly List<FileCabinetRecord> List = new();
@@ -12,7 +12,7 @@ namespace FileCabinetApp
         private static readonly Dictionary<string, List<FileCabinetRecord>> LastNameDictionary = new();
         private static readonly Dictionary<DateTime, List<FileCabinetRecord>> DateOfBirthDictionary = new();
 
-        public FileCabinetService(IRecordValidator validator)
+        public FileCabinetMemoryService(IRecordValidator validator)
         {
             _validator = validator;
         }
@@ -42,6 +42,16 @@ namespace FileCabinetApp
             AppendToAllDictionaries(List[^1]);
             
             return List[^1].Id;
+        }
+
+        public IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        {
+            return List.ToArray();
+        }
+
+        public int GetStat()
+        {
+            return Stat;
         }
 
         /// <summary>
@@ -128,15 +138,6 @@ namespace FileCabinetApp
             {
                 item.Print();
             }
-        }
-
-        /// <summary>
-        /// Return a copy of internal service`s list 
-        /// </summary>
-        /// <returns><see cref="List"/> converted to char array</returns>
-        public static IReadOnlyCollection<FileCabinetRecord> GetRecords()
-        {
-            return List.ToArray();
         }
 
         /// <summary>
@@ -280,7 +281,7 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetServiceSnapshot"/> object</returns>
         public static FileCabinetServiceSnapshot MakeSnapshot()
         {
-            return new FileCabinetServiceSnapshot(GetRecords());
+            return new FileCabinetServiceSnapshot(List);
         }
     }
 }

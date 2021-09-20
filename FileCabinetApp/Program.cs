@@ -75,7 +75,7 @@ namespace FileCabinetApp
         /// <param name="args">Source command parameter</param>
         /// <exception cref="ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
         /// <returns></returns>
-        private static FileCabinetService SetValidationRule(IReadOnlyList<string> args)
+        private static FileCabinetMemoryService SetValidationRule(IReadOnlyList<string> args)
         {
             var validationRules = args.Count switch
             {
@@ -104,10 +104,10 @@ namespace FileCabinetApp
 
             if (validationRules == "custom")
             {
-                return new FileCabinetService(new CustomValidator());
+                return new FileCabinetMemoryService(new CustomValidator());
             }
 
-            return new FileCabinetService(new DefaultValidator());
+            return new FileCabinetMemoryService(new DefaultValidator());
         }
 
         private static void PrintMissedCommandInfo(string command)
@@ -131,7 +131,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void Stat(string parameters)
         {
-            Console.WriteLine(EnglishSource.stat, FileCabinetService.Stat);
+            Console.WriteLine(EnglishSource.stat, FileCabinetMemoryService.Stat);
         }
 
         /// <summary>
@@ -222,9 +222,9 @@ namespace FileCabinetApp
         {
             return attribute.ToUpperInvariant() switch
             {
-                "FIRSTNAME" => FileCabinetService.Find(searchValue, FindCriteria.Firstname),
-                "LASTNAME" => FileCabinetService.Find(searchValue),
-                "DATEOFBIRTH" => FileCabinetService.Find(searchValue, FindCriteria.DateOfBirth),
+                "FIRSTNAME" => FileCabinetMemoryService.Find(searchValue, FindCriteria.Firstname),
+                "LASTNAME" => FileCabinetMemoryService.Find(searchValue),
+                "DATEOFBIRTH" => FileCabinetMemoryService.Find(searchValue, FindCriteria.DateOfBirth),
                 _ => throw new ArgumentException("Entered attribute is not exist")
             };
         }
@@ -275,7 +275,7 @@ namespace FileCabinetApp
                     Console.Error.WriteLine($"Export failed: can`t open file {directory}");
                 }
                 
-                var snapshot = FileCabinetService.MakeSnapshot();
+                var snapshot = FileCabinetMemoryService.MakeSnapshot();
 
                 switch (exportFormat)
                 {

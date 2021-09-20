@@ -34,20 +34,20 @@
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.CreateRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.Parameter)">
             <summary>
             The method create new record from input data and return its id
             </summary>
             <returns>An id of current record</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.ReadParameters(System.Int32)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadParameters(System.Int32)">
             <summary>
             Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.Parameter"/> object
             </summary>
             <param name="id">Source id of read parameter</param>
             <returns><see cref="T:FileCabinetApp.Parameter"/> object equivalent for read parameters</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
             <summary>
             Read data from keyboard, convert it by source converter and validate with source validator
             </summary>
@@ -56,68 +56,62 @@
             <param name="validator">Source validator</param>
             <returns>Correct input object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.PrintRecords">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.PrintRecords">
             <summary>
             Prints <see cref="T:FileCabinetApp.FileCabinetRecord"/> array
             </summary>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.GetRecords">
-            <summary>
-            Return a copy of internal service`s list 
-            </summary>
-            <returns><see cref="F:FileCabinetApp.FileCabinetService.List"/> converted to char array</returns>
-        </member>
-        <member name="P:FileCabinetApp.FileCabinetService.Stat">
+        <member name="P:FileCabinetApp.FileCabinetMemoryService.Stat">
             <summary>
             Returns number of records that the service stores
             </summary>
             <value>An ordinal number of the last record</value>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.EditRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.EditRecord(FileCabinetApp.Parameter)">
             <summary>
             Edit record with the source one
             </summary>
             <param name="parameters">Parameter contains new data</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.AppendToAllDictionaries(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToAllDictionaries(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            Appen record to all dictoinaries
+            Append record to all dictionaries
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.AppendToFirstNameDictionary(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToFirstNameDictionary(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Append record to FirstNameDictionary
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.AppendToLastNameDictionary(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToLastNameDictionary(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Append record to LastNameDictionary
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.AppendToDateOfBirthDictionary(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToDateOfBirthDictionary(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Append record to DateOfBirthDictionary
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.RemoveFromAllDictionaries(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.RemoveFromAllDictionaries(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Remove record from all dictionaries
             </summary>
             <param name="record">Source record to remove</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.Find(System.String,FileCabinetApp.FindCriteria)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.Find(System.String,FileCabinetApp.FindCriteria)">
             <summary>
-            Create an array with all occurences of searchValue with appropriate criteria
+            Create an array with all occurrences of searchValue with appropriate criteria
             </summary>
             <param name="searchValue">value to search</param>
             <param name="criteria">Criteria to search (first name, </param>
             <returns></returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MakeSnapshot">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.MakeSnapshot">
             <summary>
             Create <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object with current record array
             </summary>

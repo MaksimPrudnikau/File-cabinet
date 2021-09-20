@@ -11,9 +11,20 @@ namespace FileCabinetApp
         /// <exception cref="ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
         public ValidationResult NameValidator(string name)
         {
-            return !string.IsNullOrWhiteSpace(name) && name.Length is >= 2 and <= 60
-                ? new ValidationResult {Parsed = true, StringRepresentation = name}
-                : new ValidationResult {Parsed = false, StringRepresentation = name};
+            if (string.IsNullOrWhiteSpace(name) || name.Length is < 2 or > 60)
+            {
+                return new ValidationResult {Parsed = false, StringRepresentation = name};
+            }
+
+            foreach (var item in name)
+            {
+                if (!char.IsLetter(item))
+                {
+                    return new ValidationResult {Parsed = false, StringRepresentation = name};
+                }
+            }
+
+            return new ValidationResult {Parsed = true, StringRepresentation = name};
         }
 
         /// <summary>
