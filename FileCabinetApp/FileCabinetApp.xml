@@ -4,135 +4,57 @@
         <name>FileCabinetApp</name>
     </assembly>
     <members>
-<<<<<<< HEAD
-=======
-        <member name="T:FileCabinetApp.EnglishSource">
+        <member name="M:FileCabinetApp.FIleCabinetCsvWriter.#ctor(System.IO.TextWriter)">
             <summary>
-              Класс ресурса со строгой типизацией для поиска локализованных строк и т.д.
+            Create <see cref="T:FileCabinetApp.FIleCabinetCsvWriter"/> object by source <see cref="T:System.IO.TextWriter"/> stream
             </summary>
+            <param name="file">Source stream</param>
         </member>
-        <member name="P:FileCabinetApp.EnglishSource.ResourceManager">
+        <member name="M:FileCabinetApp.FIleCabinetCsvWriter.Write(FileCabinetApp.FileCabinetRecord)">
             <summary>
-              Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
+            Serialize source record to current <see cref="T:System.IO.TextWriter"/>
             </summary>
+            <param name="record"></param>
         </member>
-        <member name="P:FileCabinetApp.EnglishSource.Culture">
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToCsv(System.IO.StreamWriter)">
             <summary>
-              Перезаписывает свойство CurrentUICulture текущего потока для всех
-              обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
+            Create csv file to source <see cref="T:System.IO.StreamWriter"/> file
             </summary>
+            <param name="file">Source file</param>
         </member>
-        <member name="P:FileCabinetApp.EnglishSource.console">
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToXml(System.IO.StreamWriter)">
             <summary>
-              Ищет локализованную строку, похожую на &gt; .
+            Create xml file to source <see cref="T:System.IO.StreamWriter"/> file
             </summary>
+            <param name="file">Source file</param>
         </member>
-        <member name="P:FileCabinetApp.EnglishSource.create">
+        <member name="M:FileCabinetApp.FileCabinetXmlWriter.Write(FileCabinetApp.FileCabinetRecord)">
             <summary>
-              Ищет локализованную строку, похожую на Record #{0} is created.
+            Serialize record to xml format
             </summary>
+            <param name="record">Source record</param>
         </member>
-        <member name="P:FileCabinetApp.EnglishSource.Date_birth_is_null_or_whitespace">
-            <summary>
-              Ищет локализованную строку, похожую на Date birth is null or whitespace.
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.date_of_birth">
-            <summary>
-              Ищет локализованную строку, похожую на Date of birth: .
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.developed_by">
-            <summary>
-              Ищет локализованную строку, похожую на File Cabinet Application, developed by {0}.
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.exit">
-            <summary>
-              Ищет локализованную строку, похожую на Exiting an application....
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.first_name">
-            <summary>
-              Ищет локализованную строку, похожую на First name: .
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.hint">
-            <summary>
-              Ищет локализованную строку, похожую на Enter your command, or enter &apos;help&apos; to get help..
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.id_is_not_an_integer">
-            <summary>
-              Ищет локализованную строку, похожую на Entered id is not an integer.
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.job_experience">
-            <summary>
-              Ищет локализованную строку, похожую на Job experience: .
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.last_name">
-            <summary>
-              Ищет локализованную строку, похожую на Last name: .
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.no_command">
-            <summary>
-              Ищет локализованную строку, похожую на There is no &apos;{0}&apos; command..
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.print_record">
-            <summary>
-              Ищет локализованную строку, похожую на {0}, {1}, {2}, {3:yyyy-MMM-dd}, {4}, {5}, {6}.
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.rank">
-            <summary>
-              Ищет локализованную строку, похожую на Rank: .
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.ReadInput_Conversion_failed">
-            <summary>
-              Ищет локализованную строку, похожую на Conversion failed: {0}. Please, correct your input..
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.record_not_found">
-            <summary>
-              Ищет локализованную строку, похожую на #{0} record is not found..
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.stat">
-            <summary>
-              Ищет локализованную строку, похожую на {0} record(s)..
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.update">
-            <summary>
-              Ищет локализованную строку, похожую на Record #{0} is updated.
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.Validation_failed">
-            <summary>
-              Ищет локализованную строку, похожую на Validation failed: {0}. Please, correct your input..
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.validation_rules">
-            <summary>
-              Ищет локализованную строку, похожую на Validation rules = {0}.
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.EnglishSource.wage">
-            <summary>
-              Ищет локализованную строку, похожую на Wage: .
-            </summary>
-        </member>
->>>>>>> 653a67014bd1709c41321c0d6bc9582a7717ba2f
         <member name="M:FileCabinetApp.FileCabinetService.CreateRecord(FileCabinetApp.Parameter)">
             <summary>
             The method create new record from input data and return its id
             </summary>
             <returns>An id of current record</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.ReadParameters(System.Int32)">
+            <summary>
+            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.Parameter"/> object
+            </summary>
+            <param name="id">Source id of read parameter</param>
+            <returns><see cref="T:FileCabinetApp.Parameter"/> object equivalent for read parameters</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
+            <summary>
+            Read data from keyboard, convert it by source converter and validate with source validator
+            </summary>
+            <typeparam name="T">Type of read data</typeparam>
+            <param name="converter">Source converter</param>
+            <param name="validator">Source validator</param>
+            <returns>Correct input object</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.PrintRecords">
             <summary>
@@ -150,6 +72,56 @@
             Returns number of records that the service stores
             </summary>
             <value>An ordinal number of the last record</value>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.EditRecord(FileCabinetApp.Parameter)">
+            <summary>
+            Edit record with the source one
+            </summary>
+            <param name="parameters">Parameter contains new data</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.AppendToAllDictionaries(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Appen record to all dictoinaries
+            </summary>
+            <param name="record">Source record</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.AppendToFirstNameDictionary(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Append record to FirstNameDictionary
+            </summary>
+            <param name="record">Source record</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.AppendToLastNameDictionary(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Append record to LastNameDictionary
+            </summary>
+            <param name="record">Source record</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.AppendToDateOfBirthDictionary(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Append record to DateOfBirthDictionary
+            </summary>
+            <param name="record">Source record</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.RemoveFromAllDictionaries(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Remove record from all dictionaries
+            </summary>
+            <param name="record">Source record to remove</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.Find(System.String,FileCabinetApp.FindCriteria)">
+            <summary>
+            Create an array with all occurences of searchValue with appropriate criteria
+            </summary>
+            <param name="searchValue">value to search</param>
+            <param name="criteria">Criteria to search (first name, </param>
+            <returns></returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.MakeSnapshot">
+            <summary>
+            Create <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object with current record array
+            </summary>
+            <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object</returns>
         </member>
         <member name="M:FileCabinetApp.InputConverter.NameConverter(System.String)">
             <summary>
@@ -186,6 +158,14 @@
             <param name="rank">Source rank</param>
             <returns>Parsed <see cref="T:System.Char"/> object</returns>
         </member>
+        <member name="M:FileCabinetApp.Program.SetValidationRule(System.Collections.Generic.IReadOnlyList{System.String})">
+            <summary>
+            Create <see cref="T:FileCabinetApp.IFileCabinetService"/> object according to entered command parameter
+            </summary>
+            <param name="args">Source command parameter</param>
+            <exception cref="T:System.ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
+            <returns></returns>
+        </member>
         <member name="M:FileCabinetApp.Program.Stat(System.String)">
             <summary>
             Prints the amount of records
@@ -221,6 +201,12 @@
             <param name="searchValue">Value to search</param>
             <returns></returns>
             <exception cref="T:System.ArgumentException">Entered attribute is not exist</exception>
+        </member>
+        <member name="M:FileCabinetApp.Program.Export(System.String)">
+            <summary>
+            Serialize all records in file with entered format
+            </summary>
+            <param name="parameters">Output file format</param>
         </member>
         <member name="M:FileCabinetApp.CustomValidator.NameValidator(System.String)">
             <summary>
