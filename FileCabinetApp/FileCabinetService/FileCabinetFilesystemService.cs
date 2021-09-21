@@ -4,6 +4,13 @@ namespace FileCabinetApp
 {
     public class FileCabinetFilesystemService : IFileCabinetService
     {
+        private static IRecordValidator _validator;
+        
+        public FileCabinetFilesystemService(IRecordValidator validator)
+        {
+            _validator = validator;
+        }
+
         public int CreateRecord(Parameter parameters)
         {
             throw new System.NotImplementedException();
