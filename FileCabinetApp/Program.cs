@@ -10,7 +10,7 @@ namespace FileCabinetApp
     public static class Program
     {
         private static bool _isRunning = true;
-        private static IFileCabinetService _validationService;
+        private static IFileCabinetService _service;
 
         private static readonly Dictionary<string, Action<string>> Commands = new()
         {
@@ -29,7 +29,7 @@ namespace FileCabinetApp
             try
             {
                 args ??= Array.Empty<string>();
-                _validationService = SetValidationRule(args);
+                _service = SetValidationRule(args);
             }
             catch (ArgumentException exception)
             {
@@ -75,39 +75,43 @@ namespace FileCabinetApp
         /// <param name="args">Source command parameter</param>
         /// <exception cref="ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
         /// <returns></returns>
-        private static FileCabinetMemoryService SetValidationRule(IReadOnlyList<string> args)
+        private static IFileCabinetService SetValidationRule(IReadOnlyList<string> args)
         {
-            var validationRules = args.Count switch
-            {
-                0 => "default",
-                
-                1 => args[FileCabinetConsts.ParameterIndexFullForm].ToUpperInvariant() switch
-                {
-                    FileCabinetConsts.DefaultValidationRuleFullForm => "default",
-                    FileCabinetConsts.CustomValidationRuleFullForm => "custom",
-                    
-                    _ => throw new ArgumentException("No such command parameter")
-                },
-                
-                2 => args[FileCabinetConsts.ParameterIndexShortForm].ToUpperInvariant() switch
-                {
-                    "DEFAULT" => "default",
-                    "CUSTOM" => "custom",
-                    
-                    _ => throw new ArgumentException("No such command parameter")
-                },
-                
-                _ => throw new ArgumentException("Too much command parameters")
-            };
+            var commandLine = string.Concat(args);
+            var isCustom = false;
+            var isFileSystem = false;
 
-            Console.WriteLine(EnglishSource.validation_rules, validationRules);
-
-            if (validationRules == "custom")
+            if (HasCommand(commandLine, FileCabinetConsts.CustomValidationRuleFullForm)
+            || HasCommand(commandLine, FileCabinetConsts.CustomValidationRuleShortForm))
             {
-                return new FileCabinetMemoryService(new CustomValidator());
+                isCustom = true;
+            }
+   
+            if (HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileFullForm)
+            || HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileShortForm))
+            {
+                isFileSystem = true;
             }
 
-            return new FileCabinetMemoryService(new DefaultValidator());
+            if (isFileSystem)
+            {
+                return isCustom switch
+                {
+                    true => new FileCabinetFilesystemService(new CustomValidator()),
+                    _ => new FileCabinetFilesystemService(new DefaultValidator())
+                };
+            }
+            
+            return isCustom switch
+            {
+                true => new FileCabinetMemoryService(new CustomValidator()),
+                _ => new FileCabinetMemoryService(new DefaultValidator())
+            };
+        }
+
+        private static bool HasCommand(string commandLine, string command)
+        {
+            return commandLine.Contains(command, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static void PrintMissedCommandInfo(string command)
@@ -131,7 +135,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void Stat(string parameters)
         {
-            Console.WriteLine(EnglishSource.stat, FileCabinetMemoryService.Stat);
+            Console.WriteLine(EnglishSource.stat, _service.GetStat());
         }
 
         /// <summary>
@@ -141,9 +145,9 @@ namespace FileCabinetApp
         {
             try
             {
-                var parameter = _validationService.ReadParameters();
+                var parameter = _service.ReadParameters();
                 
-                Console.WriteLine(EnglishSource.create, _validationService.CreateRecord(parameter));
+                Console.WriteLine(EnglishSource.create, _service.CreateRecord(parameter));
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {
@@ -157,7 +161,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void List(string parameters)
         {
-            _validationService.PrintRecords();
+            _service.PrintRecords();
         }
 
         /// <summary>
@@ -174,9 +178,9 @@ namespace FileCabinetApp
 
             try
             { 
-                var inputParameters = _validationService.ReadParameters(id);
+                var inputParameters = _service.ReadParameters(id);
                 
-                _validationService.EditRecord(inputParameters);
+                _service.EditRecord(inputParameters);
                 
                 Console.WriteLine(EnglishSource.update, id);
             }

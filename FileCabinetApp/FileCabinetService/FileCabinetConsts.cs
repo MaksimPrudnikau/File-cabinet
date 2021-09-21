@@ -15,14 +15,16 @@ namespace FileCabinetApp
         };
         
         // Constants for 'SetValidationRule'
-        public const string DefaultValidationRuleFullForm = "--VALIDATION-RULES=DEFAULT";
-        public const string CustomValidationRuleFullForm = "--VALIDATION-RULES=CUSTOM";
+        public const string CustomValidationRuleFullForm = "--validation-rules=custom";
+        public const string CustomValidationRuleShortForm = "-vcustom";
+        public const string ServiceStorageFileFullForm = "--storage=file";
+        public const string ServiceStorageFileShortForm = "-sfile";
         public const int ParameterIndexFullForm = 0;
         public const int ParameterIndexShortForm = 1;
 
         // Constants for 'ReadParameters'
-        public const int minimalJobExperience = 0;
-        public const int minimalWage = 250;
-        public const char minimalRank = 'F';
+        public const int MinimalJobExperience = 0;
+        public const int MinimalWage = 250;
+        public const char MinimalRank = 'F';
     }
 }
