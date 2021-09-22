@@ -34,6 +34,22 @@
             </summary>
             <param name="record">Source record</param>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.ReadParameters(System.Int32)">
+            <summary>
+            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.Parameter"/> object
+            </summary>
+            <param name="id">Source id of read parameter</param>
+            <returns><see cref="T:FileCabinetApp.Parameter"/> object equivalent for read parameters</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
+            <summary>
+            Read data from keyboard, convert it by source converter and validate with source validator
+            </summary>
+            <typeparam name="T">Type of read data</typeparam>
+            <param name="converter">Source converter</param>
+            <param name="validator">Source validator</param>
+            <returns>Correct input object</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.Parameter)">
             <summary>
             The method create new record from input data and return its id

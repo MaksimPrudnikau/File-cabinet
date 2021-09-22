@@ -19,12 +19,12 @@ namespace FileCabinetApp
         public const string CustomValidationRuleShortForm = "-vcustom";
         public const string ServiceStorageFileFullForm = "--storage=file";
         public const string ServiceStorageFileShortForm = "-sfile";
-        public const int ParameterIndexFullForm = 0;
-        public const int ParameterIndexShortForm = 1;
 
         // Constants for 'ReadParameters'
         public const int MinimalJobExperience = 0;
         public const int MinimalWage = 250;
         public const char MinimalRank = 'F';
+
+        public const string FileSystemFileName = "cabinet-records.db";
     }
 }
