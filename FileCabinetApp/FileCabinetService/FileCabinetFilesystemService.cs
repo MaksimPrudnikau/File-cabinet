@@ -61,7 +61,18 @@ namespace FileCabinetApp
 
         public void EditRecord(Parameter parameters)
         {
-            throw new System.NotImplementedException();
+            if (parameters is null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
+            if (parameters.Id * FilesystemRecord.Size > _outputFile.Length)
+            {
+                throw new ArgumentException($"Record with id = {parameters.Id} is not found");
+            }
+
+            _outputFile.Seek( (parameters.Id - 1) * FilesystemRecord.Size + 1, SeekOrigin.Begin);
+            CreateRecord(parameters);
         }
 
         /// <summary>
