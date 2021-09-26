@@ -34,25 +34,25 @@ namespace FileCabinetApp
 
             var fileSystemRecord = new FilesystemRecord(parameters);
 
-            _outputFile.Write(fileSystemRecord.Status, 0, fileSystemRecord.Status.Length);
+            _outputFile.Write(fileSystemRecord.GetStatus(), 0, fileSystemRecord.GetStatus().Length);
 
-            _outputFile.Write(fileSystemRecord.Id, 0, fileSystemRecord.Id.Length);
+            _outputFile.Write(fileSystemRecord.GetId(), 0, fileSystemRecord.GetId().Length);
 
-            _outputFile.Write(fileSystemRecord.FirstName, 0, fileSystemRecord.FirstName.Length);
+            _outputFile.Write(fileSystemRecord.GetFirstName(), 0, fileSystemRecord.GetFirstName().Length);
 
-            _outputFile.Write(fileSystemRecord.LastName, 0, fileSystemRecord.LastName.Length);
+            _outputFile.Write(fileSystemRecord.GetLastName(), 0, fileSystemRecord.GetLastName().Length);
 
-            _outputFile.Write(fileSystemRecord.Year, 0, fileSystemRecord.Year.Length);
+            _outputFile.Write(fileSystemRecord.GetYear(), 0, fileSystemRecord.GetYear().Length);
 
-            _outputFile.Write(fileSystemRecord.Month, 0, fileSystemRecord.Month.Length);
+            _outputFile.Write(fileSystemRecord.GetMonth(), 0, fileSystemRecord.GetMonth().Length);
 
-            _outputFile.Write(fileSystemRecord.Day, 0, fileSystemRecord.Day.Length);
+            _outputFile.Write(fileSystemRecord.GetDay(), 0, fileSystemRecord.GetDay().Length);
 
-            _outputFile.Write(fileSystemRecord.JobExperience, 0, fileSystemRecord.JobExperience.Length);
+            _outputFile.Write(fileSystemRecord.GetJobExperience(), 0, fileSystemRecord.GetJobExperience().Length);
 
-            _outputFile.Write(fileSystemRecord.Wage, 0, fileSystemRecord.Wage.Length);
+            _outputFile.Write(fileSystemRecord.GetWage(), 0, fileSystemRecord.GetWage().Length);
 
-            _outputFile.Write(fileSystemRecord.Rank, 0, fileSystemRecord.Rank.Length);
+            _outputFile.Write(fileSystemRecord.GetRank(), 0, fileSystemRecord.GetRank().Length);
 
             _outputFile.Flush();
 
@@ -84,17 +84,17 @@ namespace FileCabinetApp
                 
                 array.Add(new FileCabinetRecord
                 {
-                    Id = BitConverter.ToInt32(readRecord.Id),
-                    FirstName = Encoding.UTF8.GetString(readRecord.FirstName),
-                    LastName = Encoding.UTF8.GetString(readRecord.LastName),
+                    Id = BitConverter.ToInt32(readRecord.GetId()),
+                    FirstName = Encoding.UTF8.GetString(readRecord.GetFirstName()),
+                    LastName = Encoding.UTF8.GetString(readRecord.GetLastName()),
                     DateOfBirth = new DateTime(
-                        BitConverter.ToInt32(readRecord.Year),
-                        BitConverter.ToInt32(readRecord.Month),
-                        BitConverter.ToInt32(readRecord.Day)
+                        BitConverter.ToInt32(readRecord.GetYear()),
+                        BitConverter.ToInt32(readRecord.GetMonth()),
+                        BitConverter.ToInt32(readRecord.GetDay())
                     ),
-                    JobExperience = BitConverter.ToInt16(readRecord.JobExperience),
-                    Wage = new decimal(BitConverter.ToDouble(readRecord.Wage)),
-                    Rank = Encoding.UTF8.GetString(readRecord.Rank)[0]
+                    JobExperience = BitConverter.ToInt16(readRecord.GetJobExperience()),
+                    Wage = new decimal(BitConverter.ToDouble(readRecord.GetWage())),
+                    Rank = Encoding.UTF8.GetString(readRecord.GetRank())[0]
                 });
                 
                 currentIndex += FilesystemRecord.Size + 1;

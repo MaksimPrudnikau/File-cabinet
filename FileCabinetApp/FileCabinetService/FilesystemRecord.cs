@@ -17,17 +17,38 @@ namespace FileCabinetApp
         private const ushort JobExperienceIndex = 258;
         private const ushort WageIndex = 260;
         private const ushort RankIndex = 268;
+
+        private readonly byte[] _status;
+        private readonly byte[] _id;
+        private readonly byte[] _firstName;
+        private readonly byte[] _lastName;
+        private readonly byte[] _year;
+        private readonly byte[] _month;
+        private readonly byte[] _day;
+        private readonly byte[] _jobExperience;
+        private readonly byte[] _wage;
+        private readonly byte[] _rank;
+
+        public byte[] GetStatus() => _status;
+
+        public byte[] GetId() => _id;
         
-        public byte[] Status { get; }
-        public byte[] Id { get; }
-        public byte[] FirstName { get; }
-        public byte[] LastName { get; }
-        public byte[] Year { get; }
-        public byte[] Month { get; }
-        public byte[] Day { get; }
-        public byte[] JobExperience { get; }
-        public byte[] Wage { get; }
-        public byte[] Rank { get; }
+        public byte[] GetFirstName() => _firstName;
+        
+        public byte[] GetLastName() => _lastName;
+        
+        public byte[] GetYear() => _year;
+        
+        public byte[] GetMonth() => _month;
+        
+        public byte[] GetDay() => _day;
+        
+        public byte[] GetJobExperience() => _jobExperience;
+        
+        public byte[] GetWage() => _wage;
+        
+        public byte[] GetRank() => _rank;
+        
 
         public FilesystemRecord(Parameter parameter)
         {
@@ -37,16 +58,16 @@ namespace FileCabinetApp
             }
 
             const short status = 1;
-            Status = BitConverter.GetBytes(status);
-            Id = BitConverter.GetBytes(parameter.Id);
-            FirstName = ToBytes(parameter.FirstName, NameCapacity);
-            LastName = ToBytes(parameter.LastName, NameCapacity);
-            Year = BitConverter.GetBytes(parameter.DateOfBirth.Year);
-            Month = BitConverter.GetBytes(parameter.DateOfBirth.Month);
-            Day = BitConverter.GetBytes(parameter.DateOfBirth.Day);
-            JobExperience = BitConverter.GetBytes(parameter.JobExperience);
-            Wage = BitConverter.GetBytes(decimal.ToDouble(parameter.Wage));
-            Rank = BitConverter.GetBytes(parameter.Rank);
+            _status = BitConverter.GetBytes(status);
+            _id = BitConverter.GetBytes(parameter.Id);
+            _firstName = ToBytes(parameter.FirstName, NameCapacity);
+            _lastName = ToBytes(parameter.LastName, NameCapacity);
+            _year = BitConverter.GetBytes(parameter.DateOfBirth.Year);
+            _month = BitConverter.GetBytes(parameter.DateOfBirth.Month);
+            _day = BitConverter.GetBytes(parameter.DateOfBirth.Day);
+            _jobExperience = BitConverter.GetBytes(parameter.JobExperience);
+            _wage = BitConverter.GetBytes(decimal.ToDouble(parameter.Wage));
+            _rank = BitConverter.GetBytes(parameter.Rank);
         }
 
         public FilesystemRecord(byte[] source)
@@ -55,26 +76,24 @@ namespace FileCabinetApp
             {
                 throw new ArgumentNullException(nameof(source));
             }
-            
-            Status = source[..IdIndex];
-            
-            Id = source[IdIndex..FirstNameIndex];
 
-            FirstName = source[FirstNameIndex..LastNameIndex];
-            
-            LastName = source[LastNameIndex..YearIndex];
-            
-            Year = source[YearIndex..MonthIndex];
-            
-            Month = source[MonthIndex..DayIndex];
-            
-            Day = source[DayIndex..JobExperienceIndex];
+            _id = source[IdIndex..FirstNameIndex];
 
-            JobExperience = source[JobExperienceIndex..WageIndex];
+            _firstName = source[FirstNameIndex..LastNameIndex];
+            
+            _lastName = source[LastNameIndex..YearIndex];
+            
+            _year = source[YearIndex..MonthIndex];
+            
+            _month = source[MonthIndex..DayIndex];
+            
+            _day = source[DayIndex..JobExperienceIndex];
 
-            Wage = source[WageIndex..RankIndex];
+            _jobExperience = source[JobExperienceIndex..WageIndex];
 
-            Rank = source[RankIndex..];
+            _wage = source[WageIndex..RankIndex];
+
+            _rank = source[RankIndex..];
         }
 
         private static byte[] ToBytes(string value, int capacity)
