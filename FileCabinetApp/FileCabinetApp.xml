@@ -34,12 +34,32 @@
             </summary>
             <param name="record">Source record</param>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.Parameter)">
+            <summary>
+            Create new record in base file with source parameters
+            </summary>
+            <param name="parameters">Source parameters to add</param>
+            <returns>Id of created record</returns>
+            <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetRecords">
+            <summary>
+            Read all records from base file convert to <see cref="T:FileCabinetApp.FilesystemRecord"/> array
+            </summary>
+            <returns>Array of <see cref="T:FileCabinetApp.FilesystemRecord"/></returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetStat">
+            <summary>
+            Get count of records in base file
+            </summary>
+            <returns>The amount of all records in base file</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.ReadParameters(System.Int32)">
             <summary>
-            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.Parameter"/> object
+            Read parameters from keyboard and validate according to source validator
             </summary>
-            <param name="id">Source id of read parameter</param>
-            <returns><see cref="T:FileCabinetApp.Parameter"/> object equivalent for read parameters</returns>
+            <param name="id">Id of read parameter. The default value indicates the numbering is sequential</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
             <summary>
@@ -49,6 +69,11 @@
             <param name="converter">Source converter</param>
             <param name="validator">Source validator</param>
             <returns>Correct input object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.PrintRecords">
+            <summary>
+            Prints all records to console
+            </summary>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.Parameter)">
             <summary>

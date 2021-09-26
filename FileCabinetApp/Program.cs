@@ -97,8 +97,8 @@ namespace FileCabinetApp
             {
                 return isCustom switch
                 {
-                    true => new FileCabinetFilesystemService(new CustomValidator()),
-                    _ => new FileCabinetFilesystemService(new DefaultValidator())
+                    true => new FileCabinetFilesystemService(null, new CustomValidator()),
+                    _ => new FileCabinetFilesystemService(null, new DefaultValidator())
                 };
             }
             
@@ -154,7 +154,7 @@ namespace FileCabinetApp
                 Console.Error.WriteLine(exception.Message);
                 Create(parameters);
             }
-        }
+        }   
 
         /// <summary>
         /// Return list of records added to service

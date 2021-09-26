@@ -7,69 +7,56 @@ namespace FileCabinetApp
 {
     public class FileCabinetFilesystemService : IFileCabinetService
     {
-        private static IRecordValidator _validator;
-        private readonly FileStream _outputFile = new(FileCabinetConsts.FileSystemFileName, FileMode.OpenOrCreate);
+        private readonly IRecordValidator _validator;
+        private readonly FileStream _outputFile;
         private int _stat;
 
-        public FileCabinetFilesystemService(IRecordValidator validator)
+        public FileCabinetFilesystemService(FileStream fileStream, IRecordValidator validator)
         {
+            _outputFile = fileStream 
+                          ?? new FileStream(FileCabinetConsts.FileSystemFileName, FileMode.Create);
+            
             _validator = validator;
-            _stat = 0;
         }
 
+        /// <summary>
+        /// Create new record in base file with source parameters
+        /// </summary>
+        /// <param name="parameters">Source parameters to add</param>
+        /// <returns>Id of created record</returns>
+        /// <exception cref="ArgumentNullException">Parameters are null</exception>
         public int CreateRecord(Parameter parameters)
         {
             if (parameters is null)
             {
                 throw new ArgumentNullException(nameof(parameters));
             }
-            
+
             var fileSystemRecord = new FilesystemRecord(parameters);
-            var byteArray = BitConverter.GetBytes(fileSystemRecord.Status);
-                _outputFile.Write(byteArray, 0, byteArray.Length);
-            
-                byteArray = BitConverter.GetBytes(fileSystemRecord.Id);
-                _outputFile.Write(byteArray, 0, byteArray.Length);
-            
-                byteArray = ToBytes(fileSystemRecord.FirstName, 120);
-                _outputFile.Write(byteArray, 0, byteArray.Length);
 
-                byteArray = ToBytes(fileSystemRecord.LastName, 120);
-                _outputFile.Write(byteArray,0, byteArray.Length);
+            _outputFile.Write(fileSystemRecord.Status, 0, fileSystemRecord.Status.Length);
 
-                byteArray = BitConverter.GetBytes(fileSystemRecord.Year);
-                _outputFile.Write(byteArray, 0, byteArray.Length);
-            
-                byteArray = BitConverter.GetBytes(fileSystemRecord.Month);
-                _outputFile.Write(byteArray, 0, byteArray.Length);
-            
-                byteArray = BitConverter.GetBytes(fileSystemRecord.Day);
-                _outputFile.Write(byteArray, 0, byteArray.Length);
-            
-                byteArray = BitConverter.GetBytes(fileSystemRecord.JobExperience);
-                _outputFile.Write(byteArray, 0, byteArray.Length);
-            
-                byteArray = BitConverter.GetBytes(decimal.ToDouble(fileSystemRecord.Wage));
-                _outputFile.Write(byteArray, 0, byteArray.Length);
-            
-                byteArray = BitConverter.GetBytes(fileSystemRecord.Rank);
-                _outputFile.Write(byteArray, 0, byteArray.Length);
-                
-                _outputFile.Flush();
+            _outputFile.Write(fileSystemRecord.Id, 0, fileSystemRecord.Id.Length);
 
-                return parameters.Id;
-        }
+            _outputFile.Write(fileSystemRecord.FirstName, 0, fileSystemRecord.FirstName.Length);
 
-        private static byte[] ToBytes(string value, int capacity)
-        {
-            var encoded = Encoding.Default.GetBytes(value);
-            var byteArray = new byte[capacity];
-            for (var i = 0; i < encoded.Length; i++)
-            {
-                byteArray[i] = encoded[i];
-            }
+            _outputFile.Write(fileSystemRecord.LastName, 0, fileSystemRecord.LastName.Length);
 
-            return byteArray;
+            _outputFile.Write(fileSystemRecord.Year, 0, fileSystemRecord.Year.Length);
+
+            _outputFile.Write(fileSystemRecord.Month, 0, fileSystemRecord.Month.Length);
+
+            _outputFile.Write(fileSystemRecord.Day, 0, fileSystemRecord.Day.Length);
+
+            _outputFile.Write(fileSystemRecord.JobExperience, 0, fileSystemRecord.JobExperience.Length);
+
+            _outputFile.Write(fileSystemRecord.Wage, 0, fileSystemRecord.Wage.Length);
+
+            _outputFile.Write(fileSystemRecord.Rank, 0, fileSystemRecord.Rank.Length);
+
+            _outputFile.Flush();
+
+            return parameters.Id;
         }
 
         public void EditRecord(Parameter parameters)
@@ -77,23 +64,62 @@ namespace FileCabinetApp
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Read all records from base file convert to <see cref="FilesystemRecord"/> array
+        /// </summary>
+        /// <returns>Array of <see cref="FilesystemRecord"/></returns>
         public IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            throw new System.NotImplementedException();
+            var array = new List<FileCabinetRecord>();
+
+            var buffer = new byte[FilesystemRecord.Size];
+            
+            var currentIndex = 0;
+            _outputFile.Seek(currentIndex, SeekOrigin.Begin);
+            
+            while (currentIndex < _outputFile.Length)
+            {
+                _outputFile.Read(buffer, 0, buffer.Length);
+                var readRecord = new FilesystemRecord(buffer);
+                
+                array.Add(new FileCabinetRecord
+                {
+                    Id = BitConverter.ToInt32(readRecord.Id),
+                    FirstName = Encoding.UTF8.GetString(readRecord.FirstName),
+                    LastName = Encoding.UTF8.GetString(readRecord.LastName),
+                    DateOfBirth = new DateTime(
+                        BitConverter.ToInt32(readRecord.Year),
+                        BitConverter.ToInt32(readRecord.Month),
+                        BitConverter.ToInt32(readRecord.Day)
+                    ),
+                    JobExperience = BitConverter.ToInt16(readRecord.JobExperience),
+                    Wage = new decimal(BitConverter.ToDouble(readRecord.Wage)),
+                    Rank = Encoding.UTF8.GetString(readRecord.Rank)[0]
+                });
+                
+                currentIndex += FilesystemRecord.Size + 1;
+                _outputFile.Seek(1, SeekOrigin.Current);
+            }
+
+            return array.ToArray();
         }
 
+        /// <summary>
+        /// Get count of records in base file
+        /// </summary>
+        /// <returns>The amount of all records in base file</returns>
         public int GetStat()
         {
-            throw new System.NotImplementedException();
+            return _stat;
         }
-        
+
         /// <summary>
-        /// Read parameters from keyboard and parse it to <see cref="Parameter"/> object
+        /// Read parameters from keyboard and validate according to source validator
         /// </summary>
-        /// <param name="id">Source id of read parameter</param>
-        /// <returns><see cref="Parameter"/> object equivalent for read parameters</returns>
+        /// <param name="id">Id of read parameter. The default value indicates the numbering is sequential</param>
+        /// <returns><see cref="FileCabinetRecord"/> object</returns>
         public Parameter ReadParameters(int id = -1)
-        {   
+        {
             var record = new Parameter
             {
                 Id = id == -1 ? _stat + 1 : id,
@@ -101,9 +127,8 @@ namespace FileCabinetApp
                 Wage = FileCabinetConsts.MinimalWage,
                 Rank = FileCabinetConsts.MinimalRank
             };
-            
             _stat++;
-
+            
             Console.Write(EnglishSource.first_name);
             record.FirstName = ReadInput(InputConverter.NameConverter, _validator.NameValidator);
             
@@ -112,8 +137,6 @@ namespace FileCabinetApp
             
             Console.Write(EnglishSource.date_of_birth);
             record.DateOfBirth = ReadInput(InputConverter.DateOfBirthConverter, _validator.DateOfBirthValidator);
-            
-            
 
             if (_validator is not CustomValidator)
             {
@@ -166,9 +189,15 @@ namespace FileCabinetApp
             while (true);
         }
 
+        /// <summary>
+        /// Prints all records to console
+        /// </summary>
         public void PrintRecords()
         {
-            throw new System.NotImplementedException();
+            foreach (var item in GetRecords())
+            {
+                item.Print();
+            }
         }
     }
 }
