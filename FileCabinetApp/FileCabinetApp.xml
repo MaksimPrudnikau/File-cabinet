@@ -144,14 +144,6 @@
             </summary>
             <param name="record">Source record to remove</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.Find(System.String,FileCabinetApp.FindCriteria)">
-            <summary>
-            Create an array with all occurrences of searchValue with appropriate criteria
-            </summary>
-            <param name="searchValue">value to search</param>
-            <param name="criteria">Criteria to search (first name, </param>
-            <returns></returns>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.MakeSnapshot">
             <summary>
             Create <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object with current record array

@@ -108,6 +108,8 @@ namespace FileCabinetApp
                     Rank = Encoding.UTF8.GetString(readRecord.GetRank())[0]
                 });
                 
+                
+                
                 currentIndex += FilesystemRecord.Size + 1;
                 _outputFile.Seek(1, SeekOrigin.Current);
             }
@@ -209,6 +211,21 @@ namespace FileCabinetApp
             {
                 item.Print();
             }
+        }
+
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
+        {
+            throw new NotImplementedException();
         }
     }
 }

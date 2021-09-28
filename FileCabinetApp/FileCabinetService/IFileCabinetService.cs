@@ -16,5 +16,11 @@ namespace FileCabinetApp
         public Parameter ReadParameters(int id = -1);
         
         public void PrintRecords();
+
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue);
+        
+        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue);
+        
+        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue);
     }
 }

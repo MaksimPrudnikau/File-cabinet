@@ -243,31 +243,53 @@ namespace FileCabinetApp
             DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
-        /// <summary>
-        /// Create an array with all occurrences of searchValue with appropriate criteria
-        /// </summary>
-        /// <param name="searchValue">value to search</param>
-        /// <param name="criteria">Criteria to search (first name, </param>
-        /// <returns></returns>
-        public static IReadOnlyCollection<FileCabinetRecord> Find(string searchValue, FindCriteria criteria = FindCriteria.Lastname)
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
-            const string inputDateFormat = "yyyy-MMM-dd";
-            var dateTime = new DateTime();
-            if (criteria is FindCriteria.DateOfBirth)
+            if (string.IsNullOrEmpty(searchValue))
             {
-                dateTime = DateTime.ParseExact(searchValue, inputDateFormat, CultureInfo.InvariantCulture,
-                    DateTimeStyles.None);
+                return Array.Empty<FileCabinetRecord>();
             }
-            
+
             try
             {
-                return criteria switch
-                {
-                    FindCriteria.Firstname => FirstNameDictionary[searchValue],
-                    FindCriteria.Lastname => LastNameDictionary[searchValue],
-                    FindCriteria.DateOfBirth => DateOfBirthDictionary[dateTime],
-                    _ => throw new ArgumentException("Wrong find criteria")
-                };
+                return FirstNameDictionary[searchValue];
+            }
+            catch (KeyNotFoundException)
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
+        }
+
+        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
+        {
+            if (string.IsNullOrEmpty(searchValue))
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
+
+            try
+            {
+                return LastNameDictionary[searchValue];
+            }
+            catch (KeyNotFoundException)
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
+        }
+
+        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
+        {
+            const string dateOfBirthFormat = "dd/MM/yyyy";
+            var dateOfBirth = DateTime.ParseExact(searchValue, dateOfBirthFormat, CultureInfo.InvariantCulture);
+
+            if (string.IsNullOrEmpty(searchValue))
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
+
+            try
+            {
+                return DateOfBirthDictionary[dateOfBirth];
             }
             catch (KeyNotFoundException)
             {
