@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace FileCabinetApp
 {
@@ -33,28 +32,8 @@ namespace FileCabinetApp
             }
 
             var fileSystemRecord = new FilesystemRecord(parameters);
-
-            _outputFile.Write(fileSystemRecord.GetStatus(), 0, fileSystemRecord.GetStatus().Length);
-
-            _outputFile.Write(fileSystemRecord.GetId(), 0, fileSystemRecord.GetId().Length);
-
-            _outputFile.Write(fileSystemRecord.GetFirstName(), 0, fileSystemRecord.GetFirstName().Length);
-
-            _outputFile.Write(fileSystemRecord.GetLastName(), 0, fileSystemRecord.GetLastName().Length);
-
-            _outputFile.Write(fileSystemRecord.GetYear(), 0, fileSystemRecord.GetYear().Length);
-
-            _outputFile.Write(fileSystemRecord.GetMonth(), 0, fileSystemRecord.GetMonth().Length);
-
-            _outputFile.Write(fileSystemRecord.GetDay(), 0, fileSystemRecord.GetDay().Length);
-
-            _outputFile.Write(fileSystemRecord.GetJobExperience(), 0, fileSystemRecord.GetJobExperience().Length);
-
-            _outputFile.Write(fileSystemRecord.GetWage(), 0, fileSystemRecord.GetWage().Length);
-
-            _outputFile.Write(fileSystemRecord.GetRank(), 0, fileSystemRecord.GetRank().Length);
-
-            _outputFile.Flush();
+            
+            fileSystemRecord.Serialize(_outputFile);
 
             return parameters.Id;
         }
@@ -81,40 +60,7 @@ namespace FileCabinetApp
         /// <returns>Array of <see cref="FilesystemRecord"/></returns>
         public IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            var array = new List<FileCabinetRecord>();
-
-            var buffer = new byte[FilesystemRecord.Size];
-            
-            var currentIndex = 0;
-            _outputFile.Seek(currentIndex, SeekOrigin.Begin);
-            
-            while (currentIndex < _outputFile.Length)
-            {
-                _outputFile.Read(buffer, 0, buffer.Length);
-                var readRecord = new FilesystemRecord(buffer);
-                
-                array.Add(new FileCabinetRecord
-                {
-                    Id = BitConverter.ToInt32(readRecord.GetId()),
-                    FirstName = Encoding.UTF8.GetString(readRecord.GetFirstName()),
-                    LastName = Encoding.UTF8.GetString(readRecord.GetLastName()),
-                    DateOfBirth = new DateTime(
-                        BitConverter.ToInt32(readRecord.GetYear()),
-                        BitConverter.ToInt32(readRecord.GetMonth()),
-                        BitConverter.ToInt32(readRecord.GetDay())
-                    ),
-                    JobExperience = BitConverter.ToInt16(readRecord.GetJobExperience()),
-                    Wage = new decimal(BitConverter.ToDouble(readRecord.GetWage())),
-                    Rank = Encoding.UTF8.GetString(readRecord.GetRank())[0]
-                });
-                
-                
-                
-                currentIndex += FilesystemRecord.Size + 1;
-                _outputFile.Seek(1, SeekOrigin.Current);
-            }
-
-            return array.ToArray();
+            return FileCabinetRecord.Deserialize(_outputFile);
         }
 
         /// <summary>

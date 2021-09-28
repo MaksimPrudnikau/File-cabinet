@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace FileCabinetApp
@@ -32,23 +34,23 @@ namespace FileCabinetApp
         public byte[] GetStatus() => _status;
 
         public byte[] GetId() => _id;
-        
+
         public byte[] GetFirstName() => _firstName;
-        
+
         public byte[] GetLastName() => _lastName;
-        
+
         public byte[] GetYear() => _year;
-        
+
         public byte[] GetMonth() => _month;
-        
+
         public byte[] GetDay() => _day;
-        
+
         public byte[] GetJobExperience() => _jobExperience;
-        
+
         public byte[] GetWage() => _wage;
-        
+
         public byte[] GetRank() => _rank;
-        
+
 
         public FilesystemRecord(Parameter parameter)
         {
@@ -80,13 +82,13 @@ namespace FileCabinetApp
             _id = source[IdIndex..FirstNameIndex];
 
             _firstName = source[FirstNameIndex..LastNameIndex];
-            
+
             _lastName = source[LastNameIndex..YearIndex];
-            
+
             _year = source[YearIndex..MonthIndex];
-            
+
             _month = source[MonthIndex..DayIndex];
-            
+
             _day = source[DayIndex..JobExperienceIndex];
 
             _jobExperience = source[JobExperienceIndex..WageIndex];
@@ -106,6 +108,54 @@ namespace FileCabinetApp
             }
 
             return byteArray;
+        }
+
+        public void Serialize(FileStream stream)
+        {
+            if (stream is null)
+            {
+                return;
+            }
+
+            stream.Write(GetStatus(), 0, GetStatus().Length);
+
+            stream.Write(GetId(), 0, GetId().Length);
+
+            stream.Write(GetFirstName(), 0, GetFirstName().Length);
+
+            stream.Write(GetLastName(), 0, GetLastName().Length);
+
+            stream.Write(GetYear(), 0, GetYear().Length);
+
+            stream.Write(GetMonth(), 0, GetMonth().Length);
+
+            stream.Write(GetDay(), 0, GetDay().Length);
+
+            stream.Write(GetJobExperience(), 0, GetJobExperience().Length);
+
+            stream.Write(GetWage(), 0, GetWage().Length);
+
+            stream.Write(GetRank(), 0, GetRank().Length);
+
+            stream.Flush();
+        }
+
+        public FileCabinetRecord ToFileCabinetRecord()
+        {
+            return new FileCabinetRecord
+            {
+                Id = BitConverter.ToInt32(GetId()),
+                FirstName = Encoding.UTF8.GetString(GetFirstName()),
+                LastName = Encoding.UTF8.GetString(GetLastName()),
+                DateOfBirth = new DateTime(
+                    BitConverter.ToInt32(GetYear()),
+                    BitConverter.ToInt32(GetMonth()),
+                    BitConverter.ToInt32(GetDay())
+                ),
+                JobExperience = BitConverter.ToInt16(GetJobExperience()),
+                Wage = new decimal(BitConverter.ToDouble(GetWage())),
+                Rank = Encoding.UTF8.GetString(GetRank())[0]
+            };
         }
     }
 }
