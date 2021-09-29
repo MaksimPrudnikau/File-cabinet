@@ -39,6 +39,12 @@ namespace FileCabinetApp
             return parameters.Id;
         }
 
+        /// <summary>
+        /// Edit already existing record with source
+        /// </summary>
+        /// <param name="parameters">Source for editing record</param>
+        /// <exception cref="ArgumentNullException">Parameters are null</exception>
+        /// <exception cref="ArgumentException">There is no record suitable for replacement</exception>
         public void EditRecord(Parameter parameters)
         {
             if (parameters is null)
@@ -166,20 +172,11 @@ namespace FileCabinetApp
             {
                 return Array.Empty<FileCabinetRecord>();
             }
-            
-            var array = new List<FileCabinetRecord>();
-            
+
             searchValue = string.Format(CultureInfo.InvariantCulture, "{0}", searchValue.PadRight(120, default));
             
-            foreach (var item in GetRecords())
-            {
-                if (item.FirstName == searchValue)
-                {
-                    array.Add(item);
-                }
-            }
-
-            return array;
+            var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
+            return Array.FindAll(records, x => x.FirstName == searchValue);
         }
 
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
@@ -189,35 +186,24 @@ namespace FileCabinetApp
                 return Array.Empty<FileCabinetRecord>();
             }
             
-            var array = new List<FileCabinetRecord>();
             searchValue = string.Format(CultureInfo.InvariantCulture, "{0}", searchValue.PadRight(120, default));
-            
-            foreach (var item in GetRecords())
-            {
-                if (item.LastName == searchValue)
-                {
-                    array.Add(item);
-                }
-            }
 
-            return array;
+            var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
+            return Array.FindAll(records, x => x.LastName == searchValue);
         }
 
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
-            var array = new List<FileCabinetRecord>();
+            if (searchValue is null)
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
+            
             var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
                 CultureInfo.InvariantCulture);
             
-            foreach (var item in GetRecords())
-            {
-                if (item.DateOfBirth == dateOfBirth)
-                {
-                    array.Add(item);
-                }
-            }
-
-            return array;
+            var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
+            return Array.FindAll(records, x => x.DateOfBirth == dateOfBirth);
         }
     }
 }

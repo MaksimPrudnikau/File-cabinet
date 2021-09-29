@@ -42,6 +42,14 @@
             <returns>Id of created record</returns>
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.EditRecord(FileCabinetApp.Parameter)">
+            <summary>
+            Edit already existing record with source
+            </summary>
+            <param name="parameters">Source for editing record</param>
+            <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
+            <exception cref="T:System.ArgumentException">There is no record suitable for replacement</exception>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetRecords">
             <summary>
             Read all records from base file convert to <see cref="T:FileCabinetApp.FilesystemRecord"/> array

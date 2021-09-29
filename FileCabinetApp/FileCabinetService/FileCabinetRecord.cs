@@ -49,7 +49,7 @@ namespace FileCabinetApp
             return new FilesystemRecord(buffer).ToFileCabinetRecord();
         }
 
-        public static IReadOnlyCollection<FileCabinetRecord> Deserialize(FileStream stream)
+        public static FileCabinetRecord[] Deserialize(FileStream stream)
         {
             if (stream is null)
             {
@@ -67,7 +67,7 @@ namespace FileCabinetApp
                 currentIndex += FilesystemRecord.Size + 1;
             }
 
-            return array;
+            return array.ToArray();
         }
     }
 }
