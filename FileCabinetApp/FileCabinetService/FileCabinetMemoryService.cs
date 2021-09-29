@@ -279,8 +279,7 @@ namespace FileCabinetApp
 
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
-            const string dateOfBirthFormat = "dd/MM/yyyy";
-            var dateOfBirth = DateTime.ParseExact(searchValue, dateOfBirthFormat, CultureInfo.InvariantCulture);
+            var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture);
 
             if (string.IsNullOrEmpty(searchValue))
             {

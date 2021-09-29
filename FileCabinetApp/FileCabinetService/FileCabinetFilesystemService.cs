@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace FileCabinetApp
@@ -161,17 +162,62 @@ namespace FileCabinetApp
 
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
-            throw new NotImplementedException();
+            if (searchValue is null)
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
+            
+            var array = new List<FileCabinetRecord>();
+            
+            searchValue = string.Format(CultureInfo.InvariantCulture, "{0}", searchValue.PadRight(120, default));
+            
+            foreach (var item in GetRecords())
+            {
+                if (item.FirstName == searchValue)
+                {
+                    array.Add(item);
+                }
+            }
+
+            return array;
         }
 
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
-            throw new NotImplementedException();
+            if (searchValue is null)
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
+            
+            var array = new List<FileCabinetRecord>();
+            searchValue = string.Format(CultureInfo.InvariantCulture, "{0}", searchValue.PadRight(120, default));
+            
+            foreach (var item in GetRecords())
+            {
+                if (item.LastName == searchValue)
+                {
+                    array.Add(item);
+                }
+            }
+
+            return array;
         }
 
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
-            throw new NotImplementedException();
+            var array = new List<FileCabinetRecord>();
+            var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
+                CultureInfo.InvariantCulture);
+            
+            foreach (var item in GetRecords())
+            {
+                if (item.DateOfBirth == dateOfBirth)
+                {
+                    array.Add(item);
+                }
+            }
+
+            return array;
         }
     }
 }

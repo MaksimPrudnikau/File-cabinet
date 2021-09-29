@@ -20,6 +20,8 @@ namespace FileCabinetApp
         public const string ServiceStorageFileFullForm = "--storage=file";
         public const string ServiceStorageFileShortForm = "-sfile";
 
+        public const string InputDateFormat = "dd/MM/yyyy";
+        
         // Constants for 'ReadParameters'
         public const int MinimalJobExperience = 0;
         public const int MinimalWage = 250;
