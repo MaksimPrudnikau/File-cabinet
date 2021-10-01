@@ -67,7 +67,15 @@ namespace FileCabinetApp
         /// <returns>Array of <see cref="FilesystemRecord"/></returns>
         public IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            return FileCabinetRecord.Deserialize(_outputFile);
+            try
+            {
+                return FileCabinetRecord.Deserialize(_outputFile);
+            }
+            catch (Exception e) when (e is ArgumentException or ArgumentNullException)
+            {
+                Console.Error.WriteLine(e.Message);
+                return Array.Empty<FileCabinetRecord>();
+            }
         }
 
         /// <summary>

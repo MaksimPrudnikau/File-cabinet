@@ -83,6 +83,27 @@
             Prints all records to console
             </summary>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByFirstName(System.String)">
+            <summary>
+            Find all occurrences of <see cref="!:searchValue"/> in records of current data base file
+            </summary>
+            <param name="searchValue">Value to search</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with firstname equals <seealso cref="!:searchValue"/></returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByLastName(System.String)">
+            <summary>
+            Find all occurrences of <see cref="!:searchValue"/> in records of current data base file
+            </summary>
+            <param name="searchValue">Value to search</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with lastname equals <seealso cref="!:searchValue"/></returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByDateOfBirth(System.String)">
+            <summary>
+            Find all occurrences of <see cref="!:searchValue"/> in records of current data base file
+            </summary>
+            <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with date of birth equals <seealso cref="!:searchValue"/></returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.Parameter)">
             <summary>
             The method create new record from input data and return its id
@@ -152,11 +173,69 @@
             </summary>
             <param name="record">Source record to remove</param>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.FindByFirstName(System.String)">
+            <summary>
+            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetRecord"/> with suitable first name
+            </summary>
+            <param name="searchValue">First name to search</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with suitable first name</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.FindByLastName(System.String)">
+            <summary>
+            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetRecord"/> with suitable last name
+            </summary>
+            <param name="searchValue">Last name to search</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with suitable last name</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.FindByDateOfBirth(System.String)">
+            <summary>
+            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetRecord"/> with suitable date of birth
+            </summary>
+            <param name="searchValue">Date of birth to search</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with suitable date of birth</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.MakeSnapshot">
             <summary>
             Create <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object with current record array
             </summary>
             <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecord.Read(System.IO.FileStream)">
+            <summary>
+            Read one record from base file consistently
+            </summary>
+            <param name="stream">Source file stream</param>
+            <returns>Read <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+            <exception cref="T:System.ArgumentNullException">Source stream is null</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecord.Deserialize(System.IO.FileStream)">
+            <summary>
+            Deserialize all content from source file into <see cref="T:FileCabinetApp.FilesystemRecord"/> array
+            </summary>
+            <param name="stream">Source file stream </param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array</returns>
+            <exception cref="T:System.ArgumentNullException">stream is null</exception>
+            <exception cref="T:System.ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
+        </member>
+        <member name="M:FileCabinetApp.FilesystemRecord.ToBytes(System.String,System.Int32)">
+            <summary>
+            Create <see cref="T:System.Byte"/> array from <see cref="!:value"/> with source capacity 
+            </summary>
+            <param name="value">Value to make array with</param>
+            <param name="capacity">Source capacity</param>
+            <returns> <see cref="T:System.Byte"/> array with length equals capacity </returns>
+        </member>
+        <member name="M:FileCabinetApp.FilesystemRecord.Serialize(System.IO.FileStream)">
+            <summary>
+            Serialize current <see cref="T:FileCabinetApp.FilesystemRecord"/> into source file
+            </summary>
+            <param name="stream">Source file stream</param>
+        </member>
+        <member name="M:FileCabinetApp.FilesystemRecord.ToFileCabinetRecord">
+            <summary>
+            Cast current <see cref="T:FileCabinetApp.FilesystemRecord"/> to <see cref="T:FileCabinetApp.FileCabinetRecord"/>
+            </summary>
+            <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
         </member>
         <member name="M:FileCabinetApp.InputConverter.NameConverter(System.String)">
             <summary>

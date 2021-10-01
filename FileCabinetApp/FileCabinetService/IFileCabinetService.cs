@@ -8,15 +8,13 @@ namespace FileCabinetApp
         public int CreateRecord(Parameter parameters);
         
         public void EditRecord(Parameter parameters);
-        
-        public IReadOnlyCollection<FileCabinetRecord> GetRecords();
 
         public int GetStat();
 
+        public IReadOnlyCollection<FileCabinetRecord> GetRecords();
+
         public Parameter ReadParameters(int id = -1);
         
-        public void PrintRecords();
-
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue);
         
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue);

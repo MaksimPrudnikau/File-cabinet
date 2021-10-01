@@ -161,7 +161,10 @@ namespace FileCabinetApp
         /// </summary>
         private static void List(string parameters)
         {
-            _service.PrintRecords();
+            foreach (var item in _service.GetRecords())
+            {
+                item.Print();
+            }
         }
 
         /// <summary>

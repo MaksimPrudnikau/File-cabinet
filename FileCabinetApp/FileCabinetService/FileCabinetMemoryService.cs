@@ -243,6 +243,11 @@ namespace FileCabinetApp
             DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
+        /// <summary>
+        /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable first name
+        /// </summary>
+        /// <param name="searchValue">First name to search</param>
+        /// <returns><see cref="FileCabinetRecord"/> array with suitable first name</returns>
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
             if (string.IsNullOrEmpty(searchValue))
@@ -260,6 +265,11 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable last name
+        /// </summary>
+        /// <param name="searchValue">Last name to search</param>
+        /// <returns><see cref="FileCabinetRecord"/> array with suitable last name</returns>
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
             if (string.IsNullOrEmpty(searchValue))
@@ -277,6 +287,11 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable date of birth
+        /// </summary>
+        /// <param name="searchValue">Date of birth to search</param>
+        /// <returns><see cref="FileCabinetRecord"/> array with suitable date of birth</returns>
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
             var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture);

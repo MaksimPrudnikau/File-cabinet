@@ -8,7 +8,7 @@ namespace FileCabinetApp
     public class FilesystemRecord
     {
         private const int NameCapacity = 120;
-        public const int Size = 269;
+        public const int Size = 270;
 
         private const ushort IdIndex = 2;
         private const ushort FirstNameIndex = 6;
@@ -98,6 +98,12 @@ namespace FileCabinetApp
             _rank = source[RankIndex..];
         }
 
+        /// <summary>
+        /// Create <see cref="byte"/> array from <see cref="value"/> with source capacity 
+        /// </summary>
+        /// <param name="value">Value to make array with</param>
+        /// <param name="capacity">Source capacity</param>
+        /// <returns> <see cref="byte"/> array with length equals capacity </returns>
         private static byte[] ToBytes(string value, int capacity)
         {
             var encoded = Encoding.UTF8.GetBytes(value);
@@ -110,6 +116,10 @@ namespace FileCabinetApp
             return byteArray;
         }
 
+        /// <summary>
+        /// Serialize current <see cref="FilesystemRecord"/> into source file
+        /// </summary>
+        /// <param name="stream">Source file stream</param>
         public void Serialize(FileStream stream)
         {
             if (stream is null)
@@ -140,6 +150,10 @@ namespace FileCabinetApp
             stream.Flush();
         }
 
+        /// <summary>
+        /// Cast current <see cref="FilesystemRecord"/> to <see cref="FileCabinetRecord"/>
+        /// </summary>
+        /// <returns>Suitable <see cref="FileCabinetRecord"/> object</returns>
         public FileCabinetRecord ToFileCabinetRecord()
         {
             return new FileCabinetRecord

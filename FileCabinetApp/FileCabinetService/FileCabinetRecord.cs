@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Text;
 
 namespace FileCabinetApp
 {
@@ -36,6 +34,12 @@ namespace FileCabinetApp
                 Rank);
         }
         
+        /// <summary>
+        /// Read one record from base file consistently
+        /// </summary>
+        /// <param name="stream">Source file stream</param>
+        /// <returns>Read <see cref="FileCabinetRecord"/> object</returns>
+        /// <exception cref="ArgumentNullException">Source stream is null</exception>
         private static FileCabinetRecord Read(FileStream stream)
         {
             if (stream is null)
@@ -45,15 +49,27 @@ namespace FileCabinetApp
             
             var buffer = new byte[FilesystemRecord.Size];
             stream.Read(buffer, 0, buffer.Length);
-            stream.Seek(1, SeekOrigin.Current);
             return new FilesystemRecord(buffer).ToFileCabinetRecord();
         }
 
+        /// <summary>
+        /// Deserialize all content from source file into <see cref="FilesystemRecord"/> array
+        /// </summary>
+        /// <param name="stream">Source file stream </param>
+        /// <returns><see cref="FileCabinetRecord"/> array</returns>
+        /// <exception cref="ArgumentNullException">stream is null</exception>
+        /// <exception cref="ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
         public static FileCabinetRecord[] Deserialize(FileStream stream)
         {
             if (stream is null)
             {
                 throw new ArgumentNullException(nameof(stream));
+            }
+
+            if (stream.Length % FilesystemRecord.Size != 0)
+            {
+                throw new ArgumentException(
+                    "The file size does not correspond to the integer number of record occurrences.");
             }
             
             var array = new List<FileCabinetRecord>();
@@ -64,7 +80,7 @@ namespace FileCabinetApp
             while (currentIndex < stream.Length)
             {
                 array.Add(Read(stream));
-                currentIndex += FilesystemRecord.Size + 1;
+                currentIndex += FilesystemRecord.Size;
             }
 
             return array.ToArray();
