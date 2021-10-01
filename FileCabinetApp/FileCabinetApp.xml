@@ -214,7 +214,7 @@
         </member>
         <member name="M:FileCabinetApp.FilesystemRecord.ToBytes(System.String,System.Int32)">
             <summary>
-            Create <see cref="T:System.Byte"/> array from <see cref="!:value"/> with source capacity 
+            Create <see cref="T:System.Byte"/> array from value with source capacity 
             </summary>
             <param name="value">Value to make array with</param>
             <param name="capacity">Source capacity</param>
