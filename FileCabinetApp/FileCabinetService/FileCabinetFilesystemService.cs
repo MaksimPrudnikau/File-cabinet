@@ -175,10 +175,10 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Find all occurrences of <see cref="searchValue"/> in records of current data base file
+        /// Find all occurrences of searchValue in records of current data base file
         /// </summary>
         /// <param name="searchValue">Value to search</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with firstname equals <seealso cref="searchValue"/></returns>
+        /// <returns><see cref="FileCabinetRecord"/> array with firstname equals searchValue</returns>
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
             if (searchValue is null)
@@ -193,10 +193,10 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Find all occurrences of <see cref="searchValue"/> in records of current data base file
+        /// Find all occurrences of searchValue in records of current data base file
         /// </summary>
         /// <param name="searchValue">Value to search</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with lastname equals <seealso cref="searchValue"/></returns>
+        /// <returns><see cref="FileCabinetRecord"/> array with lastname equals searchValue</returns>
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
             if (searchValue is null)
@@ -211,10 +211,10 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Find all occurrences of <see cref="searchValue"/> in records of current data base file
+        /// Find all occurrences of searchValue in records of current data base file
         /// </summary>
         /// <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with date of birth equals <seealso cref="searchValue"/></returns>
+        /// <returns><see cref="FileCabinetRecord"/> array with date of birth equals searchValue</returns>
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
             if (searchValue is null)
