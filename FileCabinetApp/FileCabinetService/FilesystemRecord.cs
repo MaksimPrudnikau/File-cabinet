@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -31,27 +30,26 @@ namespace FileCabinetApp
         private readonly byte[] _wage;
         private readonly byte[] _rank;
 
-        public byte[] GetStatus() => _status;
+        private byte[] GetStatus() => _status;
 
-        public byte[] GetId() => _id;
+        private byte[] GetId() => _id;
 
-        public byte[] GetFirstName() => _firstName;
+        private byte[] GetFirstName() => _firstName;
 
-        public byte[] GetLastName() => _lastName;
+        private byte[] GetLastName() => _lastName;
 
-        public byte[] GetYear() => _year;
+        private byte[] GetYear() => _year;
 
-        public byte[] GetMonth() => _month;
+        private byte[] GetMonth() => _month;
 
-        public byte[] GetDay() => _day;
+        private byte[] GetDay() => _day;
 
-        public byte[] GetJobExperience() => _jobExperience;
+        private byte[] GetJobExperience() => _jobExperience;
 
-        public byte[] GetWage() => _wage;
+        private byte[] GetWage() => _wage;
 
-        public byte[] GetRank() => _rank;
-
-
+        private byte[] GetRank() => _rank;
+        
         public FilesystemRecord(Parameter parameter)
         {
             if (parameter is null)

@@ -130,21 +130,10 @@ namespace FileCabinetApp
         }
         
         /// <summary>
-        /// Prints <see cref="FileCabinetRecord"/> array
-        /// </summary>
-        public void PrintRecords()
-        {
-            foreach (var item in List)
-            {
-                item.Print();
-            }
-        }
-
-        /// <summary>
         /// Returns number of records that the service stores
         /// </summary>
         /// <value>An ordinal number of the last record</value>
-        public static int Stat => List.Count;
+        private static int Stat => List.Count;
         
         /// <summary>
         /// Edit record with the source one
