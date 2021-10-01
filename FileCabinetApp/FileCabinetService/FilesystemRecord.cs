@@ -97,7 +97,7 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Create <see cref="byte"/> array from <see cref="value"/> with source capacity 
+        /// Create <see cref="byte"/> array from value with source capacity 
         /// </summary>
         /// <param name="value">Value to make array with</param>
         /// <param name="capacity">Source capacity</param>

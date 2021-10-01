@@ -85,24 +85,24 @@
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByFirstName(System.String)">
             <summary>
-            Find all occurrences of <see cref="!:searchValue"/> in records of current data base file
+            Find all occurrences of searchValue in records of current data base file
             </summary>
             <param name="searchValue">Value to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with firstname equals <seealso cref="!:searchValue"/></returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with firstname equals searchValue</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByLastName(System.String)">
             <summary>
-            Find all occurrences of <see cref="!:searchValue"/> in records of current data base file
+            Find all occurrences of searchValue in records of current data base file
             </summary>
             <param name="searchValue">Value to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with lastname equals <seealso cref="!:searchValue"/></returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with lastname equals searchValue</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByDateOfBirth(System.String)">
             <summary>
-            Find all occurrences of <see cref="!:searchValue"/> in records of current data base file
+            Find all occurrences of searchValue in records of current data base file
             </summary>
             <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with date of birth equals <seealso cref="!:searchValue"/></returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with date of birth equals searchValue</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.Parameter)">
             <summary>
@@ -125,11 +125,6 @@
             <param name="converter">Source converter</param>
             <param name="validator">Source validator</param>
             <returns>Correct input object</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.PrintRecords">
-            <summary>
-            Prints <see cref="T:FileCabinetApp.FileCabinetRecord"/> array
-            </summary>
         </member>
         <member name="P:FileCabinetApp.FileCabinetMemoryService.Stat">
             <summary>
