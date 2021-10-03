@@ -15,12 +15,12 @@ namespace FileCabinetApp
         public string LastName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
-        
-        public short JobExperience { get; set; }
-        
-        public decimal Wage { get; set; }
-        
-        public char Rank { get; set; }
+
+        public short JobExperience { get; set; } = FileCabinetConsts.MinimalJobExperience;
+
+        public decimal Wage { get; set; } = FileCabinetConsts.MinimalWage;
+
+        public char Rank { get; set; } = FileCabinetConsts.MinimalRank;
 
         public void Print()
         {

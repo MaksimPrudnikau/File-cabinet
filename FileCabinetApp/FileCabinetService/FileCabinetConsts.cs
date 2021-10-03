@@ -1,3 +1,5 @@
+using System;
+
 namespace FileCabinetApp
 {
     public static class FileCabinetConsts
@@ -26,6 +28,9 @@ namespace FileCabinetApp
         public const int MinimalJobExperience = 0;
         public const int MinimalWage = 250;
         public const char MinimalRank = 'F';
+        
+        public static readonly DateTime MinimalDateTime = new (1950, 1, 1);
+        public static readonly DateTime MaximalDateTime = DateTime.Now;
 
         public const string FileSystemFileName = "cabinet-records.db";
     }

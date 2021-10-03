@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -7,13 +6,13 @@ namespace FileCabinetGenerator
 {
     public class Options
     {
-        private OutputType Type { get; set; }
+        public OutputType Type { get; set; }
 
-        private string FileName { get; set; }
+        public string FileName { get; set; }
 
-        private long Count { get; set; }
+        public long Count { get; set; }
 
-        private long StartId { get; set; }
+        public int StartId { get; set; }
 
         
         public Options([NotNull] IReadOnlyList<string> args)
@@ -80,10 +79,10 @@ namespace FileCabinetGenerator
 
             if (IsFullForm(args[fullFormIndex]))
             {
-                StartId = Convert.ToInt64(GetLongFormValue(args[fullFormIndex]));
+                StartId = Convert.ToInt32(GetLongFormValue(args[fullFormIndex]));
             }
             
-            StartId = Convert.ToInt64(args[shortFormIndex].ToLowerInvariant());
+            StartId = Convert.ToInt32(args[shortFormIndex].ToLowerInvariant());
         }
 
         private bool IsFullForm(string parameter)

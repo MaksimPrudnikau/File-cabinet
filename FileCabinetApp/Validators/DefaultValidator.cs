@@ -36,8 +36,8 @@ namespace FileCabinetApp
         /// Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
         public ValidationResult DateOfBirthValidator(DateTime dateOfBirth)
         {
-            var minimalDateTime = new DateTime(1950, 1, 1);
-            var maximumDateTime = DateTime.Now;
+            var minimalDateTime = FileCabinetConsts.MinimalDateTime;
+            var maximumDateTime = FileCabinetConsts.MaximalDateTime;
 
             return dateOfBirth >= minimalDateTime && dateOfBirth <= maximumDateTime
                 ? new ValidationResult {Parsed = true, StringRepresentation = $"{dateOfBirth}"}

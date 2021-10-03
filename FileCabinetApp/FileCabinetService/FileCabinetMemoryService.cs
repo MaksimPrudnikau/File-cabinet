@@ -64,9 +64,6 @@ namespace FileCabinetApp
             var record = new Parameter
             {
                 Id = id == -1 ? Stat + 1 : id,
-                JobExperience = FileCabinetConsts.MinimalJobExperience,
-                Wage = FileCabinetConsts.MinimalWage,
-                Rank = FileCabinetConsts.MinimalRank
             };
 
             Console.Write(EnglishSource.first_name);
