@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace FileCabinetGenerator
 {
     class Program
@@ -7,7 +9,8 @@ namespace FileCabinetGenerator
         {
             var options = new Options(args);
             var generator = new RecordGenerator();
-            var record = generator.Generate(options.StartId, options.Count);
+            generator.Export(options);
+            Console.ReadLine();
         }
     }
 }

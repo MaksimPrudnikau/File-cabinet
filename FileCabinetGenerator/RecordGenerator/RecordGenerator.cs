@@ -38,7 +38,7 @@ namespace FileCabinetGenerator
             return table;
         }
 
-        public IReadOnlyCollection<FileCabinetRecord> Generate(int startId, long amount)
+        private IReadOnlyCollection<FileCabinetRecord> Generate(int startId, long amount)
         {
             var records = new List<FileCabinetRecord>();
             for (int i = 0, id = startId; i < amount; i++, id++)
@@ -83,6 +83,37 @@ namespace FileCabinetGenerator
             var randomDate = FileCabinetConsts.MinimalDateTime;
             var range = (FileCabinetConsts.MaximalDateTime - randomDate).Days;           
             return randomDate.AddDays(new Random().Next(range));
+        }
+        
+        public void Export(Options options)
+        {
+            switch (options.Type)
+            {
+                case OutputType.csv:
+                    ExportToCsv(options);
+                    break;
+                case OutputType.xml:
+                    ExportToXml(options);
+                    break;
+            }
+        }
+
+        private void ExportToCsv(Options options)
+        {
+            using var writer = File.CreateText(options.FileName);
+            
+            var csvWriter = new FIleCabinetCsvWriter(writer);
+            foreach (var item in Generate(options.StartId, options.Count))
+            {
+                csvWriter.Write(item);
+            }
+
+            Console.WriteLine(EnglishSource.records_were_written_to, options.Count, options.FileName);
+        }
+        
+        private void ExportToXml(Options options)
+        {
+            throw new NotImplementedException();
         }
     }
 }

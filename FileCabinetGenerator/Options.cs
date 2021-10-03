@@ -43,7 +43,7 @@ namespace FileCabinetGenerator
                 Type = (OutputType) Enum.Parse(typeof(OutputType), GetLongFormValue(args[fullFormIndex]));
             }
 
-            Type = (OutputType) Enum.Parse(typeof(OutputType), args[shortFormIndex].ToLowerInvariant());
+            Type = (OutputType) Enum.Parse(typeof(OutputType), args[shortFormIndex]);
         }
 
         private void ParseOutputFileName(IReadOnlyList<string> args)
@@ -56,7 +56,7 @@ namespace FileCabinetGenerator
                 FileName = GetLongFormValue(args[fullFormIndex]);
             }
             
-            FileName = args[shortFormIndex].ToLowerInvariant();
+            FileName = args[shortFormIndex];
         }
         
         private void ParseRecordsAmount(IReadOnlyList<string> args)
@@ -69,7 +69,7 @@ namespace FileCabinetGenerator
                 Count = Convert.ToInt64(GetLongFormValue(args[fullFormIndex]));
             }
             
-            Count = Convert.ToInt64(args[shortFormIndex].ToLowerInvariant());
+            Count = Convert.ToInt64(args[shortFormIndex]);
         }
         
         private void ParseStartId(IReadOnlyList<string> args)
@@ -82,7 +82,7 @@ namespace FileCabinetGenerator
                 StartId = Convert.ToInt32(GetLongFormValue(args[fullFormIndex]));
             }
             
-            StartId = Convert.ToInt32(args[shortFormIndex].ToLowerInvariant());
+            StartId = Convert.ToInt32(args[shortFormIndex]);
         }
 
         private bool IsFullForm(string parameter)
@@ -98,7 +98,7 @@ namespace FileCabinetGenerator
                 throw new ArgumentException($"Cannot find '=' in {parameter}");
             }
             
-            return parameter[(equalSign + 1)..].ToLowerInvariant();
+            return parameter[(equalSign + 1)..];
         }
     }
 }

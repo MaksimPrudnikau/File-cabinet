@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Validator" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FileCabinetApp\FileCabinetApp.csproj" />
   </ItemGroup>
 
