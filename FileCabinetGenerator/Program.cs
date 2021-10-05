@@ -10,7 +10,6 @@ namespace FileCabinetGenerator
             var options = new Options(args);
             var generator = new RecordGenerator();
             generator.Export(options);
-            Console.ReadLine();
         }
     }
 }

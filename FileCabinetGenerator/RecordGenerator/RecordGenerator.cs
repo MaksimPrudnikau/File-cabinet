@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
 using FileCabinetApp;
 
 namespace FileCabinetGenerator
@@ -24,10 +23,23 @@ namespace FileCabinetGenerator
             var firstNamesFilePath = Path.Combine(fileCabinetGeneratorDir!, "RecordGenerator", FirstNamesFile);
             var lastNamesFilePath = Path.Combine(fileCabinetGeneratorDir, "RecordGenerator", LastNamesFile);
 
-            _firstNames = ReadHash(firstNamesFilePath);
-            _lastNames = ReadHash(lastNamesFilePath);
+            try
+            {
+                _firstNames = ReadHash(firstNamesFilePath);
+                _lastNames = ReadHash(lastNamesFilePath);
+            }
+            catch (Exception exception) when (exception is ArgumentException or IOException)
+            {
+                Console.Error.WriteLine(exception.Message);
+                throw;
+            }
         }
 
+        /// <summary>
+        /// Read content from file with first or last names and create hashtable from it
+        /// </summary>
+        /// <param name="filename">Full path of file to read</param>
+        /// <returns><see cref="Hashtable"/> of read file</returns>
         private Hashtable ReadHash(string filename)
         {
             var table = new Hashtable();
@@ -40,6 +52,13 @@ namespace FileCabinetGenerator
             return table;
         }
 
+        /// <summary>
+        /// Generate <see cref="FileCabinetRecord"/> array
+        /// </summary>
+        /// <param name="startId">The initial id from which the numbering begins</param>
+        /// <param name="amount">Total amount of records to generate</param>
+        /// <returns><see cref="FileCabinetRecord"/> array where firstname, lastname and date of birth
+        /// are created randomly. Other properties are set as default</returns>
         private FileCabinetRecord[] Generate(int startId, long amount)
         {
             var records = new List<FileCabinetRecord>();
@@ -51,6 +70,12 @@ namespace FileCabinetGenerator
             return records.ToArray();
         }
 
+        /// <summary>
+        /// Create <see cref="FileCabinetRecord"/> with random first name, last name and date of birth.
+        /// Other properties are set as default
+        /// </summary>
+        /// <param name="id">Source id for created record</param>
+        /// <returns></returns>
         private FileCabinetRecord GetRandomRecord(int id)
         {
             var firstName = GenerateFirstName();
@@ -68,18 +93,30 @@ namespace FileCabinetGenerator
             };
         }
 
+        /// <summary>
+        /// Get random first name from read firs names<see cref="Hashtable"/>
+        /// </summary>
+        /// <returns><see cref="string"/> contains first name</returns>
         private string GenerateFirstName()
         {
             var randomLineNumber = new Random().Next(0, _firstNames.Count);
             return $"{_firstNames[randomLineNumber]}";
         }
 
+        /// <summary>
+        /// Get random last name from read firs names<see cref="Hashtable"/>
+        /// </summary>
+        /// <returns><see cref="string"/> contains first name</returns>
         private string GenerateLastName()
         {
             var randomLineNumber = new Random().Next(0, _lastNames.Count);
             return $"{_lastNames[randomLineNumber]}";
         }
 
+        /// <summary>
+        /// Get random date of birth from period of minimal and maximal date time specified in <see cref="FileCabinetConsts"/>
+        /// </summary>
+        /// <returns>Generated <see cref="DateTime"/> object</returns>
         private DateTime GenerateDate()
         {
             var randomDate = FileCabinetConsts.MinimalDateTime;
@@ -87,11 +124,14 @@ namespace FileCabinetGenerator
             return randomDate.AddDays(new Random().Next(range));
         }
         
+        /// <summary>
+        /// Create file according to properties specified in <see cref="Options"/>
+        /// </summary>
+        /// <param name="options"></param>
         public void Export(Options options)
         {
             using var outputFile = File.CreateText(options.FileName);
-            var snapshot = new FileCabinetServiceSnapshot(Generate(options.StartId, 1));
-            //var snapshot = new FileCabinetServiceSnapshot(Generate(options.StartId, options.Count));
+            var snapshot = new FileCabinetServiceSnapshot(Generate(options.StartId, options.Count));
             
             switch (options.Type)
             {
