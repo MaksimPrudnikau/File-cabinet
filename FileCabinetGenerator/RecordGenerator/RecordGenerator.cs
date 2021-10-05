@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 using FileCabinetApp;
 
 namespace FileCabinetGenerator
@@ -38,7 +40,7 @@ namespace FileCabinetGenerator
             return table;
         }
 
-        private IReadOnlyCollection<FileCabinetRecord> Generate(int startId, long amount)
+        private FileCabinetRecord[] Generate(int startId, long amount)
         {
             var records = new List<FileCabinetRecord>();
             for (int i = 0, id = startId; i < amount; i++, id++)
@@ -46,7 +48,7 @@ namespace FileCabinetGenerator
                 records.Add(GetRandomRecord(id));
             }
 
-            return records;
+            return records.ToArray();
         }
 
         private FileCabinetRecord GetRandomRecord(int id)
@@ -87,33 +89,20 @@ namespace FileCabinetGenerator
         
         public void Export(Options options)
         {
+            using var outputFile = File.CreateText(options.FileName);
+            var snapshot = new FileCabinetServiceSnapshot(Generate(options.StartId, 1));
+            //var snapshot = new FileCabinetServiceSnapshot(Generate(options.StartId, options.Count));
+            
             switch (options.Type)
             {
                 case OutputType.csv:
-                    ExportToCsv(options);
+                    snapshot.SaveToCsv(outputFile);
                     break;
                 case OutputType.xml:
-                    ExportToXml(options);
+                    snapshot.SaveToXml(outputFile);
                     break;
             }
-        }
-
-        private void ExportToCsv(Options options)
-        {
-            using var writer = File.CreateText(options.FileName);
-            
-            var csvWriter = new FIleCabinetCsvWriter(writer);
-            foreach (var item in Generate(options.StartId, options.Count))
-            {
-                csvWriter.Write(item);
-            }
-
             Console.WriteLine(EnglishSource.records_were_written_to, options.Count, options.FileName);
-        }
-        
-        private void ExportToXml(Options options)
-        {
-            throw new NotImplementedException();
         }
     }
 }

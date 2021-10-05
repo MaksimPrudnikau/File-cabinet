@@ -40,27 +40,17 @@ namespace FileCabinetApp
 
             var settings = new XmlWriterSettings
             {
-                Encoding           = Encoding.UTF8,
-                Indent             = true,
-                IndentChars        = "\t",
-                NewLineHandling    = NewLineHandling.Replace
+                Encoding = Encoding.UTF8,
+                Indent = true,
+                IndentChars = "\t",
+                NewLineHandling = NewLineHandling.Replace
             };
-            
-            using var writer = XmlWriter.Create(file, settings);
 
-            if (_records.Count > 0)
-            {
-                writer.WriteStartElement("records");
+            if (_records.Count <= 0) return;
 
-                var classWriter = new FileCabinetXmlWriter(writer);
+            var classWriter = new FileCabinetXmlWriter(XmlWriter.Create(file, settings));
 
-                foreach (var item in _records)
-                {
-                    classWriter.Write(item);
-                }
-
-                writer.WriteEndElement();
-            }
+            classWriter.Write(_records.ToArray());
         }
     }
 }

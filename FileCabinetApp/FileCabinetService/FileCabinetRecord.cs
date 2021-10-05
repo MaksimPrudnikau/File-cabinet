@@ -5,7 +5,6 @@ using System.IO;
 
 namespace FileCabinetApp
 {
-    [Serializable]
     public class FileCabinetRecord
     {
         public int Id { get; set; }

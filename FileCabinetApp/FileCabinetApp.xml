@@ -28,11 +28,11 @@
             </summary>
             <param name="file">Source file</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetXmlWriter.Write(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetXmlWriter.Write(FileCabinetApp.FileCabinetRecord[])">
             <summary>
             Serialize record to xml format
             </summary>
-            <param name="record">Source record</param>
+            <param name="records">Source record</param>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.Parameter)">
             <summary>
