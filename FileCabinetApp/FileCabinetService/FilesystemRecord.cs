@@ -50,7 +50,7 @@ namespace FileCabinetApp
 
         private byte[] GetRank() => _rank;
         
-        public FilesystemRecord(Parameter parameter)
+        public FilesystemRecord(FileCabinetRecord parameter)
         {
             if (parameter is null)
             {

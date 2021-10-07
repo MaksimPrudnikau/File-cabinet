@@ -22,43 +22,43 @@ namespace FileCabinetApp
         /// <summary>
         /// Create new record in base file with source parameters
         /// </summary>
-        /// <param name="parameters">Source parameters to add</param>
+        /// <param name="record">Source parameters to add</param>
         /// <returns>Id of created record</returns>
         /// <exception cref="ArgumentNullException">Parameters are null</exception>
-        public int CreateRecord(Parameter parameters)
+        public int CreateRecord(FileCabinetRecord record)
         {
-            if (parameters is null)
+            if (record is null)
             {
-                throw new ArgumentNullException(nameof(parameters));
+                throw new ArgumentNullException(nameof(record));
             }
 
-            var fileSystemRecord = new FilesystemRecord(parameters);
+            var fileSystemRecord = new FilesystemRecord(record);
             
             fileSystemRecord.Serialize(_outputFile);
 
-            return parameters.Id;
+            return record.Id;
         }
 
         /// <summary>
         /// Edit already existing record with source
         /// </summary>
-        /// <param name="parameters">Source for editing record</param>
+        /// <param name="record">Source for editing record</param>
         /// <exception cref="ArgumentNullException">Parameters are null</exception>
         /// <exception cref="ArgumentException">There is no record suitable for replacement</exception>
-        public void EditRecord(Parameter parameters)
+        public void EditRecord(FileCabinetRecord record)
         {
-            if (parameters is null)
+            if (record is null)
             {
-                throw new ArgumentNullException(nameof(parameters));
+                throw new ArgumentNullException(nameof(record));
             }
 
-            if (parameters.Id * FilesystemRecord.Size > _outputFile.Length)
+            if (record.Id * FilesystemRecord.Size > _outputFile.Length)
             {
-                throw new ArgumentException($"Record with id = {parameters.Id} is not found");
+                throw new ArgumentException($"Record with id = {record.Id} is not found");
             }
 
-            _outputFile.Seek( (parameters.Id - 1) * FilesystemRecord.Size + 1, SeekOrigin.Begin);
-            CreateRecord(parameters);
+            _outputFile.Seek( (record.Id - 1) * FilesystemRecord.Size + 1, SeekOrigin.Begin);
+            CreateRecord(record);
         }
 
         /// <summary>
@@ -92,9 +92,9 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="id">Id of read parameter. The default value indicates the numbering is sequential</param>
         /// <returns><see cref="FileCabinetRecord"/> object</returns>
-        public Parameter ReadParameters(int id = -1)
+        public FileCabinetRecord ReadParameters(int id = -1)
         {
-            var record = new Parameter
+            var record = new FileCabinetRecord
             {
                 Id = id == -1 ? _stat + 1 : id,
                 JobExperience = FileCabinetConsts.MinimalJobExperience,
@@ -161,17 +161,6 @@ namespace FileCabinetApp
                 Console.WriteLine(EnglishSource.Validation_failed, validationResult.StringRepresentation);
             }
             while (true);
-        }
-
-        /// <summary>
-        /// Prints all records to console
-        /// </summary>
-        public void PrintRecords()
-        {
-            foreach (var item in GetRecords())
-            {
-                item.Print();
-            }
         }
 
         /// <summary>

@@ -5,15 +5,15 @@ namespace FileCabinetApp
     public interface IFileCabinetService
     
     {
-        public int CreateRecord(Parameter parameters);
+        public int CreateRecord(FileCabinetRecord record);
         
-        public void EditRecord(Parameter parameters);
+        public void EditRecord(FileCabinetRecord record);
 
         public int GetStat();
 
         public IReadOnlyCollection<FileCabinetRecord> GetRecords();
 
-        public Parameter ReadParameters(int id = -1);
+        public FileCabinetRecord ReadParameters(int id = -1);
         
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue);
         

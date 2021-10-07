@@ -24,24 +24,13 @@ namespace FileCabinetApp
         /// The method create new record from input data and return its id
         /// </summary>
         /// <returns>An id of current record</returns>
-        public int CreateRecord(Parameter parameters)
+        public int CreateRecord(FileCabinetRecord record)
         {
-            if (parameters is null)
+            if (record is null)
             {
-                throw new ArgumentNullException(nameof(parameters));
+                throw new ArgumentNullException(nameof(record));
             }
 
-            var record = new FileCabinetRecord
-            {
-                Id = Stat + 1,
-                FirstName = parameters.FirstName,
-                LastName = parameters.LastName,
-                DateOfBirth = parameters!.DateOfBirth,
-                JobExperience = parameters.JobExperience,
-                Wage = parameters.Wage,
-                Rank = parameters.Rank
-            };
-            
             _records.Add(record.Id, record);
 
             AppendToAllDictionaries(_records[record.Id]);
@@ -60,13 +49,13 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Read parameters from keyboard and parse it to <see cref="Parameter"/> object
+        /// Read parameters from keyboard and parse it to <see cref="FileCabinetRecord"/> object
         /// </summary>
         /// <param name="id">Source id of read parameter</param>
-        /// <returns><see cref="Parameter"/> object equivalent for read parameters</returns>
-        public Parameter ReadParameters(int id = -1)
+        /// <returns><see cref="FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
+        public FileCabinetRecord ReadParameters(int id = -1)
         {   
-            var record = new Parameter
+            var record = new FileCabinetRecord
             {
                 Id = id == -1 ? Stat + 1 : id,
             };
@@ -140,26 +129,21 @@ namespace FileCabinetApp
         /// <summary>
         /// Edit record with the source one
         /// </summary>
-        /// <param name="parameters">Parameter contains new data</param>
-        public void EditRecord(Parameter parameters)
+        /// <param name="record">Parameter contains new data</param>
+        public void EditRecord(FileCabinetRecord record)
         {
-            if (parameters is null)
+            if (record is null)
             {
-                throw new ArgumentNullException(nameof(parameters));
+                throw new ArgumentNullException(nameof(record));
             }
 
-            parameters.Id -= 1;
+            record.Id -= 1;
             
-            RemoveFromAllDictionaries(_records[parameters.Id]);
-            
-            _records[parameters.Id].FirstName = parameters.FirstName;
-            _records[parameters.Id].LastName = parameters.LastName;
-            _records[parameters.Id].DateOfBirth = parameters.DateOfBirth;
-            _records[parameters.Id].JobExperience = parameters.JobExperience;
-            _records[parameters.Id].Wage = parameters.Wage;
-            _records[parameters.Id].Rank = parameters.Rank;
+            RemoveFromAllDictionaries(_records[record.Id]);
 
-            AppendToAllDictionaries(_records[parameters.Id]);
+            _records[record.Id] = record;
+            
+            AppendToAllDictionaries(_records[record.Id]);
         }
 
         /// <summary>
@@ -323,6 +307,10 @@ namespace FileCabinetApp
                 if (!_records.ContainsKey(item.Id))
                 {
                     _records.Add(item.Id, item);
+                }
+                else
+                {
+                    EditRecord(item);
                 }
             }
         }

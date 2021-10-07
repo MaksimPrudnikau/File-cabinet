@@ -34,19 +34,19 @@
             </summary>
             <param name="records">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Create new record in base file with source parameters
             </summary>
-            <param name="parameters">Source parameters to add</param>
+            <param name="record">Source parameters to add</param>
             <returns>Id of created record</returns>
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.EditRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.EditRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Edit already existing record with source
             </summary>
-            <param name="parameters">Source for editing record</param>
+            <param name="record">Source for editing record</param>
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
             <exception cref="T:System.ArgumentException">There is no record suitable for replacement</exception>
         </member>
@@ -78,11 +78,6 @@
             <param name="validator">Source validator</param>
             <returns>Correct input object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.PrintRecords">
-            <summary>
-            Prints all records to console
-            </summary>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByFirstName(System.String)">
             <summary>
             Find all occurrences of searchValue in records of current data base file
@@ -104,7 +99,7 @@
             <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
             <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with date of birth equals searchValue</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             The method create new record from input data and return its id
             </summary>
@@ -112,10 +107,10 @@
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadParameters(System.Int32)">
             <summary>
-            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.Parameter"/> object
+            Read parameters from keyboard and parse it to <see cref="!:Parameter"/> object
             </summary>
             <param name="id">Source id of read parameter</param>
-            <returns><see cref="T:FileCabinetApp.Parameter"/> object equivalent for read parameters</returns>
+            <returns><see cref="!:Parameter"/> object equivalent for read parameters</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
             <summary>
@@ -132,11 +127,11 @@
             </summary>
             <value>An ordinal number of the last record</value>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.EditRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.EditRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Edit record with the source one
             </summary>
-            <param name="parameters">Parameter contains new data</param>
+            <param name="record">Parameter contains new data</param>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToAllDictionaries(FileCabinetApp.FileCabinetRecord)">
             <summary>
