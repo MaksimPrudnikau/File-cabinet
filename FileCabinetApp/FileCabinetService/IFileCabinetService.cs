@@ -20,5 +20,7 @@ namespace FileCabinetApp
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue);
         
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue);
+
+        public void Restore(FileCabinetServiceSnapshot snapshot);
     }
 }

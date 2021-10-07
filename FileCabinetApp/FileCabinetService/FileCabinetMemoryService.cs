@@ -305,5 +305,10 @@ namespace FileCabinetApp
         {
             return new FileCabinetServiceSnapshot(List);
         }
+
+        public void Restore(FileCabinetServiceSnapshot snapshot)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

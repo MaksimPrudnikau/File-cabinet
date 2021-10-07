@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -8,6 +9,8 @@ namespace FileCabinetApp
     public class FileCabinetServiceSnapshot
     {
         private readonly List<FileCabinetRecord> _records;
+        
+        public FileCabinetServiceSnapshot(){}
 
         public FileCabinetServiceSnapshot(IEnumerable<FileCabinetRecord> source)
         {
@@ -51,6 +54,11 @@ namespace FileCabinetApp
             var classWriter = new FileCabinetXmlWriter(XmlWriter.Create(file, settings));
 
             classWriter.Write(_records.ToArray());
+        }
+
+        public void LoadFromCsv(StreamReader reader)
+        {
+            throw new NotImplementedException();
         }
     }
 }

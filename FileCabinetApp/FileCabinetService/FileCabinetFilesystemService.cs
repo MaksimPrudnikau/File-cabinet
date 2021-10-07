@@ -228,5 +228,10 @@ namespace FileCabinetApp
             var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
             return Array.FindAll(records, x => x.DateOfBirth == dateOfBirth);
         }
+
+        public void Restore(FileCabinetServiceSnapshot snapshot)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

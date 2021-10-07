@@ -21,7 +21,8 @@ namespace FileCabinetApp
             {"list", List},
             {"edit", Edit},
             {"find", Find},
-            {"export", Export}
+            {"export", Export},
+            {"import", Import}
         };
 
         public static void Main(string[] args)
@@ -258,6 +259,7 @@ namespace FileCabinetApp
             
             var exportFormat = parametersSplited[0];
             var directory =  parametersSplited[1];
+            
             if (File.Exists(directory))
             {
                 Console.Error.WriteLine(EnglishSource.Export_File_is_exist, directory);
@@ -298,6 +300,32 @@ namespace FileCabinetApp
             }
             
             Console.WriteLine(EnglishSource.All_records_are_exported_to_file, directory);
+        }
+
+        private static void Import(string parameters)
+        {
+            var parametersSplited = parameters.Split(' ');
+
+            if (parametersSplited.Length != 2)
+            {
+                Console.Error.WriteLine("Wrong data format");
+                return;
+            }
+
+            var exportFormat = parametersSplited[0];
+            var directory = parametersSplited[1];
+
+            if (!File.Exists(directory))
+            {
+                Console.Error.WriteLine($"File {directory} is not exist");
+            }
+
+            var snapshot = new FileCabinetServiceSnapshot();
+
+            using (var file = new StreamReader(File.OpenRead(directory)))
+            {
+                snapshot.LoadFromCsv(file);
+            }
         }
     }
 }
