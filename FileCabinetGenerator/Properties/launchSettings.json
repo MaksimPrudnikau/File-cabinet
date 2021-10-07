@@ -2,7 +2,7 @@
   "profiles": {
     "FileCabinetGenerator": {
       "commandName": "Project",
-      "commandLineArgs": "-t xml -o /home/maksim/MyWorld/Trash/records.xml -a 500 -i 45"
+      "commandLineArgs": "-t xml -o /home/maksim/MyWorld/Trash/records.xml -a 0 -i 1"
     }
   }
 }

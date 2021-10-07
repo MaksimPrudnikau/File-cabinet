@@ -6,26 +6,25 @@ namespace FileCabinetGenerator
 {
     public class Options
     {
-        public OutputType Type { get; private set; }
+        public OutputType Type { get; }
 
-        public string FileName { get; private set; }
+        public string FileName { get; }
 
-        public long Count { get; private set; }
+        public long Count { get; }
 
-        public int StartId { get; private set; }
+        public int StartId { get; }
 
-        
         public Options([NotNull] IReadOnlyList<string> args)
         {
             try
             {
-                ParseOutputType(args);
+                Type = ParseOutputType(args);
 
-                ParseOutputFileName(args);
-            
-                ParseRecordsAmount(args);
-            
-                ParseStartId(args);
+                FileName = ParseOutputFileName(args);
+
+                Count = ParseRecordsAmount(args);
+
+                StartId = ParseStartId(args);
             }
             catch (ArgumentException e)
             {
@@ -37,48 +36,51 @@ namespace FileCabinetGenerator
         /// Set output type read from command line
         /// </summary>
         /// <param name="args">command line split into words</param>
-        private void ParseOutputType(IReadOnlyList<string> args)
+        private OutputType ParseOutputType(IReadOnlyList<string> args)
         {
             const int fullFormIndex = 0;
             const int shortFormIndex = 1;
-
-            Type = (OutputType) Enum.Parse(typeof(OutputType), ParseOption(args, fullFormIndex, shortFormIndex));
+            
+            return (OutputType) Enum.Parse(typeof(OutputType), ParseOption(args, fullFormIndex, shortFormIndex), true);
         }
 
         /// <summary>
         /// Set output file name read from command line
         /// </summary>
         /// <param name="args">command line split into words</param>
-        private void ParseOutputFileName(IReadOnlyList<string> args)
+        private string ParseOutputFileName(IReadOnlyList<string> args)
         {
             const int fullFormIndex = 1;
             const int shortFormIndex = 3;
 
-            FileName = ParseOption(args, fullFormIndex, shortFormIndex);
+            var fileName = ParseOption(args, fullFormIndex, shortFormIndex);
+            return fileName;
         }
         
         /// <summary>
         /// Set the total amount of records to create read from command line
         /// </summary>
         /// <param name="args">command line split into words</param>
-        private void ParseRecordsAmount(IReadOnlyList<string> args)
+        private long ParseRecordsAmount(IReadOnlyList<string> args)
         {
             const int fullFormIndex = 2;
             const int shortFormIndex = 5;
 
-            Count = Convert.ToInt64(ParseOption(args, fullFormIndex, shortFormIndex));
+            var amount = Convert.ToInt64(ParseOption(args, fullFormIndex, shortFormIndex));
+            return amount;
         }
         
         /// <summary>
         /// Set the initial record`s id read from command line
         /// </summary>
         /// <param name="args">command line split into words</param>
-        private void ParseStartId(IReadOnlyList<string> args)
+        private int ParseStartId(IReadOnlyList<string> args)
         {
             const int fullFormIndex = 4;
             const int shortFormIndex = 7;
 
-            StartId = Convert.ToInt32(ParseOption(args, fullFormIndex, shortFormIndex));
+            var startId = Convert.ToInt32(ParseOption(args, fullFormIndex, shortFormIndex));
+            return startId;
         }
 
         /// <summary>

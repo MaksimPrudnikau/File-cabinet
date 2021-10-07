@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using FileCabinetApp;
 
@@ -94,7 +93,7 @@ namespace FileCabinetGenerator
         }
 
         /// <summary>
-        /// Get random first name from read firs names<see cref="Hashtable"/>
+        /// Get random first name from read firs names <see cref="Hashtable"/>
         /// </summary>
         /// <returns><see cref="string"/> contains first name</returns>
         private string GenerateFirstName()
@@ -104,7 +103,7 @@ namespace FileCabinetGenerator
         }
 
         /// <summary>
-        /// Get random last name from read firs names<see cref="Hashtable"/>
+        /// Get random last name from read last names <see cref="Hashtable"/>
         /// </summary>
         /// <returns><see cref="string"/> contains first name</returns>
         private string GenerateLastName()
@@ -123,25 +122,36 @@ namespace FileCabinetGenerator
             var range = (FileCabinetConsts.MaximalDateTime - randomDate).Days;           
             return randomDate.AddDays(new Random().Next(range));
         }
-        
+
         /// <summary>
-        /// Create file according to properties specified in <see cref="Options"/>
+        /// Export generated <see cref="FileCabinetRecord"/> array to source path
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="options">Read options</param>
         public void Export(Options options)
         {
-            using var outputFile = File.CreateText(options.FileName);
-            var snapshot = new FileCabinetServiceSnapshot(Generate(options.StartId, options.Count));
+            try
+            {
+                OptionsValidator.Validate(options);
+            }
+            catch (ArgumentException exception)
+            {
+                Console.Error.WriteLine(exception.Message);
+                return;
+            }
             
+            var outputFile = File.CreateText(options.FileName);
+            var snapshot = new FileCabinetServiceSnapshot(Generate(options.StartId, options.Count));
+
             switch (options.Type)
             {
-                case OutputType.csv:
+                case OutputType.Csv:
                     snapshot.SaveToCsv(outputFile);
                     break;
-                case OutputType.xml:
+                case OutputType.Xml:
                     snapshot.SaveToXml(outputFile);
                     break;
             }
+
             Console.WriteLine(EnglishSource.records_were_written_to, options.Count, options.FileName);
         }
     }
