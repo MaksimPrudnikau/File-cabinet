@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using FileCabinetApp.Import;
 
 namespace FileCabinetApp
 {
     public class FileCabinetServiceSnapshot
     {
         private readonly List<FileCabinetRecord> _records;
-        
+
+        public IReadOnlyCollection<FileCabinetRecord> Records { get; set; }
+
         public FileCabinetServiceSnapshot(){}
 
         public FileCabinetServiceSnapshot(IEnumerable<FileCabinetRecord> source)
         {
             _records = new List<FileCabinetRecord>(source);
+            Records = new List<FileCabinetRecord>();
         }
 
         /// <summary>
@@ -58,7 +62,8 @@ namespace FileCabinetApp
 
         public void LoadFromCsv(StreamReader reader)
         {
-            throw new NotImplementedException();
+            var csvReader = new FIleCabinetCsvReader(reader);
+            Records = (IReadOnlyCollection<FileCabinetRecord>) csvReader.ReadAll();
         }
     }
 }

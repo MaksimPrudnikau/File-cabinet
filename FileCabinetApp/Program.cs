@@ -324,7 +324,16 @@ namespace FileCabinetApp
 
             using (var file = new StreamReader(File.OpenRead(directory)))
             {
-                snapshot.LoadFromCsv(file);
+                switch (exportFormat)
+                {
+                    case "csv": 
+                        snapshot.LoadFromCsv(file);
+                        break;
+                    case "xml":
+                        throw new NotImplementedException();
+                }
+                
+                _service.Restore(snapshot);
             }
         }
     }

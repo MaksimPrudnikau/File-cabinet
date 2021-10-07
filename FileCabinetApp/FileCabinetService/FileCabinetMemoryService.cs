@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace FileCabinetApp
@@ -7,7 +8,9 @@ namespace FileCabinetApp
     public class FileCabinetMemoryService : IFileCabinetService
     {
         private static IRecordValidator _validator;
-        private static readonly List<FileCabinetRecord> List = new();
+
+        private static Dictionary<int, FileCabinetRecord> _records = new ();
+
         private static readonly Dictionary<string, List<FileCabinetRecord>> FirstNameDictionary = new();
         private static readonly Dictionary<string, List<FileCabinetRecord>> LastNameDictionary = new();
         private static readonly Dictionary<DateTime, List<FileCabinetRecord>> DateOfBirthDictionary = new();
@@ -27,8 +30,8 @@ namespace FileCabinetApp
             {
                 throw new ArgumentNullException(nameof(parameters));
             }
-            
-            List.Add(new FileCabinetRecord
+
+            var record = new FileCabinetRecord
             {
                 Id = Stat + 1,
                 FirstName = parameters.FirstName,
@@ -37,16 +40,18 @@ namespace FileCabinetApp
                 JobExperience = parameters.JobExperience,
                 Wage = parameters.Wage,
                 Rank = parameters.Rank
-            });
+            };
             
-            AppendToAllDictionaries(List[^1]);
+            _records.Add(record.Id, record);
+
+            AppendToAllDictionaries(_records[record.Id]);
             
-            return List[^1].Id;
+            return record.Id;
         }
 
         public IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            return List.ToArray();
+            return _records.Values;
         }
 
         public int GetStat()
@@ -130,7 +135,7 @@ namespace FileCabinetApp
         /// Returns number of records that the service stores
         /// </summary>
         /// <value>An ordinal number of the last record</value>
-        private static int Stat => List.Count;
+        private static int Stat => _records.Count;
         
         /// <summary>
         /// Edit record with the source one
@@ -145,16 +150,16 @@ namespace FileCabinetApp
 
             parameters.Id -= 1;
             
-            RemoveFromAllDictionaries(List[parameters.Id]);
+            RemoveFromAllDictionaries(_records[parameters.Id]);
             
-            List[parameters.Id].FirstName = parameters.FirstName;
-            List[parameters.Id].LastName = parameters.LastName;
-            List[parameters.Id].DateOfBirth = parameters.DateOfBirth;
-            List[parameters.Id].JobExperience = parameters.JobExperience;
-            List[parameters.Id].Wage = parameters.Wage;
-            List[parameters.Id].Rank = parameters.Rank;
+            _records[parameters.Id].FirstName = parameters.FirstName;
+            _records[parameters.Id].LastName = parameters.LastName;
+            _records[parameters.Id].DateOfBirth = parameters.DateOfBirth;
+            _records[parameters.Id].JobExperience = parameters.JobExperience;
+            _records[parameters.Id].Wage = parameters.Wage;
+            _records[parameters.Id].Rank = parameters.Rank;
 
-            AppendToAllDictionaries(List[parameters.Id]);
+            AppendToAllDictionaries(_records[parameters.Id]);
         }
 
         /// <summary>
@@ -303,12 +308,23 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetServiceSnapshot"/> object</returns>
         public static FileCabinetServiceSnapshot MakeSnapshot()
         {
-            return new FileCabinetServiceSnapshot(List);
+            return new FileCabinetServiceSnapshot(_records.Values);
         }
 
-        public void Restore(FileCabinetServiceSnapshot snapshot)
+        public void Restore([NotNull]FileCabinetServiceSnapshot snapshot)
         {
-            throw new NotImplementedException();
+            if (snapshot is null)
+            {
+                throw new ArgumentNullException(nameof(snapshot));
+            }
+            
+            foreach (var item in snapshot.Records)
+            {
+                if (!_records.ContainsKey(item.Id))
+                {
+                    _records.Add(item.Id, item);
+                }
+            }
         }
     }
 }
