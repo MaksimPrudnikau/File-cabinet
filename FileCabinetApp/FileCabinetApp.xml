@@ -10,7 +10,7 @@
             </summary>
             <param name="file">Source stream</param>
         </member>
-        <member name="M:FileCabinetApp.FIleCabinetCsvWriter.Write(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FIleCabinetCsvWriter.Write(FileCabinetApp.FileCabinetRecord[])">
             <summary>
             Serialize source record to current <see cref="T:System.IO.TextWriter"/>
             </summary>
@@ -107,10 +107,10 @@
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadParameters(System.Int32)">
             <summary>
-            Read parameters from keyboard and parse it to <see cref="!:Parameter"/> object
+            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.FileCabinetRecord"/> object
             </summary>
             <param name="id">Source id of read parameter</param>
-            <returns><see cref="!:Parameter"/> object equivalent for read parameters</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
             <summary>

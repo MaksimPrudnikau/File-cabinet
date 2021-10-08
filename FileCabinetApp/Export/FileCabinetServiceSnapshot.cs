@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -28,10 +29,7 @@ namespace FileCabinetApp
         public void SaveToCsv(StreamWriter file)
         {
             var csvWriter = new FIleCabinetCsvWriter(file);
-            foreach (var item in _records)
-            {
-                csvWriter.Write(item);
-            }
+            csvWriter.Write(_records.ToArray());
         }
 
         /// <summary>

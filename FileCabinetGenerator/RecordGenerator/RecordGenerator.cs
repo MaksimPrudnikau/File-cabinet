@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Text;
 using FileCabinetApp;
 
 namespace FileCabinetGenerator
@@ -132,24 +134,24 @@ namespace FileCabinetGenerator
             try
             {
                 OptionsValidator.Validate(options);
+                using var outputFile = new StreamWriter(options.FileName);
+                            
+                var snapshot = new FileCabinetServiceSnapshot(Generate(options.StartId, options.Count));
+            
+                switch (options.Type)
+                {
+                    case OutputType.Csv:
+                        snapshot.SaveToCsv(outputFile);
+                        break;
+                    case OutputType.Xml:
+                        snapshot.SaveToXml(outputFile);
+                        break;
+                }
             }
-            catch (ArgumentException exception)
+            catch (Exception exception) when (exception is ArgumentException or IOException)
             {
                 Console.Error.WriteLine(exception.Message);
                 return;
-            }
-            
-            var outputFile = File.CreateText(options.FileName);
-            var snapshot = new FileCabinetServiceSnapshot(Generate(options.StartId, options.Count));
-
-            switch (options.Type)
-            {
-                case OutputType.Csv:
-                    snapshot.SaveToCsv(outputFile);
-                    break;
-                case OutputType.Xml:
-                    snapshot.SaveToXml(outputFile);
-                    break;
             }
 
             Console.WriteLine(EnglishSource.records_were_written_to, options.Count, options.FileName);

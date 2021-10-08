@@ -5,7 +5,7 @@ namespace FileCabinetApp
 {
     public class FIleCabinetCsvWriter
     {
-        private readonly TextWriter _file;
+        private TextWriter _file;
 
         /// <summary>
         /// Create <see cref="FIleCabinetCsvWriter"/> object by source <see cref="TextWriter"/> stream
@@ -21,21 +21,23 @@ namespace FileCabinetApp
         /// Serialize source record to current <see cref="TextWriter"/>
         /// </summary>
         /// <param name="record"></param>
-        public void Write(FileCabinetRecord record)
+        public void Write(FileCabinetRecord[] record)
         {
             if (record is null)
             {
                 return;
             }
 
-            _file.WriteLine($"{record.Id}," +
-                            $"{record.FirstName}," +
-                            $"{record.LastName}," +
-                            $"{record.DateOfBirth.ToString("d", CultureInfo.InvariantCulture)}," +
-                            $"{record.JobExperience}," +
-                            $"{record.Wage}," +
-                            $"{record.Rank}");
-            
+            foreach (var item in record)
+            {
+                _file.WriteLine($"{item.Id}," +
+                                $"{item.FirstName}," +
+                                $"{item.LastName}," +
+                                $"{item.DateOfBirth.ToString("d", CultureInfo.InvariantCulture)}," +
+                                $"{item.JobExperience}," +
+                                $"{item.Wage}," +
+                                $"{item.Rank}");
+            }
         }
     }
 }
