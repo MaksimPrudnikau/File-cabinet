@@ -22,7 +22,7 @@ namespace FileCabinetApp {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EnglishSource {
+    public class EnglishSource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -234,7 +234,7 @@ namespace FileCabinetApp {
         /// <summary>
         ///   Looks up a localized string similar to {0} records were written to {1}.
         /// </summary>
-        internal static string records_were_written_to {
+        public static string records_were_written_to {
             get {
                 return ResourceManager.GetString("records_were_written_to", resourceCulture);
             }

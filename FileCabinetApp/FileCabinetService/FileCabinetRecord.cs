@@ -39,7 +39,7 @@ namespace FileCabinetApp
         /// <param name="stream">Source file stream</param>
         /// <returns>Read <see cref="FileCabinetRecord"/> object</returns>
         /// <exception cref="ArgumentNullException">Source stream is null</exception>
-        public FileCabinetRecord ReadRecord(FileStream stream)
+        public static FilesystemRecord ReadRecord(FileStream stream)
         {
             if (stream is null)
             {
@@ -48,7 +48,7 @@ namespace FileCabinetApp
             
             var buffer = new byte[FilesystemRecord.Size];
             stream.Read(buffer, 0, buffer.Length);
-            return new FilesystemRecord(buffer).ToFileCabinetRecord();
+            return new FilesystemRecord(buffer);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array</returns>
         /// <exception cref="ArgumentNullException">stream is null</exception>
         /// <exception cref="ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
-        public FileCabinetRecord[] Deserialize(FileStream stream)
+        public static FileCabinetRecord[] Deserialize(FileStream stream)
         {
             if (stream is null)
             {
@@ -78,7 +78,13 @@ namespace FileCabinetApp
             
             while (currentIndex < stream.Length)
             {
-                array.Add(ReadRecord(stream));
+                var read = ReadRecord(stream);
+                
+                if (!read.IsDeleted)
+                {
+                    array.Add(read.ToFileCabinetRecord());
+                }
+
                 currentIndex += FilesystemRecord.Size;
             }
 

@@ -39,6 +39,8 @@ namespace FileCabinetApp
             return record.Id;
         }
 
+        private void MoveCursorToRecord(int id) => _outputFile.Seek( (id - 1) * FilesystemRecord.Size, SeekOrigin.Begin);
+        
         /// <summary>
         /// Edit already existing record with source
         /// </summary>
@@ -57,7 +59,7 @@ namespace FileCabinetApp
                 throw new ArgumentException($"Record with id = {record.Id} is not found");
             }
 
-            _outputFile.Seek( (record.Id - 1) * FilesystemRecord.Size, SeekOrigin.Begin);
+            MoveCursorToRecord(record.Id);
             CreateRecord(record);
         }
 
@@ -70,7 +72,7 @@ namespace FileCabinetApp
             var record = new FileCabinetRecord();
             try
             {
-                return record.Deserialize(_outputFile);
+                return FileCabinetRecord.Deserialize(_outputFile);
             }
             catch (Exception e) when (e is ArgumentException or ArgumentNullException)
             {
@@ -179,18 +181,22 @@ namespace FileCabinetApp
             
             while (currentIndex < _outputFile.Length)
             {
-                var read = record.ReadRecord(_outputFile);
-                var value = attribute switch
+                var read = FileCabinetRecord.ReadRecord(_outputFile);
+                if (!read.IsDeleted)
                 {
-                    SearchValue.FirstName => read.FirstName,
-                    SearchValue.LastName => read.LastName,
-                    SearchValue.DateOfBirth => read.DateOfBirth.ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture),
-                    _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
-                };
+                    var value = attribute switch
+                    {
+                        SearchValue.FirstName => read.ToFileCabinetRecord().FirstName,
+                        SearchValue.LastName => read.ToFileCabinetRecord().LastName,
+                        SearchValue.DateOfBirth => read.ToFileCabinetRecord().DateOfBirth
+                            .ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture),
+                        _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
+                    };
 
-                if (string.Equals(value, searchValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    records.Add(read);
+                    if (string.Equals(value, searchValue, StringComparison.OrdinalIgnoreCase))
+                    {
+                        records.Add(read.ToFileCabinetRecord());
+                    }
                 }
 
                 currentIndex += FilesystemRecord.Size;
@@ -263,9 +269,7 @@ namespace FileCabinetApp
 
             var record = new FileCabinetRecord();
             var records = new List<FileCabinetRecord>(snapshot.Records);
-
-
-
+            
             if (_outputFile.Length == 0)
             {
                 foreach (var item in records)
@@ -281,7 +285,7 @@ namespace FileCabinetApp
             
             while (currentIndex < _outputFile.Length)
             {
-                var read = record.ReadRecord(_outputFile);
+                var read = FileCabinetRecord.ReadRecord(_outputFile).ToFileCabinetRecord();
 
                 foreach (var item in records)
                 {
@@ -305,7 +309,17 @@ namespace FileCabinetApp
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            var buffer = new byte[FilesystemRecord.Size];
+            
+            MoveCursorToRecord(id);
+            
+            _outputFile.Read(buffer);
+            
+            buffer[FilesystemRecord.IsDeletedIndex] = 1;
+            
+            MoveCursorToRecord(id);
+            
+            _outputFile.Write(buffer);
         }
     }
 }

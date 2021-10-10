@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net.Mime;
 using System.Text;
 
 namespace FileCabinetApp
@@ -9,18 +8,20 @@ namespace FileCabinetApp
     {
         private const int NameCapacity = 120;
         public const int Size = 270;
+        public bool IsDeleted { get; }
 
-        private const ushort IdIndex = 2;
-        private const ushort FirstNameIndex = 6;
-        private const ushort LastNameIndex = 126;
-        private const ushort YearIndex = 246;
-        private const ushort MonthIndex = 250;
-        private const ushort DayIndex = 254;
-        private const ushort JobExperienceIndex = 258;
-        private const ushort WageIndex = 260;
-        private const ushort RankIndex = 268;
+        public const int IsDeletedIndex = 0;
+        private const int IdIndex = 2;
+        private const int FirstNameIndex = 6;
+        private const int LastNameIndex = 126;
+        private const int YearIndex = 246;
+        private const int MonthIndex = 250;
+        private const int DayIndex = 254;
+        private const int JobExperienceIndex = 258;
+        private const int WageIndex = 260;
+        private const int RankIndex = 268;
 
-        private readonly byte[] _status;
+        private readonly byte[] _isDeleted;
         private readonly byte[] _id;
         private readonly byte[] _firstName;
         private readonly byte[] _lastName;
@@ -31,7 +32,7 @@ namespace FileCabinetApp
         private readonly byte[] _wage;
         private readonly byte[] _rank;
 
-        private byte[] GetStatus() => _status;
+        private byte[] GetStatus() => IsDeleted ? BitConverter.GetBytes((byte) 1) : _isDeleted;
 
         private byte[] GetId() => _id;
 
@@ -58,8 +59,8 @@ namespace FileCabinetApp
                 throw new ArgumentNullException(nameof(parameter));
             }
 
-            const short status = 1;
-            _status = BitConverter.GetBytes(status);
+            var status = IsDeleted ? (byte)1 : (byte)0;
+            _isDeleted = BitConverter.GetBytes(status);
             _id = BitConverter.GetBytes(parameter.Id);
             _firstName = ToBytes(parameter.FirstName, NameCapacity);
             _lastName = ToBytes(parameter.LastName, NameCapacity);
@@ -76,6 +77,12 @@ namespace FileCabinetApp
             if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
+            }
+
+            _isDeleted = source[..IdIndex];
+            if (_isDeleted[IsDeletedIndex] == 1)
+            {
+                IsDeleted = true;
             }
 
             _id = source[IdIndex..FirstNameIndex];
@@ -170,11 +177,12 @@ namespace FileCabinetApp
                 Rank = Encoding.UTF8.GetString(GetRank())[0]
             };
         }
-
+        
         private static string ToASCII(string source)
         {
             var lastIndex = Array.FindLastIndex(source.ToCharArray(), char.IsLetter) + 1;
             return source[..lastIndex];
         }
+        
     }
 }

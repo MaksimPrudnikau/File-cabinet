@@ -4,6 +4,147 @@
         <name>FileCabinetApp</name>
     </assembly>
     <members>
+        <member name="T:FileCabinetApp.EnglishSource">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.All_records_are_exported_to_file">
+            <summary>
+              Looks up a localized string similar to All records are exported to file {0}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.console">
+            <summary>
+              Looks up a localized string similar to &gt; .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.create">
+            <summary>
+              Looks up a localized string similar to Record #{0} is created.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Date_birth_is_null_or_whitespace">
+            <summary>
+              Looks up a localized string similar to Date birth is null or whitespace.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.date_of_birth">
+            <summary>
+              Looks up a localized string similar to Date of birth: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.developed_by">
+            <summary>
+              Looks up a localized string similar to File Cabinet Application, developed by {0}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.exit">
+            <summary>
+              Looks up a localized string similar to Exiting an application....
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Export_File_is_exist">
+            <summary>
+              Looks up a localized string similar to File is exist - rewrite {0}? [Y/n].
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.first_name">
+            <summary>
+              Looks up a localized string similar to First name: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.hint">
+            <summary>
+              Looks up a localized string similar to Enter your command, or enter &apos;help&apos; to get help..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.id_is_not_an_integer">
+            <summary>
+              Looks up a localized string similar to Entered id is not an integer.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.job_experience">
+            <summary>
+              Looks up a localized string similar to Job experience: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.last_name">
+            <summary>
+              Looks up a localized string similar to Last name: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.no_command">
+            <summary>
+              Looks up a localized string similar to There is no &apos;{0}&apos; command..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.print_record">
+            <summary>
+              Looks up a localized string similar to {0}, {1}, {2}, {3:yyyy-MMM-dd}, {4}, {5}, {6}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.rank">
+            <summary>
+              Looks up a localized string similar to Rank: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.ReadInput_Conversion_failed">
+            <summary>
+              Looks up a localized string similar to Conversion failed: {0}. Please, correct your input..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Record_is_removed">
+            <summary>
+              Looks up a localized string similar to Record {0} is removed.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.record_not_found">
+            <summary>
+              Looks up a localized string similar to #{0} record is not found..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.records_were_written_to">
+            <summary>
+              Looks up a localized string similar to {0} records were written to {1}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.stat">
+            <summary>
+              Looks up a localized string similar to {0} record(s)..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.update">
+            <summary>
+              Looks up a localized string similar to Record #{0} is updated.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Validation_failed">
+            <summary>
+              Looks up a localized string similar to Validation failed: {0}. Please, correct your input..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.validation_rules">
+            <summary>
+              Looks up a localized string similar to Validation rules = {0}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.wage">
+            <summary>
+              Looks up a localized string similar to Wage: .
+            </summary>
+        </member>
         <member name="M:FileCabinetApp.FIleCabinetCsvWriter.#ctor(System.IO.TextWriter)">
             <summary>
             Create <see cref="T:FileCabinetApp.FIleCabinetCsvWriter"/> object by source <see cref="T:System.IO.TextWriter"/> stream
