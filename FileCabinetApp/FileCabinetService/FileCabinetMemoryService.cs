@@ -311,7 +311,6 @@ namespace FileCabinetApp
 
         public void Purge()
         {
-            throw new NotImplementedException();
         }
     }
 }
