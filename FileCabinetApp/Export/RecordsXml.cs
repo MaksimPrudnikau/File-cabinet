@@ -6,14 +6,14 @@ namespace FileCabinetApp
 {
     [Serializable]
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "records")]
-    public class SerializableRecord
+    public class RecordsXml
     {
         [XmlElement("record")] 
-        public Collection<RecordXml> Records { get; }
+        public Collection<RecordXml> Records { get; set; }
         
-        public SerializableRecord(){}
+        public RecordsXml(){}
 
-        public SerializableRecord(Collection<RecordXml> records)
+        public RecordsXml(Collection<RecordXml> records)
         {
             Records = records;
         }

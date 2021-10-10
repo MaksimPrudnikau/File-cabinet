@@ -27,12 +27,12 @@ namespace FileCabinetApp
                 throw new ArgumentNullException(nameof(records));
             }
 
-            var serializer = new XmlSerializer(typeof(SerializableRecord));
+            var serializer = new XmlSerializer(typeof(RecordsXml));
             
             serializer.Serialize(_writer, ToSerializableRecord(records));
         }
 
-        private static SerializableRecord ToSerializableRecord(IEnumerable<FileCabinetRecord> records)
+        private static RecordsXml ToSerializableRecord(IEnumerable<FileCabinetRecord> records)
         {
             var array = new Collection<RecordXml>();
             foreach (var item in records)
@@ -48,7 +48,7 @@ namespace FileCabinetApp
                 });
             }
 
-            return new SerializableRecord(array);
+            return new RecordsXml(array);
         }
     }
 }
