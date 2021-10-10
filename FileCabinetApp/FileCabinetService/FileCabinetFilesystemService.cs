@@ -57,7 +57,7 @@ namespace FileCabinetApp
                 throw new ArgumentException($"Record with id = {record.Id} is not found");
             }
 
-            _outputFile.Seek( (record.Id - 1) * FilesystemRecord.Size + 1, SeekOrigin.Begin);
+            _outputFile.Seek( (record.Id - 1) * FilesystemRecord.Size, SeekOrigin.Begin);
             CreateRecord(record);
         }
 
@@ -67,9 +67,10 @@ namespace FileCabinetApp
         /// <returns>Array of <see cref="FilesystemRecord"/></returns>
         public IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
+            var record = new FileCabinetRecord();
             try
             {
-                return FileCabinetRecord.ReadAllRecords(_outputFile);
+                return record.Deserialize(_outputFile);
             }
             catch (Exception e) when (e is ArgumentException or ArgumentNullException)
             {
@@ -178,6 +179,7 @@ namespace FileCabinetApp
             searchValue = string.Format(CultureInfo.InvariantCulture, "{0}", searchValue.PadRight(120, default));
             
             var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
+            
             return Array.FindAll(records, x => x.FirstName == searchValue);
         }
 
@@ -220,7 +222,51 @@ namespace FileCabinetApp
 
         public void Restore(FileCabinetServiceSnapshot snapshot)
         {
-            throw new NotImplementedException();
+            if (snapshot?.Records is null || snapshot.Records.Count == 0)
+            {
+                return;
+            }
+
+            var record = new FileCabinetRecord();
+            var records = new List<FileCabinetRecord>(snapshot.Records);
+
+
+
+            if (_outputFile.Length == 0)
+            {
+                foreach (var item in records)
+                {
+                    CreateRecord(item);
+                }
+                
+                return;
+            }
+
+            var currentIndex = 0;
+            _outputFile.Seek(currentIndex, SeekOrigin.Begin);
+            
+            while (currentIndex < _outputFile.Length)
+            {
+                var read = record.ReadRecord(_outputFile);
+
+                foreach (var item in records)
+                {
+                    if (item.Id == read.Id)
+                    {
+                        EditRecord(item);
+                        records.Remove(item);
+                        break;
+                    }
+                }
+
+                currentIndex += FilesystemRecord.Size;
+                
+            }
+
+            foreach (var item in records)
+            {
+                CreateRecord(item);
+            }
         }
     }
 }

@@ -293,7 +293,7 @@ namespace FileCabinetApp
             return new FileCabinetServiceSnapshot(_records.Values);
         }
 
-        public void Restore([NotNull]FileCabinetServiceSnapshot snapshot)
+        public void Restore(FileCabinetServiceSnapshot snapshot)
         {
             if (snapshot is null)
             {
