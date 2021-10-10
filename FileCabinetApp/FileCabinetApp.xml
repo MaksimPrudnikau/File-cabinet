@@ -190,7 +190,7 @@
             </summary>
             <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetRecord.Read(System.IO.FileStream)">
+        <member name="M:FileCabinetApp.FileCabinetRecord.Deserialize(System.IO.FileStream)">
             <summary>
             Read one record from base file consistently
             </summary>
@@ -198,7 +198,7 @@
             <returns>Read <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
             <exception cref="T:System.ArgumentNullException">Source stream is null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetRecord.Deserialize(System.IO.FileStream)">
+        <member name="M:FileCabinetApp.FileCabinetRecord.ReadAllRecords(System.IO.FileStream)">
             <summary>
             Deserialize all content from source file into <see cref="T:FileCabinetApp.FilesystemRecord"/> array
             </summary>
@@ -226,6 +226,13 @@
             Cast current <see cref="T:FileCabinetApp.FilesystemRecord"/> to <see cref="T:FileCabinetApp.FileCabinetRecord"/>
             </summary>
             <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.InputConverter.IdConverter(System.String)">
+            <summary>
+            Convert source id to its <see cref="T:System.Int32"/> representation
+            </summary>
+            <param name="id">Source id</param>
+            <returns>Parsed <see cref="T:System.Int32"/> object</returns>
         </member>
         <member name="M:FileCabinetApp.InputConverter.NameConverter(System.String)">
             <summary>
@@ -312,6 +319,12 @@
             </summary>
             <param name="parameters">Output file format</param>
         </member>
+        <member name="M:FileCabinetApp.CustomValidator.IdValidator(System.Int32)">
+            <summary>
+            Validate source id
+            </summary>
+            <param name="id">Source id</param>
+        </member>
         <member name="M:FileCabinetApp.CustomValidator.NameValidator(System.String)">
             <summary>
             Validate name either first or last
@@ -350,21 +363,23 @@
             </summary>
             <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
         </member>
+        <member name="M:FileCabinetApp.DefaultValidator.IdValidator(System.Int32)">
+            <summary>
+            Validate source id
+            </summary>
+            <param name="id">Source id</param>
+        </member>
         <member name="M:FileCabinetApp.DefaultValidator.NameValidator(System.String)">
             <summary>
             Validate name either first or last
             </summary>
             <param name="name">first or last name</param>
-            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
         </member>
         <member name="M:FileCabinetApp.DefaultValidator.DateOfBirthValidator(System.DateTime)">
             <summary>
             Validate date of birth in format "dd/MM/yyyy"
             </summary>
             <param name="dateOfBirth">entered date of birth</param>
-            <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
-            <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
-            Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
         </member>
     </members>
 </doc>

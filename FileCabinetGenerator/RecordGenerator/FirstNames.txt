@@ -287,7 +287,7 @@ Nikolay
 Rina
 Zhiqiang
 Marcos
-M?ria
+Mria
 Norma
 Anton
 Raul
@@ -425,7 +425,7 @@ Ravi
 Virginia
 Hamid
 Alain
-Ant?nio
+Antnio
 Lyubov
 Xiaoming
 Alicia
@@ -528,7 +528,7 @@ Yasmin
 Chi
 Yin
 Qiong
-Ay?e
+Aye
 Phuong
 Melissa
 Quan
@@ -852,7 +852,7 @@ Yingying
 Ta
 Lyudmyla
 Isabelle
-Jos?
+Jos
 Tim
 Durga
 Naresh

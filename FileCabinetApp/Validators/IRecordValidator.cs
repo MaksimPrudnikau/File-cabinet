@@ -4,6 +4,8 @@ namespace FileCabinetApp
 {
     public interface IRecordValidator
     {
+        public ValidationResult IdValidator(int id);
+        
         public ValidationResult NameValidator(string name);
 
         public ValidationResult DateOfBirthValidator(DateTime dateOfBirth);

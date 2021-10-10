@@ -19,7 +19,7 @@ namespace FileCabinetApp
 
         public decimal Wage { get; set; } = FileCabinetConsts.MinimalWage;
 
-        public char Rank { get; set; } = FileCabinetConsts.MinimalRank;
+        public char Rank { get; set; } = FileCabinetConsts.Grades[0];
 
         public void Print()
         {
@@ -39,7 +39,7 @@ namespace FileCabinetApp
         /// <param name="stream">Source file stream</param>
         /// <returns>Read <see cref="FileCabinetRecord"/> object</returns>
         /// <exception cref="ArgumentNullException">Source stream is null</exception>
-        private static FileCabinetRecord Read(FileStream stream)
+        private static FileCabinetRecord Deserialize(FileStream stream)
         {
             if (stream is null)
             {
@@ -58,7 +58,7 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array</returns>
         /// <exception cref="ArgumentNullException">stream is null</exception>
         /// <exception cref="ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
-        public static FileCabinetRecord[] Deserialize(FileStream stream)
+        public static FileCabinetRecord[] ReadAllRecords(FileStream stream)
         {
             if (stream is null)
             {
@@ -78,11 +78,66 @@ namespace FileCabinetApp
             
             while (currentIndex < stream.Length)
             {
-                array.Add(Read(stream));
+                array.Add(Deserialize(stream));
                 currentIndex += FilesystemRecord.Size;
             }
 
             return array.ToArray();
+        }
+        
+        public static FileCabinetRecord Deserialize(string csvLine)
+        {
+            const int parametersCount = 7;
+            
+            const int idIndex = 0;
+            const int firstNameIndex = 1;
+            const int lastNameIndex = 2;
+            const int dateOfBirthIndex = 3;
+            const int jobExperienceIndex = 4;
+            const int wageIndex = 5;
+            const int rankIndex = 6;
+            
+            var split = csvLine.Split(FileCabinetConsts.CsvDelimiter);
+            
+            if (split.Length != parametersCount)
+            {
+                throw new ArgumentException($"{csvLine} missing one parameter");
+            }
+
+            IRecordValidator validator = new CustomValidator();
+
+            return new FileCabinetRecord
+            {
+                Id = Parse(split[idIndex], InputConverter.IdConverter, validator.IdValidator),
+                FirstName = Parse(split[firstNameIndex], InputConverter.NameConverter, validator.NameValidator),
+                LastName = Parse(split[lastNameIndex], InputConverter.NameConverter, validator.NameValidator),
+                DateOfBirth = Parse(split[dateOfBirthIndex], InputConverter.DateOfBirthConverter,
+                    validator.DateOfBirthValidator),
+                JobExperience = Parse(split[jobExperienceIndex], InputConverter.JobExperienceConverter,
+                    validator.JobExperienceValidator),
+                Wage = Parse(split[wageIndex], InputConverter.WageConverter, validator.WageValidator),
+                Rank = Parse(split[rankIndex], InputConverter.RankConverter, validator.RankValidator)
+            };
+        }
+        
+        private static T Parse<T>(string source, Func<string, ConversionResult<T>> converter, Func<T, ValidationResult> validator)
+        {
+            var conversionResult = converter(source);
+
+            if (!conversionResult.Parsed)
+            {
+                throw new ArgumentException($"{source} Error: wrong conversion");
+            }
+
+            var value = conversionResult.Result;
+
+            var validationResult = validator(value);
+            if (validationResult.Parsed)
+            {
+                return value;
+            }
+            
+            throw new ArgumentException(validationResult.Message);
         }
     }
 }

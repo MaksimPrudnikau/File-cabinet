@@ -5,6 +5,24 @@ namespace FileCabinetApp
 {
     public static class InputConverter
     {
+     
+        /// <summary>
+        /// Convert source id to its <see cref="int"/> representation
+        /// </summary>
+        /// <param name="id">Source id</param>
+        /// <returns>Parsed <see cref="int"/> object</returns>
+        public static ConversionResult<int> IdConverter(string id)
+        {
+            var parsed = int.TryParse(
+                id,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var result);
+            
+            return new ConversionResult<int>
+                {Parsed = parsed, StringRepresentation = $"{result}", Result = result};
+        }
+        
         /// <summary>
         /// Convert source string to its string representation
         /// </summary>
@@ -23,11 +41,9 @@ namespace FileCabinetApp
         /// <returns>Parsed <see cref="DateTime"/> object</returns>
         public static ConversionResult<DateTime> DateOfBirthConverter(string dateOfBirth)
         {
-            const string inputDateTimeFormat = "dd/MM/yyyy";
-            
             var parsed = DateTime.TryParseExact(
                 dateOfBirth,
-                inputDateTimeFormat,
+                FileCabinetConsts.InputDateFormat,
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
                 out var result);

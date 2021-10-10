@@ -291,7 +291,7 @@ O
 Dias
 Dang
 Paswan
-Mu?oz
+Muoz
 Qiao
 Muhammed
 Yusuf
@@ -412,7 +412,7 @@ Chandra
 Thompson
 Contreras
 Caudhari
-da Concei?ao
+da Conceiao
 Hua
 Aslam
 Ei
@@ -470,7 +470,7 @@ Cabrera
 Lian
 Rios
 Murmu
-Y?lmaz
+Ylmaz
 Mehmood
 Salem
 Teixeira
@@ -489,10 +489,10 @@ Pandey
 Jing
 Idris
 Khaw
-M?ller
+Mller
 Sow
 Duarte
-Nu?ez
+Nuez
 Manuel
 Miao
 Dutta
@@ -506,7 +506,7 @@ Cauhan
 Im
 Chon
 Saito
-Pe?a
+Pea
 May
 Gonzales
 Francisco
@@ -700,7 +700,7 @@ Guerra
 Trinh
 Varma
 Arif
-Gon?alves
+Gonalves
 Jana
 Jian
 George
@@ -768,7 +768,7 @@ Khine
 Javed
 Camacho
 Eze
-S?ntos
+Sntos
 Bhagat
 Morris
 Gil
@@ -820,7 +820,7 @@ Kouame
 Collins
 Cooper
 Bo
-Ant?nio
+Antnio
 Quintero
 Bekele
 Ahmadi
@@ -828,10 +828,10 @@ Nair
 Kelly
 Nahar
 Pinheiro
-?elik
+elik
 Bux
 Adel
-?ahin
+ahin
 Wagner
 dela Cruz
 Akpan
@@ -845,7 +845,7 @@ Morgan
 Van
 Leng
 Luong
-Y?ld?z
+Yldz
 Sheik
 Hnin
 Barros
@@ -862,7 +862,7 @@ Shehu
 Bahadur
 Joshi
 Mane
-Y?ld?r?m
+Yldrm
 Hidayat
 Farah
 Nam
@@ -944,7 +944,7 @@ Valenzuela
 Sulaiman
 Ao
 Thanh
-?zt?rk
+ztrk
 Alonso
 da Cruz
 Yahya
@@ -960,7 +960,7 @@ Fei
 Francis
 Mukherjee
 Manna
-Ayd?n
+Aydn
 Freitas
 Sha
 Richard

@@ -28,14 +28,15 @@ namespace FileCabinetApp
                 return;
             }
 
+            var delimiter = FileCabinetConsts.CsvDelimiter;
             foreach (var item in record)
             {
-                _file.WriteLine($"{item.Id}," +
-                                $"{item.FirstName}," +
-                                $"{item.LastName}," +
-                                $"{item.DateOfBirth.ToString("d", CultureInfo.InvariantCulture)}," +
-                                $"{item.JobExperience}," +
-                                $"{item.Wage}," +
+                _file.WriteLine($"{item.Id}{delimiter}" +
+                                $"{item.FirstName}{delimiter}" +
+                                $"{item.LastName}{delimiter}" +
+                                $"{item.DateOfBirth.ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture)}{delimiter}" +
+                                $"{item.JobExperience}{delimiter}" +
+                                $"{item.Wage}{delimiter}" +
                                 $"{item.Rank}");
             }
         }

@@ -69,7 +69,7 @@ namespace FileCabinetApp
         {
             try
             {
-                return FileCabinetRecord.Deserialize(_outputFile);
+                return FileCabinetRecord.ReadAllRecords(_outputFile);
             }
             catch (Exception e) when (e is ArgumentException or ArgumentNullException)
             {
@@ -99,7 +99,7 @@ namespace FileCabinetApp
                 Id = id == -1 ? _stat + 1 : id,
                 JobExperience = FileCabinetConsts.MinimalJobExperience,
                 Wage = FileCabinetConsts.MinimalWage,
-                Rank = FileCabinetConsts.MinimalRank
+                Rank = FileCabinetConsts.Grades[0]
             };
             _stat++;
             
