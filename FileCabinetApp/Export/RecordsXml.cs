@@ -9,8 +9,8 @@ namespace FileCabinetApp
     public class RecordsXml
     {
         [XmlElement("record")] 
-        public Collection<RecordXml> Records { get; set; }
-        
+        public Collection<RecordXml> Records { get; } = new();
+
         public RecordsXml(){}
 
         public RecordsXml(Collection<RecordXml> records)
