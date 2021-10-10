@@ -190,7 +190,7 @@
             </summary>
             <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetRecord.Deserialize(System.IO.FileStream)">
+        <member name="M:FileCabinetApp.FileCabinetRecord.ReadRecord(System.IO.FileStream)">
             <summary>
             Read one record from base file consistently
             </summary>
@@ -198,7 +198,7 @@
             <returns>Read <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
             <exception cref="T:System.ArgumentNullException">Source stream is null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetRecord.ReadAllRecords(System.IO.FileStream)">
+        <member name="M:FileCabinetApp.FileCabinetRecord.Deserialize(System.IO.FileStream)">
             <summary>
             Deserialize all content from source file into <see cref="T:FileCabinetApp.FilesystemRecord"/> array
             </summary>
