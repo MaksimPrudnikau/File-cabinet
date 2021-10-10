@@ -136,8 +136,6 @@ namespace FileCabinetApp
             {
                 throw new ArgumentNullException(nameof(record));
             }
-
-            record.Id -= 1;
             
             RemoveFromAllDictionaries(_records[record.Id]);
 
