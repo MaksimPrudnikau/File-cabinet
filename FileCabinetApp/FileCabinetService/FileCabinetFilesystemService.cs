@@ -164,6 +164,42 @@ namespace FileCabinetApp
             while (true);
         }
 
+        private IEnumerable<FileCabinetRecord> Find(string searchValue, SearchValue attribute)
+        {
+            if (searchValue is null)
+            {
+                return Array.Empty<FileCabinetRecord>();
+            }
+            
+            var records = new List<FileCabinetRecord>();
+            var record = new FileCabinetRecord();
+            
+            var currentIndex = 0;
+            _outputFile.Seek(currentIndex, SeekOrigin.Begin);
+            
+            while (currentIndex < _outputFile.Length)
+            {
+                var read = record.ReadRecord(_outputFile);
+                var value = attribute switch
+                {
+                    SearchValue.FirstName => read.FirstName,
+                    SearchValue.LastName => read.LastName,
+                    SearchValue.DateOfBirth => read.DateOfBirth.ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture),
+                    _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
+                };
+
+                if (string.Equals(value, searchValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    records.Add(read);
+                }
+
+                currentIndex += FilesystemRecord.Size;
+                
+            }
+
+            return records;
+        }
+
         /// <summary>
         /// Find all occurrences of searchValue in records of current data base file
         /// </summary>
@@ -171,16 +207,15 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array with firstname equals searchValue</returns>
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
-            if (searchValue is null)
+            try
             {
+                return Find(searchValue, SearchValue.FirstName);
+            }
+            catch (ArgumentOutOfRangeException exception)
+            {
+                Console.WriteLine(exception.Message);
                 return Array.Empty<FileCabinetRecord>();
             }
-
-            searchValue = string.Format(CultureInfo.InvariantCulture, "{0}", searchValue.PadRight(120, default));
-            
-            var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
-            
-            return Array.FindAll(records, x => x.FirstName == searchValue);
         }
 
         /// <summary>
@@ -190,15 +225,15 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array with lastname equals searchValue</returns>
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
-            if (searchValue is null)
+            try
             {
+                return Find(searchValue, SearchValue.LastName);
+            }
+            catch (ArgumentOutOfRangeException exception)
+            {
+                Console.WriteLine(exception.Message);
                 return Array.Empty<FileCabinetRecord>();
             }
-            
-            searchValue = string.Format(CultureInfo.InvariantCulture, "{0}", searchValue.PadRight(120, default));
-
-            var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
-            return Array.FindAll(records, x => x.LastName == searchValue);
         }
 
         /// <summary>
@@ -208,16 +243,15 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array with date of birth equals searchValue</returns>
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
-            if (searchValue is null)
+            try
             {
+                return Find(searchValue, SearchValue.DateOfBirth);
+            }
+            catch (ArgumentOutOfRangeException exception)
+            {
+                Console.WriteLine(exception.Message);
                 return Array.Empty<FileCabinetRecord>();
             }
-            
-            var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
-                CultureInfo.InvariantCulture);
-            
-            var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
-            return Array.FindAll(records, x => x.DateOfBirth == dateOfBirth);
         }
 
         public void Restore(FileCabinetServiceSnapshot snapshot)
