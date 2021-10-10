@@ -330,7 +330,8 @@ namespace FileCabinetApp
                         snapshot.LoadFromCsv(file);
                         break;
                     case "xml":
-                        throw new NotImplementedException();
+                        snapshot.LoadFromXml(file);
+                        break;
                 }
                 
                 _service.Restore(snapshot);
