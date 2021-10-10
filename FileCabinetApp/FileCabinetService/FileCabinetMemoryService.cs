@@ -216,12 +216,7 @@ namespace FileCabinetApp
             DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
-        /// <summary>
-        /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable first name
-        /// </summary>
-        /// <param name="searchValue">First name to search</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with suitable first name</returns>
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
+        private static IEnumerable<FileCabinetRecord> Find(string searchValue, SearchValue attribute)
         {
             if (string.IsNullOrEmpty(searchValue))
             {
@@ -230,12 +225,29 @@ namespace FileCabinetApp
 
             try
             {
-                return FirstNameDictionary[searchValue];
+                return attribute switch
+                {
+                    SearchValue.FirstName => FirstNameDictionary[searchValue],
+                    SearchValue.LastName => LastNameDictionary[searchValue],
+                    SearchValue.DateOfBirth => DateOfBirthDictionary[
+                        DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture)],
+                    _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
+                };
             }
             catch (KeyNotFoundException)
             {
                 return Array.Empty<FileCabinetRecord>();
             }
+        }
+
+        /// <summary>
+        /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable first name
+        /// </summary>
+        /// <param name="searchValue">First name to search</param>
+        /// <returns><see cref="FileCabinetRecord"/> array with suitable first name</returns>
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
+        {
+            return Find(searchValue, SearchValue.FirstName);
         }
 
         /// <summary>
@@ -245,19 +257,7 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array with suitable last name</returns>
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
-            if (string.IsNullOrEmpty(searchValue))
-            {
-                return Array.Empty<FileCabinetRecord>();
-            }
-
-            try
-            {
-                return LastNameDictionary[searchValue];
-            }
-            catch (KeyNotFoundException)
-            {
-                return Array.Empty<FileCabinetRecord>();
-            }
+            return Find(searchValue, SearchValue.LastName);
         }
 
         /// <summary>
@@ -267,21 +267,7 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array with suitable date of birth</returns>
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
-            var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture);
-
-            if (string.IsNullOrEmpty(searchValue))
-            {
-                return Array.Empty<FileCabinetRecord>();
-            }
-
-            try
-            {
-                return DateOfBirthDictionary[dateOfBirth];
-            }
-            catch (KeyNotFoundException)
-            {
-                return Array.Empty<FileCabinetRecord>();
-            }
+            return Find(searchValue, SearchValue.DateOfBirth);
         }
 
         /// <summary>
