@@ -321,5 +321,10 @@ namespace FileCabinetApp
             
             _outputFile.Write(buffer);
         }
+
+        public void Purge()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

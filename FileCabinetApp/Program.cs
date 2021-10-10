@@ -24,7 +24,8 @@ namespace FileCabinetApp
             {"find", Find},
             {"export", Export},
             {"import", Import},
-            {"remove", Remove}
+            {"remove", Remove},
+            {"purge", Purge}
         };
 
         public static void Main(string[] args)
@@ -354,6 +355,11 @@ namespace FileCabinetApp
             {
                 Console.WriteLine(exception.Message);
             }
+        }
+
+        private static void Purge(string parameters)
+        {
+            _service.Purge();
         }
     }
 }

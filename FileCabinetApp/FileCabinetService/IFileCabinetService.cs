@@ -24,5 +24,7 @@ namespace FileCabinetApp
         public void Restore(FileCabinetServiceSnapshot snapshot);
 
         public void Remove(int id);
+
+        public void Purge();
     }
 }

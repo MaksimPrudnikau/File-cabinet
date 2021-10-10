@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace FileCabinetApp
@@ -308,6 +307,11 @@ namespace FileCabinetApp
 
             RemoveFromAllDictionaries(_records[id]);
             _records.Remove(id);
+        }
+
+        public void Purge()
+        {
+            throw new NotImplementedException();
         }
     }
 }
