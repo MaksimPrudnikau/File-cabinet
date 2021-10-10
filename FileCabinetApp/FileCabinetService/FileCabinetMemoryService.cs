@@ -304,7 +304,7 @@ namespace FileCabinetApp
             {
                 if (!_records.ContainsKey(item.Id))
                 {
-                    _records.Add(item.Id, item);
+                    CreateRecord(item);
                 }
                 else
                 {
@@ -315,7 +315,13 @@ namespace FileCabinetApp
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            if (!_records.ContainsKey(id))
+            {
+                throw new ArgumentException($"Record with id = {id} is not exist");
+            }
+
+            RemoveFromAllDictionaries(_records[id]);
+            _records.Remove(id);
         }
     }
 }

@@ -348,7 +348,7 @@ namespace FileCabinetApp
                 
                 _service.Remove(id);
             }
-            catch (Exception exception) when (exception is OverflowException or FormatException)
+            catch (Exception exception) when (exception is OverflowException or FormatException or ArgumentException)
             {
                 Console.WriteLine(exception.Message);
             }
