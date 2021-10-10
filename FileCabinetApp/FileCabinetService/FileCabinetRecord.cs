@@ -5,7 +5,6 @@ using System.IO;
 
 namespace FileCabinetApp
 {
-    [Serializable]
     public class FileCabinetRecord
     {
         public int Id { get; set; }
@@ -15,12 +14,12 @@ namespace FileCabinetApp
         public string LastName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
-        
-        public short JobExperience { get; set; }
-        
-        public decimal Wage { get; set; }
-        
-        public char Rank { get; set; }
+
+        public short JobExperience { get; set; } = FileCabinetConsts.MinimalJobExperience;
+
+        public decimal Wage { get; set; } = FileCabinetConsts.MinimalWage;
+
+        public char Rank { get; set; } = FileCabinetConsts.Grades[0];
 
         public void Print()
         {
@@ -40,7 +39,7 @@ namespace FileCabinetApp
         /// <param name="stream">Source file stream</param>
         /// <returns>Read <see cref="FileCabinetRecord"/> object</returns>
         /// <exception cref="ArgumentNullException">Source stream is null</exception>
-        private static FileCabinetRecord Read(FileStream stream)
+        public FileCabinetRecord ReadRecord(FileStream stream)
         {
             if (stream is null)
             {
@@ -59,7 +58,7 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array</returns>
         /// <exception cref="ArgumentNullException">stream is null</exception>
         /// <exception cref="ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
-        public static FileCabinetRecord[] Deserialize(FileStream stream)
+        public FileCabinetRecord[] Deserialize(FileStream stream)
         {
             if (stream is null)
             {
@@ -79,7 +78,7 @@ namespace FileCabinetApp
             
             while (currentIndex < stream.Length)
             {
-                array.Add(Read(stream));
+                array.Add(ReadRecord(stream));
                 currentIndex += FilesystemRecord.Size;
             }
 

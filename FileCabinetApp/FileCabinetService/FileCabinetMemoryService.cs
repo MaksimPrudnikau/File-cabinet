@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace FileCabinetApp
@@ -7,7 +8,9 @@ namespace FileCabinetApp
     public class FileCabinetMemoryService : IFileCabinetService
     {
         private static IRecordValidator _validator;
-        private static readonly List<FileCabinetRecord> List = new();
+
+        private static Dictionary<int, FileCabinetRecord> _records = new ();
+
         private static readonly Dictionary<string, List<FileCabinetRecord>> FirstNameDictionary = new();
         private static readonly Dictionary<string, List<FileCabinetRecord>> LastNameDictionary = new();
         private static readonly Dictionary<DateTime, List<FileCabinetRecord>> DateOfBirthDictionary = new();
@@ -21,32 +24,23 @@ namespace FileCabinetApp
         /// The method create new record from input data and return its id
         /// </summary>
         /// <returns>An id of current record</returns>
-        public int CreateRecord(Parameter parameters)
+        public int CreateRecord(FileCabinetRecord record)
         {
-            if (parameters is null)
+            if (record is null)
             {
-                throw new ArgumentNullException(nameof(parameters));
+                throw new ArgumentNullException(nameof(record));
             }
+
+            _records.Add(record.Id, record);
+
+            AppendToAllDictionaries(_records[record.Id]);
             
-            List.Add(new FileCabinetRecord
-            {
-                Id = Stat + 1,
-                FirstName = parameters.FirstName,
-                LastName = parameters.LastName,
-                DateOfBirth = parameters!.DateOfBirth,
-                JobExperience = parameters.JobExperience,
-                Wage = parameters.Wage,
-                Rank = parameters.Rank
-            });
-            
-            AppendToAllDictionaries(List[^1]);
-            
-            return List[^1].Id;
+            return record.Id;
         }
 
         public IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            return List.ToArray();
+            return _records.Values;
         }
 
         public int GetStat()
@@ -55,18 +49,15 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Read parameters from keyboard and parse it to <see cref="Parameter"/> object
+        /// Read parameters from keyboard and parse it to <see cref="FileCabinetRecord"/> object
         /// </summary>
         /// <param name="id">Source id of read parameter</param>
-        /// <returns><see cref="Parameter"/> object equivalent for read parameters</returns>
-        public Parameter ReadParameters(int id = -1)
+        /// <returns><see cref="FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
+        public FileCabinetRecord ReadParameters(int id = -1)
         {   
-            var record = new Parameter
+            var record = new FileCabinetRecord
             {
                 Id = id == -1 ? Stat + 1 : id,
-                JobExperience = FileCabinetConsts.MinimalJobExperience,
-                Wage = FileCabinetConsts.MinimalWage,
-                Rank = FileCabinetConsts.MinimalRank
             };
 
             Console.Write(EnglishSource.first_name);
@@ -133,31 +124,24 @@ namespace FileCabinetApp
         /// Returns number of records that the service stores
         /// </summary>
         /// <value>An ordinal number of the last record</value>
-        private static int Stat => List.Count;
+        private static int Stat => _records.Count;
         
         /// <summary>
         /// Edit record with the source one
         /// </summary>
-        /// <param name="parameters">Parameter contains new data</param>
-        public void EditRecord(Parameter parameters)
+        /// <param name="record">Parameter contains new data</param>
+        public void EditRecord(FileCabinetRecord record)
         {
-            if (parameters is null)
+            if (record is null)
             {
-                throw new ArgumentNullException(nameof(parameters));
+                throw new ArgumentNullException(nameof(record));
             }
-
-            parameters.Id -= 1;
             
-            RemoveFromAllDictionaries(List[parameters.Id]);
-            
-            List[parameters.Id].FirstName = parameters.FirstName;
-            List[parameters.Id].LastName = parameters.LastName;
-            List[parameters.Id].DateOfBirth = parameters.DateOfBirth;
-            List[parameters.Id].JobExperience = parameters.JobExperience;
-            List[parameters.Id].Wage = parameters.Wage;
-            List[parameters.Id].Rank = parameters.Rank;
+            RemoveFromAllDictionaries(_records[record.Id]);
 
-            AppendToAllDictionaries(List[parameters.Id]);
+            _records[record.Id] = record;
+            
+            AppendToAllDictionaries(_records[record.Id]);
         }
 
         /// <summary>
@@ -306,7 +290,27 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetServiceSnapshot"/> object</returns>
         public static FileCabinetServiceSnapshot MakeSnapshot()
         {
-            return new FileCabinetServiceSnapshot(List);
+            return new FileCabinetServiceSnapshot(_records.Values);
+        }
+
+        public void Restore(FileCabinetServiceSnapshot snapshot)
+        {
+            if (snapshot is null)
+            {
+                throw new ArgumentNullException(nameof(snapshot));
+            }
+            
+            foreach (var item in snapshot.Records)
+            {
+                if (!_records.ContainsKey(item.Id))
+                {
+                    _records.Add(item.Id, item);
+                }
+                else
+                {
+                    EditRecord(item);
+                }
+            }
         }
     }
 }

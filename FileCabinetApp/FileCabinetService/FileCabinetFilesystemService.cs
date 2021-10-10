@@ -22,43 +22,43 @@ namespace FileCabinetApp
         /// <summary>
         /// Create new record in base file with source parameters
         /// </summary>
-        /// <param name="parameters">Source parameters to add</param>
+        /// <param name="record">Source parameters to add</param>
         /// <returns>Id of created record</returns>
         /// <exception cref="ArgumentNullException">Parameters are null</exception>
-        public int CreateRecord(Parameter parameters)
+        public int CreateRecord(FileCabinetRecord record)
         {
-            if (parameters is null)
+            if (record is null)
             {
-                throw new ArgumentNullException(nameof(parameters));
+                throw new ArgumentNullException(nameof(record));
             }
 
-            var fileSystemRecord = new FilesystemRecord(parameters);
+            var fileSystemRecord = new FilesystemRecord(record);
             
             fileSystemRecord.Serialize(_outputFile);
 
-            return parameters.Id;
+            return record.Id;
         }
 
         /// <summary>
         /// Edit already existing record with source
         /// </summary>
-        /// <param name="parameters">Source for editing record</param>
+        /// <param name="record">Source for editing record</param>
         /// <exception cref="ArgumentNullException">Parameters are null</exception>
         /// <exception cref="ArgumentException">There is no record suitable for replacement</exception>
-        public void EditRecord(Parameter parameters)
+        public void EditRecord(FileCabinetRecord record)
         {
-            if (parameters is null)
+            if (record is null)
             {
-                throw new ArgumentNullException(nameof(parameters));
+                throw new ArgumentNullException(nameof(record));
             }
 
-            if (parameters.Id * FilesystemRecord.Size > _outputFile.Length)
+            if (record.Id * FilesystemRecord.Size > _outputFile.Length)
             {
-                throw new ArgumentException($"Record with id = {parameters.Id} is not found");
+                throw new ArgumentException($"Record with id = {record.Id} is not found");
             }
 
-            _outputFile.Seek( (parameters.Id - 1) * FilesystemRecord.Size + 1, SeekOrigin.Begin);
-            CreateRecord(parameters);
+            _outputFile.Seek( (record.Id - 1) * FilesystemRecord.Size, SeekOrigin.Begin);
+            CreateRecord(record);
         }
 
         /// <summary>
@@ -67,9 +67,10 @@ namespace FileCabinetApp
         /// <returns>Array of <see cref="FilesystemRecord"/></returns>
         public IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
+            var record = new FileCabinetRecord();
             try
             {
-                return FileCabinetRecord.Deserialize(_outputFile);
+                return record.Deserialize(_outputFile);
             }
             catch (Exception e) when (e is ArgumentException or ArgumentNullException)
             {
@@ -92,14 +93,14 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="id">Id of read parameter. The default value indicates the numbering is sequential</param>
         /// <returns><see cref="FileCabinetRecord"/> object</returns>
-        public Parameter ReadParameters(int id = -1)
+        public FileCabinetRecord ReadParameters(int id = -1)
         {
-            var record = new Parameter
+            var record = new FileCabinetRecord
             {
                 Id = id == -1 ? _stat + 1 : id,
                 JobExperience = FileCabinetConsts.MinimalJobExperience,
                 Wage = FileCabinetConsts.MinimalWage,
-                Rank = FileCabinetConsts.MinimalRank
+                Rank = FileCabinetConsts.Grades[0]
             };
             _stat++;
             
@@ -163,15 +164,40 @@ namespace FileCabinetApp
             while (true);
         }
 
-        /// <summary>
-        /// Prints all records to console
-        /// </summary>
-        public void PrintRecords()
+        private IEnumerable<FileCabinetRecord> Find(string searchValue, SearchValue attribute)
         {
-            foreach (var item in GetRecords())
+            if (searchValue is null)
             {
-                item.Print();
+                return Array.Empty<FileCabinetRecord>();
             }
+            
+            var records = new List<FileCabinetRecord>();
+            var record = new FileCabinetRecord();
+            
+            var currentIndex = 0;
+            _outputFile.Seek(currentIndex, SeekOrigin.Begin);
+            
+            while (currentIndex < _outputFile.Length)
+            {
+                var read = record.ReadRecord(_outputFile);
+                var value = attribute switch
+                {
+                    SearchValue.FirstName => read.FirstName,
+                    SearchValue.LastName => read.LastName,
+                    SearchValue.DateOfBirth => read.DateOfBirth.ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture),
+                    _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
+                };
+
+                if (string.Equals(value, searchValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    records.Add(read);
+                }
+
+                currentIndex += FilesystemRecord.Size;
+                
+            }
+
+            return records;
         }
 
         /// <summary>
@@ -181,15 +207,15 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array with firstname equals searchValue</returns>
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
-            if (searchValue is null)
+            try
             {
+                return Find(searchValue, SearchValue.FirstName);
+            }
+            catch (ArgumentOutOfRangeException exception)
+            {
+                Console.WriteLine(exception.Message);
                 return Array.Empty<FileCabinetRecord>();
             }
-
-            searchValue = string.Format(CultureInfo.InvariantCulture, "{0}", searchValue.PadRight(120, default));
-            
-            var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
-            return Array.FindAll(records, x => x.FirstName == searchValue);
         }
 
         /// <summary>
@@ -199,15 +225,15 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array with lastname equals searchValue</returns>
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
-            if (searchValue is null)
+            try
             {
+                return Find(searchValue, SearchValue.LastName);
+            }
+            catch (ArgumentOutOfRangeException exception)
+            {
+                Console.WriteLine(exception.Message);
                 return Array.Empty<FileCabinetRecord>();
             }
-            
-            searchValue = string.Format(CultureInfo.InvariantCulture, "{0}", searchValue.PadRight(120, default));
-
-            var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
-            return Array.FindAll(records, x => x.LastName == searchValue);
         }
 
         /// <summary>
@@ -217,16 +243,64 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> array with date of birth equals searchValue</returns>
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
-            if (searchValue is null)
+            try
             {
+                return Find(searchValue, SearchValue.DateOfBirth);
+            }
+            catch (ArgumentOutOfRangeException exception)
+            {
+                Console.WriteLine(exception.Message);
                 return Array.Empty<FileCabinetRecord>();
             }
+        }
+
+        public void Restore(FileCabinetServiceSnapshot snapshot)
+        {
+            if (snapshot?.Records is null || snapshot.Records.Count == 0)
+            {
+                return;
+            }
+
+            var record = new FileCabinetRecord();
+            var records = new List<FileCabinetRecord>(snapshot.Records);
+
+
+
+            if (_outputFile.Length == 0)
+            {
+                foreach (var item in records)
+                {
+                    CreateRecord(item);
+                }
+                
+                return;
+            }
+
+            var currentIndex = 0;
+            _outputFile.Seek(currentIndex, SeekOrigin.Begin);
             
-            var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
-                CultureInfo.InvariantCulture);
-            
-            var records = new List<FileCabinetRecord>(GetRecords()).ToArray();
-            return Array.FindAll(records, x => x.DateOfBirth == dateOfBirth);
+            while (currentIndex < _outputFile.Length)
+            {
+                var read = record.ReadRecord(_outputFile);
+
+                foreach (var item in records)
+                {
+                    if (item.Id == read.Id)
+                    {
+                        EditRecord(item);
+                        records.Remove(item);
+                        break;
+                    }
+                }
+
+                currentIndex += FilesystemRecord.Size;
+                
+            }
+
+            foreach (var item in records)
+            {
+                CreateRecord(item);
+            }
         }
     }
 }

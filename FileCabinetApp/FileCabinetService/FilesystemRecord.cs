@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Mime;
 using System.Text;
 
 namespace FileCabinetApp
@@ -50,7 +51,7 @@ namespace FileCabinetApp
 
         private byte[] GetRank() => _rank;
         
-        public FilesystemRecord(Parameter parameter)
+        public FilesystemRecord(FileCabinetRecord parameter)
         {
             if (parameter is null)
             {
@@ -157,8 +158,8 @@ namespace FileCabinetApp
             return new FileCabinetRecord
             {
                 Id = BitConverter.ToInt32(GetId()),
-                FirstName = Encoding.UTF8.GetString(GetFirstName()),
-                LastName = Encoding.UTF8.GetString(GetLastName()),
+                FirstName = ToASCII(Encoding.UTF8.GetString(GetFirstName())),
+                LastName = ToASCII(Encoding.UTF8.GetString(GetLastName())),
                 DateOfBirth = new DateTime(
                     BitConverter.ToInt32(GetYear()),
                     BitConverter.ToInt32(GetMonth()),
@@ -168,6 +169,12 @@ namespace FileCabinetApp
                 Wage = new decimal(BitConverter.ToDouble(GetWage())),
                 Rank = Encoding.UTF8.GetString(GetRank())[0]
             };
+        }
+
+        private static string ToASCII(string source)
+        {
+            var lastIndex = Array.FindLastIndex(source.ToCharArray(), char.IsLetter) + 1;
+            return source[..lastIndex];
         }
     }
 }

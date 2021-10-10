@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace FileCabinetApp
 {
@@ -16,46 +19,36 @@ namespace FileCabinetApp
         /// <summary>
         /// Serialize record to xml format
         /// </summary>
-        /// <param name="record">Source record</param>
-        public void Write(FileCabinetRecord record)
+        /// <param name="records">Source record</param>
+        public void Write(FileCabinetRecord[] records)
         {
-            if (record is null)
+            if (records is null)
             {
-                throw new ArgumentNullException(nameof(record));
+                throw new ArgumentNullException(nameof(records));
             }
 
-            _writer.WriteStartElement("record");
-            _writer.WriteStartAttribute("id");
-            _writer.WriteValue(record.Id);
-            _writer.WriteEndAttribute();
+            var serializer = new XmlSerializer(typeof(RecordsXml));
+            
+            serializer.Serialize(_writer, ToSerializableRecord(records));
+        }
 
-            _writer.WriteStartElement("name");
-            _writer.WriteStartAttribute("first");
-            _writer.WriteValue(record.FirstName);
-            _writer.WriteEndAttribute();
+        private static RecordsXml ToSerializableRecord(IEnumerable<FileCabinetRecord> records)
+        {
+            var array = new Collection<RecordXml>();
+            foreach (var item in records)
+            {
+                array.Add(new RecordXml
+                {
+                    Id = item.Id,
+                    Name = new NameXml{First = item.FirstName, Last = item.LastName},
+                    DateOfBirth = item.DateOfBirth.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+                    JobExperience = item.JobExperience,
+                    Wage = item.Wage,
+                    Rank = item.Rank
+                });
+            }
 
-            _writer.WriteStartAttribute("last");
-            _writer.WriteValue(record.LastName);
-            _writer.WriteEndAttribute();
-            _writer.WriteEndElement();
-
-            _writer.WriteStartElement("dateOfBirth");
-            _writer.WriteValue(record.DateOfBirth.ToString("d", CultureInfo.InvariantCulture));
-            _writer.WriteEndElement();
-
-            _writer.WriteStartElement("jobExperience");
-            _writer.WriteValue(record.JobExperience);
-            _writer.WriteEndElement();
-
-            _writer.WriteStartElement("wage");
-            _writer.WriteValue(record.Wage);
-            _writer.WriteEndElement();
-
-            _writer.WriteStartElement("rank");
-            _writer.WriteValue(record.Rank);
-            _writer.WriteEndElement();
-
-            _writer.WriteEndElement();
+            return new RecordsXml(array);
         }
     }
 }

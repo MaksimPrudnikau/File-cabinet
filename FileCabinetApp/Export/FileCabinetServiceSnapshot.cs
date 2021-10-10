@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using FileCabinetApp.Import;
 
 namespace FileCabinetApp
 {
@@ -9,9 +10,14 @@ namespace FileCabinetApp
     {
         private readonly List<FileCabinetRecord> _records;
 
+        public IReadOnlyCollection<FileCabinetRecord> Records { get; set; }
+
+        public FileCabinetServiceSnapshot(){}
+
         public FileCabinetServiceSnapshot(IEnumerable<FileCabinetRecord> source)
         {
             _records = new List<FileCabinetRecord>(source);
+            Records = new List<FileCabinetRecord>();
         }
 
         /// <summary>
@@ -21,10 +27,7 @@ namespace FileCabinetApp
         public void SaveToCsv(StreamWriter file)
         {
             var csvWriter = new FIleCabinetCsvWriter(file);
-            foreach (var item in _records)
-            {
-                csvWriter.Write(item);
-            }
+            csvWriter.Write(_records.ToArray());
         }
 
         /// <summary>
@@ -40,27 +43,29 @@ namespace FileCabinetApp
 
             var settings = new XmlWriterSettings
             {
-                Encoding           = Encoding.UTF8,
-                Indent             = true,
-                IndentChars        = "\t",
-                NewLineHandling    = NewLineHandling.Replace
+                Encoding = Encoding.UTF8,
+                Indent = true,
+                IndentChars = "\t",
+                NewLineHandling = NewLineHandling.Replace
             };
-            
-            using var writer = XmlWriter.Create(file, settings);
 
-            if (_records.Count > 0)
-            {
-                writer.WriteStartElement("records");
+            if (_records.Count <= 0) return;
 
-                var classWriter = new FileCabinetXmlWriter(writer);
+            var classWriter = new FileCabinetXmlWriter(XmlWriter.Create(file, settings));
 
-                foreach (var item in _records)
-                {
-                    classWriter.Write(item);
-                }
+            classWriter.Write(_records.ToArray());
+        }
 
-                writer.WriteEndElement();
-            }
+        public void LoadFromCsv(StreamReader reader)
+        {
+            var csvReader = new FIleCabinetCsvReader(reader);
+            Records = (IReadOnlyCollection<FileCabinetRecord>) csvReader.ReadAll();
+        }
+
+        public void LoadFromXml(StreamReader reader)
+        {
+            var xmlReader = new FileCabinetXmlReader(reader);
+            Records = (IReadOnlyCollection<FileCabinetRecord>) xmlReader.ReadAll();
         }
     }
 }

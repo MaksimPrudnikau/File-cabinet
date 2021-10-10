@@ -186,4 +186,7 @@
   <data name="All_records_are_exported_to_file" xml:space="preserve">
     <value>All records are exported to file {0}</value>
   </data>
+  <data name="records_were_written_to" xml:space="preserve">
+    <value>{0} records were written to {1}</value>
+  </data>
 </root>

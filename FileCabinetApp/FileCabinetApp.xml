@@ -10,7 +10,7 @@
             </summary>
             <param name="file">Source stream</param>
         </member>
-        <member name="M:FileCabinetApp.FIleCabinetCsvWriter.Write(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FIleCabinetCsvWriter.Write(FileCabinetApp.FileCabinetRecord[])">
             <summary>
             Serialize source record to current <see cref="T:System.IO.TextWriter"/>
             </summary>
@@ -28,25 +28,25 @@
             </summary>
             <param name="file">Source file</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetXmlWriter.Write(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetXmlWriter.Write(FileCabinetApp.FileCabinetRecord[])">
             <summary>
             Serialize record to xml format
             </summary>
-            <param name="record">Source record</param>
+            <param name="records">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Create new record in base file with source parameters
             </summary>
-            <param name="parameters">Source parameters to add</param>
+            <param name="record">Source parameters to add</param>
             <returns>Id of created record</returns>
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.EditRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.EditRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Edit already existing record with source
             </summary>
-            <param name="parameters">Source for editing record</param>
+            <param name="record">Source for editing record</param>
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
             <exception cref="T:System.ArgumentException">There is no record suitable for replacement</exception>
         </member>
@@ -78,11 +78,6 @@
             <param name="validator">Source validator</param>
             <returns>Correct input object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.PrintRecords">
-            <summary>
-            Prints all records to console
-            </summary>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByFirstName(System.String)">
             <summary>
             Find all occurrences of searchValue in records of current data base file
@@ -104,7 +99,7 @@
             <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
             <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with date of birth equals searchValue</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             The method create new record from input data and return its id
             </summary>
@@ -112,10 +107,10 @@
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadParameters(System.Int32)">
             <summary>
-            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.Parameter"/> object
+            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.FileCabinetRecord"/> object
             </summary>
             <param name="id">Source id of read parameter</param>
-            <returns><see cref="T:FileCabinetApp.Parameter"/> object equivalent for read parameters</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
             <summary>
@@ -132,11 +127,11 @@
             </summary>
             <value>An ordinal number of the last record</value>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.EditRecord(FileCabinetApp.Parameter)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.EditRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Edit record with the source one
             </summary>
-            <param name="parameters">Parameter contains new data</param>
+            <param name="record">Parameter contains new data</param>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToAllDictionaries(FileCabinetApp.FileCabinetRecord)">
             <summary>
@@ -195,7 +190,7 @@
             </summary>
             <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetRecord.Read(System.IO.FileStream)">
+        <member name="M:FileCabinetApp.FileCabinetRecord.ReadRecord(System.IO.FileStream)">
             <summary>
             Read one record from base file consistently
             </summary>
@@ -231,6 +226,13 @@
             Cast current <see cref="T:FileCabinetApp.FilesystemRecord"/> to <see cref="T:FileCabinetApp.FileCabinetRecord"/>
             </summary>
             <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.InputConverter.IdConverter(System.String)">
+            <summary>
+            Convert source id to its <see cref="T:System.Int32"/> representation
+            </summary>
+            <param name="id">Source id</param>
+            <returns>Parsed <see cref="T:System.Int32"/> object</returns>
         </member>
         <member name="M:FileCabinetApp.InputConverter.NameConverter(System.String)">
             <summary>
@@ -317,6 +319,12 @@
             </summary>
             <param name="parameters">Output file format</param>
         </member>
+        <member name="M:FileCabinetApp.CustomValidator.IdValidator(System.Int32)">
+            <summary>
+            Validate source id
+            </summary>
+            <param name="id">Source id</param>
+        </member>
         <member name="M:FileCabinetApp.CustomValidator.NameValidator(System.String)">
             <summary>
             Validate name either first or last
@@ -355,21 +363,23 @@
             </summary>
             <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
         </member>
+        <member name="M:FileCabinetApp.DefaultValidator.IdValidator(System.Int32)">
+            <summary>
+            Validate source id
+            </summary>
+            <param name="id">Source id</param>
+        </member>
         <member name="M:FileCabinetApp.DefaultValidator.NameValidator(System.String)">
             <summary>
             Validate name either first or last
             </summary>
             <param name="name">first or last name</param>
-            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
         </member>
         <member name="M:FileCabinetApp.DefaultValidator.DateOfBirthValidator(System.DateTime)">
             <summary>
             Validate date of birth in format "dd/MM/yyyy"
             </summary>
             <param name="dateOfBirth">entered date of birth</param>
-            <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
-            <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
-            Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
         </member>
     </members>
 </doc>
