@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Resources;
 
@@ -22,7 +23,8 @@ namespace FileCabinetApp
             {"edit", Edit},
             {"find", Find},
             {"export", Export},
-            {"import", Import}
+            {"import", Import},
+            {"remove", Remove}
         };
 
         public static void Main(string[] args)
@@ -335,6 +337,20 @@ namespace FileCabinetApp
                 }
                 
                 _service.Restore(snapshot);
+            }
+        }
+
+        private static void Remove(string parameters)
+        {
+            try
+            {
+                var id = Convert.ToInt32(parameters, CultureInfo.InvariantCulture);
+                
+                _service.Remove(id);
+            }
+            catch (Exception exception) when (exception is OverflowException or FormatException)
+            {
+                Console.WriteLine(exception.Message);
             }
         }
     }

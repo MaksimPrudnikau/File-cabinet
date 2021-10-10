@@ -22,5 +22,7 @@ namespace FileCabinetApp
         public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue);
 
         public void Restore(FileCabinetServiceSnapshot snapshot);
+
+        public void Remove(int id);
     }
 }

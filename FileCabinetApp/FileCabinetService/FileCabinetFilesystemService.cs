@@ -302,5 +302,10 @@ namespace FileCabinetApp
                 CreateRecord(item);
             }
         }
+
+        public void Remove(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
