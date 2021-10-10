@@ -189,4 +189,7 @@
   <data name="records_were_written_to" xml:space="preserve">
     <value>{0} records were written to {1}</value>
   </data>
+  <data name="Record_is_removed" xml:space="preserve">
+    <value>Record {0} is removed</value>
+  </data>
 </root>

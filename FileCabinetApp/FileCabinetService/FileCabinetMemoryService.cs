@@ -317,7 +317,7 @@ namespace FileCabinetApp
         {
             if (!_records.ContainsKey(id))
             {
-                throw new ArgumentException($"Record with id = {id} is not exist");
+                throw new ArgumentException($"Record #{id} doesn't exist");
             }
 
             RemoveFromAllDictionaries(_records[id]);

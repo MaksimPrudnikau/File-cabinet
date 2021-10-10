@@ -347,6 +347,8 @@ namespace FileCabinetApp
                 var id = Convert.ToInt32(parameters, CultureInfo.InvariantCulture);
                 
                 _service.Remove(id);
+
+                Console.WriteLine(EnglishSource.Record_is_removed, id);
             }
             catch (Exception exception) when (exception is OverflowException or FormatException or ArgumentException)
             {
