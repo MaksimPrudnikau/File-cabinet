@@ -8,7 +8,7 @@ namespace FileCabinetApp
     public class FileCabinetFilesystemService : IFileCabinetService
     {
         private readonly IRecordValidator _validator;
-        private readonly FileStream _outputFile;
+        private FileStream _outputFile;
         private int _stat;
 
         public FileCabinetFilesystemService(FileStream fileStream, IRecordValidator validator)
@@ -69,7 +69,6 @@ namespace FileCabinetApp
         /// <returns>Array of <see cref="FilesystemRecord"/></returns>
         public IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            var record = new FileCabinetRecord();
             try
             {
                 return FileCabinetRecord.Deserialize(_outputFile);
@@ -174,8 +173,7 @@ namespace FileCabinetApp
             }
             
             var records = new List<FileCabinetRecord>();
-            var record = new FileCabinetRecord();
-            
+
             var currentIndex = 0;
             _outputFile.Seek(currentIndex, SeekOrigin.Begin);
             
@@ -267,7 +265,6 @@ namespace FileCabinetApp
                 return;
             }
 
-            var record = new FileCabinetRecord();
             var records = new List<FileCabinetRecord>(snapshot.Records);
             
             if (_outputFile.Length == 0)
@@ -324,7 +321,15 @@ namespace FileCabinetApp
 
         public void Purge()
         {
-            throw new NotImplementedException();
+            var path = _outputFile.Name;
+            var snapshot = FileCabinetServiceSnapshot.CopyAndDelete(_outputFile, this);
+            
+            _outputFile = new FileStream(path, FileMode.CreateNew);
+            
+            foreach (var item in snapshot.Records)
+            {
+                CreateRecord(item);
+            }
         }
     }
 }

@@ -10,14 +10,14 @@ namespace FileCabinetApp
     {
         private readonly List<FileCabinetRecord> _records;
 
-        public IReadOnlyCollection<FileCabinetRecord> Records { get; set; }
+        public IReadOnlyCollection<FileCabinetRecord> Records { get; private set; }
 
         public FileCabinetServiceSnapshot(){}
 
         public FileCabinetServiceSnapshot(IEnumerable<FileCabinetRecord> source)
         {
             _records = new List<FileCabinetRecord>(source);
-            Records = new List<FileCabinetRecord>();
+            Records = _records;
         }
 
         /// <summary>
@@ -66,6 +66,14 @@ namespace FileCabinetApp
         {
             var xmlReader = new FileCabinetXmlReader(reader);
             Records = (IReadOnlyCollection<FileCabinetRecord>) xmlReader.ReadAll();
+        }
+
+        public static FileCabinetServiceSnapshot CopyAndDelete(FileStream file, IFileCabinetService service)
+        {
+            var snapshot = new FileCabinetServiceSnapshot(service.GetRecords());
+            file.Close();
+            File.Delete(file.Name);
+            return snapshot;
         }
     }
 }
