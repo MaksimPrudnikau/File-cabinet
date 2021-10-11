@@ -9,7 +9,7 @@ namespace FileCabinetApp
         
         public void EditRecord(FileCabinetRecord record);
 
-        public int GetStat();
+        public Statistic GetStat();
 
         public IReadOnlyCollection<FileCabinetRecord> GetRecords();
 

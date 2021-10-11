@@ -122,7 +122,7 @@
         </member>
         <member name="P:FileCabinetApp.EnglishSource.stat">
             <summary>
-              Looks up a localized string similar to {0} record(s)..
+              Looks up a localized string similar to {0} record(s), {1} deleted..
             </summary>
         </member>
         <member name="P:FileCabinetApp.EnglishSource.update">
@@ -246,6 +246,12 @@
             </summary>
             <returns>An id of current record</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.GetStat">
+            <summary>
+            Returns number of records that the service stores
+            </summary>
+            <value>An ordinal number of the last record</value>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadParameters(System.Int32)">
             <summary>
             Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.FileCabinetRecord"/> object
@@ -261,12 +267,6 @@
             <param name="converter">Source converter</param>
             <param name="validator">Source validator</param>
             <returns>Correct input object</returns>
-        </member>
-        <member name="P:FileCabinetApp.FileCabinetMemoryService.Stat">
-            <summary>
-            Returns number of records that the service stores
-            </summary>
-            <value>An ordinal number of the last record</value>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.EditRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>

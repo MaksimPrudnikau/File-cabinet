@@ -127,7 +127,7 @@
     <value>There is no '{0}' command.</value>
   </data>
   <data name="stat" xml:space="preserve">
-    <value>{0} record(s).</value>
+    <value>{0} record(s), {1} deleted.</value>
   </data>
   <data name="create" xml:space="preserve">
     <value>Record #{0} is created</value>

@@ -9,6 +9,7 @@ namespace FileCabinetApp
         private static IRecordValidator _validator;
 
         private static Dictionary<int, FileCabinetRecord> _records = new ();
+        private static Statistic Stat;
 
         private static readonly Dictionary<string, List<FileCabinetRecord>> FirstNameDictionary = new();
         private static readonly Dictionary<string, List<FileCabinetRecord>> LastNameDictionary = new();
@@ -33,7 +34,8 @@ namespace FileCabinetApp
             _records.Add(record.Id, record);
 
             AppendToAllDictionaries(_records[record.Id]);
-            
+            Stat.Count++;
+
             return record.Id;
         }
 
@@ -42,7 +44,11 @@ namespace FileCabinetApp
             return _records.Values;
         }
 
-        public int GetStat()
+        /// <summary>
+        /// Returns number of records that the service stores
+        /// </summary>
+        /// <value>An ordinal number of the last record</value>
+        public Statistic GetStat()
         {
             return Stat;
         }
@@ -56,7 +62,7 @@ namespace FileCabinetApp
         {   
             var record = new FileCabinetRecord
             {
-                Id = id == -1 ? Stat + 1 : id,
+                Id = id == -1 ? ++Stat.Count : id,
             };
 
             Console.Write(EnglishSource.first_name);
@@ -118,12 +124,6 @@ namespace FileCabinetApp
             }
             while (true);
         }
-        
-        /// <summary>
-        /// Returns number of records that the service stores
-        /// </summary>
-        /// <value>An ordinal number of the last record</value>
-        private static int Stat => _records.Count;
         
         /// <summary>
         /// Edit record with the source one
@@ -306,6 +306,7 @@ namespace FileCabinetApp
             }
 
             RemoveFromAllDictionaries(_records[id]);
+            Stat.Count--;
             _records.Remove(id);
         }
 

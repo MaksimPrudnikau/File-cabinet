@@ -9,7 +9,7 @@ namespace FileCabinetApp
     {
         private readonly IRecordValidator _validator;
         private FileStream _outputFile;
-        private int _stat;
+        private Statistic _stat;
 
         public FileCabinetFilesystemService(FileStream fileStream, IRecordValidator validator)
         {
@@ -35,6 +35,8 @@ namespace FileCabinetApp
             var fileSystemRecord = new FilesystemRecord(record);
             
             fileSystemRecord.Serialize(_outputFile);
+
+            _stat.Count++;
 
             return record.Id;
         }
@@ -84,7 +86,7 @@ namespace FileCabinetApp
         /// Get count of records in base file
         /// </summary>
         /// <returns>The amount of all records in base file</returns>
-        public int GetStat()
+        public Statistic GetStat()
         {
             return _stat;
         }
@@ -98,12 +100,11 @@ namespace FileCabinetApp
         {
             var record = new FileCabinetRecord
             {
-                Id = id == -1 ? _stat + 1 : id,
+                Id = id == -1 ? ++_stat.Count : id,
                 JobExperience = FileCabinetConsts.MinimalJobExperience,
                 Wage = FileCabinetConsts.MinimalWage,
                 Rank = FileCabinetConsts.Grades[0]
             };
-            _stat++;
             
             Console.Write(EnglishSource.first_name);
             record.FirstName = ReadInput(InputConverter.NameConverter, _validator.NameValidator);
@@ -317,6 +318,8 @@ namespace FileCabinetApp
             MoveCursorToRecord(id);
             
             _outputFile.Write(buffer);
+
+            _stat.Deleted++;
         }
 
         public void Purge()
@@ -325,6 +328,7 @@ namespace FileCabinetApp
             var snapshot = FileCabinetServiceSnapshot.CopyAndDelete(_outputFile, this);
             
             _outputFile = new FileStream(path, FileMode.CreateNew);
+            _stat.Count = _stat.Deleted = 0;
             
             foreach (var item in snapshot.Records)
             {

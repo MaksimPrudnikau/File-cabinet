@@ -241,7 +241,7 @@ namespace FileCabinetApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} record(s)..
+        ///   Looks up a localized string similar to {0} record(s), {1} deleted..
         /// </summary>
         internal static string stat {
             get {

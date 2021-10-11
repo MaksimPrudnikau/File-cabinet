@@ -139,7 +139,8 @@ namespace FileCabinetApp
         /// </summary>
         private static void Stat(string parameters)
         {
-            Console.WriteLine(EnglishSource.stat, _service.GetStat());
+            var stat = _service.GetStat();
+            Console.WriteLine(EnglishSource.stat, stat.Count, stat.Deleted);
         }
 
         /// <summary>
