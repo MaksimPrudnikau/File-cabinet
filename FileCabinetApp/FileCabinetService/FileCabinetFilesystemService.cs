@@ -299,24 +299,27 @@ namespace FileCabinetApp
                 return;
             }
 
-            var currentIndex = 0;
-            _outputFile.Seek(currentIndex, SeekOrigin.Begin);
+            _outputFile.Seek(0, SeekOrigin.Begin);
             
-            while (currentIndex < _outputFile.Length)
+            while (_outputFile.Position < _outputFile.Length)
             {
                 var read = FileCabinetRecord.ReadRecord(_outputFile).ToFileCabinetRecord();
+                _outputFile.Position -= FilesystemRecord.Size;
 
                 foreach (var item in records)
                 {
                     if (item.Id == read.Id)
                     {
-                        EditRecord(item);
+                        CreateRecord(item);
                         records.Remove(item);
+
+                        _stat.Count--;
+                        _outputFile.Position -= FilesystemRecord.Size;
                         break;
                     }
                 }
 
-                currentIndex += FilesystemRecord.Size;
+                _outputFile.Position += FilesystemRecord.Size;
                 
             }
 
