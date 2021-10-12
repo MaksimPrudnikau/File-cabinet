@@ -4,14 +4,8 @@ namespace FileCabinetApp.Handlers
     {
         private ICommandHandler _nextHandler;
 
-        public void SetNext(ICommandHandler handler)
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract void SetNext(ICommandHandler handler);
 
-        public void Handle(AppCommandRequest request)
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract void Handle(AppCommandRequest request);
     }
 }
