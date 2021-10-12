@@ -376,17 +376,9 @@ namespace FileCabinetApp
         public void Purge()
         {
             var path = _outputFile.Name;
-            FileCabinetServiceSnapshot snapshot;
-            try
-            {
-                snapshot = FileCabinetServiceSnapshot.CopyAndDelete(_outputFile, this);
-            }
-            catch (ArgumentNullException exception)
-            {
-                Console.WriteLine(exception.Message);
-                return;
-            }
-            
+
+            var snapshot = FileCabinetServiceSnapshot.CopyAndDelete(_outputFile, this);
+
             _outputFile = new FileStream(path, FileMode.CreateNew);
             _stat.Count = _stat.Deleted = 0;
             

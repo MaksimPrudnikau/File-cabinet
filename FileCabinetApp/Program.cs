@@ -351,7 +351,14 @@ namespace FileCabinetApp
 
         private static void Purge(string parameters)
         {
-            _service.Purge();
+            try
+            { 
+                _service.Purge();
+            }
+            catch (ArgumentNullException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
     }
 }
