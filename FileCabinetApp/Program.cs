@@ -311,19 +311,19 @@ namespace FileCabinetApp
             var snapshot = new FileCabinetServiceSnapshot();
 
             using var file = new StreamReader(File.OpenRead(directory));
-            
+
             try
             {
                 switch (exportFormat)
                 {
-                    case "csv": 
+                    case "csv":
                         snapshot.LoadFromCsv(file);
                         break;
                     case "xml":
                         snapshot.LoadFromXml(file);
                         break;
                 }
-                
+
                 _service.Restore(snapshot);
             }
             catch (InvalidOperationException exception)

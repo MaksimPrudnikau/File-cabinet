@@ -320,7 +320,6 @@ namespace FileCabinetApp
                 }
 
                 _outputFile.Position += FilesystemRecord.Size;
-                
             }
 
             foreach (var item in records)
@@ -335,19 +334,40 @@ namespace FileCabinetApp
         /// <param name="id">Source record's id</param>
         public void Remove(int id)
         {
-            var buffer = new byte[FilesystemRecord.Size];
+            _outputFile.Seek(0, SeekOrigin.Begin);
             
-            MoveCursorToRecord(id);
-            
-            _outputFile.Read(buffer);
-            
-            buffer[FilesystemRecord.IsDeletedIndex] = 1;
-            
-            MoveCursorToRecord(id);
-            
-            _outputFile.Write(buffer);
+            while (_outputFile.Position < _outputFile.Length)
+            {
+                var read = FileCabinetRecord.ReadRecord(_outputFile).ToFileCabinetRecord();
+                _outputFile.Position -= FilesystemRecord.Size;
 
-            _stat.Deleted++;
+                if (id == read.Id)
+                {
+                    var buffer = new byte[FilesystemRecord.Size];
+                    
+                    _outputFile.Read(buffer);
+                    _outputFile.Position -= FilesystemRecord.Size;
+
+                    var deletedFlag = buffer[FilesystemRecord.IsDeletedIndex];
+                    
+                    buffer[FilesystemRecord.IsDeletedIndex] = deletedFlag switch
+                    {
+                        0 => 1,
+                        1 => throw new ArgumentException($"Record #{id} is already deleted"),
+                        _ => throw new ArgumentException($"Error isDeleted flat ({deletedFlag})")
+                    };
+
+                    _outputFile.Write(buffer);
+
+                    _stat.Deleted++;
+                    _stat.Count--;
+                    return;
+                }
+
+                _outputFile.Position += FilesystemRecord.Size;
+            }
+
+            throw new ArgumentException($"Record #{id} is not exist");
         }
 
         /// <summary>
