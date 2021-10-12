@@ -10,17 +10,16 @@ namespace FileCabinetApp
         /// <param name="id">Source id</param>
         public ValidationResult IdValidator(int id)
         {
+            var result = new ValidationResult {Parsed = false, StringRepresentation = $"{id}"};
+
             if (id < 0)
             {
-                return new ValidationResult
-                {
-                    Parsed = false, StringRepresentation = $"{id}",
-                    Message = RecordValidatorConsts.IdIsLessThenZero
-
-                };
+                result.Message = RecordValidatorConsts.IdIsLessThenZero;
+                return result;
             }
 
-            return  new ValidationResult {Parsed = true, StringRepresentation = $"{id}"};
+            result.Parsed = true;
+            return result;
         }
         
         /// <summary>
@@ -29,29 +28,31 @@ namespace FileCabinetApp
         /// <param name="name">first or last name</param>
         public ValidationResult NameValidator(string name)
         {
-            if (string.IsNullOrWhiteSpace(name) || name.Length is < 2 or > 60)
+            var result = new ValidationResult {Parsed = false, StringRepresentation = name};
+            
+            if (string.IsNullOrWhiteSpace(name))
             {
-                return new ValidationResult
-                {
-                    Parsed = false, StringRepresentation = name, 
-                    Message = RecordValidatorConsts.NameIsNullOrWhiteSpace
-                };
+                result.Message = RecordValidatorConsts.NameIsNullOrWhiteSpace;
+                return result;
+            }
+
+            if (name.Length is < 2 or > 60)
+            {
+                result.Message = RecordValidatorConsts.NameWrongLength;
+                return result;
             }
 
             foreach (var item in name)
             {
                 if (!char.IsLetter(item))
                 {
-                    return new ValidationResult
-                    {
-                        Parsed = false, StringRepresentation = name,
-                        Message = RecordValidatorConsts.TheNameIsNotLettersOnly
-                    };
+                    result.Message = RecordValidatorConsts.TheNameIsNotLettersOnly;
+                    return result;
                 }
             }
 
-            return new ValidationResult {Parsed = true, StringRepresentation = name};
-        }
+            result.Parsed = true;
+            return result;        }
 
         /// <summary>
         /// Validate date of birth in format "dd/MM/yyyy"
@@ -59,25 +60,22 @@ namespace FileCabinetApp
         /// <param name="dateOfBirth">entered date of birth</param>
         public ValidationResult DateOfBirthValidator(DateTime dateOfBirth)
         {
+            var result = new ValidationResult {Parsed = false, StringRepresentation = $"{dateOfBirth}"};
+
             if (dateOfBirth < FileCabinetConsts.MinimalDateTime)
             {
-                return new ValidationResult
-                {
-                    Parsed = false, StringRepresentation = $"{dateOfBirth}",
-                    Message = RecordValidatorConsts.DateOfBirthIsLessThanMinimal
-                };
+                result.Message = RecordValidatorConsts.DateOfBirthIsLessThanMinimal;
+                return result;
             }
 
             if (dateOfBirth > FileCabinetConsts.MaximalDateTime)
             {
-                return new ValidationResult
-                {
-                    Parsed = false, StringRepresentation = $"{dateOfBirth}",
-                    Message = RecordValidatorConsts.DateOfBirthIsGreaterThanMaximal
-                };
+                result.Message = RecordValidatorConsts.DateOfBirthIsGreaterThanMaximal;
+                return result;
             }
-            
-            return new ValidationResult {Parsed = true, StringRepresentation = $"{dateOfBirth}"};
+
+            result.Parsed = true;
+            return result;
         }
 
         public ValidationResult JobExperienceValidator(short jobExperience)
