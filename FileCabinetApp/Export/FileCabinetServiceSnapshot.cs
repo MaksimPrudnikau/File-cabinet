@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -12,12 +13,13 @@ namespace FileCabinetApp
 
         public IReadOnlyCollection<FileCabinetRecord> Records { get; private set; }
 
-        public FileCabinetServiceSnapshot(){}
+        public FileCabinetServiceSnapshot() { }
 
         public FileCabinetServiceSnapshot(IEnumerable<FileCabinetRecord> source)
         {
             _records = new List<FileCabinetRecord>(source);
             Records = _records;
+            
         }
 
         /// <summary>
@@ -65,11 +67,28 @@ namespace FileCabinetApp
         public void LoadFromXml(StreamReader reader)
         {
             var xmlReader = new FileCabinetXmlReader(reader);
-            Records = (IReadOnlyCollection<FileCabinetRecord>) xmlReader.ReadAll();
-        }
+                Records = (IReadOnlyCollection<FileCabinetRecord>) xmlReader.ReadAll();
+            }
 
+        /// <summary>
+        /// Read all records from source file and delete it 
+        /// </summary>
+        /// <param name="file"></param>2
+        /// <param name="service"></param>
+        /// <returns><see cref="FileCabinetServiceSnapshot"/> snapshot created from source file</returns>
+        /// <exception cref="ArgumentNullException">Source file or service are null</exception>
         public static FileCabinetServiceSnapshot CopyAndDelete(FileStream file, IFileCabinetService service)
         {
+            if (file is null)
+            {
+                throw new ArgumentNullException(nameof(file));
+            }
+
+            if (service is null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+            
             var snapshot = new FileCabinetServiceSnapshot(service.GetRecords());
             file.Close();
             File.Delete(file.Name);

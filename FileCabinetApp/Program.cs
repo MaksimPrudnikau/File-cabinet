@@ -11,7 +11,8 @@ namespace FileCabinetApp
     public static class Program
     {
         private static bool _isRunning = true;
-        private static IFileCabinetService _service;
+        private static IRecordValidator _validator = new DefaultValidator();
+        private static IFileCabinetService _service = new FileCabinetMemoryService(_validator);
 
         private static readonly Dictionary<string, Action<string>> Commands = new()
         {
@@ -33,7 +34,7 @@ namespace FileCabinetApp
             try
             {
                 args ??= Array.Empty<string>();
-                _service = SetValidationRule(args);
+                SetValidationRule(args);
             }
             catch (ArgumentException exception)
             {
@@ -41,9 +42,10 @@ namespace FileCabinetApp
                 Exit(string.Empty);
             }
 
+            Console.WriteLine($@"Service = {_service}, Validator = {_validator}");
             Console.WriteLine(EnglishSource.developed_by, FileCabinetConsts.DeveloperName); 
             Console.WriteLine(EnglishSource.hint);
-            
+
             while (_isRunning)
             {
                 Console.Write(EnglishSource.console);
@@ -79,38 +81,20 @@ namespace FileCabinetApp
         /// <param name="args">Source command parameter</param>
         /// <exception cref="ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
         /// <returns></returns>
-        private static IFileCabinetService SetValidationRule(IReadOnlyList<string> args)
+        private static void SetValidationRule(IReadOnlyList<string> args)
         {
             var commandLine = string.Concat(args);
-            var isCustom = false;
-            var isFileSystem = false;
-
             if (HasCommand(commandLine, FileCabinetConsts.CustomValidationRuleFullForm)
-            || HasCommand(commandLine, FileCabinetConsts.CustomValidationRuleShortForm))
+                || HasCommand(commandLine, FileCabinetConsts.CustomValidationRuleShortForm))
             {
-                isCustom = true;
+                _validator = new CustomValidator();
             }
    
             if (HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileFullForm)
             || HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileShortForm))
             {
-                isFileSystem = true;
+                _service = new FileCabinetFilesystemService(null, _validator);
             }
-
-            if (isFileSystem)
-            {
-                return isCustom switch
-                {
-                    true => new FileCabinetFilesystemService(null, new CustomValidator()),
-                    _ => new FileCabinetFilesystemService(null, new DefaultValidator())
-                };
-            }
-            
-            return isCustom switch
-            {
-                true => new FileCabinetMemoryService(new CustomValidator()),
-                _ => new FileCabinetMemoryService(new DefaultValidator())
-            };
         }
 
         private static bool HasCommand(string commandLine, string command)
@@ -326,7 +310,9 @@ namespace FileCabinetApp
 
             var snapshot = new FileCabinetServiceSnapshot();
 
-            using (var file = new StreamReader(File.OpenRead(directory)))
+            using var file = new StreamReader(File.OpenRead(directory));
+            
+            try
             {
                 switch (exportFormat)
                 {
@@ -339,6 +325,11 @@ namespace FileCabinetApp
                 }
                 
                 _service.Restore(snapshot);
+            }
+            catch (InvalidOperationException exception)
+            {
+                Console.Error.WriteLine(
+                    $"Error: cant deserialize {directory}! {exception.Message}: {exception.InnerException?.Message}");
             }
         }
 
@@ -354,7 +345,7 @@ namespace FileCabinetApp
             }
             catch (Exception exception) when (exception is OverflowException or FormatException or ArgumentException)
             {
-                Console.WriteLine(exception.Message);
+                Console.Error.WriteLine(exception.Message);
             }
         }
 

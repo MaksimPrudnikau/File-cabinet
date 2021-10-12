@@ -13,13 +13,17 @@ namespace FileCabinetApp.Import
             _reader = reader;
         }
 
+        /// <summary>
+        /// Read all records from current base file written in csv
+        /// </summary>
+        /// <returns><see cref="IList{T}"/> of <see cref="FileCabinetRecord"/></returns>
         public IList<FileCabinetRecord> ReadAll()
         {
             var records = new List<FileCabinetRecord>();
 
             var readLines = _reader.ReadToEnd().Split(Environment.NewLine);
 
-            for (int i = 1; i < readLines.Length; i++)
+            for (var i = 1; i < readLines.Length; i++)
             {
                 if (readLines[i].Length == 0) continue;
                 
@@ -37,6 +41,13 @@ namespace FileCabinetApp.Import
             return records;
         }
 
+        /// <summary>
+        /// Deserialize <see cref="FileCabinetRecord"/> from source line
+        /// </summary>
+        /// <param name="csvLine">Source line in csv format</param>
+        /// <returns><see cref="FileCabinetRecord"/> object</returns>
+        /// <exception cref="ArgumentException">The amount of parameters in line doesn't correspond
+        /// to <see cref="FileCabinetRecord"/></exception>
         private static FileCabinetRecord DeserializeFromCsvLine(string csvLine)
         {
             const int parametersCount = 7;
@@ -56,8 +67,8 @@ namespace FileCabinetApp.Import
                 throw new ArgumentException($"{csvLine} missing one parameter");
             }
 
-            IRecordValidator validator = new CustomValidator();
-
+            var validator = new CustomValidator();
+            
             return new FileCabinetRecord
             {
                 Id = Parse(split[idIndex], InputConverter.IdConverter, validator.IdValidator),
@@ -72,6 +83,17 @@ namespace FileCabinetApp.Import
             };
         }
 
+        /// <summary>
+        /// Parse source string to suitable <see cref="FileCabinetRecord"/> parameter applying certain rules
+        /// to convert and validate
+        /// </summary>
+        /// <param name="source">Source string to parse</param>
+        /// <param name="converter">Source converter with convert methods</param>
+        /// <param name="validator">Source validator with rules to validate</param>
+        /// <typeparam name="T">The output parsing type</typeparam>
+        /// <returns>Object parsed to output type and satisfied validator's methods</returns>
+        /// <exception cref="ArgumentException">Cannot convert the source value
+        /// or it's doesnt satisfy validation rules </exception>
         private static T Parse<T>(string source, Func<string, ConversionResult<T>> converter, Func<T, ValidationResult> validator)
         {
             var conversionResult = converter(source);

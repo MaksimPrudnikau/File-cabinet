@@ -7,6 +7,7 @@
 
         // NameValidator
         public const string NameIsNullOrWhiteSpace = "The name is null or whitespace";
+        public const string NameWrongLength = "The name's length is less then 2 or greater than 100";
         public const string TheNameIsNotLettersOnly = "The name contains non-letter characters";
         
         // DateOfBirthValidator

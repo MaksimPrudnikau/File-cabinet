@@ -169,6 +169,15 @@
             </summary>
             <param name="file">Source file</param>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.CopyAndDelete(System.IO.FileStream,FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Read all records from source file and delete it 
+            </summary>
+            <param name="file"></param>2
+            <param name="service"></param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> snapshot created from source file</returns>
+            <exception cref="T:System.ArgumentNullException">Source file or service are null</exception>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetXmlWriter.Write(FileCabinetApp.FileCabinetRecord[])">
             <summary>
             Serialize record to xml format
@@ -182,6 +191,13 @@
             <param name="record">Source parameters to add</param>
             <returns>Id of created record</returns>
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.MoveCursorToRecord(System.Int32)">
+            <summary>
+            Move the base's file cursor to record with source id 
+            </summary>
+            <param name="id">Source record's id</param>
+            <exception cref="T:System.ArgumentException">Record with input id is not found</exception>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.EditRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
@@ -219,6 +235,15 @@
             <param name="validator">Source validator</param>
             <returns>Correct input object</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Find(System.String,FileCabinetApp.SearchValue)">
+            <summary>
+            Find record with source attribute equals searchValue
+            </summary>
+            <param name="searchValue">Value to search</param>
+            <param name="attribute">Attribute to comparing</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array of records with suitable value of attribute</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Search value is null</exception>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByFirstName(System.String)">
             <summary>
             Find all occurrences of searchValue in records of current data base file
@@ -239,6 +264,23 @@
             </summary>
             <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
             <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with date of birth equals searchValue</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Restore(FileCabinetApp.FileCabinetServiceSnapshot)">
+            <summary>
+            Update current records with snapshot. If record is exist it will be overwritten, else append to end
+            </summary>
+            <param name="snapshot">Source snapshot</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Remove(System.Int32)">
+            <summary>
+            Marks the record with input id as deleted
+            </summary>
+            <param name="id">Source record's id</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Purge">
+            <summary>
+            Delete all records marked as delete from current file by creating a new one 
+            </summary>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
@@ -368,6 +410,13 @@
             </summary>
             <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
         </member>
+        <member name="M:FileCabinetApp.FilesystemRecord.ToASCII(System.String)">
+            <summary>
+            Create new string consists only ASCII characters
+            </summary>
+            <param name="source">Source string</param>
+            <returns>New string with ASCII characters</returns>
+        </member>
         <member name="M:FileCabinetApp.InputConverter.IdConverter(System.String)">
             <summary>
             Convert source id to its <see cref="T:System.Int32"/> representation
@@ -409,6 +458,54 @@
             </summary>
             <param name="rank">Source rank</param>
             <returns>Parsed <see cref="T:System.Char"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.ReadAll">
+            <summary>
+            Read all records from current base file written in csv
+            </summary>
+            <returns><see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetRecord"/></returns>
+        </member>
+        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.DeserializeFromCsvLine(System.String)">
+            <summary>
+            Deserialize <see cref="T:FileCabinetApp.FileCabinetRecord"/> from source line
+            </summary>
+            <param name="csvLine">Source line in csv format</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+            <exception cref="T:System.ArgumentException">The amount of parameters in line doesn't correspond
+            to <see cref="T:FileCabinetApp.FileCabinetRecord"/></exception>
+        </member>
+        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.Parse``1(System.String,System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
+            <summary>
+            Parse source string to suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> parameter applying certain rules
+            to convert and validate
+            </summary>
+            <param name="source">Source string to parse</param>
+            <param name="converter">Source converter with convert methods</param>
+            <param name="validator">Source validator with rules to validate</param>
+            <typeparam name="T">The output parsing type</typeparam>
+            <returns>Object parsed to output type and satisfied validator's methods</returns>
+            <exception cref="T:System.ArgumentException">Cannot convert the source value
+            or it's doesnt satisfy validation rules </exception>
+        </member>
+        <member name="M:FileCabinetApp.Import.FileCabinetXmlReader.ReadAll">
+            <summary>
+            Read all records from current base file written in xml
+            </summary>
+            <returns><see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetRecord"/></returns>
+        </member>
+        <member name="M:FileCabinetApp.Import.FileCabinetXmlReader.Validate(FileCabinetApp.RecordXml)">
+            <summary>
+            Validate source record with rules of base validator
+            </summary>
+            <param name="record">Source record</param>
+            <exception cref="T:System.ArgumentNullException">record is null</exception>
+        </member>
+        <member name="M:FileCabinetApp.Import.FileCabinetXmlReader.ToFileCabinetRecord(FileCabinetApp.RecordXml)">
+            <summary>
+            Parse <see cref="T:FileCabinetApp.RecordXml"/> record to <see cref="T:FileCabinetApp.FileCabinetRecord"/>
+            </summary>
+            <param name="record">Source record</param>
+            <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
         </member>
         <member name="M:FileCabinetApp.Program.SetValidationRule(System.Collections.Generic.IReadOnlyList{System.String})">
             <summary>

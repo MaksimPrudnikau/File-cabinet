@@ -178,8 +178,18 @@ namespace FileCabinetApp
             };
         }
         
+        /// <summary>
+        /// Create new string consists only ASCII characters
+        /// </summary>
+        /// <param name="source">Source string</param>
+        /// <returns>New string with ASCII characters</returns>
         private static string ToASCII(string source)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            
             var lastIndex = Array.FindLastIndex(source.ToCharArray(), char.IsLetter) + 1;
             return source[..lastIndex];
         }

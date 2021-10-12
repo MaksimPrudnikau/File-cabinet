@@ -5,11 +5,12 @@ using System.IO;
 
 namespace FileCabinetApp
 {
-    public class FileCabinetFilesystemService : IFileCabinetService
+    public class FileCabinetFilesystemService : IFileCabinetService, IDisposable
     {
         private readonly IRecordValidator _validator;
         private FileStream _outputFile;
-        private Statistic _stat;
+        private readonly Statistic _stat = new();
+        private bool _disposed;
 
         public FileCabinetFilesystemService(FileStream fileStream, IRecordValidator validator)
         {
@@ -41,8 +42,21 @@ namespace FileCabinetApp
             return record.Id;
         }
 
-        private void MoveCursorToRecord(int id) => _outputFile.Seek( (id - 1) * FilesystemRecord.Size, SeekOrigin.Begin);
-        
+        /// <summary>
+        /// Move the base's file cursor to record with source id 
+        /// </summary>
+        /// <param name="id">Source record's id</param>
+        /// <exception cref="ArgumentException">Record with input id is not found</exception>
+        private void MoveCursorToRecord(int id)
+        {
+            if (id * FilesystemRecord.Size > _outputFile.Length)
+            {
+                throw new ArgumentException($"Record with id = {id} is not found");
+            }
+            
+            _outputFile.Seek((id - 1) * FilesystemRecord.Size, SeekOrigin.Begin);
+        }
+
         /// <summary>
         /// Edit already existing record with source
         /// </summary>
@@ -56,13 +70,9 @@ namespace FileCabinetApp
                 throw new ArgumentNullException(nameof(record));
             }
 
-            if (record.Id * FilesystemRecord.Size > _outputFile.Length)
-            {
-                throw new ArgumentException($"Record with id = {record.Id} is not found");
-            }
-
             MoveCursorToRecord(record.Id);
             CreateRecord(record);
+            _stat.Count--;
         }
 
         /// <summary>
@@ -100,7 +110,7 @@ namespace FileCabinetApp
         {
             var record = new FileCabinetRecord
             {
-                Id = id == -1 ? ++_stat.Count : id,
+                Id = id == -1 ? _stat.Count + 1 : id,
                 JobExperience = FileCabinetConsts.MinimalJobExperience,
                 Wage = FileCabinetConsts.MinimalWage,
                 Rank = FileCabinetConsts.Grades[0]
@@ -166,6 +176,13 @@ namespace FileCabinetApp
             while (true);
         }
 
+        /// <summary>
+        /// Find record with source attribute equals searchValue
+        /// </summary>
+        /// <param name="searchValue">Value to search</param>
+        /// <param name="attribute">Attribute to comparing</param>
+        /// <returns><see cref="FileCabinetRecord"/> array of records with suitable value of attribute</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Search value is null</exception>
         private IEnumerable<FileCabinetRecord> Find(string searchValue, SearchValue attribute)
         {
             if (searchValue is null)
@@ -259,6 +276,10 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Update current records with snapshot. If record is exist it will be overwritten, else append to end
+        /// </summary>
+        /// <param name="snapshot">Source snapshot</param>
         public void Restore(FileCabinetServiceSnapshot snapshot)
         {
             if (snapshot?.Records is null || snapshot.Records.Count == 0)
@@ -305,6 +326,10 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Marks the record with input id as deleted
+        /// </summary>
+        /// <param name="id">Source record's id</param>
         public void Remove(int id)
         {
             var buffer = new byte[FilesystemRecord.Size];
@@ -322,10 +347,22 @@ namespace FileCabinetApp
             _stat.Deleted++;
         }
 
+        /// <summary>
+        /// Delete all records marked as delete from current file by creating a new one 
+        /// </summary>
         public void Purge()
         {
             var path = _outputFile.Name;
-            var snapshot = FileCabinetServiceSnapshot.CopyAndDelete(_outputFile, this);
+            FileCabinetServiceSnapshot snapshot;
+            try
+            {
+                snapshot = FileCabinetServiceSnapshot.CopyAndDelete(_outputFile, this);
+            }
+            catch (ArgumentNullException exception)
+            {
+                Console.WriteLine(exception.Message);
+                return;
+            }
             
             _outputFile = new FileStream(path, FileMode.CreateNew);
             _stat.Count = _stat.Deleted = 0;
@@ -333,6 +370,25 @@ namespace FileCabinetApp
             foreach (var item in snapshot.Records)
             {
                 CreateRecord(item);
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(!_disposed)
+            { 
+                if(disposing)
+                {
+                    _outputFile.Dispose();
+                }
+                
+                _disposed = true;
             }
         }
     }
