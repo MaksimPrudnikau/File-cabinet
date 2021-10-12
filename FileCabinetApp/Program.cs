@@ -10,9 +10,9 @@ namespace FileCabinetApp
 {
     public static class Program
     {
-        private static bool _isRunning = true;
+        public static bool IsRunning = true;
         private static IRecordValidator _validator = new DefaultValidator();
-        private static IFileCabinetService _service = new FileCabinetMemoryService(_validator);
+        public static IFileCabinetService Service = new FileCabinetMemoryService(_validator);
 
         private static readonly Dictionary<string, Action<string>> Commands = new()
         {
@@ -42,11 +42,11 @@ namespace FileCabinetApp
                 Exit(string.Empty);
             }
 
-            Console.WriteLine($@"Service = {_service}, Validator = {_validator}");
+            Console.WriteLine($@"Service = {Service}, Validator = {_validator}");
             Console.WriteLine(EnglishSource.developed_by, FileCabinetConsts.DeveloperName); 
             Console.WriteLine(EnglishSource.hint);
 
-            while (_isRunning)
+            while (IsRunning)
             {
                 Console.Write(EnglishSource.console);
                 var inputs = Console.ReadLine()?.Split(' ', 2);
@@ -93,7 +93,7 @@ namespace FileCabinetApp
             if (HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileFullForm)
             || HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileShortForm))
             {
-                _service = new FileCabinetFilesystemService(null, _validator);
+                Service = new FileCabinetFilesystemService(null, _validator);
             }
         }
 
@@ -123,7 +123,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void Stat(string parameters)
         {
-            var stat = _service.GetStat();
+            var stat = Service.GetStat();
             Console.WriteLine(EnglishSource.stat, stat.Count, stat.Deleted);
         }
 
@@ -134,9 +134,9 @@ namespace FileCabinetApp
         {
             try
             {
-                var parameter = _service.ReadParameters();
+                var parameter = Service.ReadParameters();
                 
-                Console.WriteLine(EnglishSource.create, _service.CreateRecord(parameter));
+                Console.WriteLine(EnglishSource.create, Service.CreateRecord(parameter));
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {
@@ -150,7 +150,7 @@ namespace FileCabinetApp
         /// </summary>
         private static void List(string parameters)
         {
-            foreach (var item in _service.GetRecords())
+            foreach (var item in Service.GetRecords())
             {
                 item.Print();
             }
@@ -170,9 +170,9 @@ namespace FileCabinetApp
 
             try
             { 
-                var inputParameters = _service.ReadParameters(id);
+                var inputParameters = Service.ReadParameters(id);
                 
-                _service.EditRecord(inputParameters);
+                Service.EditRecord(inputParameters);
                 
                 Console.WriteLine(EnglishSource.update, id);
             }
@@ -218,9 +218,9 @@ namespace FileCabinetApp
         {
             return attribute.ToUpperInvariant() switch
             {
-                "FIRSTNAME" => _service.FindByFirstName(searchValue),
-                "LASTNAME" => _service.FindByLastName(searchValue),
-                "DATEOFBIRTH" => _service.FindByDateOfBirth(searchValue),
+                "FIRSTNAME" => Service.FindByFirstName(searchValue),
+                "LASTNAME" => Service.FindByLastName(searchValue),
+                "DATEOFBIRTH" => Service.FindByDateOfBirth(searchValue),
                 _ => throw new ArgumentException("Entered attribute is not exist")
             };
         }
@@ -228,7 +228,7 @@ namespace FileCabinetApp
         private static void Exit(string parameters)
         {
             Console.WriteLine(EnglishSource.exit);
-            _isRunning = false;
+            IsRunning = false;
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace FileCabinetApp
                         break;
                 }
 
-                _service.Restore(snapshot);
+                Service.Restore(snapshot);
             }
             catch (InvalidOperationException exception)
             {
@@ -339,7 +339,7 @@ namespace FileCabinetApp
             {
                 var id = Convert.ToInt32(parameters, CultureInfo.InvariantCulture);
                 
-                _service.Remove(id);
+                Service.Remove(id);
 
                 Console.WriteLine(EnglishSource.Record_is_removed, id);
             }
@@ -353,7 +353,7 @@ namespace FileCabinetApp
         {
             try
             { 
-                _service.Purge();
+                Service.Purge();
             }
             catch (ArgumentNullException exception)
             {
