@@ -11,7 +11,7 @@ namespace FileCabinetApp
     {
         public static bool IsRunning = true;
         private static IRecordValidator _validator = new DefaultValidator();
-        public static IFileCabinetService Service = new FileCabinetMemoryService(_validator);
+        private static IFileCabinetService _service = new FileCabinetMemoryService(_validator);
 
         public static void Main(string[] args)
         {
@@ -26,10 +26,10 @@ namespace FileCabinetApp
                 return;
             }
 
-            Console.WriteLine($@"Service = {Service}, Validator = {_validator}");
+            Console.WriteLine($@"Service = {_service}, Validator = {_validator}");
             Console.WriteLine(EnglishSource.developed_by, FileCabinetConsts.DeveloperName); 
             Console.WriteLine(EnglishSource.hint);
-            var commandHandler = CreateCommandHandlers();
+            var commandHandler = CreateCommandHandlers(_service);
 
             while (IsRunning)
             {
@@ -57,18 +57,18 @@ namespace FileCabinetApp
             }
         }
 
-        private static ICommandHandler CreateCommandHandlers()
+        private static ICommandHandler CreateCommandHandlers(IFileCabinetService service)
         {
             var helpHandler = new HelpCommandHandler();
             var createHandler = new CreateCommandHandler();
             var editHandler = new EditCommandHandler();
-            var listHandler = new ListCommandHandler();
-            var statHandler = new StatCommandHandler();
-            var findHandler = new FindCommandHandler();
+            var listHandler = new ListCommandHandler(service);
+            var statHandler = new StatCommandHandler(service);
+            var findHandler = new FindCommandHandler(service);
             var exportHandler = new ExportCommandHandler();
-            var importHandler = new ImportCommandHandler();
-            var removeHandler = new RemoveCommandHandler();
-            var purgeHandler = new PurgeCommandHandler();
+            var importHandler = new ImportCommandHandler(service);
+            var removeHandler = new RemoveCommandHandler(service);
+            var purgeHandler = new PurgeCommandHandler(service);
             var exitHandler = new ExitCommandHandler();
             
             helpHandler.SetNext(createHandler);
@@ -103,7 +103,7 @@ namespace FileCabinetApp
             if (HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileFullForm)
             || HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileShortForm))
             {
-                Service = new FileCabinetFilesystemService(null, _validator);
+                _service = new FileCabinetFilesystemService(null, _validator);
             }
         }
 

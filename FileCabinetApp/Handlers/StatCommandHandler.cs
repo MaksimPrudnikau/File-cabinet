@@ -4,6 +4,13 @@ namespace FileCabinetApp.Handlers
 {
     public class StatCommandHandler : CommandHandlerBase
     {
+        private static IFileCabinetService _service;
+
+        public StatCommandHandler(IFileCabinetService service)
+        {
+            _service = service;
+        }
+        
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
@@ -19,7 +26,7 @@ namespace FileCabinetApp.Handlers
         /// </summary>
         private void Stat(string parameters)
         {
-            var stat = Program.Service.GetStat();
+            var stat = _service.GetStat();
             Console.WriteLine(EnglishSource.stat, stat.Count, stat.Deleted);
         }
     }

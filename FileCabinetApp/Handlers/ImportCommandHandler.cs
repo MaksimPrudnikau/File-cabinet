@@ -5,6 +5,13 @@ namespace FileCabinetApp.Handlers
 {
     public class ImportCommandHandler : CommandHandlerBase
     {
+        private static IFileCabinetService _service;
+
+        public ImportCommandHandler(IFileCabinetService service)
+        {
+            _service = service;
+        }
+        
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
@@ -49,7 +56,7 @@ namespace FileCabinetApp.Handlers
                         break;
                 }
 
-                Program.Service.Restore(snapshot);
+                _service.Restore(snapshot);
             }
             catch (InvalidOperationException exception)
             {

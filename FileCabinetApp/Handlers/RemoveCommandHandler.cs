@@ -5,6 +5,13 @@ namespace FileCabinetApp.Handlers
 {
     public class RemoveCommandHandler : CommandHandlerBase
     {
+        private static IFileCabinetService _service;
+
+        public RemoveCommandHandler(IFileCabinetService service)
+        {
+            _service = service;
+        }
+        
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
@@ -21,7 +28,7 @@ namespace FileCabinetApp.Handlers
             {
                 var id = Convert.ToInt32(parameters, CultureInfo.InvariantCulture);
                 
-                Program.Service.Remove(id);
+                _service.Remove(id);
 
                 Console.WriteLine(EnglishSource.Record_is_removed, id);
             }

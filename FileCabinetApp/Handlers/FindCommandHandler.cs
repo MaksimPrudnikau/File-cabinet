@@ -5,6 +5,12 @@ namespace FileCabinetApp.Handlers
 {
     public class FindCommandHandler : CommandHandlerBase
     {
+        private static IFileCabinetService _service;
+
+        public FindCommandHandler(IFileCabinetService service)
+        {
+            _service = service;
+        }
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
@@ -51,9 +57,9 @@ namespace FileCabinetApp.Handlers
         {
             return attribute.ToUpperInvariant() switch
             {
-                "FIRSTNAME" => Program.Service.FindByFirstName(searchValue),
-                "LASTNAME" => Program.Service.FindByLastName(searchValue),
-                "DATEOFBIRTH" => Program.Service.FindByDateOfBirth(searchValue),
+                "FIRSTNAME" => _service.FindByFirstName(searchValue),
+                "LASTNAME" => _service.FindByLastName(searchValue),
+                "DATEOFBIRTH" => _service.FindByDateOfBirth(searchValue),
                 _ => throw new ArgumentException("Entered attribute is not exist")
             };
         }

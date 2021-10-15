@@ -4,6 +4,13 @@ namespace FileCabinetApp.Handlers
 {
     public class ListCommandHandler : CommandHandlerBase
     {
+        private static IFileCabinetService _service;
+
+        public ListCommandHandler(IFileCabinetService service)
+        {
+            _service = service;
+        }
+        
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
@@ -19,7 +26,7 @@ namespace FileCabinetApp.Handlers
         /// </summary>
         private void List(string parameters)
         {
-            foreach (var item in Program.Service.GetRecords())
+            foreach (var item in _service.GetRecords())
             {
                 item.Print();
             }
