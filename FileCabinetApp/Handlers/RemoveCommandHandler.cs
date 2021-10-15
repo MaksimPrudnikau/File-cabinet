@@ -3,13 +3,10 @@ using System.Globalization;
 
 namespace FileCabinetApp.Handlers
 {
-    public class RemoveCommandHandler : CommandHandlerBase
+    public class RemoveCommandHandler : ServiceCommandHandlerBase
     {
-        private static IFileCabinetService _service;
-
-        public RemoveCommandHandler(IFileCabinetService service)
+        public RemoveCommandHandler(IFileCabinetService service) : base(service)
         {
-            _service = service;
         }
         
         public override void SetNext(ICommandHandler handler)
@@ -28,7 +25,7 @@ namespace FileCabinetApp.Handlers
             {
                 var id = Convert.ToInt32(parameters, CultureInfo.InvariantCulture);
                 
-                _service.Remove(id);
+                Service.Remove(id);
 
                 Console.WriteLine(EnglishSource.Record_is_removed, id);
             }

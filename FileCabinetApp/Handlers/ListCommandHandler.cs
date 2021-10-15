@@ -2,13 +2,10 @@ using System;
 
 namespace FileCabinetApp.Handlers
 {
-    public class ListCommandHandler : CommandHandlerBase
+    public class ListCommandHandler : ServiceCommandHandlerBase
     {
-        private static IFileCabinetService _service;
-
-        public ListCommandHandler(IFileCabinetService service)
+        public ListCommandHandler(IFileCabinetService service) : base(service)
         {
-            _service = service;
         }
         
         public override void SetNext(ICommandHandler handler)
@@ -26,7 +23,7 @@ namespace FileCabinetApp.Handlers
         /// </summary>
         private void List(string parameters)
         {
-            foreach (var item in _service.GetRecords())
+            foreach (var item in Service.GetRecords())
             {
                 item.Print();
             }

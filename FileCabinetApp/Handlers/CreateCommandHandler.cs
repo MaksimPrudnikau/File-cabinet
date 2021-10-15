@@ -2,8 +2,12 @@ using System;
 
 namespace FileCabinetApp.Handlers
 {
-    public class CreateCommandHandler : CommandHandlerBase
+    public class CreateCommandHandler : ServiceCommandHandlerBase
     {
+        public CreateCommandHandler(IFileCabinetService service) : base(service)
+        {
+        }
+        
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
@@ -21,9 +25,9 @@ namespace FileCabinetApp.Handlers
         {
             try
             {
-                var parameter = Program.Service.ReadParameters();
+                var parameter = Service.ReadParameters();
                 
-                Console.WriteLine(EnglishSource.create, Program.Service.CreateRecord(parameter));
+                Console.WriteLine(EnglishSource.create, Service.CreateRecord(parameter));
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {

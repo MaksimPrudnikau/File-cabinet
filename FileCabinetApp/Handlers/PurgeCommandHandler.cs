@@ -2,13 +2,10 @@ using System;
 
 namespace FileCabinetApp.Handlers
 {
-    public class PurgeCommandHandler : CommandHandlerBase
+    public class PurgeCommandHandler : ServiceCommandHandlerBase
     {
-        private static IFileCabinetService _service;
-
-        public PurgeCommandHandler(IFileCabinetService service)
+        public PurgeCommandHandler(IFileCabinetService service) : base(service)
         {
-            _service = service;
         }
         
         public override void SetNext(ICommandHandler handler)
@@ -25,7 +22,7 @@ namespace FileCabinetApp.Handlers
         {
             try
             { 
-                _service.Purge();
+                Service.Purge();
             }
             catch (ArgumentNullException exception)
             {

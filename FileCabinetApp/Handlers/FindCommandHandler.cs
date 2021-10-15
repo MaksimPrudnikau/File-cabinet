@@ -3,14 +3,10 @@ using System.Collections.Generic;
 
 namespace FileCabinetApp.Handlers
 {
-    public class FindCommandHandler : CommandHandlerBase
+    public class FindCommandHandler : ServiceCommandHandlerBase
     {
-        private static IFileCabinetService _service;
-
-        public FindCommandHandler(IFileCabinetService service)
-        {
-            _service = service;
-        }
+        public FindCommandHandler(IFileCabinetService service) : base(service) { }
+        
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
@@ -57,9 +53,9 @@ namespace FileCabinetApp.Handlers
         {
             return attribute.ToUpperInvariant() switch
             {
-                "FIRSTNAME" => _service.FindByFirstName(searchValue),
-                "LASTNAME" => _service.FindByLastName(searchValue),
-                "DATEOFBIRTH" => _service.FindByDateOfBirth(searchValue),
+                "FIRSTNAME" => Service.FindByFirstName(searchValue),
+                "LASTNAME" => Service.FindByLastName(searchValue),
+                "DATEOFBIRTH" => Service.FindByDateOfBirth(searchValue),
                 _ => throw new ArgumentException("Entered attribute is not exist")
             };
         }

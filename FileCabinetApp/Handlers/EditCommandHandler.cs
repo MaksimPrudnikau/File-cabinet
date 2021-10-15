@@ -2,8 +2,13 @@ using System;
 
 namespace FileCabinetApp.Handlers
 {
-    public class EditCommandHandler : CommandHandlerBase
+    public class EditCommandHandler : ServiceCommandHandlerBase
     {
+        public EditCommandHandler(IFileCabinetService service) : base(service)
+        {
+            
+        }
+        
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
@@ -28,9 +33,9 @@ namespace FileCabinetApp.Handlers
 
             try
             { 
-                var inputParameters = Program.Service.ReadParameters(id);
+                var inputParameters = Service.ReadParameters(id);
                 
-                Program.Service.EditRecord(inputParameters);
+                Service.EditRecord(inputParameters);
                 
                 Console.WriteLine(EnglishSource.update, id);
             }

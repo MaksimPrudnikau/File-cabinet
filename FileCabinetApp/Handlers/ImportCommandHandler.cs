@@ -3,14 +3,9 @@ using System.IO;
 
 namespace FileCabinetApp.Handlers
 {
-    public class ImportCommandHandler : CommandHandlerBase
+    public class ImportCommandHandler : ServiceCommandHandlerBase
     {
-        private static IFileCabinetService _service;
-
-        public ImportCommandHandler(IFileCabinetService service)
-        {
-            _service = service;
-        }
+        public ImportCommandHandler(IFileCabinetService service) : base(service) { }
         
         public override void SetNext(ICommandHandler handler)
         {
@@ -56,7 +51,7 @@ namespace FileCabinetApp.Handlers
                         break;
                 }
 
-                _service.Restore(snapshot);
+                Service.Restore(snapshot);
             }
             catch (InvalidOperationException exception)
             {

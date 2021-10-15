@@ -2,13 +2,11 @@ using System;
 
 namespace FileCabinetApp.Handlers
 {
-    public class StatCommandHandler : CommandHandlerBase
+    public class StatCommandHandler : ServiceCommandHandlerBase
     {
-        private static IFileCabinetService _service;
-
-        public StatCommandHandler(IFileCabinetService service)
+        public StatCommandHandler(IFileCabinetService service) : base(service)
         {
-            _service = service;
+            Service = service;
         }
         
         public override void SetNext(ICommandHandler handler)
@@ -26,7 +24,7 @@ namespace FileCabinetApp.Handlers
         /// </summary>
         private void Stat(string parameters)
         {
-            var stat = _service.GetStat();
+            var stat = Service.GetStat();
             Console.WriteLine(EnglishSource.stat, stat.Count, stat.Deleted);
         }
     }
