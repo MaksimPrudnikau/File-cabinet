@@ -78,7 +78,7 @@ namespace FileCabinetApp.Import
                     validator.DateOfBirthValidator),
                 JobExperience = Parse(split[jobExperienceIndex], InputConverter.JobExperienceConverter,
                     validator.JobExperienceValidator),
-                Salary = Parse(split[wageIndex], InputConverter.WageConverter, validator.WageValidator),
+                Salary = Parse(split[wageIndex], InputConverter.WageConverter, validator.SalaryValidator),
                 Rank = Parse(split[rankIndex], InputConverter.RankConverter, validator.RankValidator)
             };
         }

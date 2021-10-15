@@ -5,11 +5,12 @@ namespace FileCabinetApp.Handlers
 {
     public class FindCommandHandler : ServiceCommandHandlerBase
     {
-        private readonly IRecordPrinter _printer;
+        private readonly Action<IEnumerable<FileCabinetRecord>> _print;
 
-        public FindCommandHandler(IFileCabinetService service, IRecordPrinter printer) : base(service)
+        public FindCommandHandler(IFileCabinetService service, Action<IEnumerable<FileCabinetRecord>> print) :
+            base(service)
         {
-            _printer = printer;
+            _print = print;
         }
         
         public override void SetNext(ICommandHandler handler)
@@ -31,7 +32,7 @@ namespace FileCabinetApp.Handlers
             
             try
             {
-                _printer.Print(FindByAttribute(attribute, searchValue));
+                _print(FindByAttribute(attribute, searchValue));
             }
             catch (Exception exception) when (exception is ArgumentException or FormatException)
             {

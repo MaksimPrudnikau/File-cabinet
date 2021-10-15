@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FileCabinetApp.Handlers
+namespace FileCabinetApp.Printers
 {
-    public class DefaultRecordPrinter : IRecordPrinter
+    public static class RecordsPrinter
     {
-        public void Print(IEnumerable<FileCabinetRecord> records)
+        public static void Default(IEnumerable<FileCabinetRecord> records)
         {
             if (records is null)
             {

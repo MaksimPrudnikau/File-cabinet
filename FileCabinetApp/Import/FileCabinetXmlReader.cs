@@ -69,7 +69,7 @@ namespace FileCabinetApp.Import
                 CultureInfo.InvariantCulture);
             ThrowIfWrong(validator.DateOfBirthValidator(dateOfBirth));
             ThrowIfWrong(validator.JobExperienceValidator(record.JobExperience));
-            ThrowIfWrong(validator.WageValidator(record.Wage));
+            ThrowIfWrong(validator.SalaryValidator(record.Wage));
             ThrowIfWrong(validator.RankValidator(record.Rank));
         }
 

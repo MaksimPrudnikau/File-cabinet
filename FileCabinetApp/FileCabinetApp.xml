@@ -459,6 +459,48 @@
             <param name="rank">Source rank</param>
             <returns>Parsed <see cref="T:System.Char"/> object</returns>
         </member>
+        <member name="M:FileCabinetApp.Handlers.CreateCommandHandler.Create(System.String)">
+            <summary>
+            Create a new record according to data user entered
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.EditCommandHandler.Edit(System.String)">
+            <summary>
+            Edit the record with entered id
+            </summary>
+            <param name="parameters">Id of the record to edit</param>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ExportCommandHandler.Export(System.String)">
+            <summary>
+            Serialize all records in file with entered format
+            </summary>
+            <param name="parameters">Output file format</param>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.FindCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.FindCommandHandler.FindByAttribute(System.String,System.String)">
+            <summary>
+            Create an array where any attribute element equals searchValue
+            </summary>
+            <param name="attribute">Search property</param>
+            <param name="searchValue">Value to search</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException">Entered attribute is not exist</exception>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ListCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            Return list of records added to Program.Service
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.StatCommandHandler.Stat(System.String)">
+            <summary>
+            Prints the amount of records
+            </summary>
+        </member>
         <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.ReadAll">
             <summary>
             Read all records from current base file written in csv
@@ -514,48 +556,6 @@
             <param name="args">Source command parameter</param>
             <exception cref="T:System.ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
             <returns></returns>
-        </member>
-        <member name="M:FileCabinetApp.Program.Stat(System.String)">
-            <summary>
-            Prints the amount of records
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.Program.Create(System.String)">
-            <summary>
-            Create a new record according to data user entered
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.Program.List(System.String)">
-            <summary>
-            Return list of records added to service
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.Program.Edit(System.String)">
-            <summary>
-            Edit the record with entered id
-            </summary>
-            <param name="parameters">Id of the record to edit</param>
-        </member>
-        <member name="M:FileCabinetApp.Program.Find(System.String)">
-            <summary>
-            Prints all the records with entered attribute equals searchValue
-            </summary>
-            <param name="parameters">Parameter in format "attribute searchValue"</param>
-        </member>
-        <member name="M:FileCabinetApp.Program.FindByAttribute(System.String,System.String)">
-            <summary>
-            Create an array where any attribute element equals searchValue
-            </summary>
-            <param name="attribute">Search property</param>
-            <param name="searchValue">Value to search</param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentException">Entered attribute is not exist</exception>
-        </member>
-        <member name="M:FileCabinetApp.Program.Export(System.String)">
-            <summary>
-            Serialize all records in file with entered format
-            </summary>
-            <param name="parameters">Output file format</param>
         </member>
         <member name="M:FileCabinetApp.CustomValidator.IdValidator(System.Int32)">
             <summary>

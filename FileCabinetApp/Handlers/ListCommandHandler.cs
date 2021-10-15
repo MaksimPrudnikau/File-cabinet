@@ -1,16 +1,18 @@
 using System;
+using System.Collections.Generic;
 
 namespace FileCabinetApp.Handlers
 {
     public class ListCommandHandler : ServiceCommandHandlerBase
     {
-        private readonly IRecordPrinter _printer;
-        
-        public ListCommandHandler(IFileCabinetService service, IRecordPrinter printer) : base(service)
+        private readonly Action<IEnumerable<FileCabinetRecord>> _print;
+
+        public ListCommandHandler(IFileCabinetService service, Action<IEnumerable<FileCabinetRecord>> print) :
+            base(service)
         {
-            _printer = printer;
+            _print = print;
         }
-        
+
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
@@ -21,7 +23,7 @@ namespace FileCabinetApp.Handlers
         /// </summary>
         public override void Handle(AppCommandRequest request)
         {
-            _printer.Print(Service.GetRecords());
+            _print(Service.GetRecords());
         }
     }
 }

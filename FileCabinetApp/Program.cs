@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Resources;
+using System.Text;
 using FileCabinetApp.Handlers;
+using FileCabinetApp.Printers;
 
 [assembly:CLSCompliant(true)]
 [assembly:NeutralResourcesLanguage("en")]
@@ -10,6 +12,8 @@ namespace FileCabinetApp
     public static class Program
     {
         public static bool IsRunning = true;
+        // TODO: Закройте поле isRunning, сделайте Constructor Injection делегата Action<bool> в класс ExitCommandHandler
+        
         private static IRecordValidator _validator = new DefaultValidator();
         private static IFileCabinetService _service = new FileCabinetMemoryService(_validator);
 
@@ -59,13 +63,12 @@ namespace FileCabinetApp
 
         private static ICommandHandler CreateCommandHandlers(IFileCabinetService service)
         {
-            var recordPrinter = new DefaultRecordPrinter();
             var helpHandler = new HelpCommandHandler();
             var createHandler = new CreateCommandHandler(service);
             var editHandler = new EditCommandHandler(service);
-            var listHandler = new ListCommandHandler(service, recordPrinter);
+            var listHandler = new ListCommandHandler(service, RecordsPrinter.Default);
             var statHandler = new StatCommandHandler(service);
-            var findHandler = new FindCommandHandler(service, recordPrinter);
+            var findHandler = new FindCommandHandler(service, RecordsPrinter.Default);
             var exportHandler = new ExportCommandHandler();
             var importHandler = new ImportCommandHandler(service);
             var removeHandler = new RemoveCommandHandler(service);
