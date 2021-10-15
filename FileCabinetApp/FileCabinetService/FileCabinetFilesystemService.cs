@@ -112,7 +112,7 @@ namespace FileCabinetApp
             {
                 Id = id == -1 ? _stat.Count + 1 : id,
                 JobExperience = FileCabinetConsts.MinimalJobExperience,
-                Wage = FileCabinetConsts.MinimalWage,
+                Salary = FileCabinetConsts.MinimalWage,
                 Rank = FileCabinetConsts.Grades[0]
             };
             
@@ -135,7 +135,7 @@ namespace FileCabinetApp
                 _validator.JobExperienceValidator);
                 
             Console.Write(EnglishSource.wage);
-            record.Wage = ReadInput(InputConverter.WageConverter, _validator.WageValidator);
+            record.Salary = ReadInput(InputConverter.WageConverter, _validator.WageValidator);
                 
             Console.Write(EnglishSource.rank);
             record.Rank = ReadInput(InputConverter.RankConverter, _validator.RankValidator);

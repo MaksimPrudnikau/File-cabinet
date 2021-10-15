@@ -5,36 +5,33 @@ namespace FileCabinetApp.Handlers
 {
     public class FindCommandHandler : ServiceCommandHandlerBase
     {
-        public FindCommandHandler(IFileCabinetService service) : base(service) { }
+        private readonly IRecordPrinter _printer;
+
+        public FindCommandHandler(IFileCabinetService service, IRecordPrinter printer) : base(service)
+        {
+            _printer = printer;
+        }
         
         public override void SetNext(ICommandHandler handler)
         {
             throw new NotImplementedException();
         }
-
-        public override void Handle(AppCommandRequest request)
-        {
-            throw new NotImplementedException();
-        }
         
         /// <summary>
-        /// Prints all the records with entered attribute equals searchValue
+        /// 
         /// </summary>
-        /// <param name="parameters">Parameter in format "attribute searchValue"</param>
-        private void Find(string parameters)
+        /// <param name="request"></param>
+        public override void Handle(AppCommandRequest request)
         {
             const int attributeIndex = 0;
             const int searchValueIndex = 1;
-            var inputs = parameters.Split(' ', 2);
+            var inputs = request.Parameters.Split(' ', 2);
             var attribute = inputs[attributeIndex];
             var searchValue = inputs[searchValueIndex];
-
+            
             try
             {
-                foreach (var record in FindByAttribute(attribute, searchValue))
-                {
-                    record.Print();
-                }
+                _printer.Print(FindByAttribute(attribute, searchValue));
             }
             catch (Exception exception) when (exception is ArgumentException or FormatException)
             {

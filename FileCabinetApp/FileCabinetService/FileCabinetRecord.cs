@@ -17,22 +17,10 @@ namespace FileCabinetApp
 
         public short JobExperience { get; set; } = FileCabinetConsts.MinimalJobExperience;
 
-        public decimal Wage { get; set; } = FileCabinetConsts.MinimalWage;
+        public decimal Salary { get; set; } = FileCabinetConsts.MinimalWage;
 
         public char Rank { get; set; } = FileCabinetConsts.Grades[0];
 
-        public void Print()
-        {
-            Console.WriteLine(EnglishSource.print_record,
-                Id,
-                FirstName,
-                LastName,
-                DateOfBirth.ToString("yyyy-MMM-dd", CultureInfo.InvariantCulture),
-                JobExperience,
-                Wage,
-                Rank);
-        }
-        
         /// <summary>
         /// Read one record from base file consistently
         /// </summary>

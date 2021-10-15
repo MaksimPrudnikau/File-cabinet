@@ -4,8 +4,11 @@ namespace FileCabinetApp.Handlers
 {
     public class ListCommandHandler : ServiceCommandHandlerBase
     {
-        public ListCommandHandler(IFileCabinetService service) : base(service)
+        private readonly IRecordPrinter _printer;
+        
+        public ListCommandHandler(IFileCabinetService service, IRecordPrinter printer) : base(service)
         {
+            _printer = printer;
         }
         
         public override void SetNext(ICommandHandler handler)
@@ -13,20 +16,12 @@ namespace FileCabinetApp.Handlers
             throw new NotImplementedException();
         }
 
-        public override void Handle(AppCommandRequest request)
-        {
-            throw new NotImplementedException();
-            
-        }
         /// <summary>
         /// Return list of records added to Program.Service
         /// </summary>
-        private void List(string parameters)
+        public override void Handle(AppCommandRequest request)
         {
-            foreach (var item in Service.GetRecords())
-            {
-                item.Print();
-            }
+            _printer.Print(Service.GetRecords());
         }
     }
 }

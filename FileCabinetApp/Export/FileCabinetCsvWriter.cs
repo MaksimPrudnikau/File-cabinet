@@ -36,7 +36,7 @@ namespace FileCabinetApp
                                 $"{item.LastName}{delimiter}" +
                                 $"{item.DateOfBirth.ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture)}{delimiter}" +
                                 $"{item.JobExperience}{delimiter}" +
-                                $"{item.Wage}{delimiter}" +
+                                $"{item.Salary}{delimiter}" +
                                 $"{item.Rank}");
             }
         }

@@ -43,7 +43,7 @@ namespace FileCabinetApp
                     Name = new NameXml{First = item.FirstName, Last = item.LastName},
                     DateOfBirth = item.DateOfBirth.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
                     JobExperience = item.JobExperience,
-                    Wage = item.Wage,
+                    Wage = item.Salary,
                     Rank = item.Rank
                 });
             }

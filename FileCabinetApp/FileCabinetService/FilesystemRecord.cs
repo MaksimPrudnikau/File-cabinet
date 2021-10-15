@@ -68,7 +68,7 @@ namespace FileCabinetApp
             _month = BitConverter.GetBytes(parameter.DateOfBirth.Month);
             _day = BitConverter.GetBytes(parameter.DateOfBirth.Day);
             _jobExperience = BitConverter.GetBytes(parameter.JobExperience);
-            _wage = BitConverter.GetBytes(decimal.ToDouble(parameter.Wage));
+            _wage = BitConverter.GetBytes(decimal.ToDouble(parameter.Salary));
             _rank = BitConverter.GetBytes(parameter.Rank);
         }
 
@@ -173,7 +173,7 @@ namespace FileCabinetApp
                     BitConverter.ToInt32(GetDay())
                 ),
                 JobExperience = BitConverter.ToInt16(GetJobExperience()),
-                Wage = new decimal(BitConverter.ToDouble(GetWage())),
+                Salary = new decimal(BitConverter.ToDouble(GetWage())),
                 Rank = Encoding.UTF8.GetString(GetRank())[0]
             };
         }

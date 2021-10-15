@@ -95,7 +95,7 @@ namespace FileCabinetApp.Import
                 LastName = record.Name.Last,
                 DateOfBirth = DateTime.ParseExact(record.DateOfBirth, FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture),
                 JobExperience = record.JobExperience,
-                Wage = record.Wage,
+                Salary = record.Wage,
                 Rank = record.Rank
             };
         }
