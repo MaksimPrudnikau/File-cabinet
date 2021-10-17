@@ -37,5 +37,6 @@ namespace FileCabinetApp
         public const string FileSystemFileName = "cabinet-records.db";
 
         public const char CsvDelimiter = ',';
+        public static readonly char[] Grades = {'F', 'D', 'C', 'B', 'A'};
     }
 }

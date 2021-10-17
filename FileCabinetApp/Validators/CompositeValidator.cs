@@ -6,7 +6,7 @@ namespace FileCabinetApp
     {
         private readonly List<IRecordValidator> _validators;
 
-        protected CompositeValidator(IEnumerable<IRecordValidator> validators)
+        public CompositeValidator(IEnumerable<IRecordValidator> validators)
         {
             _validators = (List<IRecordValidator>) validators;
         }
