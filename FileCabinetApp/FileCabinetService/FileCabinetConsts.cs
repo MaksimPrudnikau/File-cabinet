@@ -29,8 +29,7 @@ namespace FileCabinetApp
         public const int MaximalNameLength = 100;
         public const int MinimalJobExperience = 0;
         public const int MaximalJobExperience = 100;
-        public const int MinimalWage = 250;
-        public static readonly char[] Grades = {'F', 'D', 'C', 'B', 'A'};
+        public const int MinimalSalary = 250;
 
         public static readonly DateTime MinimalDateTime = new (1950, 1, 1);
         public static readonly DateTime MaximalDateTime = DateTime.Now;

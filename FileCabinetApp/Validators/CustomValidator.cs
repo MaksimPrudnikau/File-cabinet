@@ -11,25 +11,21 @@ namespace FileCabinetApp
             {
                 throw new ArgumentNullException(nameof(record));
             }
-            
-            var results = new List<ValidationResult>
-            {
-                CustomIdValidator.Validate(record.Id),
-                CustomFirstNameValidator.Validate(record.FirstName),
-                CustomLastNameValidator.Validate(record.LastName),
-                CustomDateOfBirthValidator.Validate(record.DateOfBirth),
-                CustomJobExperienceValidator.Validate(record.JobExperience),
-                CustomSalaryValidator.Validate(record.Salary),
-                CustomRankValidator.Validate(record.Rank)
-            };
 
-            foreach (var item in results)
-            {
-                if (!item.Parsed)
-                {
-                    throw new ArgumentException(item.Message);
-                }
-            }
+            new IdValidator()
+                .Validate(record);
+            new FirstNameValidator(FileCabinetConsts.MinimalNameLength, FileCabinetConsts.MaximalNameLength)
+                .Validate(record.FirstName);
+            new LastNameValidator(FileCabinetConsts.MinimalNameLength, FileCabinetConsts.MaximalNameLength)
+                .Validate(record.LastName);
+            new DateOfBirthValidator(FileCabinetConsts.MinimalDateTime, FileCabinetConsts.MaximalDateTime)
+                .Validate(record.DateOfBirth);
+            new JobExperienceValidator(FileCabinetConsts.MinimalJobExperience, FileCabinetConsts.MaximalJobExperience)
+                .Validate(record.JobExperience);
+            new SalaryValidator(FileCabinetConsts.MinimalSalary)
+                .Validate(record.Salary);
+            new RankValidator()
+                .Validate(record);
         }
     }
 }

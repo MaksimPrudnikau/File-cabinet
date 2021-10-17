@@ -112,7 +112,7 @@ namespace FileCabinetApp
             {
                 Id = id == -1 ? _stat.Count + 1 : id,
                 JobExperience = FileCabinetConsts.MinimalJobExperience,
-                Salary = FileCabinetConsts.MinimalWage,
+                Salary = FileCabinetConsts.MinimalSalary,
                 Rank = FileCabinetConsts.Grades[0]
             };
             

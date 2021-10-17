@@ -2,13 +2,13 @@ using System;
 
 namespace FileCabinetApp
 {
-    public class CustomIdValidator : IRecordValidator
+    public class IdValidator : IRecordValidator
     {
         /// <summary>
         /// Validate source id
         /// </summary>
         /// <param name="id">Source id</param>
-        public static ValidationResult Validate(int id)
+        public ValidationResult Validate(int id)
         {
             var result = new ValidationResult {Parsed = false, StringRepresentation = $"{id}"};
 

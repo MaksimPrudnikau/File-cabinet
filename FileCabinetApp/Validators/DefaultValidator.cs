@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace FileCabinetApp
 {
@@ -12,21 +11,14 @@ namespace FileCabinetApp
                 throw new ArgumentNullException(nameof(record));
             }
             
-            var results = new List<ValidationResult>
-            {
-                DefaultIdValidator.Validate(record.Id),
-                DefaultNameValidator.Validate(record.FirstName),
-                DefaultNameValidator.Validate(record.LastName),
-                DefaultDateOfBirthValidator.Validate(record.DateOfBirth),
-            };
-
-            foreach (var item in results)
-            {
-                if (!item.Parsed)
-                {
-                    throw new ArgumentException(item.Message);
-                }
-            }
+            new IdValidator()
+                .Validate(record);
+            new FirstNameValidator(FileCabinetConsts.MinimalNameLength, FileCabinetConsts.MaximalNameLength)
+                .Validate(record);
+            new LastNameValidator(FileCabinetConsts.MinimalNameLength, FileCabinetConsts.MaximalNameLength)
+                .Validate(record);
+            new DateOfBirthValidator(FileCabinetConsts.MinimalDateTime, FileCabinetConsts.MaximalDateTime)
+                .Validate(record);
         }
     }
 }

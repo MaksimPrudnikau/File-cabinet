@@ -17,7 +17,7 @@ namespace FileCabinetApp
 
         public short JobExperience { get; set; } = FileCabinetConsts.MinimalJobExperience;
 
-        public decimal Salary { get; set; } = FileCabinetConsts.MinimalWage;
+        public decimal Salary { get; set; } = FileCabinetConsts.MinimalSalary;
 
         public char Rank { get; set; } = FileCabinetConsts.Grades[0];
 

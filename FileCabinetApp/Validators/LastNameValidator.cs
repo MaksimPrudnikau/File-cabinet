@@ -2,14 +2,23 @@ using System;
 
 namespace FileCabinetApp
 {
-    public class CustomFirstNameValidator : IRecordValidator
+    public class LastNameValidator : IRecordValidator
     {
+        private readonly long _minLength;
+        private readonly long _maxLength;
+
+        public LastNameValidator(long minLength, long maxLength)
+        {
+            _minLength = minLength;
+            _maxLength = maxLength;
+        }
+
         /// <summary>
         /// Validate name either first or last
         /// </summary>
         /// <param name="name">first or last name</param>
         /// <exception cref="ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
-        public static ValidationResult Validate(string name)
+        public ValidationResult Validate(string name)
         {
             var result = new ValidationResult {Parsed = false, StringRepresentation = name};
             
@@ -19,7 +28,7 @@ namespace FileCabinetApp
                 return result;
             }
 
-            if (name.Length is < 2 or > 60)
+            if (name.Length < _minLength || name.Length > _maxLength)
             {
                 result.Message = RecordValidatorConsts.NameWrongLength;
                 return result;
@@ -37,7 +46,7 @@ namespace FileCabinetApp
             result.Parsed = true;
             return result;
         }
-
+        
         public void Validate(FileCabinetRecord record)
         {
             if (string.IsNullOrWhiteSpace(record.FirstName))
@@ -45,7 +54,7 @@ namespace FileCabinetApp
                 throw new ArgumentException(RecordValidatorConsts.NameIsNullOrWhiteSpace);
             }
 
-            if (record.FirstName.Length is < 2 or > 60)
+            if (record.FirstName.Length < _minLength || record.FirstName.Length > _maxLength)
             {
                 throw new ArgumentException(RecordValidatorConsts.NameWrongLength);
             }
