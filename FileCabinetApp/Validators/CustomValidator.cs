@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FileCabinetApp
 {
-    public class CustomValidator : IRecordValidator
+    public class CustomValidator : CompositeValidator
     {
         public void Validate(FileCabinetRecord record)
         {
@@ -11,21 +11,18 @@ namespace FileCabinetApp
             {
                 throw new ArgumentNullException(nameof(record));
             }
-
-            new IdValidator()
-                .Validate(record);
-            new FirstNameValidator(FileCabinetConsts.MinimalNameLength, FileCabinetConsts.MaximalNameLength)
-                .Validate(record.FirstName);
-            new LastNameValidator(FileCabinetConsts.MinimalNameLength, FileCabinetConsts.MaximalNameLength)
-                .Validate(record.LastName);
-            new DateOfBirthValidator(FileCabinetConsts.MinimalDateTime, FileCabinetConsts.MaximalDateTime)
-                .Validate(record.DateOfBirth);
-            new JobExperienceValidator(FileCabinetConsts.MinimalJobExperience, FileCabinetConsts.MaximalJobExperience)
-                .Validate(record.JobExperience);
-            new SalaryValidator(FileCabinetConsts.MinimalSalary)
-                .Validate(record.Salary);
-            new RankValidator()
-                .Validate(record);
         }
+
+        public CustomValidator() : 
+            base(new IRecordValidator[]
+            {
+                new IdValidator(),
+                new FirstNameValidator(FileCabinetConsts.MinimalNameLength,FileCabinetConsts.MaximalNameLength),
+                new LastNameValidator(FileCabinetConsts.MinimalNameLength,FileCabinetConsts.MaximalNameLength),
+                new DateOfBirthValidator(FileCabinetConsts.MinimalDateTime, FileCabinetConsts.MaximalDateTime),
+                new JobExperienceValidator(FileCabinetConsts.MinimalJobExperience,FileCabinetConsts.MaximalJobExperience),
+                new SalaryValidator(FileCabinetConsts.MinimalSalary),
+                new RankValidator()
+            }){}
     }
 }
