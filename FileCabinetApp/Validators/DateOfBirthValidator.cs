@@ -12,36 +12,21 @@ namespace FileCabinetApp
             _from = from;
             _to = to;
         }
-        
+
         /// <summary>
-        /// Validate date of birth in format "dd/MM/yyyy"
+        /// Validate current record's date of birth
         /// </summary>
-        /// <param name="dateOfBirth">entered date of birth</param>
+        /// <param name="record">Source record to validate</param>
         /// <exception cref="ArgumentNullException">Date of birth is null or whitespace</exception>
-        /// <exception cref="ArgumentException">Date of birth is not in dd/mm/yyyy format.
-        /// Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
-        public ValidationResult Validate(DateTime dateOfBirth)
-        {
-            var result = new ValidationResult {Parsed = false, StringRepresentation = $"{dateOfBirth}"};
-
-            if (dateOfBirth < _from)
-            {
-                result.Message = RecordValidatorConsts.DateOfBirthIsLessThanMinimal;
-                return result;
-            }
-
-            if (dateOfBirth > _to)
-            {
-                result.Message = RecordValidatorConsts.DateOfBirthIsGreaterThanMaximal;
-                return result;
-            }
-
-            result.Parsed = true;
-            return result;
-        }
-
+        /// <exception cref="ArgumentException">Date of birth is not in dd/MM/yyyy format.
+        /// Date of birth is not in range of current minimum and maximum value</exception>
         public void Validate(FileCabinetRecord record)
         {
+            if (record is null)
+            {
+                throw new ArgumentNullException(nameof(record));
+            }
+            
             var dateOfBirth = record.DateOfBirth;
             
             if (dateOfBirth < _from)

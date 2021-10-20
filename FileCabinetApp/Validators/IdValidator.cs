@@ -5,25 +5,16 @@ namespace FileCabinetApp
     public class IdValidator : IRecordValidator
     {
         /// <summary>
-        /// Validate source id
+        /// Validate current record's id
         /// </summary>
-        /// <param name="id">Source id</param>
-        public ValidationResult Validate(int id)
-        {
-            var result = new ValidationResult {Parsed = false, StringRepresentation = $"{id}"};
-
-            if (id < 0)
-            {
-                result.Message = RecordValidatorConsts.IdIsLessThenZero;
-                return result;
-            }
-
-            result.Parsed = true;
-            return result;
-        }
-
+        /// <param name="record">Source record to validate</param>
         public void Validate(FileCabinetRecord record)
         {
+            if (record is null)
+            {
+                throw new ArgumentNullException(nameof(record));
+            }
+            
             if (record.Id < 0)
             {
                 throw new ArgumentException(RecordValidatorConsts.IdIsLessThenZero);

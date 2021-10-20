@@ -8,24 +8,20 @@ namespace FileCabinetApp.Handlers
         {
             
         }
-        
-        public override void SetNext(ICommandHandler handler)
-        {
-            throw new NotImplementedException();
-        }
 
-        public override void Handle(AppCommandRequest request)
-        {
-            throw new NotImplementedException();
-        }
-        
         /// <summary>
         /// Edit the record with entered id
         /// </summary>
-        /// <param name="parameters">Id of the record to edit</param>
-        private void Edit(string parameters)
+        /// <param name="request">Object contains command and it's parameters</param>
+        /// <exception cref="ArgumentNullException">Request in null</exception>
+        public override void Handle(AppCommandRequest request)
         {
-            if (!int.TryParse(parameters, out var id))
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            
+            if (!int.TryParse(request.Parameters, out var id))
             {
                 Console.Error.WriteLine(EnglishSource.id_is_not_an_integer);
                 return;

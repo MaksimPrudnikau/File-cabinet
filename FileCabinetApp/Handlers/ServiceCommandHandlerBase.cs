@@ -4,7 +4,7 @@ namespace FileCabinetApp.Handlers
     {
         protected static IFileCabinetService Service;
 
-        public ServiceCommandHandlerBase(IFileCabinetService service)
+        protected ServiceCommandHandlerBase(IFileCabinetService service)
         {
             Service = service;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace FileCabinetApp.Handlers
 {
+    
     public class FindCommandHandler : ServiceCommandHandlerBase
     {
         private readonly Action<IEnumerable<FileCabinetRecord>> _print;
@@ -19,11 +20,17 @@ namespace FileCabinetApp.Handlers
         }
         
         /// <summary>
-        /// 
+        /// Prints all records with suitable attribute
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">Object contains command and it's parameters</param>
+        /// <exception cref="ArgumentNullException">Request in null</exception>
         public override void Handle(AppCommandRequest request)
         {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            
             const int attributeIndex = 0;
             const int searchValueIndex = 1;
             var inputs = request.Parameters.Split(' ', 2);

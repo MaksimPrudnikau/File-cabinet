@@ -11,13 +11,18 @@ namespace FileCabinetApp
         private FileStream _outputFile;
         private readonly Statistic _stat = new();
         private bool _disposed;
+        
+        private readonly bool _isCustomService;
+        private int _maxId;
 
-        public FileCabinetFilesystemService(FileStream fileStream, IRecordValidator validator)
+        public FileCabinetFilesystemService(FileStream fileStream, IRecordValidator validator, bool isCustom = false)
         {
             _outputFile = fileStream 
                           ?? new FileStream(FileCabinetConsts.FileSystemFileName, FileMode.Create);
             
             _validator = validator;
+            
+            _isCustomService = isCustom;
         }
 
         /// <summary>
@@ -31,6 +36,11 @@ namespace FileCabinetApp
             if (record is null)
             {
                 throw new ArgumentNullException(nameof(record));
+            }
+            
+            if (record.Id > _maxId)
+            {
+                _maxId = record.Id;
             }
 
             var fileSystemRecord = new FilesystemRecord(record);
@@ -108,72 +118,9 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetRecord"/> object</returns>
         public FileCabinetRecord ReadParameters(int id = -1)
         {
-            var record = new FileCabinetRecord
-            {
-                Id = id == -1 ? _stat.Count + 1 : id,
-                JobExperience = FileCabinetConsts.MinimalJobExperience,
-                Salary = FileCabinetConsts.MinimalSalary,
-                Rank = FileCabinetConsts.Grades[0]
-            };
-            
-            Console.Write(EnglishSource.first_name);
-            record.FirstName = ReadInput(InputConverter.NameConverter, _validator.NameValidator);
-            
-            Console.Write(EnglishSource.last_name);
-            record.LastName = ReadInput(InputConverter.NameConverter, _validator.NameValidator);
-            
-            Console.Write(EnglishSource.date_of_birth);
-            record.DateOfBirth = ReadInput(InputConverter.DateOfBirthConverter, _validator.DateOfBirthValidator);
-
-            if (_validator is not CustomValidator)
-            {
-                return record;
-            }
-            
-            Console.Write(EnglishSource.job_experience);
-            record.JobExperience = ReadInput(InputConverter.JobExperienceConverter,
-                _validator.JobExperienceValidator);
-                
-            Console.Write(EnglishSource.wage);
-            record.Salary = ReadInput(InputConverter.WageConverter, _validator.WageValidator);
-                
-            Console.Write(EnglishSource.rank);
-            record.Rank = ReadInput(InputConverter.RankConverter, _validator.RankValidator);
-
+            var record = new FileCabinetMemoryService(_validator, _isCustomService).ReadParameters();
+            record.Id = _maxId + 1;
             return record;
-        }
-
-        /// <summary>
-        /// Read data from keyboard, convert it by source converter and validate with source validator
-        /// </summary>
-        /// <typeparam name="T">Type of read data</typeparam>
-        /// <param name="converter">Source converter</param>
-        /// <param name="validator">Source validator</param>
-        /// <returns>Correct input object</returns>
-        private static T ReadInput<T>(Func<string, ConversionResult<T>> converter, Func<T, ValidationResult> validator)
-        {
-            do
-            {
-                var input = Console.ReadLine();
-                var conversionResult = converter(input);
-
-                if (!conversionResult.Parsed)
-                {
-                    Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
-                    continue;
-                }
-
-                var value = conversionResult.Result;
-
-                var validationResult = validator(value);
-                if (validationResult.Parsed)
-                {
-                    return value;
-                }
-                
-                Console.WriteLine(EnglishSource.Validation_failed, validationResult.StringRepresentation);
-            }
-            while (true);
         }
 
         /// <summary>

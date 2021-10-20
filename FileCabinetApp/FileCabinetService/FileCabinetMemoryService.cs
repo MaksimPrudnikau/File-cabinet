@@ -8,16 +8,20 @@ namespace FileCabinetApp
     {
         private static IRecordValidator _validator;
 
-        private static Dictionary<int, FileCabinetRecord> _records = new ();
-        private static Statistic _stat = new();
+        private static readonly Dictionary<int, FileCabinetRecord> Records = new ();
+        private static readonly Statistic Stat = new();
 
         private static readonly Dictionary<string, List<FileCabinetRecord>> FirstNameDictionary = new();
         private static readonly Dictionary<string, List<FileCabinetRecord>> LastNameDictionary = new();
         private static readonly Dictionary<DateTime, List<FileCabinetRecord>> DateOfBirthDictionary = new();
 
-        public FileCabinetMemoryService(IRecordValidator validator)
+        private static bool _isCustomService;
+        private static int _maxId;
+
+        public FileCabinetMemoryService(IRecordValidator validator, bool isCustom = false)
         {
             _validator = validator;
+            _isCustomService = isCustom;
         }
 
         /// <summary>
@@ -31,17 +35,22 @@ namespace FileCabinetApp
                 throw new ArgumentNullException(nameof(record));
             }
 
-            _records.Add(record.Id, record);
+            if (record.Id > _maxId)
+            {
+                _maxId = record.Id;
+            }
 
-            AppendToAllDictionaries(_records[record.Id]);
-            _stat.Count++;
+            Records.Add(record.Id, record);
+
+            AppendToAllDictionaries(Records[record.Id]);
+            Stat.Count++;
 
             return record.Id;
         }
 
         public IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            return _records.Values;
+            return Records.Values;
         }
 
         /// <summary>
@@ -50,7 +59,7 @@ namespace FileCabinetApp
         /// <value>An ordinal number of the last record</value>
         public Statistic GetStat()
         {
-            return _stat;
+            return Stat;
         }
 
         /// <summary>
@@ -59,36 +68,34 @@ namespace FileCabinetApp
         /// <param name="id">Source id of read parameter</param>
         /// <returns><see cref="FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
         public FileCabinetRecord ReadParameters(int id = -1)
-        {   
+        {
             var record = new FileCabinetRecord
             {
-                Id = id == -1 ? ++_stat.Count : id,
+                Id = id == -1 ? _maxId + 1 : id,
             };
 
             Console.Write(EnglishSource.first_name);
-            record.FirstName = ReadInput(InputConverter.NameConverter, _validator.NameValidator);
+            record.FirstName = ReadInput(InputConverter.NameConverter);
             
             Console.Write(EnglishSource.last_name);
-            record.LastName = ReadInput(InputConverter.NameConverter, _validator.NameValidator);
+            record.LastName = ReadInput(InputConverter.NameConverter);
             
             Console.Write(EnglishSource.date_of_birth);
-            record.DateOfBirth = ReadInput(InputConverter.DateOfBirthConverter, _validator.DateOfBirthValidator);
-
-            if (_validator is not CustomValidator)
-            {
-                return record;
-            }
+            record.DateOfBirth = ReadInput(InputConverter.DateOfBirthConverter);
             
-            Console.Write(EnglishSource.job_experience);
-            record.JobExperience = ReadInput(InputConverter.JobExperienceConverter,
-                _validator.JobExperienceValidator);
+            if (_isCustomService)
+            {
+                Console.Write(EnglishSource.job_experience);
+                record.JobExperience = ReadInput(InputConverter.JobExperienceConverter);
                 
-            Console.Write(EnglishSource.wage);
-            record.Salary = ReadInput(InputConverter.WageConverter, _validator.WageValidator);
+                Console.Write(EnglishSource.wage);
+                record.Salary = ReadInput(InputConverter.WageConverter);
                 
-            Console.Write(EnglishSource.rank);
-            record.Rank = ReadInput(InputConverter.RankConverter, _validator.RankValidator);
+                Console.Write(EnglishSource.rank);
+                record.Rank = ReadInput(InputConverter.RankConverter);
+            }
 
+            _validator.Validate(record);
             return record;
         }
 
@@ -97,30 +104,20 @@ namespace FileCabinetApp
         /// </summary>
         /// <typeparam name="T">Type of read data</typeparam>
         /// <param name="converter">Source converter</param>
-        /// <param name="validator">Source validator</param>
         /// <returns>Correct input object</returns>
-        private static T ReadInput<T>(Func<string, ConversionResult<T>> converter, Func<T, ValidationResult> validator)
+        private static T ReadInput<T>(Func<string, ConversionResult<T>> converter)
         {
             do
             {
                 var input = Console.ReadLine();
                 var conversionResult = converter(input);
 
-                if (!conversionResult.Parsed)
+                if (conversionResult.Parsed)
                 {
-                    Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
-                    continue;
+                    return conversionResult.Result;
                 }
 
-                var value = conversionResult.Result;
-
-                var validationResult = validator(value);
-                if (validationResult.Parsed)
-                {
-                    return value;
-                }
-                
-                Console.WriteLine(EnglishSource.Validation_failed, validationResult.StringRepresentation);
+                Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
             }
             while (true);
         }
@@ -136,11 +133,11 @@ namespace FileCabinetApp
                 throw new ArgumentNullException(nameof(record));
             }
             
-            RemoveFromAllDictionaries(_records[record.Id]);
+            RemoveFromAllDictionaries(Records[record.Id]);
 
-            _records[record.Id] = record;
+            Records[record.Id] = record;
             
-            AppendToAllDictionaries(_records[record.Id]);
+            AppendToAllDictionaries(Records[record.Id]);
         }
 
         /// <summary>
@@ -275,7 +272,7 @@ namespace FileCabinetApp
         /// <returns><see cref="FileCabinetServiceSnapshot"/> object</returns>
         public static FileCabinetServiceSnapshot MakeSnapshot()
         {
-            return new FileCabinetServiceSnapshot(_records.Values);
+            return new FileCabinetServiceSnapshot(Records.Values);
         }
 
         public void Restore(FileCabinetServiceSnapshot snapshot)
@@ -287,7 +284,7 @@ namespace FileCabinetApp
             
             foreach (var item in snapshot.Records)
             {
-                if (!_records.ContainsKey(item.Id))
+                if (!Records.ContainsKey(item.Id))
                 {
                     CreateRecord(item);
                 }
@@ -296,18 +293,20 @@ namespace FileCabinetApp
                     EditRecord(item);
                 }
             }
+            
+            
         }
 
         public void Remove(int id)
         {
-            if (!_records.ContainsKey(id))
+            if (!Records.ContainsKey(id))
             {
                 throw new ArgumentException($"Record #{id} doesn't exist");
             }
 
-            RemoveFromAllDictionaries(_records[id]);
-            _stat.Count--;
-            _records.Remove(id);
+            RemoveFromAllDictionaries(Records[id]);
+            Stat.Count--;
+            Records.Remove(id);
         }
 
         public void Purge()

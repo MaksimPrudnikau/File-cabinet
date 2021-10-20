@@ -23,6 +23,7 @@ namespace FileCabinetApp
         public const string ServiceStorageFileShortForm = "-sfile";
 
         public const string InputDateFormat = "dd/MM/yyyy";
+        public const string OutputDateFormat = "dd-MMM-yyyy";
         
         // Constants for 'ReadParameters'
         public const int MinimalNameLength = 2;

@@ -226,15 +226,6 @@
             <param name="id">Id of read parameter. The default value indicates the numbering is sequential</param>
             <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
-            <summary>
-            Read data from keyboard, convert it by source converter and validate with source validator
-            </summary>
-            <typeparam name="T">Type of read data</typeparam>
-            <param name="converter">Source converter</param>
-            <param name="validator">Source validator</param>
-            <returns>Correct input object</returns>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.Find(System.String,FileCabinetApp.SearchValue)">
             <summary>
             Find record with source attribute equals searchValue
@@ -301,13 +292,12 @@
             <param name="id">Source id of read parameter</param>
             <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}})">
             <summary>
             Read data from keyboard, convert it by source converter and validate with source validator
             </summary>
             <typeparam name="T">Type of read data</typeparam>
             <param name="converter">Source converter</param>
-            <param name="validator">Source validator</param>
             <returns>Correct input object</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.EditRecord(FileCabinetApp.FileCabinetRecord)">
@@ -459,28 +449,39 @@
             <param name="rank">Source rank</param>
             <returns>Parsed <see cref="T:System.Char"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.Handlers.CreateCommandHandler.Create(System.String)">
+        <member name="M:FileCabinetApp.Handlers.CreateCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
-            Create a new record according to data user entered
+            Create record in current service
             </summary>
+            <param name="request">Object contains command and it's parameters</param>
+            <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.EditCommandHandler.Edit(System.String)">
+        <member name="M:FileCabinetApp.Handlers.EditCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Edit the record with entered id
             </summary>
-            <param name="parameters">Id of the record to edit</param>
+            <param name="request">Object contains command and it's parameters</param>
+            <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.ExportCommandHandler.Export(System.String)">
+        <member name="M:FileCabinetApp.Handlers.ExitCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            Exit from application
+            </summary>
+            <param name="request">Object contains command and it's parameters</param>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ExportCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Serialize all records in file with entered format
             </summary>
-            <param name="parameters">Output file format</param>
+            <param name="request">Object contains command and it's parameters</param>
+            <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
         <member name="M:FileCabinetApp.Handlers.FindCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
-            
+            Prints all records with suitable attribute
             </summary>
-            <param name="request"></param>
+            <param name="request">Object contains command and it's parameters</param>
+            <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
         <member name="M:FileCabinetApp.Handlers.FindCommandHandler.FindByAttribute(System.String,System.String)">
             <summary>
@@ -491,12 +492,39 @@
             <returns></returns>
             <exception cref="T:System.ArgumentException">Entered attribute is not exist</exception>
         </member>
+        <member name="M:FileCabinetApp.Handlers.HelpCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            Prints help message
+            </summary>
+            <param name="request">Object contains command and it's parameters</param>
+            <exception cref="T:System.ArgumentNullException">Request in null</exception>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ImportCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            Import records from source file
+            </summary>
+            <param name="request">Object contains command and it's parameters</param>
+            <exception cref="T:System.ArgumentNullException">Request in null</exception>
+        </member>
         <member name="M:FileCabinetApp.Handlers.ListCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
-            Return list of records added to Program.Service
+            Return list of records added to current service
             </summary>
         </member>
-        <member name="M:FileCabinetApp.Handlers.StatCommandHandler.Stat(System.String)">
+        <member name="M:FileCabinetApp.Handlers.PurgeCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            Remove all records marked as deleted from source database
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.RemoveCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            Remove record from current service. If service storage is file, it marks the record as deleted
+            </summary>
+            <param name="request">Object contains command and it's parameters</param>
+            <exception cref="T:System.ArgumentNullException">Request in null</exception>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.StatCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Prints the amount of records
             </summary>
@@ -516,14 +544,13 @@
             <exception cref="T:System.ArgumentException">The amount of parameters in line doesn't correspond
             to <see cref="T:FileCabinetApp.FileCabinetRecord"/></exception>
         </member>
-        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.Parse``1(System.String,System.Func{System.String,FileCabinetApp.ConversionResult{``0}},System.Func{``0,FileCabinetApp.ValidationResult})">
+        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.Parse``1(System.String,System.Func{System.String,FileCabinetApp.ConversionResult{``0}})">
             <summary>
             Parse source string to suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> parameter applying certain rules
             to convert and validate
             </summary>
             <param name="source">Source string to parse</param>
             <param name="converter">Source converter with convert methods</param>
-            <param name="validator">Source validator with rules to validate</param>
             <typeparam name="T">The output parsing type</typeparam>
             <returns>Object parsed to output type and satisfied validator's methods</returns>
             <exception cref="T:System.ArgumentException">Cannot convert the source value
@@ -535,13 +562,6 @@
             </summary>
             <returns><see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetRecord"/></returns>
         </member>
-        <member name="M:FileCabinetApp.Import.FileCabinetXmlReader.Validate(FileCabinetApp.RecordXml)">
-            <summary>
-            Validate source record with rules of base validator
-            </summary>
-            <param name="record">Source record</param>
-            <exception cref="T:System.ArgumentNullException">record is null</exception>
-        </member>
         <member name="M:FileCabinetApp.Import.FileCabinetXmlReader.ToFileCabinetRecord(FileCabinetApp.RecordXml)">
             <summary>
             Parse <see cref="T:FileCabinetApp.RecordXml"/> record to <see cref="T:FileCabinetApp.FileCabinetRecord"/>
@@ -549,7 +569,7 @@
             <param name="record">Source record</param>
             <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.Program.SetValidationRule(System.Collections.Generic.IReadOnlyList{System.String})">
+        <member name="M:FileCabinetApp.Program.SetValidationRule(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Create <see cref="T:FileCabinetApp.IFileCabinetService"/> object according to entered command parameter
             </summary>
@@ -557,20 +577,7 @@
             <exception cref="T:System.ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
             <returns></returns>
         </member>
-        <member name="M:FileCabinetApp.CustomValidator.IdValidator(System.Int32)">
-            <summary>
-            Validate source id
-            </summary>
-            <param name="id">Source id</param>
-        </member>
-        <member name="M:FileCabinetApp.CustomValidator.NameValidator(System.String)">
-            <summary>
-            Validate name either first or last
-            </summary>
-            <param name="name">first or last name</param>
-            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
-        </member>
-        <member name="M:FileCabinetApp.CustomValidator.DateOfBirthValidator(System.DateTime)">
+        <member name="M:FileCabinetApp.DateOfBirthValidator.Validate(System.DateTime)">
             <summary>
             Validate date of birth in format "dd/MM/yyyy"
             </summary>
@@ -579,7 +586,20 @@
             <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
             Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
         </member>
-        <member name="M:FileCabinetApp.CustomValidator.JobExperienceValidator(System.Int16)">
+        <member name="M:FileCabinetApp.FirstNameValidator.Validate(System.String)">
+            <summary>
+            Validate name either first or last
+            </summary>
+            <param name="name">first or last name</param>
+            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
+        </member>
+        <member name="M:FileCabinetApp.IdValidator.Validate(System.Int32)">
+            <summary>
+            Validate source id
+            </summary>
+            <param name="id">Source id</param>
+        </member>
+        <member name="M:FileCabinetApp.JobExperienceValidator.Validate(System.Int16)">
             <summary>
             Get job experience from keyboard
             </summary>
@@ -587,37 +607,26 @@
             Job experience is not an integer or less than zero or greater than short.MaxValue.
             Job experience is less than zero or greater than 100.</exception>
         </member>
-        <member name="M:FileCabinetApp.CustomValidator.WageValidator(System.Decimal)">
+        <member name="M:FileCabinetApp.LastNameValidator.Validate(System.String)">
+            <summary>
+            Validate name either first or last
+            </summary>
+            <param name="name">first or last name</param>
+            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
+        </member>
+        <member name="M:FileCabinetApp.RankValidator.Validate(System.Char)">
+            <summary>
+            Get rank from keyboard
+            </summary>
+            <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
+        </member>
+        <member name="M:FileCabinetApp.SalaryValidator.Validate(System.Decimal)">
             <summary>
             Get wage from keyboard
             </summary>
             <exception cref="T:System.ArgumentException">Wage is null.
             Wage is not an integer or greater than decimal.MaxValue.
             Wage is less than zero</exception>
-        </member>
-        <member name="M:FileCabinetApp.CustomValidator.RankValidator(System.Char)">
-            <summary>
-            Get rank from keyboard
-            </summary>
-            <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
-        </member>
-        <member name="M:FileCabinetApp.DefaultValidator.IdValidator(System.Int32)">
-            <summary>
-            Validate source id
-            </summary>
-            <param name="id">Source id</param>
-        </member>
-        <member name="M:FileCabinetApp.DefaultValidator.NameValidator(System.String)">
-            <summary>
-            Validate name either first or last
-            </summary>
-            <param name="name">first or last name</param>
-        </member>
-        <member name="M:FileCabinetApp.DefaultValidator.DateOfBirthValidator(System.DateTime)">
-            <summary>
-            Validate date of birth in format "dd/MM/yyyy"
-            </summary>
-            <param name="dateOfBirth">entered date of birth</param>
         </member>
     </members>
 </doc>

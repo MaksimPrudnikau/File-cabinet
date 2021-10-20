@@ -11,6 +11,7 @@ namespace FileCabinetApp.Import
     {
         private readonly StreamReader _reader;
         private static readonly XmlSerializer Serializer = new (typeof(RecordsXml));
+        private static readonly IRecordValidator Validator = new ValidationBuilder().CreateCustom();
         
         public FileCabinetXmlReader(StreamReader reader)
         {
@@ -33,7 +34,7 @@ namespace FileCabinetApp.Import
             {
                 try
                 {
-                    Validate(item);
+                    Validator.Validate(ToFileCabinetRecord(item));
                 }
                 catch (Exception exception) when (exception is ArgumentException or FormatException)
                 {
@@ -45,40 +46,6 @@ namespace FileCabinetApp.Import
             }
             
             return fileCabinetRecords;
-        }
-
-        /// <summary>
-        /// Validate source record with rules of base validator
-        /// </summary>
-        /// <param name="record">Source record</param>
-        /// <exception cref="ArgumentNullException">record is null</exception>
-        private static void Validate(RecordXml record)
-        {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-
-            var validator = new CustomValidator();
-            
-            ThrowIfWrong(validator.IdValidator(record.Id));
-
-            ThrowIfWrong(validator.NameValidator(record.Name.First));
-            ThrowIfWrong(validator.NameValidator(record.Name.Last));
-            var dateOfBirth = DateTime.ParseExact(record.DateOfBirth, FileCabinetConsts.InputDateFormat,
-                CultureInfo.InvariantCulture);
-            ThrowIfWrong(validator.DateOfBirthValidator(dateOfBirth));
-            ThrowIfWrong(validator.JobExperienceValidator(record.JobExperience));
-            ThrowIfWrong(validator.SalaryValidator(record.Wage));
-            ThrowIfWrong(validator.RankValidator(record.Rank));
-        }
-
-        private static void ThrowIfWrong(ValidationResult result)
-        {
-            if (!result.Parsed)
-            {
-                throw new ArgumentException(result.Message);
-            }
         }
 
         /// <summary>

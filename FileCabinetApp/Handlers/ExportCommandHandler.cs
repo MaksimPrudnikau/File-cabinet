@@ -5,23 +5,19 @@ namespace FileCabinetApp.Handlers
 {
     public class ExportCommandHandler : CommandHandlerBase
     {
-        public override void SetNext(ICommandHandler handler)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Handle(AppCommandRequest request)
-        {
-            throw new NotImplementedException();
-        }
-        
         /// <summary>
         /// Serialize all records in file with entered format
         /// </summary>
-        /// <param name="parameters">Output file format</param>
-        private void Export(string parameters)
+        /// <param name="request">Object contains command and it's parameters</param>
+        /// <exception cref="ArgumentNullException">Request in null</exception>
+        public override void Handle(AppCommandRequest request)
         {
-            var parametersSplited = parameters.Split(' ');
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            
+            var parametersSplited = request.Parameters.Split(' ');
             
             if (parametersSplited.Length != 2)
             {

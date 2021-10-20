@@ -7,18 +7,12 @@ namespace FileCabinetApp.Handlers
         public PurgeCommandHandler(IFileCabinetService service) : base(service)
         {
         }
-        
-        public override void SetNext(ICommandHandler handler)
-        {
-            throw new NotImplementedException();
-        }
 
+        /// <summary>
+        /// Remove all records marked as deleted from source database
+        /// </summary>
+        /// <param name="request"></param>
         public override void Handle(AppCommandRequest request)
-        {
-            throw new NotImplementedException();
-        }
-        
-        private void Purge(string parameters)
         {
             try
             { 

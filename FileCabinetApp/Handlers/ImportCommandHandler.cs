@@ -6,20 +6,20 @@ namespace FileCabinetApp.Handlers
     public class ImportCommandHandler : ServiceCommandHandlerBase
     {
         public ImportCommandHandler(IFileCabinetService service) : base(service) { }
-        
-        public override void SetNext(ICommandHandler handler)
-        {
-            throw new NotImplementedException();
-        }
 
+        /// <summary>
+        /// Import records from source file
+        /// </summary>
+        /// <param name="request">Object contains command and it's parameters</param>
+        /// <exception cref="ArgumentNullException">Request in null</exception>
         public override void Handle(AppCommandRequest request)
         {
-            throw new NotImplementedException();
-        }
-        
-        private void Import(string parameters)
-        {
-            var parametersSplited = parameters.Split(' ');
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            
+            var parametersSplited = request.Parameters.Split(' ');
 
             if (parametersSplited.Length != 2)
             {

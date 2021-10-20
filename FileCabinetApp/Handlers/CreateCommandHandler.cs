@@ -8,20 +8,13 @@ namespace FileCabinetApp.Handlers
         {
         }
         
-        public override void SetNext(ICommandHandler handler)
-        {
-            throw new NotImplementedException();
-        }
 
-        public override void Handle(AppCommandRequest request)
-        {
-            Create(request.Parameters);
-        }
-        
         /// <summary>
-        /// Create a new record according to data user entered
+        /// Create record in current service
         /// </summary>
-        private void Create(string parameters)
+        /// <param name="request">Object contains command and it's parameters</param>
+        /// <exception cref="ArgumentNullException">Request in null</exception>
+        public override void Handle(AppCommandRequest request)
         {
             try
             {
@@ -32,7 +25,6 @@ namespace FileCabinetApp.Handlers
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {
                 Console.Error.WriteLine(exception.Message);
-                Create(parameters);
             }
         }
     }

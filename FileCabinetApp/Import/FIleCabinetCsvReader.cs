@@ -7,6 +7,7 @@ namespace FileCabinetApp.Import
     public class FIleCabinetCsvReader
     {
         private readonly StreamReader _reader;
+        private static readonly IRecordValidator Validator = new ValidationBuilder().CreateCustom();
         
         public FIleCabinetCsvReader(StreamReader reader)
         {
@@ -66,21 +67,20 @@ namespace FileCabinetApp.Import
             {
                 throw new ArgumentException($"{csvLine} missing one parameter");
             }
-
-            var validator = new CustomValidator();
             
-            return new FileCabinetRecord
+            var record = new FileCabinetRecord
             {
-                Id = Parse(split[idIndex], InputConverter.IdConverter, validator.IdValidator),
-                FirstName = Parse(split[firstNameIndex], InputConverter.NameConverter, validator.NameValidator),
-                LastName = Parse(split[lastNameIndex], InputConverter.NameConverter, validator.NameValidator),
-                DateOfBirth = Parse(split[dateOfBirthIndex], InputConverter.DateOfBirthConverter,
-                    validator.DateOfBirthValidator),
-                JobExperience = Parse(split[jobExperienceIndex], InputConverter.JobExperienceConverter,
-                    validator.JobExperienceValidator),
-                Salary = Parse(split[wageIndex], InputConverter.WageConverter, validator.SalaryValidator),
-                Rank = Parse(split[rankIndex], InputConverter.RankConverter, validator.RankValidator)
+                Id = Parse(split[idIndex], InputConverter.IdConverter),
+                FirstName = Parse(split[firstNameIndex], InputConverter.NameConverter),
+                LastName = Parse(split[lastNameIndex], InputConverter.NameConverter),
+                DateOfBirth = Parse(split[dateOfBirthIndex], InputConverter.DateOfBirthConverter),
+                JobExperience = Parse(split[jobExperienceIndex], InputConverter.JobExperienceConverter),
+                Salary = Parse(split[wageIndex], InputConverter.WageConverter),
+                Rank = Parse(split[rankIndex], InputConverter.RankConverter)
             };
+
+            Validator.Validate(record);
+            return record;
         }
 
         /// <summary>
@@ -89,12 +89,11 @@ namespace FileCabinetApp.Import
         /// </summary>
         /// <param name="source">Source string to parse</param>
         /// <param name="converter">Source converter with convert methods</param>
-        /// <param name="validator">Source validator with rules to validate</param>
         /// <typeparam name="T">The output parsing type</typeparam>
         /// <returns>Object parsed to output type and satisfied validator's methods</returns>
         /// <exception cref="ArgumentException">Cannot convert the source value
         /// or it's doesnt satisfy validation rules </exception>
-        private static T Parse<T>(string source, Func<string, ConversionResult<T>> converter, Func<T, ValidationResult> validator)
+        private static T Parse<T>(string source, Func<string, ConversionResult<T>> converter)
         {
             var conversionResult = converter(source);
 
@@ -103,15 +102,7 @@ namespace FileCabinetApp.Import
                 throw new ArgumentException($"{source} Error: wrong conversion");
             }
 
-            var value = conversionResult.Result;
-
-            var validationResult = validator(value);
-            if (validationResult.Parsed)
-            {
-                return value;
-            }
-            
-            throw new ArgumentException(validationResult.Message);
+            return conversionResult.Result;
         }
     }
 }

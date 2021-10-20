@@ -13,13 +13,8 @@ namespace FileCabinetApp.Handlers
             _print = print;
         }
 
-        public override void SetNext(ICommandHandler handler)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
-        /// Return list of records added to Program.Service
+        /// Return list of records added to current service
         /// </summary>
         public override void Handle(AppCommandRequest request)
         {
