@@ -57,20 +57,11 @@ namespace FileCabinetApp
 
             return record.Id;
         }
-
-        /// <summary>
-        /// Move the base's file cursor to record with source id 
-        /// </summary>
-        /// <param name="id">Source record's id</param>
-        /// <exception cref="ArgumentException">Record with input id is not found</exception>
-        private void MoveCursorToRecord(int id)
+        
+        private void Rewrite(FileCabinetRecord record)
         {
-            if (id * FilesystemRecord.Size > _outputFile.Length)
-            {
-                throw new ArgumentException($"Record with id = {id} is not found");
-            }
-            
-            _outputFile.Seek((id - 1) * FilesystemRecord.Size, SeekOrigin.Begin);
+            CreateRecord(record);
+            _stat.Count--;
         }
 
         /// <summary>
@@ -86,9 +77,18 @@ namespace FileCabinetApp
                 throw new ArgumentNullException(nameof(record));
             }
 
-            MoveCursorToRecord(record.Id);
-            CreateRecord(record);
-            _stat.Count--;
+            _outputFile.Seek(0, SeekOrigin.Begin);
+            while (_outputFile.Position < _outputFile.Length)
+            {
+                var read = _reader.ReadAndMoveCursorBack();
+                if (read.Id == record.Id)
+                {
+                    Rewrite(record);
+                    return;
+                }
+            }
+
+            throw new ArgumentException($"Record #{record.Id} is not found");
         }
 
         /// <summary>
@@ -149,6 +149,7 @@ namespace FileCabinetApp
             while (_outputFile.Position < _outputFile.Length)
             {
                 var filesystemRecord = _reader.ReadRecord();
+                
                 if (!filesystemRecord.IsDeleted)
                 {
                     var record = filesystemRecord.ToFileCabinetRecord();
