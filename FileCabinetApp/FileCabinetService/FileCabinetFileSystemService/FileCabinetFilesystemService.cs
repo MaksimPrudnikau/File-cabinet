@@ -11,10 +11,8 @@ namespace FileCabinetApp
         private FileStream _outputFile;
         private readonly Statistic _stat = new();
         private bool _disposed;
-        
         private readonly bool _isCustomService;
         private int _maxId;
-
         private FileSystemWriter _writer;
         private FileSystemReader _reader;
 
@@ -23,7 +21,7 @@ namespace FileCabinetApp
             _outputFile = fileStream 
                           ?? new FileStream(FileCabinetConsts.FileSystemFileName, FileMode.Create);
             
-            _validator = validator;
+            _validator = validator ?? new ValidationBuilder().CreateDefault();
             
             _isCustomService = isCustom;
 
@@ -58,6 +56,10 @@ namespace FileCabinetApp
             return record.Id;
         }
         
+        /// <summary>
+        /// Overwriting existing record by the source
+        /// </summary>
+        /// <param name="record">Source record</param>
         private void Rewrite(FileCabinetRecord record)
         {
             CreateRecord(record);
@@ -166,6 +168,13 @@ namespace FileCabinetApp
             return records;
         }
 
+        /// <summary>
+        /// Extract suitable parameter from record according to attribute
+        /// </summary>
+        /// <param name="record">Source record</param>
+        /// <param name="attribute">Attribute to get</param>
+        /// <returns>String representation of record's parameter</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Attribute is not exist</exception>
         private static string ExtractValueByAttribute(FileCabinetRecord record, SearchValue attribute)
         {
             return attribute switch
@@ -174,7 +183,7 @@ namespace FileCabinetApp
                 SearchValue.LastName => record.LastName,
                 SearchValue.DateOfBirth => record.DateOfBirth
                     .ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture),
-                _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(attribute))
             };
         }
 

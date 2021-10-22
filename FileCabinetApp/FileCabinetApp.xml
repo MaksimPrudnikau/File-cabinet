@@ -192,12 +192,11 @@
             <returns>Id of created record</returns>
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.MoveCursorToRecord(System.Int32)">
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Rewrite(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            Move the base's file cursor to record with source id 
+            Overwriting existing record by the source
             </summary>
-            <param name="id">Source record's id</param>
-            <exception cref="T:System.ArgumentException">Record with input id is not found</exception>
+            <param name="record">Source record</param>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.EditRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
@@ -234,6 +233,15 @@
             <param name="attribute">Attribute to comparing</param>
             <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array of records with suitable value of attribute</returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Search value is null</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.ExtractValueByAttribute(FileCabinetApp.FileCabinetRecord,FileCabinetApp.SearchValue)">
+            <summary>
+            Extract suitable parameter from record according to attribute
+            </summary>
+            <param name="record">Source record</param>
+            <param name="attribute">Attribute to get</param>
+            <returns>String representation of record's parameter</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Attribute is not exist</exception>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByFirstName(System.String)">
             <summary>
@@ -273,6 +281,12 @@
             Delete all records marked as delete from current file by creating a new one 
             </summary>
         </member>
+        <member name="M:FileCabinetApp.FileSystemReader.ReadAndMoveCursorBack">
+            <summary>
+            Read the record and move cursor to it's beginning
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:FileCabinetApp.FileSystemReader.ReadRecord">
             <summary>
             Read one record from base file consistently
@@ -283,7 +297,6 @@
             <summary>
             Deserialize all content from source file into <see cref="T:FileCabinetApp.FilesystemRecord"/> array
             </summary>
-            <param name="stream">Source file stream </param>
             <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array</returns>
             <exception cref="T:System.ArgumentNullException">stream is null</exception>
             <exception cref="T:System.ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
@@ -308,12 +321,40 @@
             </summary>
             <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.FilesystemRecord.ToASCII(System.String)">
+        <member name="M:FileCabinetApp.FilesystemRecord.ToAscii(System.String)">
             <summary>
             Create new string consists only ASCII characters
             </summary>
             <param name="source">Source string</param>
             <returns>New string with ASCII characters</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileSystemWriter.AppendRange(System.Collections.Generic.IReadOnlyCollection{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Add records to the end of data base
+            </summary>
+            <param name="records"></param>
+        </member>
+        <member name="M:FileCabinetApp.FileSystemWriter.RewriteWithAny(FileCabinetApp.FileCabinetRecord,System.Collections.Generic.ICollection{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Overwrite the existing record by any one from records. After overwriting record is removed from array.
+            </summary>
+            <param name="read">Read from database record</param>
+            <param name="records">Source records</param>
+            <exception cref="T:System.ArgumentNullException">Record or records array are empty</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileSystemWriter.MarkAsDeleted(System.Int32)">
+            <summary>
+            Mark record with source id as deleted
+            </summary>
+            <param name="id">Source record's id</param>
+            <exception cref="T:System.ArgumentException">Record is already marked as deleted. The flag's value is wrong initially</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileSystemWriter.Write(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Write the record to data base
+            </summary>
+            <param name="record">Record to write</param>
+            <exception cref="T:System.ArgumentNullException">Record is null</exception>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>

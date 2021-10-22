@@ -2,7 +2,7 @@ namespace FileCabinetApp.Handlers
 {
     public abstract class CommandHandlerBase : ICommandHandler
     {
-        public ICommandHandler NextHandler;
+        protected ICommandHandler NextHandler { get; set; }
 
         public virtual void SetNext(ICommandHandler handler)
         {

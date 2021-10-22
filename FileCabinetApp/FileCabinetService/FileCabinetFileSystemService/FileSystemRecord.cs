@@ -165,8 +165,8 @@ namespace FileCabinetApp
             return new FileCabinetRecord
             {
                 Id = BitConverter.ToInt32(GetId()),
-                FirstName = ToASCII(Encoding.UTF8.GetString(GetFirstName())),
-                LastName = ToASCII(Encoding.UTF8.GetString(GetLastName())),
+                FirstName = ToAscii(Encoding.UTF8.GetString(GetFirstName())),
+                LastName = ToAscii(Encoding.UTF8.GetString(GetLastName())),
                 DateOfBirth = new DateTime(
                     BitConverter.ToInt32(GetYear()),
                     BitConverter.ToInt32(GetMonth()),
@@ -183,7 +183,7 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="source">Source string</param>
         /// <returns>New string with ASCII characters</returns>
-        private static string ToASCII(string source)
+        private static string ToAscii(string source)
         {
             if (source is null)
             {

@@ -12,12 +12,11 @@ namespace FileCabinetApp
         {
             _file = stream;
         }
-        
-        public void Seek(long offset, SeekOrigin origin = SeekOrigin.Begin)
-        {
-            _file.Seek(offset, origin);
-        }
-        
+
+        /// <summary>
+        /// Read the record and move cursor to it's beginning
+        /// </summary>
+        /// <returns></returns>
         public FileCabinetRecord ReadAndMoveCursorBack()
         {
             var read = ReadRecord().ToFileCabinetRecord();
@@ -39,7 +38,6 @@ namespace FileCabinetApp
         /// <summary>
         /// Deserialize all content from source file into <see cref="FilesystemRecord"/> array
         /// </summary>
-        /// <param name="stream">Source file stream </param>
         /// <returns><see cref="FileCabinetRecord"/> array</returns>
         /// <exception cref="ArgumentNullException">stream is null</exception>
         /// <exception cref="ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
