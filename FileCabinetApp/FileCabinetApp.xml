@@ -273,6 +273,48 @@
             Delete all records marked as delete from current file by creating a new one 
             </summary>
         </member>
+        <member name="M:FileCabinetApp.FileSystemReader.ReadRecord">
+            <summary>
+            Read one record from base file consistently
+            </summary>
+            <returns>Read <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileSystemReader.Deserialize">
+            <summary>
+            Deserialize all content from source file into <see cref="T:FileCabinetApp.FilesystemRecord"/> array
+            </summary>
+            <param name="stream">Source file stream </param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array</returns>
+            <exception cref="T:System.ArgumentNullException">stream is null</exception>
+            <exception cref="T:System.ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
+        </member>
+        <member name="M:FileCabinetApp.FilesystemRecord.ToBytes(System.String,System.Int32)">
+            <summary>
+            Create <see cref="T:System.Byte"/> array from value with source capacity 
+            </summary>
+            <param name="value">Value to make array with</param>
+            <param name="capacity">Source capacity</param>
+            <returns> <see cref="T:System.Byte"/> array with length equals capacity </returns>
+        </member>
+        <member name="M:FileCabinetApp.FilesystemRecord.Serialize(System.IO.FileStream)">
+            <summary>
+            Serialize current <see cref="T:FileCabinetApp.FilesystemRecord"/> into source file
+            </summary>
+            <param name="stream">Source file stream</param>
+        </member>
+        <member name="M:FileCabinetApp.FilesystemRecord.ToFileCabinetRecord">
+            <summary>
+            Cast current <see cref="T:FileCabinetApp.FilesystemRecord"/> to <see cref="T:FileCabinetApp.FileCabinetRecord"/>
+            </summary>
+            <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FilesystemRecord.ToASCII(System.String)">
+            <summary>
+            Create new string consists only ASCII characters
+            </summary>
+            <param name="source">Source string</param>
+            <returns>New string with ASCII characters</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             The method create new record from input data and return its id
@@ -362,50 +404,6 @@
             Create <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object with current record array
             </summary>
             <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecord.ReadRecord(System.IO.FileStream)">
-            <summary>
-            Read one record from base file consistently
-            </summary>
-            <param name="stream">Source file stream</param>
-            <returns>Read <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
-            <exception cref="T:System.ArgumentNullException">Source stream is null</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecord.Deserialize(System.IO.FileStream)">
-            <summary>
-            Deserialize all content from source file into <see cref="T:FileCabinetApp.FilesystemRecord"/> array
-            </summary>
-            <param name="stream">Source file stream </param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array</returns>
-            <exception cref="T:System.ArgumentNullException">stream is null</exception>
-            <exception cref="T:System.ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
-        </member>
-        <member name="M:FileCabinetApp.FilesystemRecord.ToBytes(System.String,System.Int32)">
-            <summary>
-            Create <see cref="T:System.Byte"/> array from value with source capacity 
-            </summary>
-            <param name="value">Value to make array with</param>
-            <param name="capacity">Source capacity</param>
-            <returns> <see cref="T:System.Byte"/> array with length equals capacity </returns>
-        </member>
-        <member name="M:FileCabinetApp.FilesystemRecord.Serialize(System.IO.FileStream)">
-            <summary>
-            Serialize current <see cref="T:FileCabinetApp.FilesystemRecord"/> into source file
-            </summary>
-            <param name="stream">Source file stream</param>
-        </member>
-        <member name="M:FileCabinetApp.FilesystemRecord.ToFileCabinetRecord">
-            <summary>
-            Cast current <see cref="T:FileCabinetApp.FilesystemRecord"/> to <see cref="T:FileCabinetApp.FileCabinetRecord"/>
-            </summary>
-            <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
-        </member>
-        <member name="M:FileCabinetApp.FilesystemRecord.ToASCII(System.String)">
-            <summary>
-            Create new string consists only ASCII characters
-            </summary>
-            <param name="source">Source string</param>
-            <returns>New string with ASCII characters</returns>
         </member>
         <member name="M:FileCabinetApp.InputConverter.IdConverter(System.String)">
             <summary>
@@ -577,56 +575,59 @@
             <exception cref="T:System.ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
             <returns></returns>
         </member>
-        <member name="M:FileCabinetApp.DateOfBirthValidator.Validate(System.DateTime)">
+        <member name="M:FileCabinetApp.DateOfBirthValidator.Validate(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            Validate date of birth in format "dd/MM/yyyy"
+            Validate current record's date of birth
             </summary>
-            <param name="dateOfBirth">entered date of birth</param>
+            <param name="record">Source record to validate</param>
             <exception cref="T:System.ArgumentNullException">Date of birth is null or whitespace</exception>
-            <exception cref="T:System.ArgumentException">Date of birth is not in dd/mm/yyyy format.
-            Date of birth is less than 01-Jan-1950 or greater than current date time</exception>
+            <exception cref="T:System.ArgumentException">Date of birth is not in dd/MM/yyyy format.
+            Date of birth is not in range of current minimum and maximum value</exception>
         </member>
-        <member name="M:FileCabinetApp.FirstNameValidator.Validate(System.String)">
+        <member name="M:FileCabinetApp.FirstNameValidator.Validate(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            Validate name either first or last
+            Validate current record's first name
             </summary>
-            <param name="name">first or last name</param>
-            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
+            <param name="record">Source record to validate</param>
+            <exception cref="T:System.ArgumentException">First name's length is not in range of current minimum and maximum value</exception>
         </member>
-        <member name="M:FileCabinetApp.IdValidator.Validate(System.Int32)">
+        <member name="M:FileCabinetApp.IdValidator.Validate(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            Validate source id
+            Validate current record's id
             </summary>
-            <param name="id">Source id</param>
+            <param name="record">Source record to validate</param>
         </member>
-        <member name="M:FileCabinetApp.JobExperienceValidator.Validate(System.Int16)">
+        <member name="M:FileCabinetApp.JobExperienceValidator.Validate(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            Get job experience from keyboard
+            Validate current record's job experience
+            <param name="record">Source record to validate</param>
             </summary>
             <exception cref="T:System.ArgumentException">Job experience is null.
             Job experience is not an integer or less than zero or greater than short.MaxValue.
-            Job experience is less than zero or greater than 100.</exception>
+            Job experience is not in range of current minimum and maximum value.</exception>
         </member>
-        <member name="M:FileCabinetApp.LastNameValidator.Validate(System.String)">
+        <member name="M:FileCabinetApp.LastNameValidator.Validate(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            Validate name either first or last
+            Validate current record's last name
             </summary>
-            <param name="name">first or last name</param>
-            <exception cref="T:System.ArgumentException">Entered name is null or whitespace or it`s length is less than 2 or greater than 60</exception>
+            <param name="record">Source record to validate</param>
+            <exception cref="T:System.ArgumentException">First name's length is not in range of current minimum and maximum value</exception>
         </member>
-        <member name="M:FileCabinetApp.RankValidator.Validate(System.Char)">
+        <member name="M:FileCabinetApp.RankValidator.Validate(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            Get rank from keyboard
+            Validate current record's rank
             </summary>
-            <exception cref="T:System.ArgumentException">Rank is not in current rank system</exception>
+            <param name="record">Source record to validate</param>
+            <exception cref="T:System.ArgumentNullException">Record is null</exception>
+            <exception cref="T:System.ArgumentException">Record's rank is not defined in current rank system</exception>
         </member>
-        <member name="M:FileCabinetApp.SalaryValidator.Validate(System.Decimal)">
+        <member name="M:FileCabinetApp.SalaryValidator.Validate(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            Get wage from keyboard
+            Validate current record's salary
             </summary>
             <exception cref="T:System.ArgumentException">Wage is null.
             Wage is not an integer or greater than decimal.MaxValue.
-            Wage is less than zero</exception>
+            Wage is less than zero or less than current minimal value</exception>
         </member>
     </members>
 </doc>

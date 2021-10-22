@@ -15,6 +15,9 @@ namespace FileCabinetApp
         private readonly bool _isCustomService;
         private int _maxId;
 
+        private FileSystemWriter _writer;
+        private FileSystemReader _reader;
+
         public FileCabinetFilesystemService(FileStream fileStream, IRecordValidator validator, bool isCustom = false)
         {
             _outputFile = fileStream 
@@ -23,6 +26,9 @@ namespace FileCabinetApp
             _validator = validator;
             
             _isCustomService = isCustom;
+
+            _writer = new FileSystemWriter(this, _outputFile);
+            _reader = new FileSystemReader(_outputFile);
         }
 
         /// <summary>
@@ -93,7 +99,7 @@ namespace FileCabinetApp
         {
             try
             {
-                return FileCabinetRecord.Deserialize(_outputFile);
+                return _reader.Deserialize();
             }
             catch (Exception e) when (e is ArgumentException or ArgumentNullException)
             {
@@ -139,34 +145,36 @@ namespace FileCabinetApp
             
             var records = new List<FileCabinetRecord>();
 
-            var currentIndex = 0;
-            _outputFile.Seek(currentIndex, SeekOrigin.Begin);
-            
-            while (currentIndex < _outputFile.Length)
+            _outputFile.Seek(0, SeekOrigin.Begin);
+            while (_outputFile.Position < _outputFile.Length)
             {
-                var read = FileCabinetRecord.ReadRecord(_outputFile);
-                if (!read.IsDeleted)
+                var filesystemRecord = _reader.ReadRecord();
+                if (!filesystemRecord.IsDeleted)
                 {
-                    var value = attribute switch
-                    {
-                        SearchValue.FirstName => read.ToFileCabinetRecord().FirstName,
-                        SearchValue.LastName => read.ToFileCabinetRecord().LastName,
-                        SearchValue.DateOfBirth => read.ToFileCabinetRecord().DateOfBirth
-                            .ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture),
-                        _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
-                    };
+                    var record = filesystemRecord.ToFileCabinetRecord();
+
+                    var value = ExtractValueByAttribute(record, attribute);
 
                     if (string.Equals(value, searchValue, StringComparison.OrdinalIgnoreCase))
                     {
-                        records.Add(read.ToFileCabinetRecord());
+                        records.Add(record);
                     }
                 }
-
-                currentIndex += FilesystemRecord.Size;
-                
             }
 
             return records;
+        }
+
+        private static string ExtractValueByAttribute(FileCabinetRecord record, SearchValue attribute)
+        {
+            return attribute switch
+            {
+                SearchValue.FirstName => record.FirstName,
+                SearchValue.LastName => record.LastName,
+                SearchValue.DateOfBirth => record.DateOfBirth
+                    .ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture),
+                _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
+            };
         }
 
         /// <summary>
@@ -235,44 +243,19 @@ namespace FileCabinetApp
             }
 
             var records = new List<FileCabinetRecord>(snapshot.Records);
-            
-            if (_outputFile.Length == 0)
-            {
-                foreach (var item in records)
-                {
-                    CreateRecord(item);
-                }
-                
-                return;
-            }
 
             _outputFile.Seek(0, SeekOrigin.Begin);
-            
             while (_outputFile.Position < _outputFile.Length)
             {
-                var read = FileCabinetRecord.ReadRecord(_outputFile).ToFileCabinetRecord();
-                _outputFile.Position -= FilesystemRecord.Size;
+                var read = _reader.ReadAndMoveCursorBack();
+                
+                _writer.RewriteWithAny(read, records);
 
-                foreach (var item in records)
-                {
-                    if (item.Id == read.Id)
-                    {
-                        CreateRecord(item);
-                        records.Remove(item);
-
-                        _stat.Count--;
-                        _outputFile.Position -= FilesystemRecord.Size;
-                        break;
-                    }
-                }
-
+                _stat.Count--;
                 _outputFile.Position += FilesystemRecord.Size;
             }
-
-            foreach (var item in records)
-            {
-                CreateRecord(item);
-            }
+            
+            _writer.AppendRange(records);
         }
 
         /// <summary>
@@ -282,32 +265,15 @@ namespace FileCabinetApp
         public void Remove(int id)
         {
             _outputFile.Seek(0, SeekOrigin.Begin);
-            
             while (_outputFile.Position < _outputFile.Length)
             {
-                var read = FileCabinetRecord.ReadRecord(_outputFile).ToFileCabinetRecord();
-                _outputFile.Position -= FilesystemRecord.Size;
+                var read = _reader.ReadAndMoveCursorBack();
 
                 if (id == read.Id)
                 {
-                    var buffer = new byte[FilesystemRecord.Size];
-                    
-                    _outputFile.Read(buffer);
-                    _outputFile.Position -= FilesystemRecord.Size;
-
-                    var deletedFlag = buffer[FilesystemRecord.IsDeletedIndex];
-                    
-                    buffer[FilesystemRecord.IsDeletedIndex] = deletedFlag switch
-                    {
-                        0 => 1,
-                        1 => throw new ArgumentException($"Record #{id} is already deleted"),
-                        _ => throw new ArgumentException($"Error isDeleted flat ({deletedFlag})")
-                    };
-
-                    _outputFile.Write(buffer);
+                    _writer.MarkAsDeleted(id);
 
                     _stat.Deleted++;
-                    _stat.Count--;
                     return;
                 }
 
@@ -325,14 +291,13 @@ namespace FileCabinetApp
             var path = _outputFile.Name;
 
             var snapshot = FileCabinetServiceSnapshot.CopyAndDelete(_outputFile, this);
-
+            
             _outputFile = new FileStream(path, FileMode.CreateNew);
             _stat.Count = _stat.Deleted = 0;
+            _writer = new FileSystemWriter(this, _outputFile);
+            _reader = new FileSystemReader(_outputFile);
             
-            foreach (var item in snapshot.Records)
-            {
-                CreateRecord(item);
-            }
+            _writer.AppendRange(snapshot.Records);
         }
 
         public void Dispose()
