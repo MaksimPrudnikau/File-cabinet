@@ -4,6 +4,13 @@ namespace FileCabinetApp.Handlers
 {
     public class ExitCommandHandler : CommandHandlerBase
     {
+        private readonly Action<bool> _runner;
+        
+        public ExitCommandHandler(Action<bool> appRunner)
+        {
+            _runner = appRunner;
+        }
+        
         /// <summary>
         /// Exit from application
         /// </summary>
@@ -11,7 +18,7 @@ namespace FileCabinetApp.Handlers
         public override void Handle(AppCommandRequest request)
         {
             Console.WriteLine(EnglishSource.exit);
-            Program.IsRunning = false;
+            _runner(false);
         }
     }
 }

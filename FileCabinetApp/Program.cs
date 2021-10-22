@@ -11,7 +11,6 @@ namespace FileCabinetApp
     public static class Program
     {
         private static bool _isRunning = true;
-        // TODO: Закройте поле isRunning, сделайте Constructor Injection делегата Action<bool> в класс ExitCommandHandler
 
         private static IRecordValidator _validator = new ValidationBuilder().CreateDefault();
         private static IFileCabinetService _service = new FileCabinetMemoryService(_validator);
@@ -115,7 +114,7 @@ namespace FileCabinetApp
                 "import" => new ImportCommandHandler(service),
                 "remove" => new RemoveCommandHandler(service),
                 "purge" => new PurgeCommandHandler(service),
-                "exit" => new ExitCommandHandler(),
+                "exit" => new ExitCommandHandler(x => _isRunning = x),
                 _ => throw new ArgumentOutOfRangeException(nameof(command))
             };
         }
