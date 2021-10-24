@@ -8,6 +8,8 @@ namespace FileCabinetApp.ValidationRules
         public IRecordValidator Validator { get; private set; }
         
         public IFileCabinetService Service { get; private set; }
+        
+        public bool UseStopWatch { get; private set; }
 
         public CommandLineParser(IEnumerable<string> args)
         {
@@ -32,6 +34,8 @@ namespace FileCabinetApp.ValidationRules
             Service = IsFileSystemService(commandLine)
                 ? new FileCabinetFilesystemService(null, Validator)
                 : new FileCabinetMemoryService(Validator, isCustom);
+
+            UseStopWatch = IsUseStopWatch(commandLine);
         }
 
         private static bool IsCustomService(string commandLine)
@@ -44,6 +48,11 @@ namespace FileCabinetApp.ValidationRules
         {
             return HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileFullForm)
                    || HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileShortForm);
+        }
+
+        private static bool IsUseStopWatch(string commandLine)
+        {
+            return HasCommand(commandLine, FileCabinetConsts.UseStopWatch);
         }
 
         private static bool HasCommand(string commandLine, string command)

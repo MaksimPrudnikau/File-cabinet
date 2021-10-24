@@ -3,7 +3,6 @@ using System.Collections.Generic;
 namespace FileCabinetApp
 {
     public interface IFileCabinetService
-    
     {
         public int CreateRecord(FileCabinetRecord record);
         

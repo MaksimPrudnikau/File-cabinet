@@ -192,4 +192,7 @@
   <data name="Record_is_removed" xml:space="preserve">
     <value>Record {0} is removed</value>
   </data>
+  <data name="method_execution_duration" xml:space="preserve">
+    <value>{0} method execution duration is {1} ticks.</value>
+  </data>
 </root>

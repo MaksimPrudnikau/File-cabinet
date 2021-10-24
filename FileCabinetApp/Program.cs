@@ -11,23 +11,25 @@ namespace FileCabinetApp
 {
     public static class Program
     {
-        private static bool _isRunning = true;
-
         private static IRecordValidator _validator;
         private static IFileCabinetService _service;
+        
+        private static bool _isRunning = true;
+        private static bool _useStopwatch;
 
         public static void Main(string[] args)
         {
+            SetValidationRules(args);
+            
             Console.WriteLine($@"Service = {_service}, Validator = {_validator}");
             Console.WriteLine(EnglishSource.developed_by, FileCabinetConsts.DeveloperName); 
             Console.WriteLine(EnglishSource.hint);
 
-            SetValidationRules(args);
             while (_isRunning)
             {
-                var command = ReadUsersImport(out var parameters);
+                var request = ReadUsersImport();
                 
-                if (string.IsNullOrEmpty(command))
+                if (string.IsNullOrEmpty(request.Command))
                 {
                     Console.Error.WriteLine(EnglishSource.hint);
                     continue;
@@ -36,23 +38,22 @@ namespace FileCabinetApp
                 CommandHandlerBase commandHandler;
                 try
                 {
-                    commandHandler = CreateCommandHandlers(_service, command);
+                    commandHandler = CreateCommandHandlers(_service, request.Command);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    PrintMissedCommandInfo(command);
+                    PrintMissedCommandInfo(request.Command);
                     continue;
                 }
-                
-                commandHandler.Handle(new AppCommandRequest
-                {
-                    Command = command,
-                    Parameters = parameters
-                });
+
+                if (_useStopwatch)
+                    ServiceMeter.TakeTime(commandHandler, request);
+                else
+                    commandHandler.Handle(request);
             }
         }
 
-        private static string ReadUsersImport(out string parameters)
+        private static AppCommandRequest ReadUsersImport()
         {
             const int commandIndex = 0;
             const int parametersIndex = 0;
@@ -62,11 +63,15 @@ namespace FileCabinetApp
             
             var command = inputs![commandIndex];
 
-            parameters = inputs.Length == 2
+            var parameters = inputs.Length == 2
                 ? inputs[parametersIndex + 1]
                 : inputs[parametersIndex];
 
-            return command;
+            return new AppCommandRequest
+            {
+                Command = command,
+                Parameters = parameters
+            };
         }
 
         private static void SetValidationRules(IEnumerable<string> args)
@@ -76,6 +81,7 @@ namespace FileCabinetApp
                 var commandLineParser = new CommandLineParser(args);
                 _validator = commandLineParser.Validator;
                 _service = commandLineParser.Service;
+                _useStopwatch = commandLineParser.UseStopWatch;
             }
             catch (ArgumentException exception)
             {

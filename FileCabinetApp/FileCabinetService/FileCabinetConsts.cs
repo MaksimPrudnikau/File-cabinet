@@ -24,6 +24,7 @@ namespace FileCabinetApp
         public const string CustomValidationRuleShortForm = "-vcustom";
         public const string ServiceStorageFileFullForm = "--storage=file";
         public const string ServiceStorageFileShortForm = "-sfile";
+        public const string UseStopWatch = "--use-stopwatch";
 
         public const string InputDateFormat = "dd/MM/yyyy";
         public const string OutputDateFormat = "dd-MMM-yyyy";
