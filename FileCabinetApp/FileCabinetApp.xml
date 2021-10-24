@@ -608,7 +608,7 @@
             <param name="record">Source record</param>
             <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.Program.SetValidationRule(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:FileCabinetApp.ValidationRules.CommandLineParser.SetValidationRule(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Create <see cref="T:FileCabinetApp.IFileCabinetService"/> object according to entered command parameter
             </summary>

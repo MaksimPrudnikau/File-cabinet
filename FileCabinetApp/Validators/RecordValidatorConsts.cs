@@ -7,7 +7,7 @@
 
         // NameValidator
         public const string NameIsNullOrWhiteSpace = "The name is null or whitespace";
-        public const string NameWrongLength = "The name's length is less then 2 or greater than 100";
+        public const string NameWrongLength = "The name's length is less than minimal or greater than it's maximal value";
         public const string TheNameIsNotLettersOnly = "The name contains non-letter characters";
         
         // DateOfBirthValidator
@@ -20,6 +20,7 @@
         
         // WageValidator
         public const string WageIsLessThanMinimal = "Wage is less than it`s minimal value";
+        public const string WageIsGreaterThanMaximal = "Wage is greater than it`s maximal value";
         
         // RankValidator
         public const string RankIsNotDefinedInGrades = "Rank is not defined in current grades";

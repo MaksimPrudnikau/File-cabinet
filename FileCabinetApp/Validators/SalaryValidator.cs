@@ -5,10 +5,12 @@ namespace FileCabinetApp
     public class SalaryValidator : IRecordValidator
     {
         private readonly decimal _minimal;
+        private readonly decimal _maximal;
 
-        public SalaryValidator(decimal minimalSalary)
+        public SalaryValidator(decimal minimalSalary, decimal maximalSalary)
         {
             _minimal = minimalSalary;
+            _maximal = maximalSalary;
         }
         
         /// <summary>
@@ -27,6 +29,11 @@ namespace FileCabinetApp
             if (record.Salary < _minimal)
             {
                 throw new ArgumentException(RecordValidatorConsts.WageIsLessThanMinimal);
+            }
+            
+            if (record.Salary > _maximal)
+            {
+                throw new ArgumentException(RecordValidatorConsts.WageIsGreaterThanMaximal);
             }
         }
     }

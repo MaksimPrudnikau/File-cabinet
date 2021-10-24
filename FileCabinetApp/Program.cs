@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Resources;
 using FileCabinetApp.Handlers;
 using FileCabinetApp.Printers;
+using FileCabinetApp.ValidationRules;
 
 [assembly:CLSCompliant(true)]
 [assembly:NeutralResourcesLanguage("en")]
@@ -12,44 +13,26 @@ namespace FileCabinetApp
     {
         private static bool _isRunning = true;
 
-        private static IRecordValidator _validator = new ValidationBuilder().CreateDefault();
-        private static IFileCabinetService _service = new FileCabinetMemoryService(_validator);
+        private static IRecordValidator _validator;
+        private static IFileCabinetService _service;
 
         public static void Main(string[] args)
         {
-            try
-            {
-                args ??= Array.Empty<string>();
-                SetValidationRule(args);
-            }
-            catch (ArgumentException exception)
-            {
-                Console.Error.WriteLine(exception.Message);
-                return;
-            }
-
             Console.WriteLine($@"Service = {_service}, Validator = {_validator}");
             Console.WriteLine(EnglishSource.developed_by, FileCabinetConsts.DeveloperName); 
             Console.WriteLine(EnglishSource.hint);
 
+            SetValidationRules(args);
             while (_isRunning)
             {
-                Console.Write(EnglishSource.console);
-                var inputs = Console.ReadLine()?.Split(' ', 2);
-                const int commandIndex = 0;
-                var command = inputs![commandIndex];
-
+                var command = ReadUsersImport(out var parameters);
+                
                 if (string.IsNullOrEmpty(command))
                 {
                     Console.Error.WriteLine(EnglishSource.hint);
                     continue;
                 }
                 
-                const int parametersIndex = 0;
-                var parameters = inputs.Length == 2
-                    ? inputs[parametersIndex + 1] 
-                    : inputs[parametersIndex];
-
                 CommandHandlerBase commandHandler;
                 try
                 {
@@ -66,6 +49,38 @@ namespace FileCabinetApp
                     Command = command,
                     Parameters = parameters
                 });
+            }
+        }
+
+        private static string ReadUsersImport(out string parameters)
+        {
+            const int commandIndex = 0;
+            const int parametersIndex = 0;
+            
+            Console.Write(EnglishSource.console);
+            var inputs = Console.ReadLine()?.Split(' ', 2);
+            
+            var command = inputs![commandIndex];
+
+            parameters = inputs.Length == 2
+                ? inputs[parametersIndex + 1]
+                : inputs[parametersIndex];
+
+            return command;
+        }
+
+        private static void SetValidationRules(IEnumerable<string> args)
+        {
+            try
+            {
+                var commandLineParser = new CommandLineParser(args);
+                _validator = commandLineParser.Validator;
+                _service = commandLineParser.Service;
+            }
+            catch (ArgumentException exception)
+            {
+                Console.Error.WriteLine(exception.Message);
+                _isRunning = false;
             }
         }
         
@@ -117,33 +132,6 @@ namespace FileCabinetApp
                 "exit" => new ExitCommandHandler(x => _isRunning = x),
                 _ => throw new ArgumentOutOfRangeException(nameof(command))
             };
-        }
-
-        /// <summary>
-        /// Create <see cref="IFileCabinetService"/> object according to entered command parameter
-        /// </summary>
-        /// <param name="args">Source command parameter</param>
-        /// <exception cref="ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
-        /// <returns></returns>
-        private static void SetValidationRule(IEnumerable<string> args)
-        {
-            var commandLine = string.Concat(args);
-            if (HasCommand(commandLine, FileCabinetConsts.CustomValidationRuleFullForm)
-                || HasCommand(commandLine, FileCabinetConsts.CustomValidationRuleShortForm))
-            {
-                _validator = new ValidationBuilder().CreateCustom();
-            }
-   
-            if (HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileFullForm)
-            || HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileShortForm))
-            {
-                _service = new FileCabinetFilesystemService(null, _validator);
-            }
-        }
-
-        private static bool HasCommand(string commandLine, string command)
-        {
-            return commandLine.Contains(command, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

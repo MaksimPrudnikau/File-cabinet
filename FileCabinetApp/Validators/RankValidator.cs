@@ -4,6 +4,12 @@ namespace FileCabinetApp
 {
     public class RankValidator : IRecordValidator
     {
+        private readonly char[] _grades;
+        
+        public RankValidator(char[] grades)
+        {
+            _grades = grades;
+        }
         /// <summary>
         /// Validate current record's rank
         /// </summary>
@@ -17,7 +23,7 @@ namespace FileCabinetApp
                 throw new ArgumentNullException(nameof(record));
             }
             
-            if (Array.IndexOf(FileCabinetConsts.Grades, record.Rank) == -1)
+            if (Array.IndexOf(_grades, record.Rank) == -1)
             {
                 throw new ArgumentException(RecordValidatorConsts.RankIsNotDefinedInGrades);
             }
