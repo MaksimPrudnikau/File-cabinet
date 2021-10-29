@@ -5,6 +5,8 @@ namespace FileCabinetApp.Handlers
 {
     public class ExportCommandHandler : CommandHandlerBase
     {
+        private const RequestCommand Command = RequestCommand.Export;
+        
         /// <summary>
         /// Serialize all records in file with entered format
         /// </summary>
@@ -17,6 +19,12 @@ namespace FileCabinetApp.Handlers
                 throw new ArgumentNullException(nameof(request));
             }
             
+            if (request.Command != Command)
+            {
+                NextHandler.Handle(request);
+                return;
+            }
+
             var parametersSplited = request.Parameters.Split(' ');
             
             if (parametersSplited.Length != 2)

@@ -195,9 +195,33 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string method_execution_duration {
+        internal static string Create_method_execution_duration_ticks {
             get {
-                return ResourceManager.GetString("method_execution_duration", resourceCulture);
+                return ResourceManager.GetString("Create_method_execution_duration_ticks", resourceCulture);
+            }
+        }
+        
+        internal static string Edit_method_execution_duration_ticks {
+            get {
+                return ResourceManager.GetString("Edit_method_execution_duration_ticks", resourceCulture);
+            }
+        }
+        
+        internal static string Exit_method_execution_duration_ticks {
+            get {
+                return ResourceManager.GetString("Exit_method_execution_duration_ticks", resourceCulture);
+            }
+        }
+        
+        internal static string Export_method_execution_duration_ticks {
+            get {
+                return ResourceManager.GetString("Export_method_execution_duration_ticks", resourceCulture);
+            }
+        }
+        
+        internal static string method_execution_duration_ticks {
+            get {
+                return ResourceManager.GetString("method_execution_duration_ticks", resourceCulture);
             }
         }
     }

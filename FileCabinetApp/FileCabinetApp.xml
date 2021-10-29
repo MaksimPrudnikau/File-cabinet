@@ -43,6 +43,12 @@
             </summary>
             <param name="records">Source record</param>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord">
+            <summary>
+            Create new record in base file from user's input
+            </summary>
+            <returns>Id of created record</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Create new record in base file with source parameters
@@ -79,10 +85,18 @@
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.ReadParameters(System.Int32)">
             <summary>
-            Read parameters from keyboard and validate according to source validator
+            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.FileCabinetRecord"/> object
             </summary>
-            <param name="id">Id of read parameter. The default value indicates the numbering is sequential</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+            <param name="id">Source id of read parameter</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}})">
+            <summary>
+            Read data from keyboard, convert it by source converter and validate with source validator
+            </summary>
+            <typeparam name="T">Type of read data</typeparam>
+            <param name="converter">Source converter</param>
+            <returns>Correct input object</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.Find(System.String,FileCabinetApp.SearchValue)">
             <summary>
@@ -215,9 +229,15 @@
             <param name="record">Record to write</param>
             <exception cref="T:System.ArgumentNullException">Record is null</exception>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord">
+            <summary>
+            The method create new record from user's input and return its id
+            </summary>
+            <returns>An id of current record</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
-            The method create new record from input data and return its id
+            The method create new record from source record and return its id
             </summary>
             <returns>An id of current record</returns>
         </member>

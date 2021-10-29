@@ -6,6 +6,7 @@ namespace FileCabinetApp.Handlers
     
     public class FindCommandHandler : ServiceCommandHandlerBase
     {
+        private const RequestCommand Command = RequestCommand.Find;
         private readonly Action<IEnumerable<FileCabinetRecord>> _print;
 
         public FindCommandHandler(IFileCabinetService service, Action<IEnumerable<FileCabinetRecord>> print) :
@@ -13,12 +14,7 @@ namespace FileCabinetApp.Handlers
         {
             _print = print;
         }
-        
-        public override void SetNext(ICommandHandler handler)
-        {
-            throw new NotImplementedException();
-        }
-        
+
         /// <summary>
         /// Prints all records with suitable attribute
         /// </summary>
@@ -29,6 +25,12 @@ namespace FileCabinetApp.Handlers
             if (request is null)
             {
                 throw new ArgumentNullException(nameof(request));
+            }
+            
+            if (request.Command != Command)
+            {
+                NextHandler.Handle(request);
+                return;
             }
             
             const int attributeIndex = 0;

@@ -4,6 +4,8 @@ namespace FileCabinetApp.Handlers
 {
     public class EditCommandHandler : ServiceCommandHandlerBase
     {
+        private const RequestCommand Command = RequestCommand.Edit;
+
         public EditCommandHandler(IFileCabinetService service) : base(service)
         {
             
@@ -21,6 +23,12 @@ namespace FileCabinetApp.Handlers
                 throw new ArgumentNullException(nameof(request));
             }
             
+            if (request.Command != Command)
+            {
+                NextHandler.Handle(request);
+                return;
+            }
+            
             if (!int.TryParse(request.Parameters, out var id))
             {
                 Console.Error.WriteLine(EnglishSource.id_is_not_an_integer);
@@ -28,12 +36,9 @@ namespace FileCabinetApp.Handlers
             }
 
             try
-            { 
-                var inputParameters = Service.ReadParameters(id);
-                
-                Service.EditRecord(inputParameters);
-                
-                Console.WriteLine(EnglishSource.update, id);
+            {
+                var record = Service.ReadParameters();
+                Console.WriteLine(EnglishSource.update,  Service.EditRecord(record));
             }
             catch (ArgumentException exception)
             {

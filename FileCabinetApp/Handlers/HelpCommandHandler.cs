@@ -4,6 +4,7 @@ namespace FileCabinetApp.Handlers
 {
     public class HelpCommandHandler : CommandHandlerBase
     {
+        private const RequestCommand Command = RequestCommand.Help;
         /// <summary>
         /// Prints help message
         /// </summary>
@@ -14,6 +15,12 @@ namespace FileCabinetApp.Handlers
             if (request is null)
             {
                 throw new ArgumentNullException(nameof(request));
+            }
+            
+            if (request.Command != Command)
+            {
+                NextHandler.Handle(request);
+                return;
             }
             
             var index = Array.FindIndex(FileCabinetConsts.HelpMessages, 0, FileCabinetConsts.HelpMessages.Length,

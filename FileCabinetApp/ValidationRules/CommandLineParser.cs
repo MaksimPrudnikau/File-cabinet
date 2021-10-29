@@ -10,6 +10,8 @@ namespace FileCabinetApp.ValidationRules
         public IFileCabinetService Service { get; private set; }
         
         public bool UseStopWatch { get; private set; }
+        
+        public bool UseLogger { get; private set; }
 
         public CommandLineParser(IEnumerable<string> args)
         {
@@ -36,6 +38,7 @@ namespace FileCabinetApp.ValidationRules
                 : new FileCabinetMemoryService(Validator, isCustom);
 
             UseStopWatch = IsUseStopWatch(commandLine);
+            UseLogger = IsUseLogger(commandLine);
         }
 
         private static bool IsCustomService(string commandLine)
@@ -50,6 +53,11 @@ namespace FileCabinetApp.ValidationRules
                    || HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileShortForm);
         }
 
+        private static bool IsUseLogger(string commandLine)
+        {
+            return HasCommand(commandLine, FileCabinetConsts.UseLogger);
+        }
+        
         private static bool IsUseStopWatch(string commandLine)
         {
             return HasCommand(commandLine, FileCabinetConsts.UseStopWatch);

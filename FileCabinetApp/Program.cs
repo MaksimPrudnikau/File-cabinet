@@ -16,6 +16,7 @@ namespace FileCabinetApp
         
         private static bool _isRunning = true;
         private static bool _useStopwatch;
+        private static bool _useLogger;
 
         public static void Main(string[] args)
         {
@@ -27,29 +28,46 @@ namespace FileCabinetApp
 
             while (_isRunning)
             {
-                var request = ReadUsersImport();
-                
-                if (string.IsNullOrEmpty(request.Command))
-                {
-                    Console.Error.WriteLine(EnglishSource.hint);
-                    continue;
-                }
-                
-                CommandHandlerBase commandHandler;
-                try
-                {
-                    commandHandler = CreateCommandHandlers(_service, request.Command);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    PrintMissedCommandInfo(request.Command);
-                    continue;
-                }
+                var read = TryReadUsersImport(out var request);
+                var created = TryCreateCommandHandlers(_service, out var handler);
 
-                if (_useStopwatch)
-                    ServiceMeter.TakeTime(commandHandler, request);
-                else
-                    commandHandler.Handle(request);
+                if (!read || !created)
+                {
+                    continue;
+                }
+                
+                handler.Handle(request);
+            }
+        }
+
+        private static bool TryCreateCommandHandlers(IFileCabinetService service, out CommandHandlerBase handler)
+        {
+            try
+            {
+                handler = CreateCommandHandlers(service);
+            }
+            catch (Exception exception) when (exception is ArgumentOutOfRangeException or NullReferenceException)
+            {
+                handler = null;
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryReadUsersImport(out AppCommandRequest request)
+        {
+            request = null;
+            
+            try
+            {
+                request = ReadUsersImport();
+                return true;
+            }
+            catch (Exception e) when (e is ArgumentException or OverflowException)
+            {
+                Console.WriteLine(e.Message);
+                return false;
             }
         }
 
@@ -61,7 +79,7 @@ namespace FileCabinetApp
             Console.Write(EnglishSource.console);
             var inputs = Console.ReadLine()?.Split(' ', 2);
             
-            var command = inputs![commandIndex];
+            var command =  inputs![commandIndex];
 
             var parameters = inputs.Length == 2
                 ? inputs[parametersIndex + 1]
@@ -69,7 +87,7 @@ namespace FileCabinetApp
 
             return new AppCommandRequest
             {
-                Command = command,
+                Command = (RequestCommand) Enum.Parse(typeof(RequestCommand), command, true),
                 Parameters = parameters
             };
         }
@@ -82,6 +100,11 @@ namespace FileCabinetApp
                 _validator = commandLineParser.Validator;
                 _service = commandLineParser.Service;
                 _useStopwatch = commandLineParser.UseStopWatch;
+                _useLogger = commandLineParser.UseLogger;
+                if (_useStopwatch)
+                {
+                    _service = new ServiceMeter(_service);
+                }
             }
             catch (ArgumentException exception)
             {
@@ -96,48 +119,32 @@ namespace FileCabinetApp
             Console.WriteLine();
         }
 
-        private static CommandHandlerBase CreateCommandHandlers(IFileCabinetService service, string command)
+        private static CommandHandlerBase CreateCommandHandlers(IFileCabinetService service)
         {
-            /* TODO: Исправить на Change of Responsibility
-            // var helpHandler = new HelpCommandHandler();
-            // var createHandler = new CreateCommandHandler(service);
-            // var editHandler = new EditCommandHandler(service);
-            // var listHandler = new ListCommandHandler(service, RecordsPrinter.Default);
-            // var statHandler = new StatCommandHandler(service);
-            // var findHandler = new FindCommandHandler(service, RecordsPrinter.Default);
-            // var exportHandler = new ExportCommandHandler();
-            // var importHandler = new ImportCommandHandler(service);
-            // var removeHandler = new RemoveCommandHandler(service);
-            // var purgeHandler = new PurgeCommandHandler(service);
-            // var exitHandler = new ExitCommandHandler();
-            //
-            // helpHandler.SetNext(createHandler);
-            // createHandler.SetNext(editHandler);
-            // editHandler.SetNext(listHandler);
-            // listHandler.SetNext(statHandler);
-            // statHandler.SetNext(findHandler);
-            // findHandler.SetNext(exportHandler);
-            // exportHandler.SetNext(importHandler);
-            // importHandler.SetNext(removeHandler);
-            // removeHandler.SetNext(purgeHandler);
-            // purgeHandler.SetNext(exitHandler);
-            */
+            var helpHandler = new HelpCommandHandler();
+            var createHandler = new CreateCommandHandler(service);
+            var editHandler = new EditCommandHandler(service);
+            var listHandler = new ListCommandHandler(service, RecordsPrinter.Default);
+            var statHandler = new StatCommandHandler(service);
+            var findHandler = new FindCommandHandler(service, RecordsPrinter.Default);
+            var exportHandler = new ExportCommandHandler();
+            var importHandler = new ImportCommandHandler(service);
+            var removeHandler = new RemoveCommandHandler(service);
+            var purgeHandler = new PurgeCommandHandler(service);
+            var exitHandler = new ExitCommandHandler(x => _isRunning = x);
             
-            return command switch
-            {
-                "help" => new HelpCommandHandler(),
-                "create" => new CreateCommandHandler(service),
-                "edit" => new EditCommandHandler(service),
-                "list" => new ListCommandHandler(service, RecordsPrinter.Default),
-                "stat" => new StatCommandHandler(service),
-                "find" => new FindCommandHandler(service, RecordsPrinter.Default),
-                "export" => new ExportCommandHandler(),
-                "import" => new ImportCommandHandler(service),
-                "remove" => new RemoveCommandHandler(service),
-                "purge" => new PurgeCommandHandler(service),
-                "exit" => new ExitCommandHandler(x => _isRunning = x),
-                _ => throw new ArgumentOutOfRangeException(nameof(command))
-            };
+            helpHandler.SetNext(createHandler);
+            createHandler.SetNext(editHandler);
+            editHandler.SetNext(listHandler);
+            listHandler.SetNext(statHandler);
+            statHandler.SetNext(findHandler);
+            findHandler.SetNext(exportHandler);
+            exportHandler.SetNext(importHandler);
+            importHandler.SetNext(removeHandler);
+            removeHandler.SetNext(purgeHandler);
+            purgeHandler.SetNext(exitHandler);
+
+            return helpHandler;
         }
     }
 }

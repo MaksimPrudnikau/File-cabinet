@@ -25,7 +25,7 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// The method create new record from input data and return its id
+        /// The method create new record from source record and return its id
         /// </summary>
         /// <returns>An id of current record</returns>
         public int CreateRecord(FileCabinetRecord record)
@@ -121,12 +121,12 @@ namespace FileCabinetApp
             }
             while (true);
         }
-        
+
         /// <summary>
         /// Edit record with the source one
         /// </summary>
         /// <param name="record">Parameter contains new data</param>
-        public void EditRecord(FileCabinetRecord record)
+        public int EditRecord(FileCabinetRecord record)
         {
             if (record is null)
             {
@@ -138,6 +138,8 @@ namespace FileCabinetApp
             Records[record.Id] = record;
             
             AppendToAllDictionaries(Records[record.Id]);
+
+            return record.Id;
         }
 
         /// <summary>

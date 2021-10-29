@@ -55,7 +55,7 @@ namespace FileCabinetApp
 
             return record.Id;
         }
-        
+
         /// <summary>
         /// Overwriting existing record by the source
         /// </summary>
@@ -65,14 +65,14 @@ namespace FileCabinetApp
             CreateRecord(record);
             _stat.Count--;
         }
-
+        
         /// <summary>
         /// Edit already existing record with source
         /// </summary>
         /// <param name="record">Source for editing record</param>
         /// <exception cref="ArgumentNullException">Parameters are null</exception>
         /// <exception cref="ArgumentException">There is no record suitable for replacement</exception>
-        public void EditRecord(FileCabinetRecord record)
+        public int EditRecord(FileCabinetRecord record)
         {
             if (record is null)
             {
@@ -86,7 +86,7 @@ namespace FileCabinetApp
                 if (read.Id == record.Id)
                 {
                     Rewrite(record);
-                    return;
+                    return record.Id;
                 }
             }
 
@@ -120,15 +120,63 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Read parameters from keyboard and validate according to source validator
+        /// Read parameters from keyboard and parse it to <see cref="FileCabinetRecord"/> object
         /// </summary>
-        /// <param name="id">Id of read parameter. The default value indicates the numbering is sequential</param>
-        /// <returns><see cref="FileCabinetRecord"/> object</returns>
+        /// <param name="id">Source id of read parameter</param>
+        /// <returns><see cref="FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
         public FileCabinetRecord ReadParameters(int id = -1)
         {
-            var record = new FileCabinetMemoryService(_validator, _isCustomService).ReadParameters();
-            record.Id = _maxId + 1;
+            var record = new FileCabinetRecord
+            {
+                Id = id == -1 ? _maxId + 1 : id,
+            };
+
+            Console.Write(EnglishSource.first_name);
+            record.FirstName = ReadInput(InputConverter.NameConverter);
+            
+            Console.Write(EnglishSource.last_name);
+            record.LastName = ReadInput(InputConverter.NameConverter);
+            
+            Console.Write(EnglishSource.date_of_birth);
+            record.DateOfBirth = ReadInput(InputConverter.DateOfBirthConverter);
+            
+            if (_isCustomService)
+            {
+                Console.Write(EnglishSource.job_experience);
+                record.JobExperience = ReadInput(InputConverter.JobExperienceConverter);
+                
+                Console.Write(EnglishSource.wage);
+                record.Salary = ReadInput(InputConverter.WageConverter);
+                
+                Console.Write(EnglishSource.rank);
+                record.Rank = ReadInput(InputConverter.RankConverter);
+            }
+
+            _validator.Validate(record);
             return record;
+        }
+        
+        /// <summary>
+        /// Read data from keyboard, convert it by source converter and validate with source validator
+        /// </summary>
+        /// <typeparam name="T">Type of read data</typeparam>
+        /// <param name="converter">Source converter</param>
+        /// <returns>Correct input object</returns>
+        private static T ReadInput<T>(Func<string, ConversionResult<T>> converter)
+        {
+            do
+            {
+                var input = Console.ReadLine();
+                var conversionResult = converter(input);
+
+                if (conversionResult.Parsed)
+                {
+                    return conversionResult.Result;
+                }
+
+                Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
+            }
+            while (true);
         }
 
         /// <summary>

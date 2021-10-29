@@ -192,7 +192,19 @@
   <data name="Record_is_removed" xml:space="preserve">
     <value>Record {0} is removed</value>
   </data>
-  <data name="method_execution_duration" xml:space="preserve">
+  <data name="Create_method_execution_duration_ticks" xml:space="preserve">
+    <value>Create method execution duration is {0} ticks.</value>
+  </data>
+  <data name="Edit_method_execution_duration_ticks" xml:space="preserve">
+    <value>Edit method execution duration is {0} ticks.</value>
+  </data>
+  <data name="Exit_method_execution_duration_ticks" xml:space="preserve">
+    <value>Exit method execution duration is {0} ticks.</value>
+  </data>
+  <data name="Export_method_execution_duration_ticks" xml:space="preserve">
+    <value>Export method execution duration is {0} ticks.</value>
+  </data>
+  <data name="method_execution_duration_ticks" xml:space="preserve">
     <value>{0} method execution duration is {1} ticks.</value>
   </data>
 </root>

@@ -5,7 +5,12 @@ namespace FileCabinetApp.Handlers
 {
     public class ImportCommandHandler : ServiceCommandHandlerBase
     {
-        public ImportCommandHandler(IFileCabinetService service) : base(service) { }
+        private const RequestCommand Command = RequestCommand.Import;
+
+        public ImportCommandHandler(IFileCabinetService service) : base(service)
+        {
+            
+        }
 
         /// <summary>
         /// Import records from source file
@@ -17,6 +22,12 @@ namespace FileCabinetApp.Handlers
             if (request is null)
             {
                 throw new ArgumentNullException(nameof(request));
+            }
+            
+            if (request.Command != Command)
+            {
+                NextHandler.Handle(request);
+                return;
             }
             
             var parametersSplited = request.Parameters.Split(' ');
