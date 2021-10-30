@@ -43,12 +43,6 @@
             </summary>
             <param name="records">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord">
-            <summary>
-            Create new record in base file from user's input
-            </summary>
-            <returns>Id of created record</returns>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Create new record in base file with source parameters
@@ -228,12 +222,6 @@
             </summary>
             <param name="record">Record to write</param>
             <exception cref="T:System.ArgumentNullException">Record is null</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord">
-            <summary>
-            The method create new record from user's input and return its id
-            </summary>
-            <returns>An id of current record</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>

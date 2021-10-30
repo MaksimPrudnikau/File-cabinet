@@ -105,6 +105,10 @@ namespace FileCabinetApp
                 {
                     _service = new ServiceMeter(_service);
                 }
+                else if (_useLogger)
+                {
+                    _service = new ServiceLogger(_service, FileCabinetConsts.LogsFileName);
+                }
             }
             catch (ArgumentException exception)
             {

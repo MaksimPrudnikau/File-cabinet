@@ -9,6 +9,7 @@ namespace FileCabinetApp
 
         public const string ValidationRulesFileName = "validation-rules.json";
         public const string FileSystemFileName = "cabinet-records.db";
+        public const string LogsFileName = "Logs.txt";
 
         // Constants in charge of running the application
         public const int CommandHelpIndex = 0;
