@@ -1,12 +1,12 @@
 ﻿
 namespace FileCabinetGenerator
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var options = new Options(args);
-            var generator = new RecordGenerator();
+            var generator = new Generator.RecordGenerator();
             generator.Export(options);
         }
     }

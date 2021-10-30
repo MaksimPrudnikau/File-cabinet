@@ -1,6 +1,6 @@
 using System;
 
-namespace FileCabinetGenerator
+namespace FileCabinetGenerator.RecordGenerator
 {
     public static class OptionsValidator
     {

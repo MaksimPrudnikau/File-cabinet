@@ -5,8 +5,9 @@ using System.IO;
 using FileCabinetApp;
 using FileCabinetApp.Export;
 using FileCabinetApp.FileCabinetService;
+using FileCabinetGenerator.RecordGenerator;
 
-namespace FileCabinetGenerator
+namespace FileCabinetGenerator.Generator
 {
     public class RecordGenerator
     {
