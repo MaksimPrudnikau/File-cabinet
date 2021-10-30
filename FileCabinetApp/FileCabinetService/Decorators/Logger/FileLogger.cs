@@ -1,12 +1,14 @@
 using System;
 using System.IO;
 using System.Text;
+using FileCabinetApp.FileCabinetService.Decorators.Meter;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService.Decorators.Logger
 {
-    public class FileLogger
+    public class FileLogger : IDisposable
     {
         private readonly TextWriter _outputFile;
+        private bool _disposed;
         
         public FileLogger(string path)
         {
@@ -113,6 +115,25 @@ namespace FileCabinetApp
             _outputFile.WriteLine(GetActionMessage(method.Method.Name));
             var ticks = TicksMeter.GetElapsedTicks(method);
             _outputFile.WriteLine(GetMethodWithReturnValueMessage(method.Method.Name, ticks));
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(!_disposed)
+            { 
+                if(disposing)
+                {
+                    _outputFile.Dispose();
+                }
+                
+                _disposed = true;
+            }
         }
     }
 }

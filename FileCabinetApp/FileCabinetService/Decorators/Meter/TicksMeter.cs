@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService.Decorators.Meter
 {
     public static class TicksMeter
     {

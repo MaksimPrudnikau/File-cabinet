@@ -1,11 +1,12 @@
 using System.Globalization;
 using System.IO;
+using FileCabinetApp.FileCabinetService;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.Export
 {
     public class FIleCabinetCsvWriter
     {
-        private TextWriter _file;
+        private readonly TextWriter _file;
 
         /// <summary>
         /// Create <see cref="FIleCabinetCsvWriter"/> object by source <see cref="TextWriter"/> stream

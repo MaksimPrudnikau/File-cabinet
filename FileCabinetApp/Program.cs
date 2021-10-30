@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Resources;
+using FileCabinetApp.FileCabinetService;
+using FileCabinetApp.FileCabinetService.Decorators.Logger;
+using FileCabinetApp.FileCabinetService.Decorators.Meter;
 using FileCabinetApp.Handlers;
 using FileCabinetApp.Printers;
-using FileCabinetApp.ValidationRules;
+using FileCabinetApp.Validation;
+using FileCabinetApp.Validators;
 
 [assembly:CLSCompliant(true)]
 [assembly:NeutralResourcesLanguage("en")]

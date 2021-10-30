@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using FileCabinetApp;
+using FileCabinetApp.Export;
+using FileCabinetApp.FileCabinetService;
 
 namespace FileCabinetGenerator
 {

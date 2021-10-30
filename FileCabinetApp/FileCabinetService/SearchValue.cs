@@ -1,4 +1,4 @@
-﻿namespace FileCabinetApp
+﻿namespace FileCabinetApp.FileCabinetService
 {
     public enum SearchValue
     {

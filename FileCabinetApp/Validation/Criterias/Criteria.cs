@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace FileCabinetApp.ValidationRules
+namespace FileCabinetApp.Validation.Criterias
 {
     public abstract class Criteria<T>
     {

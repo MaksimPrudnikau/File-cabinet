@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using FileCabinetApp.FileCabinetService;
+using FileCabinetApp.FileCabinetService.FileSystemService;
+using FileCabinetApp.FileCabinetService.MemoryService;
+using FileCabinetApp.Validators;
 
-namespace FileCabinetApp.ValidationRules
+namespace FileCabinetApp.Validation
 {
     public class CommandLineParser
     {

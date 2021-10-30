@@ -1,6 +1,6 @@
 using System;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService
 {
     public static class FileCabinetConsts
     {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using FileCabinetApp.FileCabinetService;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.Validators
 {
     public class CompositeValidator : IRecordValidator
     {

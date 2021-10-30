@@ -1,6 +1,7 @@
+using FileCabinetApp.Validation.Criterias;
 using Newtonsoft.Json;
 
-namespace FileCabinetApp.ValidationRules
+namespace FileCabinetApp.Validation
 {
     public class CustomRules : DefaultRules
     {

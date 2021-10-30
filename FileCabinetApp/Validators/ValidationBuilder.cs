@@ -1,5 +1,7 @@
 using System.Collections.Generic;
-using FileCabinetApp.ValidationRules;
+using FileCabinetApp.FileCabinetService;
+using FileCabinetApp.Validation;
+using FileCabinetApp.Validators;
 
 namespace FileCabinetApp
 {
@@ -7,11 +9,11 @@ namespace FileCabinetApp
     {
         private List<IRecordValidator> _validators;
 
-        private static ValidationRules.ValidationRules _rules;
+        private static Validation.ValidationRules _validationRules;
 
         public ValidationBuilder()
         {
-            _rules = ValidationRulesReader.ReadRules(FileCabinetConsts.ValidationRulesFileName);
+            _validationRules = ValidationRulesReader.ReadRules(FileCabinetConsts.ValidationRulesFileName);
         }
 
         public IRecordValidator CreateDefault()
@@ -19,9 +21,9 @@ namespace FileCabinetApp
             _validators = new List<IRecordValidator>
             {
                 new IdValidator(),
-                new FirstNameValidator(_rules.Default.FirstName.MinValue, _rules.Default.FirstName.MaxValue),
-                new LastNameValidator(_rules.Default.LastName.MinValue, _rules.Default.LastName.MaxValue),
-                new DateOfBirthValidator(_rules.Default.DateOfBirth.MinValue, _rules.Default.DateOfBirth.MaxValue),
+                new FirstNameValidator(_validationRules.Default.FirstName.MinValue, _validationRules.Default.FirstName.MaxValue),
+                new LastNameValidator(_validationRules.Default.LastName.MinValue, _validationRules.Default.LastName.MaxValue),
+                new DateOfBirthValidator(_validationRules.Default.DateOfBirth.MinValue, _validationRules.Default.DateOfBirth.MaxValue),
             };
 
             return new CompositeValidator(_validators);
@@ -32,15 +34,15 @@ namespace FileCabinetApp
             _validators = new List<IRecordValidator>
             {
                 new IdValidator(),
-                new FirstNameValidator(_rules.Custom.FirstName.MinValue, _rules.Custom.FirstName.MaxValue),
-                new LastNameValidator(_rules.Custom.LastName.MinValue, _rules.Custom.LastName.MaxValue),
-                new DateOfBirthValidator(_rules.Custom.DateOfBirth.MinValue, _rules.Custom.DateOfBirth.MaxValue),
+                new FirstNameValidator(_validationRules.Custom.FirstName.MinValue, _validationRules.Custom.FirstName.MaxValue),
+                new LastNameValidator(_validationRules.Custom.LastName.MinValue, _validationRules.Custom.LastName.MaxValue),
+                new DateOfBirthValidator(_validationRules.Custom.DateOfBirth.MinValue, _validationRules.Custom.DateOfBirth.MaxValue),
                 
                 new JobExperienceValidator(
-                    _rules.Custom.JobExperience.MinValue, _rules.Custom.JobExperience.MaxValue),
+                    _validationRules.Custom.JobExperience.MinValue, _validationRules.Custom.JobExperience.MaxValue),
                 
-                new SalaryValidator(_rules.Custom.Salary.MinValue, _rules.Custom.Salary.MaxValue),
-                new RankValidator(_rules.Custom.Rank.Ranks)
+                new SalaryValidator(_validationRules.Custom.Salary.MinValue, _validationRules.Custom.Salary.MaxValue),
+                new RankValidator(_validationRules.Custom.Rank.Ranks)
             };
 
             return new CompositeValidator(_validators);

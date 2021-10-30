@@ -1,4 +1,4 @@
-namespace FileCabinetApp.ValidationRules
+namespace FileCabinetApp.Validation.Criterias
 {
     public class JobExperience: Criteria<short>
     {

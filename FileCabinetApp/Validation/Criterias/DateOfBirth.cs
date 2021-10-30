@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace FileCabinetApp.ValidationRules
+namespace FileCabinetApp.Validation.Criterias
 {
     public class DateOfBirth: Criteria<DateTime>
     {

@@ -4,46 +4,46 @@
         <name>FileCabinetApp</name>
     </assembly>
     <members>
-        <member name="M:FileCabinetApp.FIleCabinetCsvWriter.#ctor(System.IO.TextWriter)">
+        <member name="M:FileCabinetApp.Export.FIleCabinetCsvWriter.#ctor(System.IO.TextWriter)">
             <summary>
-            Create <see cref="T:FileCabinetApp.FIleCabinetCsvWriter"/> object by source <see cref="T:System.IO.TextWriter"/> stream
+            Create <see cref="T:FileCabinetApp.Export.FIleCabinetCsvWriter"/> object by source <see cref="T:System.IO.TextWriter"/> stream
             </summary>
             <param name="file">Source stream</param>
         </member>
-        <member name="M:FileCabinetApp.FIleCabinetCsvWriter.Write(FileCabinetApp.FileCabinetRecord[])">
+        <member name="M:FileCabinetApp.Export.FIleCabinetCsvWriter.Write(FileCabinetApp.FileCabinetService.FileCabinetRecord[])">
             <summary>
             Serialize source record to current <see cref="T:System.IO.TextWriter"/>
             </summary>
             <param name="record"></param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToCsv(System.IO.StreamWriter)">
+        <member name="M:FileCabinetApp.Export.FileCabinetServiceSnapshot.SaveToCsv(System.IO.StreamWriter)">
             <summary>
             Create csv file to source <see cref="T:System.IO.StreamWriter"/> file
             </summary>
             <param name="file">Source file</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToXml(System.IO.StreamWriter)">
+        <member name="M:FileCabinetApp.Export.FileCabinetServiceSnapshot.SaveToXml(System.IO.StreamWriter)">
             <summary>
             Create xml file to source <see cref="T:System.IO.StreamWriter"/> file
             </summary>
             <param name="file">Source file</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.CopyAndDelete(System.IO.FileStream,FileCabinetApp.IFileCabinetService)">
+        <member name="M:FileCabinetApp.Export.FileCabinetServiceSnapshot.CopyAndDelete(System.IO.FileStream,FileCabinetApp.FileCabinetService.IFileCabinetService)">
             <summary>
             Read all records from source file and delete it 
             </summary>
             <param name="file"></param>2
             <param name="service"></param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> snapshot created from source file</returns>
+            <returns><see cref="T:FileCabinetApp.Export.FileCabinetServiceSnapshot"/> snapshot created from source file</returns>
             <exception cref="T:System.ArgumentNullException">Source file or service are null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetXmlWriter.Write(FileCabinetApp.FileCabinetRecord[])">
+        <member name="M:FileCabinetApp.Export.FileCabinetXmlWriter.Write(FileCabinetApp.FileCabinetService.FileCabinetRecord[])">
             <summary>
             Serialize record to xml format
             </summary>
             <param name="records">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Create new record in base file with source parameters
             </summary>
@@ -51,13 +51,13 @@
             <returns>Id of created record</returns>
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Rewrite(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Rewrite(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Overwriting existing record by the source
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.EditRecord(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.EditRecord(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Edit already existing record with source
             </summary>
@@ -65,26 +65,26 @@
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
             <exception cref="T:System.ArgumentException">There is no record suitable for replacement</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetRecords">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.GetRecords">
             <summary>
-            Read all records from base file convert to <see cref="T:FileCabinetApp.FilesystemRecord"/> array
+            Read all records from base file convert to <see cref="T:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord"/> array
             </summary>
-            <returns>Array of <see cref="T:FileCabinetApp.FilesystemRecord"/></returns>
+            <returns>Array of <see cref="T:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord"/></returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetStat">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.GetStat">
             <summary>
             Get count of records in base file
             </summary>
             <returns>The amount of all records in base file</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.ReadParameters(System.Int32)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.ReadParameters(System.Int32)">
             <summary>
-            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.FileCabinetRecord"/> object
+            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> object
             </summary>
             <param name="id">Source id of read parameter</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
+            <returns><see cref="T:FileCabinetApp.Export.FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}})">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.ReadInput``1(System.Func{System.String,FileCabinetApp.Results.ConversionResult{``0}})">
             <summary>
             Read data from keyboard, convert it by source converter and validate with source validator
             </summary>
@@ -92,16 +92,16 @@
             <param name="converter">Source converter</param>
             <returns>Correct input object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Find(System.String,FileCabinetApp.SearchValue)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Find(System.String,FileCabinetApp.FileCabinetService.SearchValue)">
             <summary>
             Find record with source attribute equals searchValue
             </summary>
             <param name="searchValue">Value to search</param>
             <param name="attribute">Attribute to comparing</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array of records with suitable value of attribute</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array of records with suitable value of attribute</returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Search value is null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.ExtractValueByAttribute(FileCabinetApp.FileCabinetRecord,FileCabinetApp.SearchValue)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.ExtractValueByAttribute(FileCabinetApp.FileCabinetService.FileCabinetRecord,FileCabinetApp.FileCabinetService.SearchValue)">
             <summary>
             Extract suitable parameter from record according to attribute
             </summary>
@@ -110,65 +110,65 @@
             <returns>String representation of record's parameter</returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Attribute is not exist</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByFirstName(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.FindByFirstName(System.String)">
             <summary>
             Find all occurrences of searchValue in records of current data base file
             </summary>
             <param name="searchValue">Value to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with firstname equals searchValue</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with firstname equals searchValue</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByLastName(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.FindByLastName(System.String)">
             <summary>
             Find all occurrences of searchValue in records of current data base file
             </summary>
             <param name="searchValue">Value to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with lastname equals searchValue</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with lastname equals searchValue</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByDateOfBirth(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.FindByDateOfBirth(System.String)">
             <summary>
             Find all occurrences of searchValue in records of current data base file
             </summary>
             <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with date of birth equals searchValue</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with date of birth equals searchValue</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Restore(FileCabinetApp.FileCabinetServiceSnapshot)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Restore(FileCabinetApp.Export.FileCabinetServiceSnapshot)">
             <summary>
             Update current records with snapshot. If record is exist it will be overwritten, else append to end
             </summary>
             <param name="snapshot">Source snapshot</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Remove(System.Int32)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Remove(System.Int32)">
             <summary>
             Marks the record with input id as deleted
             </summary>
             <param name="id">Source record's id</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Purge">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Purge">
             <summary>
             Delete all records marked as delete from current file by creating a new one 
             </summary>
         </member>
-        <member name="M:FileCabinetApp.FileSystemReader.ReadAndMoveCursorBack">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemReader.ReadAndMoveCursorBack">
             <summary>
             Read the record and move cursor to it's beginning
             </summary>
             <returns></returns>
         </member>
-        <member name="M:FileCabinetApp.FileSystemReader.ReadRecord">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemReader.ReadRecord">
             <summary>
             Read one record from base file consistently
             </summary>
-            <returns>Read <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+            <returns>Read <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileSystemReader.Deserialize">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemReader.Deserialize">
             <summary>
-            Deserialize all content from source file into <see cref="T:FileCabinetApp.FilesystemRecord"/> array
+            Deserialize all content from source file into <see cref="T:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord"/> array
             </summary>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array</returns>
             <exception cref="T:System.ArgumentNullException">stream is null</exception>
             <exception cref="T:System.ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
         </member>
-        <member name="M:FileCabinetApp.FilesystemRecord.ToBytes(System.String,System.Int32)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord.ToBytes(System.String,System.Int32)">
             <summary>
             Create <see cref="T:System.Byte"/> array from value with source capacity 
             </summary>
@@ -176,32 +176,32 @@
             <param name="capacity">Source capacity</param>
             <returns> <see cref="T:System.Byte"/> array with length equals capacity </returns>
         </member>
-        <member name="M:FileCabinetApp.FilesystemRecord.Serialize(System.IO.FileStream)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord.Serialize(System.IO.FileStream)">
             <summary>
-            Serialize current <see cref="T:FileCabinetApp.FilesystemRecord"/> into source file
+            Serialize current <see cref="T:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord"/> into source file
             </summary>
             <param name="stream">Source file stream</param>
         </member>
-        <member name="M:FileCabinetApp.FilesystemRecord.ToFileCabinetRecord">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord.ToFileCabinetRecord">
             <summary>
-            Cast current <see cref="T:FileCabinetApp.FilesystemRecord"/> to <see cref="T:FileCabinetApp.FileCabinetRecord"/>
+            Cast current <see cref="T:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord"/> to <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/>
             </summary>
-            <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+            <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.FilesystemRecord.ToAscii(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord.ToAscii(System.String)">
             <summary>
             Create new string consists only ASCII characters
             </summary>
             <param name="source">Source string</param>
             <returns>New string with ASCII characters</returns>
         </member>
-        <member name="M:FileCabinetApp.FileSystemWriter.AppendRange(System.Collections.Generic.IReadOnlyCollection{FileCabinetApp.FileCabinetRecord})">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemWriter.AppendRange(System.Collections.Generic.IReadOnlyCollection{FileCabinetApp.FileCabinetService.FileCabinetRecord})">
             <summary>
             Add records to the end of data base
             </summary>
             <param name="records"></param>
         </member>
-        <member name="M:FileCabinetApp.FileSystemWriter.RewriteWithAny(FileCabinetApp.FileCabinetRecord,System.Collections.Generic.ICollection{FileCabinetApp.FileCabinetRecord})">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemWriter.RewriteWithAny(FileCabinetApp.FileCabinetService.FileCabinetRecord,System.Collections.Generic.ICollection{FileCabinetApp.FileCabinetService.FileCabinetRecord})">
             <summary>
             Overwrite the existing record by any one from records. After overwriting record is removed from array.
             </summary>
@@ -209,40 +209,82 @@
             <param name="records">Source records</param>
             <exception cref="T:System.ArgumentNullException">Record or records array are empty</exception>
         </member>
-        <member name="M:FileCabinetApp.FileSystemWriter.MarkAsDeleted(System.Int32)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemWriter.MarkAsDeleted(System.Int32)">
             <summary>
             Mark record with source id as deleted
             </summary>
             <param name="id">Source record's id</param>
             <exception cref="T:System.ArgumentException">Record is already marked as deleted. The flag's value is wrong initially</exception>
         </member>
-        <member name="M:FileCabinetApp.FileSystemWriter.Write(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemWriter.Write(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Write the record to data base
             </summary>
             <param name="record">Record to write</param>
             <exception cref="T:System.ArgumentNullException">Record is null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.IdConverter(System.String)">
+            <summary>
+            Convert source id to its <see cref="T:System.Int32"/> representation
+            </summary>
+            <param name="id">Source id</param>
+            <returns>Parsed <see cref="T:System.Int32"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.NameConverter(System.String)">
+            <summary>
+            Convert source string to its string representation
+            </summary>
+            <param name="source">Source name either first or last</param>
+            <returns>Parsed <see cref="T:System.String"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.DateOfBirthConverter(System.String)">
+            <summary>
+            Converts source date of birth representation into it`s <see cref="T:System.DateTime"/> equivalent 
+            </summary>
+            <param name="dateOfBirth">Source date of birth</param>
+            <returns>Parsed <see cref="T:System.DateTime"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.JobExperienceConverter(System.String)">
+            <summary>
+            Converts source job experience representation into it`s <see cref="T:System.Int16"/> equivalent 
+            </summary>
+            <param name="jobExperience">Source job experience</param>
+            <returns>Parsed <see cref="T:System.Int16"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.WageConverter(System.String)">
+            <summary>
+            Converts source wage representation into it`s <see cref="T:System.Decimal"/> equivalent 
+            </summary>
+            <param name="wage">Source wage</param>
+            <returns>Parsed <see cref="T:System.Decimal"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.RankConverter(System.String)">
+            <summary>
+            Converts source rank representation into it`s <see cref="T:System.Char"/> equivalent
+            </summary>
+            <param name="rank">Source rank</param>
+            <returns>Parsed <see cref="T:System.Char"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             The method create new record from source record and return its id
             </summary>
             <returns>An id of current record</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.GetStat">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.GetStat">
             <summary>
             Returns number of records that the service stores
             </summary>
             <value>An ordinal number of the last record</value>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadParameters(System.Int32)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.ReadParameters(System.Int32)">
             <summary>
-            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.FileCabinetRecord"/> object
+            Read parameters from keyboard and parse it to <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> object
             </summary>
             <param name="id">Source id of read parameter</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
+            <returns><see cref="T:FileCabinetApp.Export.FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.ReadInput``1(System.Func{System.String,FileCabinetApp.ConversionResult{``0}})">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.ReadInput``1(System.Func{System.String,FileCabinetApp.Results.ConversionResult{``0}})">
             <summary>
             Read data from keyboard, convert it by source converter and validate with source validator
             </summary>
@@ -250,110 +292,68 @@
             <param name="converter">Source converter</param>
             <returns>Correct input object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.EditRecord(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.EditRecord(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Edit record with the source one
             </summary>
             <param name="record">Parameter contains new data</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToAllDictionaries(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.AppendToAllDictionaries(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Append record to all dictionaries
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToFirstNameDictionary(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.AppendToFirstNameDictionary(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Append record to FirstNameDictionary
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToLastNameDictionary(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.AppendToLastNameDictionary(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Append record to LastNameDictionary
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.AppendToDateOfBirthDictionary(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.AppendToDateOfBirthDictionary(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Append record to DateOfBirthDictionary
             </summary>
             <param name="record">Source record</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.RemoveFromAllDictionaries(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.RemoveFromAllDictionaries(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Remove record from all dictionaries
             </summary>
             <param name="record">Source record to remove</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.FindByFirstName(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.FindByFirstName(System.String)">
             <summary>
-            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetRecord"/> with suitable first name
+            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> with suitable first name
             </summary>
             <param name="searchValue">First name to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with suitable first name</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with suitable first name</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.FindByLastName(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.FindByLastName(System.String)">
             <summary>
-            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetRecord"/> with suitable last name
+            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> with suitable last name
             </summary>
             <param name="searchValue">Last name to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with suitable last name</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with suitable last name</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.FindByDateOfBirth(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.FindByDateOfBirth(System.String)">
             <summary>
-            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetRecord"/> with suitable date of birth
+            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> with suitable date of birth
             </summary>
             <param name="searchValue">Date of birth to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> array with suitable date of birth</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with suitable date of birth</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.MakeSnapshot">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.MakeSnapshot">
             <summary>
-            Create <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object with current record array
+            Create <see cref="T:FileCabinetApp.Export.FileCabinetServiceSnapshot"/> object with current record array
             </summary>
-            <returns><see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> object</returns>
-        </member>
-        <member name="M:FileCabinetApp.InputConverter.IdConverter(System.String)">
-            <summary>
-            Convert source id to its <see cref="T:System.Int32"/> representation
-            </summary>
-            <param name="id">Source id</param>
-            <returns>Parsed <see cref="T:System.Int32"/> object</returns>
-        </member>
-        <member name="M:FileCabinetApp.InputConverter.NameConverter(System.String)">
-            <summary>
-            Convert source string to its string representation
-            </summary>
-            <param name="source">Source name either first or last</param>
-            <returns>Parsed <see cref="T:System.String"/> object</returns>
-        </member>
-        <member name="M:FileCabinetApp.InputConverter.DateOfBirthConverter(System.String)">
-            <summary>
-            Converts source date of birth representation into it`s <see cref="T:System.DateTime"/> equivalent 
-            </summary>
-            <param name="dateOfBirth">Source date of birth</param>
-            <returns>Parsed <see cref="T:System.DateTime"/> object</returns>
-        </member>
-        <member name="M:FileCabinetApp.InputConverter.JobExperienceConverter(System.String)">
-            <summary>
-            Converts source job experience representation into it`s <see cref="T:System.Int16"/> equivalent 
-            </summary>
-            <param name="jobExperience">Source job experience</param>
-            <returns>Parsed <see cref="T:System.Int16"/> object</returns>
-        </member>
-        <member name="M:FileCabinetApp.InputConverter.WageConverter(System.String)">
-            <summary>
-            Converts source wage representation into it`s <see cref="T:System.Decimal"/> equivalent 
-            </summary>
-            <param name="wage">Source wage</param>
-            <returns>Parsed <see cref="T:System.Decimal"/> object</returns>
-        </member>
-        <member name="M:FileCabinetApp.InputConverter.RankConverter(System.String)">
-            <summary>
-            Converts source rank representation into it`s <see cref="T:System.Char"/> equivalent
-            </summary>
-            <param name="rank">Source rank</param>
-            <returns>Parsed <see cref="T:System.Char"/> object</returns>
+            <returns><see cref="T:FileCabinetApp.Export.FileCabinetServiceSnapshot"/> object</returns>
         </member>
         <member name="M:FileCabinetApp.Handlers.CreateCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
@@ -439,20 +439,20 @@
             <summary>
             Read all records from current base file written in csv
             </summary>
-            <returns><see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetRecord"/></returns>
+            <returns><see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/></returns>
         </member>
         <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.DeserializeFromCsvLine(System.String)">
             <summary>
-            Deserialize <see cref="T:FileCabinetApp.FileCabinetRecord"/> from source line
+            Deserialize <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> from source line
             </summary>
             <param name="csvLine">Source line in csv format</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> object</returns>
             <exception cref="T:System.ArgumentException">The amount of parameters in line doesn't correspond
-            to <see cref="T:FileCabinetApp.FileCabinetRecord"/></exception>
+            to <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/></exception>
         </member>
-        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.Parse``1(System.String,System.Func{System.String,FileCabinetApp.ConversionResult{``0}})">
+        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.Parse``1(System.String,System.Func{System.String,FileCabinetApp.Results.ConversionResult{``0}})">
             <summary>
-            Parse source string to suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> parameter applying certain rules
+            Parse source string to suitable <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> parameter applying certain rules
             to convert and validate
             </summary>
             <param name="source">Source string to parse</param>
@@ -466,24 +466,24 @@
             <summary>
             Read all records from current base file written in xml
             </summary>
-            <returns><see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetRecord"/></returns>
+            <returns><see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/></returns>
         </member>
-        <member name="M:FileCabinetApp.Import.FileCabinetXmlReader.ToFileCabinetRecord(FileCabinetApp.RecordXml)">
+        <member name="M:FileCabinetApp.Import.FileCabinetXmlReader.ToFileCabinetRecord(FileCabinetApp.Export.RecordXml)">
             <summary>
-            Parse <see cref="T:FileCabinetApp.RecordXml"/> record to <see cref="T:FileCabinetApp.FileCabinetRecord"/>
+            Parse <see cref="T:FileCabinetApp.Export.RecordXml"/> record to <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/>
             </summary>
             <param name="record">Source record</param>
-            <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetRecord"/> object</returns>
+            <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.ValidationRules.CommandLineParser.SetValidationRule(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:FileCabinetApp.Validation.CommandLineParser.SetValidationRule(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-            Create <see cref="T:FileCabinetApp.IFileCabinetService"/> object according to entered command parameter
+            Create <see cref="T:FileCabinetApp.FileCabinetService.IFileCabinetService"/> object according to entered command parameter
             </summary>
             <param name="args">Source command parameter</param>
             <exception cref="T:System.ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
             <returns></returns>
         </member>
-        <member name="M:FileCabinetApp.DateOfBirthValidator.Validate(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.Validators.DateOfBirthValidator.Validate(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Validate current record's date of birth
             </summary>
@@ -492,20 +492,20 @@
             <exception cref="T:System.ArgumentException">Date of birth is not in dd/MM/yyyy format.
             Date of birth is not in range of current minimum and maximum value</exception>
         </member>
-        <member name="M:FileCabinetApp.FirstNameValidator.Validate(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.Validators.FirstNameValidator.Validate(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Validate current record's first name
             </summary>
             <param name="record">Source record to validate</param>
             <exception cref="T:System.ArgumentException">First name's length is not in range of current minimum and maximum value</exception>
         </member>
-        <member name="M:FileCabinetApp.IdValidator.Validate(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.Validators.IdValidator.Validate(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Validate current record's id
             </summary>
             <param name="record">Source record to validate</param>
         </member>
-        <member name="M:FileCabinetApp.JobExperienceValidator.Validate(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.Validators.JobExperienceValidator.Validate(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Validate current record's job experience
             <param name="record">Source record to validate</param>
@@ -514,14 +514,14 @@
             Job experience is not an integer or less than zero or greater than short.MaxValue.
             Job experience is not in range of current minimum and maximum value.</exception>
         </member>
-        <member name="M:FileCabinetApp.LastNameValidator.Validate(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.Validators.LastNameValidator.Validate(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Validate current record's last name
             </summary>
             <param name="record">Source record to validate</param>
             <exception cref="T:System.ArgumentException">First name's length is not in range of current minimum and maximum value</exception>
         </member>
-        <member name="M:FileCabinetApp.RankValidator.Validate(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.Validators.RankValidator.Validate(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Validate current record's rank
             </summary>
@@ -529,7 +529,7 @@
             <exception cref="T:System.ArgumentNullException">Record is null</exception>
             <exception cref="T:System.ArgumentException">Record's rank is not defined in current rank system</exception>
         </member>
-        <member name="M:FileCabinetApp.SalaryValidator.Validate(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.Validators.SalaryValidator.Validate(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Validate current record's salary
             </summary>

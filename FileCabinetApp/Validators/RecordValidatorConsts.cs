@@ -1,4 +1,4 @@
-﻿namespace FileCabinetApp
+﻿namespace FileCabinetApp.Validators
 {
     public static class RecordValidatorConsts
     {

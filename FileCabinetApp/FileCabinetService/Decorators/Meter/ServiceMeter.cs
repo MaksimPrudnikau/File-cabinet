@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using FileCabinetApp.Export;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService.Decorators.Meter
 {
     public class ServiceMeter : FileCabinetServiceDecorator
     {

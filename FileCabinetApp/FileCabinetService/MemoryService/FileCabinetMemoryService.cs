@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using FileCabinetApp.Export;
+using FileCabinetApp.Results;
+using FileCabinetApp.Validators;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService.MemoryService
 {
     public class FileCabinetMemoryService : IFileCabinetService
     {

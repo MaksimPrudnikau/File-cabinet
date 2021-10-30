@@ -2,12 +2,13 @@
 using System.IO;
 using System.Text;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService.FileSystemService
 {
     public class FilesystemRecord
     {
         private const int NameCapacity = 120;
         public const int Size = 270;
+        
         public bool IsDeleted { get; }
 
         public const int IsDeletedIndex = 0;

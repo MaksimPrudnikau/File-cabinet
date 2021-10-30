@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService
 {
     public class FileCabinetRecord
     {

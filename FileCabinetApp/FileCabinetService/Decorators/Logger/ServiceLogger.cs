@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using FileCabinetApp.Export;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService.Decorators.Logger
 {
-    public class ServiceLogger : FileCabinetServiceDecorator
+    public sealed class ServiceLogger : FileCabinetServiceDecorator, IDisposable
     {
         private readonly FileLogger _logger;
+        private bool _disposed;
 
         public ServiceLogger(IFileCabinetService service, string path) : base(service)
         {
@@ -70,6 +72,25 @@ namespace FileCabinetApp
         public override void Purge()
         {
             _logger.LogMethod(base.Purge);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if(!_disposed)
+            { 
+                if(disposing)
+                {
+                    _logger.Dispose();
+                }
+                
+                _disposed = true;
+            }
         }
     }
 }

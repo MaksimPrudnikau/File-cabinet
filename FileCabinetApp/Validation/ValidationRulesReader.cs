@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace FileCabinetApp.ValidationRules
+namespace FileCabinetApp.Validation
 {
     public static class ValidationRulesReader
     {

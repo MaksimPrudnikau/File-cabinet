@@ -1,14 +1,22 @@
 using System;
+using System.Collections.ObjectModel;
+using FileCabinetApp.FileCabinetService;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.Validators
 {
     public class RankValidator : IRecordValidator
     {
         private readonly char[] _grades;
         
-        public RankValidator(char[] grades)
+        public RankValidator(Collection<char> grades)
         {
-            _grades = grades;
+            if (grades is null)
+            {
+                throw new ArgumentNullException(nameof(grades));
+            }
+
+            _grades = new char[grades.Count];
+            grades.CopyTo(_grades, 0);
         }
         /// <summary>
         /// Validate current record's rank

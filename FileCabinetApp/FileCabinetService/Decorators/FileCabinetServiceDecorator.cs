@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using FileCabinetApp.Export;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService.Decorators
 {
     public class FileCabinetServiceDecorator : IFileCabinetService
     {
-        protected readonly IFileCabinetService Service;
+        private readonly IFileCabinetService _service;
 
         protected FileCabinetServiceDecorator(IFileCabinetService service)
         {
-            Service = service;
+            _service = service;
         }
 
         public virtual int CreateRecord(FileCabinetRecord record)
@@ -19,13 +20,13 @@ namespace FileCabinetApp
                 throw new ArgumentNullException(nameof(record));
             }
 
-            Service.CreateRecord(record);
+            _service.CreateRecord(record);
             return record.Id;
         }
 
         public virtual FileCabinetRecord ReadParameters(int id = -1)
         {
-            return Service.ReadParameters(id);
+            return _service.ReadParameters(id);
         }
 
         public virtual int EditRecord(FileCabinetRecord record)
@@ -36,48 +37,48 @@ namespace FileCabinetApp
             }
 
             record.Id--;
-            Service.EditRecord(record);
+            _service.EditRecord(record);
             return record.Id;
         }
 
         public virtual Statistic GetStat()
         {
-            return Service.GetStat();
+            return _service.GetStat();
         }
 
         public virtual IReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            return Service.GetRecords();
+            return _service.GetRecords();
         }
 
         public virtual IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
-            return Service.FindByFirstName(searchValue);
+            return _service.FindByFirstName(searchValue);
         }
 
         public virtual IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
-            return Service.FindByLastName(searchValue);
+            return _service.FindByLastName(searchValue);
         }
 
         public virtual IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
-            return Service.FindByDateOfBirth(searchValue);
+            return _service.FindByDateOfBirth(searchValue);
         }
 
         public virtual void Restore(FileCabinetServiceSnapshot snapshot)
         {
-            Service.Restore(snapshot);
+            _service.Restore(snapshot);
         }
 
         public virtual void Remove(int id)
         {
-            Service.Remove(id);
+            _service.Remove(id);
         }
 
         public virtual void Purge()
         {
-            Service.Purge();
+            _service.Purge();
         }
     }
 }

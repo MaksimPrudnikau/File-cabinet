@@ -1,3 +1,5 @@
+using FileCabinetApp.FileCabinetService;
+
 namespace FileCabinetApp.Handlers
 {
     public abstract class ServiceCommandHandlerBase : CommandHandlerBase

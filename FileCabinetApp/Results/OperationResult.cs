@@ -1,4 +1,4 @@
-namespace FileCabinetApp
+namespace FileCabinetApp.Results
 {
     public abstract class OperationResult
     {

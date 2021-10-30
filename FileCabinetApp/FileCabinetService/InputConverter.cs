@@ -1,7 +1,8 @@
 using System;
 using System.Globalization;
+using FileCabinetApp.Results;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.FileCabinetService
 {
     public static class InputConverter
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.Export
 {
     [Serializable]
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "records")]

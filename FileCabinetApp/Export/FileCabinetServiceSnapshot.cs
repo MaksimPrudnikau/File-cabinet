@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.Import;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.Export
 {
     public class FileCabinetServiceSnapshot
     {

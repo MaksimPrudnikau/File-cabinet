@@ -4,8 +4,9 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Serialization;
+using FileCabinetApp.FileCabinetService;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.Export
 {
     public class FileCabinetXmlWriter
     {

@@ -1,6 +1,6 @@
-using System;
+using FileCabinetApp.FileCabinetService;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.Validators
 {
     public interface IRecordValidator
     {
