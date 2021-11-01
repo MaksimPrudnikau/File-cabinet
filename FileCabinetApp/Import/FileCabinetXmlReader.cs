@@ -13,12 +13,14 @@ namespace FileCabinetApp.Import
     public class FileCabinetXmlReader
     {
         private readonly StreamReader _reader;
-        private static readonly XmlSerializer Serializer = new (typeof(RecordsXml));
-        private static readonly IRecordValidator Validator = new ValidationBuilder().CreateCustom();
+        private readonly XmlSerializer _serializer;
+        private readonly IRecordValidator _validator;
         
         public FileCabinetXmlReader(StreamReader reader)
         {
             _reader = reader;
+            _serializer = new XmlSerializer(typeof(RecordsXml));
+            _validator = new ValidationBuilder().CreateCustom();
         }
 
         /// <summary>
@@ -29,7 +31,7 @@ namespace FileCabinetApp.Import
         {
             using var xmlReader = XmlReader.Create(_reader);
 
-            var records = (RecordsXml) Serializer.Deserialize(xmlReader) ?? new RecordsXml();
+            var records = (RecordsXml) _serializer.Deserialize(xmlReader) ?? new RecordsXml();
 
             var fileCabinetRecords = new List<FileCabinetRecord>();
             
@@ -37,7 +39,7 @@ namespace FileCabinetApp.Import
             {
                 try
                 {
-                    Validator.Validate(ToFileCabinetRecord(item));
+                    _validator.Validate(ToFileCabinetRecord(item));
                 }
                 catch (Exception exception) when (exception is ArgumentException or FormatException)
                 {

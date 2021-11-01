@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using FileCabinetApp.Export;
 using FileCabinetApp.FileCabinetService;
@@ -50,10 +51,10 @@ namespace FileCabinetApp.Handlers
 
             var snapshot = new FileCabinetServiceSnapshot();
 
-            using var file = new StreamReader(File.OpenRead(directory));
-
             try
             {
+                using var file = new StreamReader(new FileStream(directory, FileMode.Open));
+                
                 switch (exportFormat)
                 {
                     case "csv":
@@ -62,6 +63,10 @@ namespace FileCabinetApp.Handlers
                     case "xml":
                         snapshot.LoadFromXml(file);
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(request),
+                            string.Format(CultureInfo.InvariantCulture,
+                                EnglishSource.ImportCommandHandler_The_format_is_not_supported, exportFormat));
                 }
 
                 Service.Restore(snapshot);
@@ -70,6 +75,10 @@ namespace FileCabinetApp.Handlers
             {
                 Console.Error.WriteLine(
                     $"Error: cant deserialize {directory}! {exception.Message}: {exception.InnerException?.Message}");
+            }
+            catch (SystemException exception) when (exception is ArgumentException or IOException)
+            {
+                Console.Error.WriteLine(exception.Message);
             }
         }
     }

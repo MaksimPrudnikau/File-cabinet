@@ -5,6 +5,8 @@ namespace FileCabinetApp.Validation.Criterias
 {
     public class Rank
     {
-        [JsonProperty("ranks")] public Collection<char> Ranks { get; } = new();
+        private static readonly Collection<char> Grades = new() {'F', 'D', 'C', 'B', 'A'};
+        
+        [JsonProperty("ranks")] public Collection<char> Ranks { get; } = Grades;
     }
 }

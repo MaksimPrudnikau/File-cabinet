@@ -7,7 +7,6 @@ namespace FileCabinetApp.FileCabinetService
         // General constants
         public const string DeveloperName = "Maksim Prudnikau";
 
-        public const string ValidationRulesFileName = "validation-rules.json";
         public const string FileSystemFileName = "cabinet-records.db";
         public const string LogsFileName = "Logs.txt";
 
@@ -34,9 +33,8 @@ namespace FileCabinetApp.FileCabinetService
         // Constants for 'ReadParameters'
         public const int MinimalJobExperience = 0;
         public const int MinimalSalary = 250;
-
-        public static readonly DateTime MinimalDateTime = new (1950, 1, 1);
-        public static readonly DateTime MaximalDateTime = DateTime.Now;
+        public static readonly DateTime MinimalDateOfBirth = new (1950, 1, 1);
+        public static readonly DateTime MaximalDateOfBirth = DateTime.Now;
 
         public const char CsvDelimiter = ',';
         public static readonly char[] Grades = {'F', 'D', 'C', 'B', 'A'};

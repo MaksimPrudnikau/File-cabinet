@@ -224,5 +224,11 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("method_execution_duration_ticks", resourceCulture);
             }
         }
+        
+        internal static string ImportCommandHandler_The_format_is_not_supported {
+            get {
+                return ResourceManager.GetString("ImportCommandHandler_The_format_is_not_supported", resourceCulture);
+            }
+        }
     }
 }

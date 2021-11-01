@@ -16,7 +16,7 @@ namespace FileCabinetGenerator.Generator
         
         private readonly Hashtable _firstNames;
         private readonly Hashtable _lastNames;
-
+        
         public RecordGenerator()
         {
             var fileCabinetDir = new DirectoryInfo(Environment.CurrentDirectory);
@@ -121,8 +121,8 @@ namespace FileCabinetGenerator.Generator
         /// <returns>Generated <see cref="DateTime"/> object</returns>
         private DateTime GenerateDate()
         {
-            var randomDate = FileCabinetConsts.MinimalDateTime;
-            var range = (FileCabinetConsts.MaximalDateTime - randomDate).Days;           
+            var randomDate = FileCabinetConsts.MinimalDateOfBirth;
+            var range = (FileCabinetConsts.MaximalDateOfBirth - randomDate).Days;           
             return randomDate.AddDays(new Random().Next(range));
         }
 

@@ -10,6 +10,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 {
     public class FileCabinetFilesystemService : IFileCabinetService, IDisposable
     {
+        private Dictionary<long, FileCabinetRecord> _records = new();
         private readonly IRecordValidator _validator;
         private FileStream _outputFile;
         private readonly Statistic _stat = new();
@@ -50,6 +51,15 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 _maxId = record.Id;
             }
 
+            if (_records.ContainsKey(_outputFile.Position))
+            {
+                _records[_outputFile.Position] = record;
+            }
+            else
+            {
+                _records.Add(_outputFile.Position, record);   
+            }
+            
             var fileSystemRecord = new FilesystemRecord(record);
             
             fileSystemRecord.Serialize(_outputFile);
