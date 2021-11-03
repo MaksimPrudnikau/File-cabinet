@@ -9,21 +9,21 @@
       "max": 60
     },
     "dateOfBirth": {
-      "from": "1/1/1950",
+      "from": "01/01/1950",
       "to": "10/8/2019"
     }
   },
   "custom": {
     "firstName": {
-      "min": 5,
+      "min": 2,
       "max": 80
     },
     "lastName": {
-      "min": 5,
+      "min": 2,
       "max": 80
     },
     "dateOfBirth": {
-      "from": "1/1/1980",
+      "from": "01/01/1980",
       "to": "10/8/2019"
     }
   }
