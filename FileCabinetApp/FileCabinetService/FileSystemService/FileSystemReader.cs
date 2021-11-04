@@ -6,11 +6,11 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 {
     public class FileSystemReader
     {
-        private readonly FileStream _file;
-        
+        public FileStream BaseFile { get; }
+
         public FileSystemReader(FileStream stream)
         {
-            _file = stream;
+            BaseFile = stream;
         }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         public FileCabinetRecord ReadAndMoveCursorBack()
         {
             var read = ReadRecord().ToFileCabinetRecord();
-            _file.Position -= FilesystemRecord.Size;
+            BaseFile.Position -= FilesystemRecord.Size;
             return read;
         }
         
@@ -31,7 +31,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         public FilesystemRecord ReadRecord()
         {
             var buffer = new byte[FilesystemRecord.Size];
-            _file.Read(buffer, 0, buffer.Length);
+            BaseFile.Read(buffer, 0, buffer.Length);
             return new FilesystemRecord(buffer);
         }
         
@@ -45,8 +45,8 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         {
             var array = new List<FileCabinetRecord>();
 
-            _file.Seek(0, SeekOrigin.Begin);
-            while (_file.Position < _file.Length)
+            BaseFile.Seek(0, SeekOrigin.Begin);
+            while (BaseFile.Position < BaseFile.Length)
             {
                 var read = ReadRecord();
                 

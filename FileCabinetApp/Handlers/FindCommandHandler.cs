@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FileCabinetApp.FileCabinetService;
+using FileCabinetApp.FileCabinetService.Iterators;
 
 namespace FileCabinetApp.Handlers
 {
@@ -40,15 +41,8 @@ namespace FileCabinetApp.Handlers
             var attribute = inputs[attributeIndex];
             var searchValue = inputs[searchValueIndex];
             
-            try
-            {
-                _print(FindByAttribute(attribute, searchValue));
+            _print(FindByAttribute(attribute, searchValue));
             }
-            catch (Exception exception) when (exception is ArgumentException or FormatException)
-            {
-                Console.Error.WriteLine(exception.Message);
-            }
-        }
 
         /// <summary>
         /// Create an array where any attribute element equals searchValue
@@ -58,6 +52,33 @@ namespace FileCabinetApp.Handlers
         /// <returns></returns>
         /// <exception cref="ArgumentException">Entered attribute is not exist</exception>
         private static IEnumerable<FileCabinetRecord> FindByAttribute(string attribute, string searchValue)
+        {
+            var created = TryCreateIterator(attribute, searchValue, out var iterator);
+            if (created)
+            {
+                foreach (var record in iterator)
+                {
+                    yield return record;
+                }
+            }
+        }
+
+        private static bool TryCreateIterator(string attribute, string searchValue, out IEnumerable<FileCabinetRecord> iterator)
+        {
+            try
+            {
+                iterator = CreateIterator(attribute, searchValue);
+                return true;
+            }
+            catch (SystemException exception) when (exception is ArgumentNullException or KeyNotFoundException)
+            {
+                iterator = null;
+                Console.Error.WriteLine(exception.Message);
+                return false;
+            }
+        }
+
+        private static IEnumerable<FileCabinetRecord> CreateIterator(string attribute, string searchValue)
         {
             return attribute.ToUpperInvariant() switch
             {

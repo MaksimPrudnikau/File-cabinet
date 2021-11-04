@@ -5,10 +5,11 @@ namespace FileCabinetApp.Validation.Criterias
 {
     public class DateOfBirth: Criteria<DateTime>
     {
-        [JsonProperty("from")]
-        public new DateTime MinValue { get; set; }
+        private static readonly DateTime DefaultMinValue = new (1950, 1, 1);
+        private static readonly DateTime DefaultMaxValue = DateTime.Now;
         
-        [JsonProperty("to")]
-        public new DateTime MaxValue { get; set; }
+        [JsonProperty("from")] public new DateTime MinValue { get; set; } = DefaultMinValue;
+
+        [JsonProperty("to")] public new DateTime MaxValue { get; set; } = DefaultMaxValue;
     }
 }

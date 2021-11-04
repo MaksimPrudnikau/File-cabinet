@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.Validation;
 using FileCabinetApp.Validators;
@@ -7,13 +8,15 @@ namespace FileCabinetApp
 {
     public class ValidationBuilder
     {
+        private const string ValidationRulesFileName = "validation-rules.json";
+        private static readonly string RulesPath = Directory.GetParent(Directory.GetCurrentDirectory())?
+            .Parent?.Parent?.FullName + "/Properties/" + ValidationRulesFileName;
         private List<IRecordValidator> _validators;
-
-        private static Validation.ValidationRules _validationRules;
+        private static ValidationRules _validationRules;
 
         public ValidationBuilder()
         {
-            _validationRules = ValidationRulesReader.ReadRules(FileCabinetConsts.ValidationRulesFileName);
+            _validationRules = ValidationRulesReader.ReadRules(RulesPath);
         }
 
         public IRecordValidator CreateDefault()
