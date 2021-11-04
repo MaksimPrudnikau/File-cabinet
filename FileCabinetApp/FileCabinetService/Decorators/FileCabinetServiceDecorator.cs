@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FileCabinetApp.Export;
+using FileCabinetApp.FileCabinetService.Iterators;
 
 namespace FileCabinetApp.FileCabinetService.Decorators
 {
@@ -51,17 +52,17 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             return _service.GetRecords();
         }
 
-        public virtual IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
+        public virtual IRecordIterator FindByFirstName(string searchValue)
         {
             return _service.FindByFirstName(searchValue);
         }
 
-        public virtual IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
+        public virtual IRecordIterator FindByLastName(string searchValue)
         {
             return _service.FindByLastName(searchValue);
         }
 
-        public virtual IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
+        public virtual IRecordIterator FindByDateOfBirth(string searchValue)
         {
             return _service.FindByDateOfBirth(searchValue);
         }

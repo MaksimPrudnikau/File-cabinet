@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using FileCabinetApp.Export;
+using FileCabinetApp.FileCabinetService.Iterators;
 using FileCabinetApp.Results;
 using FileCabinetApp.Validators;
 
@@ -186,51 +187,21 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         }
 
         /// <summary>
-        /// Find record with source attribute equals searchValue
-        /// </summary>
-        /// <param name="searchValue">Value to search</param>
-        /// <returns><see cref="FileCabinetRecord"/> array of records with suitable value of attribute</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Search value is null</exception>
-        private IEnumerable<FileCabinetRecord> FindInDictionary<T>(IReadOnlyDictionary<T, HashSet<long>> dictionary, T searchValue)
-        {
-            if (searchValue is null)
-            {
-                return Array.Empty<FileCabinetRecord>();
-            }
-
-            var records = new List<FileCabinetRecord>();
-            var reader = new FileSystemReader(_outputFile);
-
-            foreach (var offset in dictionary[searchValue])
-            {
-                _outputFile.Seek(offset, SeekOrigin.Begin);
-
-                var readRecord = reader.ReadRecord();
-                if (!readRecord.IsDeleted)
-                {
-                    records.Add(readRecord.ToFileCabinetRecord());
-                }
-            }
-
-            _outputFile.Seek(0, SeekOrigin.End);
-            return records;
-        }
-
-        /// <summary>
         /// Find all occurrences of searchValue in records of current data base file
         /// </summary>
         /// <param name="searchValue">Value to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with firstname equals searchValue</returns>
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
+        public IRecordIterator FindByFirstName(string searchValue)
         {
+            var records = new List<long>();
             try
             {
-                return FindInDictionary(_recordsIndex.FirstNames, searchValue);
+                records = new List<long>(_recordsIndex.FirstNames[searchValue]);
+                return new FilesystemIterator(_reader, records);
             }
-            catch (KeyNotFoundException exception)
+            catch (KeyNotFoundException)
             {
-                Console.Error.WriteLine(exception.Message);
-                return Array.Empty<FileCabinetRecord>();
+                return new FilesystemIterator(_reader, records);
             }
         }
 
@@ -239,16 +210,17 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// </summary>
         /// <param name="searchValue">Value to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with lastname equals searchValue</returns>
-        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
+        public IRecordIterator FindByLastName(string searchValue)
         {
+            var records = new List<long>();
             try
             {
-                return FindInDictionary(_recordsIndex.LastNames, searchValue);
+                records = new List<long>(_recordsIndex.LastNames[searchValue]);
+                return new FilesystemIterator(_reader, records);
             }
-            catch (KeyNotFoundException exception)
+            catch (KeyNotFoundException)
             {
-                Console.Error.WriteLine(exception.Message);
-                return Array.Empty<FileCabinetRecord>();
+                return new FilesystemIterator(_reader, records);
             }
         }
 
@@ -257,24 +229,26 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// </summary>
         /// <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
         /// <returns><see cref="FileCabinetRecord"/> array with date of birth equals searchValue</returns>
-        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
+        public IRecordIterator FindByDateOfBirth(string searchValue)
         {
+            var records = new List<long>();
+            
             try
             {
                 var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
                     CultureInfo.InvariantCulture);
-                return FindInDictionary(_recordsIndex.DateOfBirths, dateOfBirth);
+                records = new List<long>(_recordsIndex.DateOfBirths[dateOfBirth]);
+                return new FilesystemIterator(_reader, records);
             }
             catch (SystemException exception) 
                 when (exception is ArgumentException or FormatException or KeyNotFoundException)
             {
-                Console.Error.WriteLine(exception.Message);
-                return Array.Empty<FileCabinetRecord>();
+                return new FilesystemIterator(_reader, records);
             }
             catch (KeyNotFoundException)
             {
                 Console.Error.WriteLine(EnglishSource.FindBy_is_not_presented_in_current_database, searchValue);
-                return Array.Empty<FileCabinetRecord>();
+                return new FilesystemIterator(_reader, records);
             }
         }
 
@@ -319,7 +293,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 if (id == read.Id)
                 {
                     _writer.MarkAsDeleted(id);
-
+                    
                     _stat.Deleted++;
                     return;
                 }

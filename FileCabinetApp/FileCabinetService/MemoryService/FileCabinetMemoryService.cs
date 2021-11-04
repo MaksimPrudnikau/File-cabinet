@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using FileCabinetApp.Export;
+using FileCabinetApp.FileCabinetService.Iterators;
 using FileCabinetApp.Results;
 using FileCabinetApp.Validators;
 
@@ -217,28 +219,23 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
-        private static IEnumerable<FileCabinetRecord> Find(string searchValue, SearchValue attribute)
+        private static IRecordIterator Find(string searchValue, SearchValue attribute)
         {
             if (string.IsNullOrEmpty(searchValue))
             {
-                return Array.Empty<FileCabinetRecord>();
+                throw new ArgumentNullException(nameof(searchValue));
             }
 
-            try
+            var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
+                CultureInfo.InvariantCulture);
+
+            return attribute switch
             {
-                return attribute switch
-                {
-                    SearchValue.FirstName => FirstNameDictionary[searchValue],
-                    SearchValue.LastName => LastNameDictionary[searchValue],
-                    SearchValue.DateOfBirth => DateOfBirthDictionary[
-                        DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture)],
-                    _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
-                };
-            }
-            catch (KeyNotFoundException)
-            {
-                return Array.Empty<FileCabinetRecord>();
-            }
+                SearchValue.FirstName => new MemoryIterator(FirstNameDictionary[searchValue]),
+                SearchValue.LastName => new MemoryIterator(LastNameDictionary[searchValue]),
+                SearchValue.DateOfBirth => new MemoryIterator(DateOfBirthDictionary[dateOfBirth]),
+                _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
+            };
         }
 
         /// <summary>
@@ -246,7 +243,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// </summary>
         /// <param name="searchValue">First name to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with suitable first name</returns>
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
+        public IRecordIterator FindByFirstName(string searchValue)
         {
             return Find(searchValue, SearchValue.FirstName);
         }
@@ -256,7 +253,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// </summary>
         /// <param name="searchValue">Last name to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with suitable last name</returns>
-        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
+        public IRecordIterator FindByLastName(string searchValue)
         {
             return Find(searchValue, SearchValue.LastName);
         }
@@ -266,7 +263,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// </summary>
         /// <param name="searchValue">Date of birth to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with suitable date of birth</returns>
-        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
+        public IRecordIterator FindByDateOfBirth(string searchValue)
         {
             return Find(searchValue, SearchValue.DateOfBirth);
         }

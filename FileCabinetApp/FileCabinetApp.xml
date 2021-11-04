@@ -92,14 +92,6 @@
             <param name="converter">Source converter</param>
             <returns>Correct input object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.FindInDictionary``1(System.Collections.Generic.IReadOnlyDictionary{``0,System.Collections.Generic.HashSet{System.Int64}},``0)">
-            <summary>
-            Find record with source attribute equals searchValue
-            </summary>
-            <param name="searchValue">Value to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array of records with suitable value of attribute</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">Search value is null</exception>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.FindByFirstName(System.String)">
             <summary>
             Find all occurrences of searchValue in records of current data base file

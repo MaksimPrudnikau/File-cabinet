@@ -14,7 +14,7 @@ namespace FileCabinetApp {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EnglishSource {
+    public class EnglishSource {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -182,8 +182,8 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("All_records_are_exported_to_file", resourceCulture);
             }
         }
-        
-        internal static string records_were_written_to {
+
+        public static string records_were_written_to {
             get {
                 return ResourceManager.GetString("records_were_written_to", resourceCulture);
             }

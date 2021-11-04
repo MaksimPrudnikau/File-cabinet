@@ -1,15 +1,26 @@
+using System.Collections.Generic;
+
 namespace FileCabinetApp.FileCabinetService.Iterators
 {
     public class MemoryIterator : IRecordIterator
     {
+        private readonly IList<FileCabinetRecord> _records;
+        private int _currentIndex;
+        
+        public MemoryIterator(IList<FileCabinetRecord> records)
+        {
+            _records = records;
+            _currentIndex = 0;
+        }
+        
         public FileCabinetRecord GetNext()
         {
-            throw new System.NotImplementedException();
+            return _records[_currentIndex++];
         }
 
         public bool HasMore()
         {
-            throw new System.NotImplementedException();
+            return _currentIndex < _records.Count;
         }
     }
 }

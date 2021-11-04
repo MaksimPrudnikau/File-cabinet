@@ -31,7 +31,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             RemoveFromDictionaries(from);
             AddToDictionaries(to, position);
         }
-
+        
         private void RemoveFromDictionaries(FileCabinetRecord record)
         {
             RemoveFromFirstNames(record);

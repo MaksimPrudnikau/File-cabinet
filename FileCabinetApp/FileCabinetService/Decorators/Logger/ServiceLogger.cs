@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FileCabinetApp.Export;
+using FileCabinetApp.FileCabinetService.Iterators;
 
 namespace FileCabinetApp.FileCabinetService.Decorators.Logger
 {
@@ -44,17 +45,17 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             return _logger.LogMethod(base.GetRecords);
         }
 
-        public override IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
+        public override IRecordIterator FindByFirstName(string searchValue)
         {
             return _logger.LogMethod(base.FindByFirstName, searchValue);
         }
 
-        public override IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
+        public override IRecordIterator FindByLastName(string searchValue)
         {
             return _logger.LogMethod(base.FindByLastName, searchValue);
         }
 
-        public override IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
+        public override IRecordIterator FindByDateOfBirth(string searchValue)
         {
             return _logger.LogMethod(base.FindByDateOfBirth, searchValue);
         }

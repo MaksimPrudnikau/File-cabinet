@@ -1,3 +1,4 @@
+
 namespace FileCabinetApp.FileCabinetService.Iterators
 {
     public interface IRecordIterator
