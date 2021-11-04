@@ -219,33 +219,14 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
-        private static IRecordIterator Find(string searchValue, SearchValue attribute)
-        {
-            if (string.IsNullOrEmpty(searchValue))
-            {
-                throw new ArgumentNullException(nameof(searchValue));
-            }
-
-            var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
-                CultureInfo.InvariantCulture);
-
-            return attribute switch
-            {
-                SearchValue.FirstName => new MemoryIterator(FirstNameDictionary[searchValue]),
-                SearchValue.LastName => new MemoryIterator(LastNameDictionary[searchValue]),
-                SearchValue.DateOfBirth => new MemoryIterator(DateOfBirthDictionary[dateOfBirth]),
-                _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
-            };
-        }
-
         /// <summary>
         /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable first name
         /// </summary>
         /// <param name="searchValue">First name to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with suitable first name</returns>
-        public IRecordIterator FindByFirstName(string searchValue)
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
-            return Find(searchValue, SearchValue.FirstName);
+            return new MemoryIterator(FirstNameDictionary[searchValue]);
         }
 
         /// <summary>
@@ -253,9 +234,9 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// </summary>
         /// <param name="searchValue">Last name to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with suitable last name</returns>
-        public IRecordIterator FindByLastName(string searchValue)
+        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
-            return Find(searchValue, SearchValue.LastName);
+            return new MemoryIterator(LastNameDictionary[searchValue]);
         }
 
         /// <summary>
@@ -263,9 +244,12 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// </summary>
         /// <param name="searchValue">Date of birth to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with suitable date of birth</returns>
-        public IRecordIterator FindByDateOfBirth(string searchValue)
+        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
-            return Find(searchValue, SearchValue.DateOfBirth);
+            var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
+                CultureInfo.InvariantCulture);
+            
+            return new MemoryIterator(DateOfBirthDictionary[dateOfBirth]);
         }
 
         /// <summary>

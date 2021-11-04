@@ -52,17 +52,17 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             return _service.GetRecords();
         }
 
-        public virtual IRecordIterator FindByFirstName(string searchValue)
+        public virtual IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
             return _service.FindByFirstName(searchValue);
         }
 
-        public virtual IRecordIterator FindByLastName(string searchValue)
+        public virtual IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
             return _service.FindByLastName(searchValue);
         }
 
-        public virtual IRecordIterator FindByDateOfBirth(string searchValue)
+        public virtual IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
             return _service.FindByDateOfBirth(searchValue);
         }

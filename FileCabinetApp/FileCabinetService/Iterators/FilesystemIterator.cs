@@ -1,5 +1,5 @@
-
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using FileCabinetApp.FileCabinetService.FileSystemService;
@@ -39,6 +39,19 @@ namespace FileCabinetApp.FileCabinetService.Iterators
         public bool HasMore()
         {
             return _currentPosition < _positions.Count;
+        }
+
+        public IEnumerator<FileCabinetRecord> GetEnumerator()
+        {
+            while (HasMore())
+            {
+                yield return GetNext();
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -39,21 +39,21 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             return records;
         }
 
-        public override IRecordIterator FindByFirstName(string searchValue)
+        public override IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
             var ticks = TicksMeter.GetElapsedTicks(base.FindByFirstName, searchValue, out var records);
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(FindByFirstName), ticks);
             return records;
         }
         
-        public override IRecordIterator FindByLastName(string searchValue)
+        public override IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
             var ticks = TicksMeter.GetElapsedTicks(base.FindByLastName, searchValue, out var records);
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(FindByLastName), ticks);
             return records;
         }
         
-        public override IRecordIterator FindByDateOfBirth(string searchValue)
+        public override IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
             var ticks = TicksMeter.GetElapsedTicks(base.FindByDateOfBirth, searchValue, out var records);
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(FindByDateOfBirth), ticks);

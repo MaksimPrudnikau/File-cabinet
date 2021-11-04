@@ -191,7 +191,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// </summary>
         /// <param name="searchValue">Value to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with firstname equals searchValue</returns>
-        public IRecordIterator FindByFirstName(string searchValue)
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
             var records = new List<long>();
             try
@@ -210,7 +210,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// </summary>
         /// <param name="searchValue">Value to search</param>
         /// <returns><see cref="FileCabinetRecord"/> array with lastname equals searchValue</returns>
-        public IRecordIterator FindByLastName(string searchValue)
+        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
             var records = new List<long>();
             try
@@ -229,7 +229,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// </summary>
         /// <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
         /// <returns><see cref="FileCabinetRecord"/> array with date of birth equals searchValue</returns>
-        public IRecordIterator FindByDateOfBirth(string searchValue)
+        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
             var records = new List<long>();
             
@@ -237,6 +237,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             {
                 var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
                     CultureInfo.InvariantCulture);
+                
                 records = new List<long>(_recordsIndex.DateOfBirths[dateOfBirth]);
                 return new FilesystemIterator(_reader, records);
             }

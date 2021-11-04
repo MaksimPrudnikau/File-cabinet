@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.FileCabinetService.Iterators;
-using FileCabinetApp.Validators;
 
 namespace FileCabinetApp.Handlers
 {
@@ -55,23 +54,16 @@ namespace FileCabinetApp.Handlers
         private static IEnumerable<FileCabinetRecord> FindByAttribute(string attribute, string searchValue)
         {
             var created = TryCreateIterator(attribute, searchValue, out var iterator);
-            var records = new List<FileCabinetRecord>();
             if (created)
             {
-                while (iterator.HasMore())
+                foreach (var record in iterator)
                 {
-                    var read = iterator.GetNext();
-                    if (read is not null)
-                    {
-                        records.Add(read);
-                    }
+                    yield return record;
                 }
             }
-
-            return records;
         }
 
-        private static bool TryCreateIterator(string attribute, string searchValue, out IRecordIterator iterator)
+        private static bool TryCreateIterator(string attribute, string searchValue, out IEnumerable<FileCabinetRecord> iterator)
         {
             try
             {
@@ -86,7 +78,7 @@ namespace FileCabinetApp.Handlers
             }
         }
 
-        private static IRecordIterator CreateIterator(string attribute, string searchValue)
+        private static IEnumerable<FileCabinetRecord> CreateIterator(string attribute, string searchValue)
         {
             return attribute.ToUpperInvariant() switch
             {

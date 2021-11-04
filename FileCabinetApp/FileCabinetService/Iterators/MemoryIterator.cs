@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 
 namespace FileCabinetApp.FileCabinetService.Iterators
@@ -21,6 +22,19 @@ namespace FileCabinetApp.FileCabinetService.Iterators
         public bool HasMore()
         {
             return _currentIndex < _records.Count;
+        }
+
+        public IEnumerator<FileCabinetRecord> GetEnumerator()
+        {
+            while (HasMore())
+            {
+                yield return GetNext();
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

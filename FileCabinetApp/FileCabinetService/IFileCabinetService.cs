@@ -16,11 +16,11 @@ namespace FileCabinetApp.FileCabinetService
 
         public IReadOnlyCollection<FileCabinetRecord> GetRecords();
 
-        public IRecordIterator FindByFirstName(string searchValue);
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue);
         
-        public IRecordIterator FindByLastName(string searchValue);
+        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue);
         
-        public IRecordIterator FindByDateOfBirth(string searchValue);
+        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue);
 
         public void Restore(FileCabinetServiceSnapshot snapshot);
 

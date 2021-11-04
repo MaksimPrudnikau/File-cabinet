@@ -45,17 +45,17 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             return _logger.LogMethod(base.GetRecords);
         }
 
-        public override IRecordIterator FindByFirstName(string searchValue)
+        public override IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
             return _logger.LogMethod(base.FindByFirstName, searchValue);
         }
 
-        public override IRecordIterator FindByLastName(string searchValue)
+        public override IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
             return _logger.LogMethod(base.FindByLastName, searchValue);
         }
 
-        public override IRecordIterator FindByDateOfBirth(string searchValue)
+        public override IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
         {
             return _logger.LogMethod(base.FindByDateOfBirth, searchValue);
         }
