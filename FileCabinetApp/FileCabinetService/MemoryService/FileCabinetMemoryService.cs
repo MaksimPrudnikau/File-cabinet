@@ -94,7 +94,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
                 record.JobExperience = ReadInput(InputConverter.JobExperienceConverter);
                 
                 Console.Write(EnglishSource.wage);
-                record.Salary = ReadInput(InputConverter.WageConverter);
+                record.Salary = ReadInput(InputConverter.SalaryConverter);
                 
                 Console.Write(EnglishSource.rank);
                 record.Rank = ReadInput(InputConverter.RankConverter);
@@ -297,6 +297,11 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
 
         public void Purge()
         {
+        }
+
+        public void Insert(FileCabinetRecord record)
+        {
+            throw new NotImplementedException();
         }
     }
 }

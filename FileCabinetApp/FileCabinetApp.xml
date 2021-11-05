@@ -233,7 +233,7 @@
             <param name="jobExperience">Source job experience</param>
             <returns>Parsed <see cref="T:System.Int16"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.WageConverter(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.SalaryConverter(System.String)">
             <summary>
             Converts source wage representation into it`s <see cref="T:System.Decimal"/> equivalent 
             </summary>

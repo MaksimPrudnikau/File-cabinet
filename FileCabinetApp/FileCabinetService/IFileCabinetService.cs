@@ -27,5 +27,7 @@ namespace FileCabinetApp.FileCabinetService
         public void Remove(int id);
 
         public void Purge();
+
+        public void Insert(FileCabinetRecord record);
     }
 }

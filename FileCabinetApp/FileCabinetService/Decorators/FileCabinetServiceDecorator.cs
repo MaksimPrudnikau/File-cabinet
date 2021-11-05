@@ -81,5 +81,10 @@ namespace FileCabinetApp.FileCabinetService.Decorators
         {
             _service.Purge();
         }
+
+        public void Insert(FileCabinetRecord record)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

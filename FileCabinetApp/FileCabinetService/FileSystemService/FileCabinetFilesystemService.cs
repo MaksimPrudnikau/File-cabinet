@@ -153,7 +153,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 record.JobExperience = ReadInput(InputConverter.JobExperienceConverter);
                 
                 Console.Write(EnglishSource.wage);
-                record.Salary = ReadInput(InputConverter.WageConverter);
+                record.Salary = ReadInput(InputConverter.SalaryConverter);
                 
                 Console.Write(EnglishSource.rank);
                 record.Rank = ReadInput(InputConverter.RankConverter);
@@ -321,6 +321,11 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             _recordsIndex = new Index();
             
             _writer.AppendRange(snapshot.Records);
+        }
+
+        public void Insert(FileCabinetRecord record)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()

@@ -78,7 +78,7 @@ namespace FileCabinetApp.Import
                 LastName = Parse(split[lastNameIndex], InputConverter.NameConverter),
                 DateOfBirth = Parse(split[dateOfBirthIndex], InputConverter.DateOfBirthConverter),
                 JobExperience = Parse(split[jobExperienceIndex], InputConverter.JobExperienceConverter),
-                Salary = Parse(split[wageIndex], InputConverter.WageConverter),
+                Salary = Parse(split[wageIndex], InputConverter.SalaryConverter),
                 Rank = Parse(split[rankIndex], InputConverter.RankConverter)
             };
 
