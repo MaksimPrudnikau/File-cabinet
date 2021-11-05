@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using FileCabinetApp.Export;
 using FileCabinetApp.FileCabinetService.Iterators;
@@ -13,7 +12,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
     {
         private static IRecordValidator _validator;
 
-        private static readonly Dictionary<int, FileCabinetRecord> Records = new ();
+        private static readonly SortedDictionary<int, FileCabinetRecord> Records = new ();
         private static readonly Statistic Stat = new();
 
         private static readonly Dictionary<string, List<FileCabinetRecord>> FirstNameDictionary = new();
@@ -301,7 +300,22 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
 
         public void Insert(FileCabinetRecord record)
         {
-            throw new NotImplementedException();
+            if (record is null)
+            {
+                throw new ArgumentNullException(nameof(record));
+            }
+
+            if (Records.ContainsKey(record.Id))
+            {
+                throw new ArgumentException($"Record with id = '{record.Id}' is already exist");
+            }
+
+            if (record.Id == default)
+            {
+                record.Id = _maxId + 1;
+            }
+
+            CreateRecord(record);
         }
     }
 }
