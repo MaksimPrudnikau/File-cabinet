@@ -52,9 +52,12 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             return record.Id;
         }
 
-        public IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public IEnumerable<FileCabinetRecord> GetRecords()
         {
-            return Records.Values;
+            foreach (var item in Records.Values)
+            {
+                yield return item;
+            }
         }
 
         /// <summary>

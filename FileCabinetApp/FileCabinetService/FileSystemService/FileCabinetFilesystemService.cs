@@ -104,11 +104,11 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// Read all records from base file convert to <see cref="FilesystemRecord"/> array
         /// </summary>
         /// <returns>Array of <see cref="FilesystemRecord"/></returns>
-        public IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public IEnumerable<FileCabinetRecord> GetRecords()
         {
             try
             {
-                return _reader.Deserialize();
+                 return _reader.Deserialize();
             }
             catch (Exception e) when (e is ArgumentException or ArgumentNullException)
             {
@@ -315,17 +315,42 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             var snapshot = FileCabinetServiceSnapshot.CopyAndDelete(_outputFile, this);
             
             _outputFile = new FileStream(path, FileMode.CreateNew);
-            _stat.Count = _stat.Deleted = 0;
+            _stat.Clear();
             _writer = new FileSystemWriter(this, _outputFile, _recordsIndex);
             _reader = new FileSystemReader(_outputFile);
-            _recordsIndex = new Index();
+            _recordsIndex.Clear();
             
             _writer.AppendRange(snapshot.Records);
         }
 
         public void Insert(FileCabinetRecord record)
         {
-            throw new NotImplementedException();
+            if (record is null)
+            {
+                throw new ArgumentNullException(nameof(record));
+            }
+            
+            if (_recordsIndex.Id.ContainsKey(record.Id))
+            {
+                throw new ArgumentException($"Record with id = '{record.Id}' is already exist");
+            }
+
+            _recordsIndex.Clear();
+            _stat.Clear();
+            var snapshot = new FileCabinetServiceSnapshot(GetRecords());
+            _outputFile.Seek(0, SeekOrigin.Begin);
+            
+            var inserted = false;
+            foreach (var item in snapshot.Records)
+            {
+                if (item.Id > record.Id && !inserted)
+                {
+                    CreateRecord(record);
+                    inserted = true;
+                }
+
+                CreateRecord(item);
+            }
         }
 
         public void Dispose()

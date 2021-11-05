@@ -5,6 +5,8 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 {
     public class Index
     {
+        public Dictionary<int, HashSet<long>> Id { get; } = new();
+        
         public Dictionary<string, HashSet<long>> FirstNames { get; } = new();
         
         public Dictionary<string, HashSet<long>> LastNames { get; } = new();
@@ -32,86 +34,45 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             AddToDictionaries(to, position);
         }
         
+        public void Clear()
+        {
+            Id.Clear();
+            FirstNames.Clear();
+            LastNames.Clear();
+            DateOfBirths.Clear();
+        }
+        
         private void RemoveFromDictionaries(FileCabinetRecord record)
         {
-            RemoveFromFirstNames(record);
-            RemoveFromLastNames(record);
-            RemoveFromDateOfBirths(record);
-        }
-
-        private void RemoveFromFirstNames(FileCabinetRecord record)
-        {
             if (record is null)
             {
                 throw new ArgumentNullException(nameof(record));
             }
 
+            Id.Remove(record.Id);
             FirstNames.Remove(record.FirstName);
-        }
-        
-        private void RemoveFromLastNames(FileCabinetRecord record)
-        {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-
             LastNames.Remove(record.LastName);
-        }
-        
-        private void RemoveFromDateOfBirths(FileCabinetRecord record)
-        {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-
             DateOfBirths.Remove(record.DateOfBirth);
         }
 
         private void AddToDictionaries(FileCabinetRecord record, long position)
         {
-            UpdateFirstNames(record.FirstName, position);
-            UpdateLastNames(record.LastName, position);
-            UpdateDateOfBirths(record.DateOfBirth, position);
+            UpdateDictionary(Id, record.Id, position);
+            UpdateDictionary(FirstNames, record.FirstName, position);
+            UpdateDictionary(LastNames, record.LastName, position);
+            UpdateDictionary(DateOfBirths, record.DateOfBirth, position);
         }
 
-        private void UpdateFirstNames(string firstname, long position)
+        private static void UpdateDictionary<T>(IDictionary<T, HashSet<long>> dictionary, T key, long position)
         {
-            if (FirstNames.ContainsKey(firstname))
+            if (dictionary.ContainsKey(key))
             {
-                FirstNames[firstname].Add(position);
+                dictionary[key].Add(position);
             }
             else
             {
-                FirstNames.Add(firstname, new HashSet<long>());
-                FirstNames[firstname].Add(position);
-            }
-        }
-        
-        private void UpdateLastNames(string lastName, long position)
-        {
-            if (LastNames.ContainsKey(lastName))
-            {
-                LastNames[lastName].Add(position);
-            }
-            else
-            {
-                LastNames.Add(lastName, new HashSet<long>());
-                LastNames[lastName].Add(position);
-            }
-        }
-        
-        private void UpdateDateOfBirths(DateTime dateOfBirth, long position)
-        {
-            if (DateOfBirths.ContainsKey(dateOfBirth))
-            {
-                DateOfBirths[dateOfBirth].Add(position);
-            }
-            else
-            {
-                DateOfBirths.Add(dateOfBirth, new HashSet<long>());
-                DateOfBirths[dateOfBirth].Add(position);
+                dictionary.Add(key, new HashSet<long>());
+                dictionary[key].Add(position);
             }
         }
     }

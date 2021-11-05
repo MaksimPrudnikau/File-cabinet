@@ -47,7 +47,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             return _service.GetStat();
         }
 
-        public virtual IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public virtual IEnumerable<FileCabinetRecord> GetRecords()
         {
             return _service.GetRecords();
         }

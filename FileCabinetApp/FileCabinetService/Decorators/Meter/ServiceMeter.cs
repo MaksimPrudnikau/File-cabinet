@@ -32,7 +32,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             return stat;
         }
 
-        public override IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public override IEnumerable<FileCabinetRecord> GetRecords()
         {
             var ticks = TicksMeter.GetElapsedTicks(base.GetRecords, out var records);
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(GetRecords), ticks);

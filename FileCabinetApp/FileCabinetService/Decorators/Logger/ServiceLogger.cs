@@ -40,7 +40,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             return _logger.LogMethod(base.GetStat);
         }
 
-        public override IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public override IEnumerable<FileCabinetRecord> GetRecords()
         {
             return _logger.LogMethod(base.GetRecords);
         }

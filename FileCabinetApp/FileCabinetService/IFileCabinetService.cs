@@ -14,7 +14,7 @@ namespace FileCabinetApp.FileCabinetService
 
         public Statistic GetStat();
 
-        public IReadOnlyCollection<FileCabinetRecord> GetRecords();
+        public IEnumerable<FileCabinetRecord> GetRecords();
 
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue);
         
