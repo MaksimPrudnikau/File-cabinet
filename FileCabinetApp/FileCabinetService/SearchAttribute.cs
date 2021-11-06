@@ -1,6 +1,6 @@
 ﻿namespace FileCabinetApp.FileCabinetService
 {
-    public enum SearchValue
+    public enum SearchAttribute
     {
         Id,
         FirstName,

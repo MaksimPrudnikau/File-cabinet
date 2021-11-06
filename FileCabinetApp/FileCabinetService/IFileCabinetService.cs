@@ -24,7 +24,7 @@ namespace FileCabinetApp.FileCabinetService
 
         public void Restore(FileCabinetServiceSnapshot snapshot);
 
-        public IEnumerable<int> Delete(SearchValue attribute, string value);
+        public IEnumerable<int> Delete(SearchAttribute attribute, string value);
 
         public void Purge();
 

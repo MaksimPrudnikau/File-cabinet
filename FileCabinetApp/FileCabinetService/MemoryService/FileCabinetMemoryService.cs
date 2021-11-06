@@ -194,9 +194,9 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             }
         }
 
-        public IEnumerable<int> Delete(SearchValue attribute, string value)
+        public IEnumerable<int> Delete(SearchAttribute attribute, string value)
         {
-            if (attribute is SearchValue.Id)
+            if (attribute is SearchAttribute.Id)
             {
                 throw new ArgumentException("Cannot update id");
             }

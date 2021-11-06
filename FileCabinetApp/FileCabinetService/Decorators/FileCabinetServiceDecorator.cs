@@ -71,7 +71,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             _service.Restore(snapshot);
         }
 
-        public virtual IEnumerable<int> Delete(SearchValue attribute, string value)
+        public virtual IEnumerable<int> Delete(SearchAttribute attribute, string value)
         {
             throw new NotImplementedException();
         }

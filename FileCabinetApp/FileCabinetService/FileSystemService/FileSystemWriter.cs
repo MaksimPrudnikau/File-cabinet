@@ -8,13 +8,13 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
     {
         private readonly FileCabinetFilesystemService _service;
         private readonly FileStream _file;
-        private readonly Index _index;
+        private readonly FileSystemServiceDictionaries _fileSystemServiceDictionaries;
 
-        public FileSystemWriter(FileCabinetFilesystemService service, FileStream stream, Index index)
+        public FileSystemWriter(FileCabinetFilesystemService service, FileStream stream, FileSystemServiceDictionaries fileSystemServiceDictionaries)
         {
             _service = service;
             _file = stream;
-            _index = index;
+            _fileSystemServiceDictionaries = fileSystemServiceDictionaries;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             {
                 if (item.Id != read.Id) continue;
                 
-                _index.Edit(read, item, _file.Position);
+                _fileSystemServiceDictionaries.Edit(read, item, _file.Position);
                 Write(item);
                 records.Remove(item);
                 break;

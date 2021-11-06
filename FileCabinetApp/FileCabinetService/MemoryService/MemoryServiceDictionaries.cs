@@ -45,38 +45,33 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             RemoveFromAllDictionaries(record);
         }
 
-        public IEnumerable<int> Remove(SearchValue attribute, string value)
+        public IEnumerable<int> Remove(SearchAttribute attribute, string value)
         {
             var recordsToRemove = new List<FileCabinetRecord>();
             switch (attribute)
             {
-                case SearchValue.FirstName:
+                case SearchAttribute.FirstName:
                     recordsToRemove = FirstNames[value];
                     break;
                 
-                case SearchValue.LastName:
+                case SearchAttribute.LastName:
                     recordsToRemove = LastNames[value];
                     break;
                 
-                case SearchValue.DateOfBirth:
-                    var dateOfBirth = DateTime.ParseExact(value, FileCabinetConsts.InputDateFormat,
-                        CultureInfo.InvariantCulture);
-                    recordsToRemove = DateOfBirths[dateOfBirth];
+                case SearchAttribute.DateOfBirth:
+                    recordsToRemove = DateOfBirths[InputConverter.DateOfBirthConverter(value).Result];
                     break;
                 
-                case SearchValue.JobExperience:
-                    var jobExperience = Convert.ToInt16(value, CultureInfo.InvariantCulture);
-                    recordsToRemove = JobExperiences[jobExperience];
+                case SearchAttribute.JobExperience:
+                    recordsToRemove = JobExperiences[InputConverter.JobExperienceConverter(value).Result];
                     break;
                 
-                case SearchValue.Salary:
-                    var salary = Convert.ToDecimal(value, CultureInfo.InvariantCulture);
-                    recordsToRemove = Salaries[salary];
+                case SearchAttribute.Salary:
+                    recordsToRemove = Salaries[InputConverter.SalaryConverter(value).Result];
                     break;
                 
-                case SearchValue.Rank:
-                    var rank = Convert.ToChar(value, CultureInfo.InvariantCulture);
-                    recordsToRemove = Ranks[rank];
+                case SearchAttribute.Rank:
+                    recordsToRemove = Ranks[InputConverter.RankConverter(value).Result];
                     break;
             }
 

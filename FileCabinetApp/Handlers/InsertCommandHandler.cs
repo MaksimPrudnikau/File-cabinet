@@ -13,13 +13,13 @@ namespace FileCabinetApp.Handlers
 
         private class InsertValue
         {
-            public SearchValue Option { get; }
+            public SearchAttribute Option { get; }
             
             public string Value { get; }
 
             public InsertValue(string key, string value)
             {
-                var parsed = Enum.TryParse<SearchValue>(key, true, out var option);
+                var parsed = Enum.TryParse<SearchAttribute>(key, true, out var option);
                 if (parsed)
                 {
                     Option = option;
@@ -75,31 +75,31 @@ namespace FileCabinetApp.Handlers
             {
                 switch (item.Option)
                 {
-                    case SearchValue.Id:
+                    case SearchAttribute.Id:
                         record.Id = InputConverter.IdConverter(item.Value).Result;
                         break;
                     
-                    case SearchValue.FirstName:
+                    case SearchAttribute.FirstName:
                         record.FirstName = InputConverter.NameConverter(item.Value).Result;
                         break;
                     
-                    case SearchValue.LastName:
+                    case SearchAttribute.LastName:
                         record.LastName = InputConverter.NameConverter(item.Value).Result;
                         break;
                     
-                    case SearchValue.DateOfBirth:
+                    case SearchAttribute.DateOfBirth:
                         record.DateOfBirth = InputConverter.DateOfBirthConverter(item.Value).Result;
                         break;
                     
-                    case SearchValue.JobExperience:
+                    case SearchAttribute.JobExperience:
                         record.JobExperience = InputConverter.JobExperienceConverter(item.Value).Result;
                         break;
                     
-                    case SearchValue.Salary:
+                    case SearchAttribute.Salary:
                         record.Salary = InputConverter.SalaryConverter(item.Value).Result;
                         break;
                     
-                    case SearchValue.Rank:
+                    case SearchAttribute.Rank:
                         record.Rank = InputConverter.RankConverter(item.Value).Result;
                         break;
                     default:

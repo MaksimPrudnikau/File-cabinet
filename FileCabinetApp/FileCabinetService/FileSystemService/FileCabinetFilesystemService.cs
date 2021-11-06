@@ -11,7 +11,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 {
     public class FileCabinetFilesystemService : IFileCabinetService, IDisposable
     {
-        private Index _recordsIndex = new();
+        private readonly FileSystemServiceDictionaries _dictionaries = new();
         private readonly IRecordValidator _validator;
         private FileStream _outputFile;
         private readonly Statistic _stat = new();
@@ -30,7 +30,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             
             _isCustomService = isCustom;
 
-            _writer = new FileSystemWriter(this, _outputFile, _recordsIndex);
+            _writer = new FileSystemWriter(this, _outputFile, _dictionaries);
             _reader = new FileSystemReader(_outputFile);
         }
 
@@ -52,7 +52,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 _maxId = record.Id;
             }
             
-            _recordsIndex.Add(record, _outputFile.Position);
+            _dictionaries.Add(record, _outputFile.Position);
 
             var fileSystemRecord = new FilesystemRecord(record);
             
@@ -196,7 +196,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             var records = new List<long>();
             try
             {
-                records = new List<long>(_recordsIndex.FirstNames[searchValue]);
+                records = new List<long>(_dictionaries.FirstNames[searchValue]);
                 return new FilesystemIterator(_reader, records);
             }
             catch (KeyNotFoundException)
@@ -215,7 +215,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             var records = new List<long>();
             try
             {
-                records = new List<long>(_recordsIndex.LastNames[searchValue]);
+                records = new List<long>(_dictionaries.LastNames[searchValue]);
                 return new FilesystemIterator(_reader, records);
             }
             catch (KeyNotFoundException)
@@ -238,7 +238,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
                     CultureInfo.InvariantCulture);
                 
-                records = new List<long>(_recordsIndex.DateOfBirths[dateOfBirth]);
+                records = new List<long>(_dictionaries.DateOfBirths[dateOfBirth]);
                 return new FilesystemIterator(_reader, records);
             }
             catch (SystemException exception) 
@@ -280,34 +280,26 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             _writer.AppendRange(records);
         }
 
-        public IEnumerable<int> Delete(SearchValue attribute, string value)
+        public IEnumerable<int> Delete(SearchAttribute attribute, string value)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Marks the record with input id as deleted
-        /// </summary>
-        /// <param name="id">Source record's id</param>
-        public void Delete(int id)
-        {
-            _outputFile.Seek(0, SeekOrigin.Begin);
-            while (_outputFile.Position < _outputFile.Length)
+            if (attribute is SearchAttribute.Id)
             {
-                var read = _reader.ReadAndMoveCursorBack();
-
-                if (id == read.Id)
-                {
-                    _writer.MarkAsDeleted(id);
-                    
-                    _stat.Deleted++;
-                    return;
-                }
-
-                _outputFile.Position += FilesystemRecord.Size;
+                throw new ArgumentException("Cannot update id");
             }
 
-            throw new ArgumentException($"Record #{id} is not exist");
+            var positions = _dictionaries.GetPositionsByValue(attribute, value);
+            var deletedRecordId = new List<int>();
+            foreach (var position in positions)
+            {
+                _reader.BaseFile.Seek(position, SeekOrigin.Begin);
+                var read = _reader.ReadAndMoveCursorBack();
+                _writer.MarkAsDeleted(read.Id);
+                deletedRecordId.Add(read.Id);
+            }
+
+            _stat.Count -= deletedRecordId.Count;
+            _stat.Deleted += deletedRecordId.Count;
+            return deletedRecordId;
         }
 
         /// <summary>
@@ -321,9 +313,9 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             
             _outputFile = new FileStream(path, FileMode.CreateNew);
             _stat.Clear();
-            _writer = new FileSystemWriter(this, _outputFile, _recordsIndex);
+            _writer = new FileSystemWriter(this, _outputFile, _dictionaries);
             _reader = new FileSystemReader(_outputFile);
-            _recordsIndex.Clear();
+            _dictionaries.Clear();
             
             _writer.AppendRange(snapshot.Records);
         }
@@ -335,12 +327,12 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 throw new ArgumentNullException(nameof(record));
             }
             
-            if (_recordsIndex.Id.ContainsKey(record.Id))
+            if (_dictionaries.Id.ContainsKey(record.Id))
             {
                 throw new ArgumentException($"Record with id = '{record.Id}' is already exist");
             }
 
-            _recordsIndex.Clear();
+            _dictionaries.Clear();
             _stat.Clear();
             var snapshot = new FileCabinetServiceSnapshot(this);
             _outputFile.Seek(0, SeekOrigin.Begin);

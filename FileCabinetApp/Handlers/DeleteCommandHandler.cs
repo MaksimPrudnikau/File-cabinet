@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 using FileCabinetApp.FileCabinetService;
 
@@ -50,7 +49,7 @@ namespace FileCabinetApp.Handlers
             }
         }
 
-        private static SearchValue GetSearchAttribute(string parameters)
+        private static SearchAttribute GetSearchAttribute(string parameters)
         {
             const string keyword = "where";
             if (!parameters.Contains(keyword, StringComparison.InvariantCultureIgnoreCase))
@@ -65,7 +64,7 @@ namespace FileCabinetApp.Handlers
 
             parameters = new StringBuilder(parameters).Replace(" ", string.Empty).ToString();
             var where = parameters.Split("where")[1].Split('=')[0];
-            return Enum.Parse<SearchValue>(where, true);
+            return Enum.Parse<SearchAttribute>(where, true);
         }
 
         private static string GetValue(string parameters)
