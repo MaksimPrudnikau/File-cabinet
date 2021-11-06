@@ -65,9 +65,9 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             _logger.LogMethod(base.Restore, snapshot);
         }
 
-        public override void Remove(int id)
+        public override IEnumerable<int> Delete(SearchValue attribute, string value)
         {
-            _logger.LogMethod(base.Remove, id);
+            return _logger.LogMethod(base.Delete, attribute, value);
         }
 
         public override void Purge()

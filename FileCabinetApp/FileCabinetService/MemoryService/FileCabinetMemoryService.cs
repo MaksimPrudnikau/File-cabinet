@@ -11,13 +11,9 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
     public class FileCabinetMemoryService : IFileCabinetService
     {
         private static IRecordValidator _validator;
-
-        private static readonly SortedDictionary<int, FileCabinetRecord> Records = new ();
         private static readonly Statistic Stat = new();
 
-        private static readonly Dictionary<string, List<FileCabinetRecord>> FirstNameDictionary = new();
-        private static readonly Dictionary<string, List<FileCabinetRecord>> LastNameDictionary = new();
-        private static readonly Dictionary<DateTime, List<FileCabinetRecord>> DateOfBirthDictionary = new();
+        private readonly MemoryServiceDictionaries _dictionaries = new();
 
         private static bool _isCustomService;
         private static int _maxId;
@@ -43,10 +39,9 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             {
                 _maxId = record.Id;
             }
-
-            Records.Add(record.Id, record);
-
-            AppendToAllDictionaries(Records[record.Id]);
+            
+            _dictionaries.Add(record);
+            
             Stat.Count++;
 
             return record.Id;
@@ -54,7 +49,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
 
         public IEnumerable<FileCabinetRecord> GetRecords()
         {
-            foreach (var item in Records.Values)
+            foreach (var item in _dictionaries.Records.Values)
             {
                 yield return item;
             }
@@ -140,85 +135,10 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
                 throw new ArgumentNullException(nameof(record));
             }
             
-            RemoveFromAllDictionaries(Records[record.Id]);
-
-            Records[record.Id] = record;
-            
-            AppendToAllDictionaries(Records[record.Id]);
+            _dictionaries.Remove(record);
+            _dictionaries.Add(record);
 
             return record.Id;
-        }
-
-        /// <summary>
-        /// Append record to all dictionaries
-        /// </summary>
-        /// <param name="record">Source record</param>
-        private static void AppendToAllDictionaries(FileCabinetRecord record)
-        {
-            AppendToFirstNameDictionary(record);
-            AppendToLastNameDictionary(record);
-            AppendToDateOfBirthDictionary(record);
-        }
-
-        /// <summary>
-        /// Append record to FirstNameDictionary
-        /// </summary>
-        /// <param name="record">Source record</param>
-        private static void AppendToFirstNameDictionary(FileCabinetRecord record)
-        {
-            if (!FirstNameDictionary.ContainsKey(record.FirstName))
-            {
-                FirstNameDictionary.Add(record.FirstName, new List<FileCabinetRecord> { record });
-            }
-            else
-            {
-                FirstNameDictionary[record.FirstName].Add(record);
-            }
-        }
-
-        /// <summary>
-        /// Append record to LastNameDictionary
-        /// </summary>
-        /// <param name="record">Source record</param>
-        private static void AppendToLastNameDictionary(FileCabinetRecord record)
-        {
-            if (!LastNameDictionary.ContainsKey(record.LastName))
-            {
-                LastNameDictionary.Add(record.LastName, new List<FileCabinetRecord> { record });
-            }
-            else
-            {
-                LastNameDictionary[record.LastName].Add(record);
-            }
-        }
-
-        /// <summary>
-        /// Append record to DateOfBirthDictionary
-        /// </summary>
-        /// <param name="record">Source record</param>
-        private static void AppendToDateOfBirthDictionary(FileCabinetRecord record)
-        {
-            if (!DateOfBirthDictionary.ContainsKey(record.DateOfBirth))
-            {
-                DateOfBirthDictionary.Add(record.DateOfBirth, new List<FileCabinetRecord> { record });
-            }
-            else
-            {
-                DateOfBirthDictionary[record.DateOfBirth].Add(record);
-            }
-        }
-
-        /// <summary>
-        /// Remove record from all dictionaries
-        /// </summary>
-        /// <param name="record">Source record to remove</param>
-        private static void RemoveFromAllDictionaries(FileCabinetRecord record)
-        {
-            FirstNameDictionary[record.FirstName].Remove(record);
-
-            LastNameDictionary[record.LastName].Remove(record);
-
-            DateOfBirthDictionary[record.DateOfBirth].Remove(record);
         }
 
         /// <summary>
@@ -228,7 +148,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// <returns><see cref="FileCabinetRecord"/> array with suitable first name</returns>
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
         {
-            return new MemoryIterator(FirstNameDictionary[searchValue]);
+            return new MemoryIterator(_dictionaries.FirstNames[searchValue]);
         }
 
         /// <summary>
@@ -238,7 +158,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// <returns><see cref="FileCabinetRecord"/> array with suitable last name</returns>
         public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
         {
-            return new MemoryIterator(LastNameDictionary[searchValue]);
+            return new MemoryIterator(_dictionaries.LastNames[searchValue]);
         }
 
         /// <summary>
@@ -251,16 +171,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
                 CultureInfo.InvariantCulture);
             
-            return new MemoryIterator(DateOfBirthDictionary[dateOfBirth]);
-        }
-
-        /// <summary>
-        /// Create <see cref="FileCabinetServiceSnapshot"/> object with current record array
-        /// </summary>
-        /// <returns><see cref="FileCabinetServiceSnapshot"/> object</returns>
-        public static FileCabinetServiceSnapshot MakeSnapshot()
-        {
-            return new FileCabinetServiceSnapshot(Records.Values);
+            return new MemoryIterator(_dictionaries.DateOfBirths[dateOfBirth]);
         }
 
         public void Restore(FileCabinetServiceSnapshot snapshot)
@@ -272,7 +183,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             
             foreach (var item in snapshot.Records)
             {
-                if (!Records.ContainsKey(item.Id))
+                if (!_dictionaries.Records.ContainsKey(item.Id))
                 {
                     CreateRecord(item);
                 }
@@ -281,20 +192,17 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
                     EditRecord(item);
                 }
             }
-            
-            
         }
 
-        public void Remove(int id)
+        public IEnumerable<int> Delete(SearchValue attribute, string value)
         {
-            if (!Records.ContainsKey(id))
+            if (attribute is SearchValue.Id)
             {
-                throw new ArgumentException($"Record #{id} doesn't exist");
+                throw new ArgumentException("Cannot update id");
             }
-
-            RemoveFromAllDictionaries(Records[id]);
+            
             Stat.Count--;
-            Records.Remove(id);
+            return _dictionaries.Remove(attribute, value);
         }
 
         public void Purge()
@@ -308,7 +216,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
                 throw new ArgumentNullException(nameof(record));
             }
 
-            if (Records.ContainsKey(record.Id))
+            if (_dictionaries.Records.ContainsKey(record.Id))
             {
                 throw new ArgumentException($"Record with id = '{record.Id}' is already exist");
             }

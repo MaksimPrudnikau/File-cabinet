@@ -1,12 +1,18 @@
 using System;
 using System.IO;
+using FileCabinetApp.Export;
+using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.FileCabinetService.MemoryService;
 
 namespace FileCabinetApp.Handlers
 {
-    public class ExportCommandHandler : CommandHandlerBase
+    public class ExportCommandHandler : ServiceCommandHandlerBase
     {
         private const RequestCommand Command = RequestCommand.Export;
+        
+        public ExportCommandHandler(IFileCabinetService service) : base(service)
+        {
+        }
         
         /// <summary>
         /// Serialize all records in file with entered format
@@ -60,8 +66,8 @@ namespace FileCabinetApp.Handlers
                 {
                     Console.Error.WriteLine($"Export failed: can`t open file {directory}");
                 }
-                
-                var snapshot = FileCabinetMemoryService.MakeSnapshot();
+
+                var snapshot = new FileCabinetServiceSnapshot(Service);
 
                 switch (exportFormat)
                 {

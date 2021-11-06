@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.Validators;
@@ -12,26 +11,15 @@ namespace FileCabinetApp.Handlers
         public static RequestCommand Command { get; } = RequestCommand.Insert;
         private readonly IRecordValidator _validator = new ValidationBuilder().CreateCustom();
 
-        private enum InsertOptions
-        {
-            Id,
-            FirstName,
-            LastName,
-            DateOfBirth,
-            JobExperience,
-            Salary,
-            Rank
-        }
-
         private class InsertValue
         {
-            public InsertOptions Option { get; }
+            public SearchValue Option { get; }
             
             public string Value { get; }
 
             public InsertValue(string key, string value)
             {
-                var parsed = Enum.TryParse<InsertOptions>(key, true, out var option);
+                var parsed = Enum.TryParse<SearchValue>(key, true, out var option);
                 if (parsed)
                 {
                     Option = option;
@@ -87,31 +75,31 @@ namespace FileCabinetApp.Handlers
             {
                 switch (item.Option)
                 {
-                    case InsertOptions.Id:
+                    case SearchValue.Id:
                         record.Id = InputConverter.IdConverter(item.Value).Result;
                         break;
                     
-                    case InsertOptions.FirstName:
+                    case SearchValue.FirstName:
                         record.FirstName = InputConverter.NameConverter(item.Value).Result;
                         break;
                     
-                    case InsertOptions.LastName:
+                    case SearchValue.LastName:
                         record.LastName = InputConverter.NameConverter(item.Value).Result;
                         break;
                     
-                    case InsertOptions.DateOfBirth:
+                    case SearchValue.DateOfBirth:
                         record.DateOfBirth = InputConverter.DateOfBirthConverter(item.Value).Result;
                         break;
                     
-                    case InsertOptions.JobExperience:
+                    case SearchValue.JobExperience:
                         record.JobExperience = InputConverter.JobExperienceConverter(item.Value).Result;
                         break;
                     
-                    case InsertOptions.Salary:
+                    case SearchValue.Salary:
                         record.Salary = InputConverter.SalaryConverter(item.Value).Result;
                         break;
                     
-                    case InsertOptions.Rank:
+                    case SearchValue.Rank:
                         record.Rank = InputConverter.RankConverter(item.Value).Result;
                         break;
                     default:

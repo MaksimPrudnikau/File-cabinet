@@ -66,10 +66,11 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Restore), ticks);
         }
 
-        public override void Remove(int id)
+        public override IEnumerable<int> Delete(SearchValue attribute, string value)
         {
-            var ticks = TicksMeter.GetElapsedTicks(base.Remove, id);
-            Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Remove), ticks);
+            var ticks = TicksMeter.GetElapsedTicks(base.Delete, attribute, value, out var records);
+            Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Delete), ticks);
+            return records;
         }
 
         public override void Purge()

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using FileCabinetApp.Export;
-using FileCabinetApp.FileCabinetService.Iterators;
 
 namespace FileCabinetApp.FileCabinetService.Decorators
 {
@@ -72,9 +71,9 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             _service.Restore(snapshot);
         }
 
-        public virtual void Remove(int id)
+        public virtual IEnumerable<int> Delete(SearchValue attribute, string value)
         {
-            _service.Remove(id);
+            throw new NotImplementedException();
         }
 
         public virtual void Purge()

@@ -280,11 +280,16 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             _writer.AppendRange(records);
         }
 
+        public IEnumerable<int> Delete(SearchValue attribute, string value)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Marks the record with input id as deleted
         /// </summary>
         /// <param name="id">Source record's id</param>
-        public void Remove(int id)
+        public void Delete(int id)
         {
             _outputFile.Seek(0, SeekOrigin.Begin);
             while (_outputFile.Position < _outputFile.Length)
@@ -337,7 +342,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 
             _recordsIndex.Clear();
             _stat.Clear();
-            var snapshot = new FileCabinetServiceSnapshot(GetRecords());
+            var snapshot = new FileCabinetServiceSnapshot(this);
             _outputFile.Seek(0, SeekOrigin.Begin);
             
             var inserted = false;

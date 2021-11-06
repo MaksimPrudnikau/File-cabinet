@@ -116,6 +116,20 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             var ticks = TicksMeter.GetElapsedTicks(method);
             _outputFile.WriteLine(GetMethodWithReturnValueMessage(method.Method.Name, ticks));
         }
+        
+        public T LogMethod<T1, T2, T>(Func<T1, T2, T> method, T1 first, T2 second)
+        {
+            if (method is null)
+            {
+                throw new ArgumentNullException(nameof(method));
+            }
+            
+            _outputFile.WriteLine(GetActionMessage(method.Method.Name));
+            var ticks = TicksMeter.GetElapsedTicks(method, first, second, out var methodsOut);
+            _outputFile.WriteLine(GetMethodWithReturnValueMessage(method.Method.Name, ticks));
+            
+            return methodsOut;
+        }
 
         public void Dispose()
         {

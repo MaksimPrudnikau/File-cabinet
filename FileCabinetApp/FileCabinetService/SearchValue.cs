@@ -2,8 +2,12 @@
 {
     public enum SearchValue
     {
+        Id,
         FirstName,
         LastName,
-        DateOfBirth
+        DateOfBirth,
+        JobExperience,
+        Salary,
+        Rank
     }
 }

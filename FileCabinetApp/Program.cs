@@ -135,7 +135,7 @@ namespace FileCabinetApp
             var listHandler = new ListCommandHandler(service, RecordsPrinter.Default);
             var statHandler = new StatCommandHandler(service);
             var findHandler = new FindCommandHandler(service, RecordsPrinter.Default);
-            var exportHandler = new ExportCommandHandler();
+            var exportHandler = new ExportCommandHandler(service);
             var importHandler = new ImportCommandHandler(service);
             var removeHandler = new RemoveCommandHandler(service);
             var purgeHandler = new PurgeCommandHandler(service);

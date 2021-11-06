@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -10,17 +11,18 @@ namespace FileCabinetApp.Export
 {
     public class FileCabinetServiceSnapshot
     {
-        private readonly List<FileCabinetRecord> _records;
-
-        public IReadOnlyCollection<FileCabinetRecord> Records { get; private set; }
+        public IList<FileCabinetRecord> Records { get; private set; }
 
         public FileCabinetServiceSnapshot() { }
-
-        public FileCabinetServiceSnapshot(IEnumerable<FileCabinetRecord> source)
+        
+        public FileCabinetServiceSnapshot(IFileCabinetService service)
         {
-            _records = new List<FileCabinetRecord>(source);
-            Records = _records;
+            if (service is null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
             
+            Records = new List<FileCabinetRecord>(service.GetRecords());
         }
 
         /// <summary>
@@ -30,7 +32,7 @@ namespace FileCabinetApp.Export
         public void SaveToCsv(StreamWriter file)
         {
             var csvWriter = new FIleCabinetCsvWriter(file);
-            csvWriter.Write(_records.ToArray());
+            csvWriter.Write((FileCabinetRecord[]) Records);
         }
 
         /// <summary>
@@ -52,23 +54,23 @@ namespace FileCabinetApp.Export
                 NewLineHandling = NewLineHandling.Replace
             };
 
-            if (_records.Count <= 0) return;
+            if (Records.Count <= 0) return;
 
             var classWriter = new FileCabinetXmlWriter(XmlWriter.Create(file, settings));
 
-            classWriter.Write(_records.ToArray());
+            classWriter.Write((FileCabinetRecord[]) Records);
         }
 
         public void LoadFromCsv(StreamReader reader)
         {
             var csvReader = new FIleCabinetCsvReader(reader);
-            Records = (IReadOnlyCollection<FileCabinetRecord>) csvReader.ReadAll();
+            Records = csvReader.ReadAll();
         }
 
         public void LoadFromXml(StreamReader reader)
         {
             var xmlReader = new FileCabinetXmlReader(reader);
-                Records = (IReadOnlyCollection<FileCabinetRecord>) xmlReader.ReadAll();
+                Records = xmlReader.ReadAll();
             }
 
         /// <summary>
@@ -90,7 +92,7 @@ namespace FileCabinetApp.Export
                 throw new ArgumentNullException(nameof(service));
             }
             
-            var snapshot = new FileCabinetServiceSnapshot(service.GetRecords());
+            var snapshot = new FileCabinetServiceSnapshot(service);
             file.Close();
             File.Delete(file.Name);
             return snapshot;
