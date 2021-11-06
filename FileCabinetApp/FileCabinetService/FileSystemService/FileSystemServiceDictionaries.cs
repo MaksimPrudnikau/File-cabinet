@@ -48,18 +48,33 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             DateOfBirths.Clear();
         }
 
-        public HashSet<long> GetPositionsByValue(SearchAttribute attribute, string value)
+        public HashSet<long> GetPositionsByValue(SearchValue searchValue)
         {
-            return attribute switch
+            if (searchValue is null)
             {
-                SearchAttribute.Id => Id[InputConverter.IdConverter(value).Result],
-                SearchAttribute.FirstName => FirstNames[value],
-                SearchAttribute.LastName => LastNames[value],
-                SearchAttribute.DateOfBirth => DateOfBirths[InputConverter.DateOfBirthConverter(value).Result],
-                SearchAttribute.JobExperience => JobExperiences[InputConverter.JobExperienceConverter(value).Result],
-                SearchAttribute.Salary => Salaries[InputConverter.SalaryConverter(value).Result],
-                SearchAttribute.Rank => Ranks[InputConverter.RankConverter(value).Result],
-                _ => throw new ArgumentOutOfRangeException(nameof(attribute))
+                throw new ArgumentNullException(nameof(searchValue));
+            }
+
+            return searchValue.Attribute switch
+            {
+                SearchValue.SearchAttribute.Id => Id[InputConverter.IdConverter(searchValue.Value).Result],
+                
+                SearchValue.SearchAttribute.FirstName => FirstNames[searchValue.Value],
+                
+                SearchValue.SearchAttribute.LastName => LastNames[searchValue.Value],
+                
+                SearchValue.SearchAttribute.DateOfBirth => DateOfBirths[
+                    InputConverter.DateOfBirthConverter(searchValue.Value).Result],
+                
+                SearchValue.SearchAttribute.JobExperience => JobExperiences[
+                    InputConverter.JobExperienceConverter(searchValue.Value).Result],
+                
+                SearchValue.SearchAttribute.Salary => Salaries
+                    [InputConverter.SalaryConverter(searchValue.Value).Result],
+                
+                SearchValue.SearchAttribute.Rank => Ranks[InputConverter.RankConverter(searchValue.Value).Result],
+                
+                _ => throw new ArgumentOutOfRangeException(nameof(searchValue))
             };
         }
 

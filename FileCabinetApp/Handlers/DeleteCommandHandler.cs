@@ -35,7 +35,8 @@ namespace FileCabinetApp.Handlers
             {
                 var attribute = GetSearchAttribute(request.Parameters);
                 var value = GetValue(request.Parameters);
-                var deleted = string.Join(", #", Service.Delete(attribute, value));
+                var searchValue = new SearchValue(attribute, value);
+                var deleted = string.Join(", #", Service.Delete(searchValue));
                 
                 Console.WriteLine(EnglishSource.Records_are_deleted, deleted);
             }
@@ -49,7 +50,7 @@ namespace FileCabinetApp.Handlers
             }
         }
 
-        private static SearchAttribute GetSearchAttribute(string parameters)
+        private static string GetSearchAttribute(string parameters)
         {
             const string keyword = "where";
             if (!parameters.Contains(keyword, StringComparison.InvariantCultureIgnoreCase))
@@ -63,8 +64,7 @@ namespace FileCabinetApp.Handlers
             }
 
             parameters = new StringBuilder(parameters).Replace(" ", string.Empty).ToString();
-            var where = parameters.Split("where")[1].Split('=')[0];
-            return Enum.Parse<SearchAttribute>(where, true);
+            return parameters.Split("where")[1].Split('=')[0];
         }
 
         private static string GetValue(string parameters)

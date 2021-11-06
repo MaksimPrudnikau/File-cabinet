@@ -1,13 +1,29 @@
-﻿namespace FileCabinetApp.FileCabinetService
+﻿using System;
+using FileCabinetApp.Handlers;
+
+namespace FileCabinetApp.FileCabinetService
 {
-    public enum SearchAttribute
+    public class SearchValue
     {
-        Id,
-        FirstName,
-        LastName,
-        DateOfBirth,
-        JobExperience,
-        Salary,
-        Rank
+        public enum SearchAttribute
+        {
+            Id,
+            FirstName,
+            LastName,
+            DateOfBirth,
+            JobExperience,
+            Salary,
+            Rank
+        }
+        
+        public SearchAttribute Attribute { get; }
+
+        public string Value { get; }
+
+        public SearchValue(string attribute, string value)
+        {
+            Attribute = Enum.Parse<SearchAttribute>(attribute, true);
+            Value = value;
+        }
     }
 }

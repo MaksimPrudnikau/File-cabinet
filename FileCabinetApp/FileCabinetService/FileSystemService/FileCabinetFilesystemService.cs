@@ -280,9 +280,9 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             _writer.AppendRange(records);
         }
 
-        public IEnumerable<int> Delete(SearchAttribute attribute, string value)
+        public IEnumerable<int> Delete(SearchValue searchValue)
         {
-            var positions = _dictionaries.GetPositionsByValue(attribute, value);
+            var positions = _dictionaries.GetPositionsByValue(searchValue);
             var deletedRecordId = new List<int>();
             foreach (var position in positions)
             {

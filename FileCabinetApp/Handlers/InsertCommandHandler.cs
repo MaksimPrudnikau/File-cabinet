@@ -13,22 +13,15 @@ namespace FileCabinetApp.Handlers
 
         private class InsertValue
         {
-            public SearchAttribute Option { get; }
-            
-            public string Value { get; }
+            private readonly SearchValue _searchValue;
+
+            public SearchValue.SearchAttribute Attribute => _searchValue.Attribute;
+
+            public string Value => _searchValue.Value;
 
             public InsertValue(string key, string value)
             {
-                var parsed = Enum.TryParse<SearchAttribute>(key, true, out var option);
-                if (parsed)
-                {
-                    Option = option;
-                    Value = value;
-                }
-                else
-                {
-                    throw new ArgumentException($"Error option: {key}");   
-                }
+                _searchValue = new SearchValue(key, value);
             }
         }
         
@@ -73,33 +66,33 @@ namespace FileCabinetApp.Handlers
             var record = new FileCabinetRecord();
             foreach (var item in value)
             {
-                switch (item.Option)
+                switch (item.Attribute)
                 {
-                    case SearchAttribute.Id:
+                    case SearchValue.SearchAttribute.Id:
                         record.Id = InputConverter.IdConverter(item.Value).Result;
                         break;
                     
-                    case SearchAttribute.FirstName:
+                    case SearchValue.SearchAttribute.FirstName:
                         record.FirstName = InputConverter.NameConverter(item.Value).Result;
                         break;
                     
-                    case SearchAttribute.LastName:
+                    case SearchValue.SearchAttribute.LastName:
                         record.LastName = InputConverter.NameConverter(item.Value).Result;
                         break;
                     
-                    case SearchAttribute.DateOfBirth:
+                    case SearchValue.SearchAttribute.DateOfBirth:
                         record.DateOfBirth = InputConverter.DateOfBirthConverter(item.Value).Result;
                         break;
                     
-                    case SearchAttribute.JobExperience:
+                    case SearchValue.SearchAttribute.JobExperience:
                         record.JobExperience = InputConverter.JobExperienceConverter(item.Value).Result;
                         break;
                     
-                    case SearchAttribute.Salary:
+                    case SearchValue.SearchAttribute.Salary:
                         record.Salary = InputConverter.SalaryConverter(item.Value).Result;
                         break;
                     
-                    case SearchAttribute.Rank:
+                    case SearchValue.SearchAttribute.Rank:
                         record.Rank = InputConverter.RankConverter(item.Value).Result;
                         break;
                     default:

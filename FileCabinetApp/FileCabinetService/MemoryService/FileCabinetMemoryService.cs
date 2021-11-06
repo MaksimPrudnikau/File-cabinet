@@ -194,9 +194,9 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             }
         }
 
-        public IEnumerable<int> Delete(SearchAttribute attribute, string value)
+        public IEnumerable<int> Delete(SearchValue searchValue)
         {
-            var deletedRecordId = new List<int>(_dictionaries.Remove(attribute, value));
+            var deletedRecordId = new List<int>(_dictionaries.Remove(searchValue));
             Stat.Count-= deletedRecordId.Count;
             return deletedRecordId;
         }

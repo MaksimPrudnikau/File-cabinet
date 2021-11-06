@@ -44,37 +44,43 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             RemoveFromAllDictionaries(record);
         }
 
-        public IEnumerable<int> Remove(SearchAttribute attribute, string value)
+        public IEnumerable<int> Remove(SearchValue searchValue)
         {
-            var recordsToRemove = new List<FileCabinetRecord>();
-            switch (attribute)
+            if (searchValue is null)
             {
-                case SearchAttribute.Id:
-                    recordsToRemove = new List<FileCabinetRecord> {Records[InputConverter.IdConverter(value).Result]};
+                throw new ArgumentNullException(nameof(searchValue));
+            }
+            
+            var recordsToRemove = new List<FileCabinetRecord>();
+            switch (searchValue.Attribute)
+            {
+                case SearchValue.SearchAttribute.Id:
+                    recordsToRemove = new List<FileCabinetRecord>
+                        {Records[InputConverter.IdConverter(searchValue.Value).Result]};
                     break;
                 
-                case SearchAttribute.FirstName:
-                    recordsToRemove = FirstNames[value];
+                case SearchValue.SearchAttribute.FirstName:
+                    recordsToRemove = FirstNames[searchValue.Value];
                     break;
                 
-                case SearchAttribute.LastName:
-                    recordsToRemove = LastNames[value];
+                case SearchValue.SearchAttribute.LastName:
+                    recordsToRemove = LastNames[searchValue.Value];
                     break;
                 
-                case SearchAttribute.DateOfBirth:
-                    recordsToRemove = DateOfBirths[InputConverter.DateOfBirthConverter(value).Result];
+                case SearchValue.SearchAttribute.DateOfBirth:
+                    recordsToRemove = DateOfBirths[InputConverter.DateOfBirthConverter(searchValue.Value).Result];
                     break;
                 
-                case SearchAttribute.JobExperience:
-                    recordsToRemove = JobExperiences[InputConverter.JobExperienceConverter(value).Result];
+                case SearchValue.SearchAttribute.JobExperience:
+                    recordsToRemove = JobExperiences[InputConverter.JobExperienceConverter(searchValue.Value).Result];
                     break;
                 
-                case SearchAttribute.Salary:
-                    recordsToRemove = Salaries[InputConverter.SalaryConverter(value).Result];
+                case SearchValue.SearchAttribute.Salary:
+                    recordsToRemove = Salaries[InputConverter.SalaryConverter(searchValue.Value).Result];
                     break;
                 
-                case SearchAttribute.Rank:
-                    recordsToRemove = Ranks[InputConverter.RankConverter(value).Result];
+                case SearchValue.SearchAttribute.Rank:
+                    recordsToRemove = Ranks[InputConverter.RankConverter(searchValue.Value).Result];
                     break;
             }
 
