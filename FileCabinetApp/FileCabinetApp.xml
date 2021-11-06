@@ -119,12 +119,6 @@
             </summary>
             <param name="snapshot">Source snapshot</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Delete(System.Int32)">
-            <summary>
-            Marks the record with input id as deleted
-            </summary>
-            <param name="id">Source record's id</param>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Purge">
             <summary>
             Delete all records marked as delete from current file by creating a new one 

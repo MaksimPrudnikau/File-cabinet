@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace FileCabinetApp.FileCabinetService.MemoryService
 {
@@ -50,6 +49,10 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             var recordsToRemove = new List<FileCabinetRecord>();
             switch (attribute)
             {
+                case SearchAttribute.Id:
+                    recordsToRemove = new List<FileCabinetRecord> {Records[InputConverter.IdConverter(value).Result]};
+                    break;
+                
                 case SearchAttribute.FirstName:
                     recordsToRemove = FirstNames[value];
                     break;

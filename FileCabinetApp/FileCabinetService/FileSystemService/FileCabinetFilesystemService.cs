@@ -282,11 +282,6 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 
         public IEnumerable<int> Delete(SearchAttribute attribute, string value)
         {
-            if (attribute is SearchAttribute.Id)
-            {
-                throw new ArgumentException("Cannot update id");
-            }
-
             var positions = _dictionaries.GetPositionsByValue(attribute, value);
             var deletedRecordId = new List<int>();
             foreach (var position in positions)

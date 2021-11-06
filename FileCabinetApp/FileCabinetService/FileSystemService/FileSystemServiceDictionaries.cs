@@ -52,6 +52,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         {
             return attribute switch
             {
+                SearchAttribute.Id => Id[InputConverter.IdConverter(value).Result],
                 SearchAttribute.FirstName => FirstNames[value],
                 SearchAttribute.LastName => LastNames[value],
                 SearchAttribute.DateOfBirth => DateOfBirths[InputConverter.DateOfBirthConverter(value).Result],
