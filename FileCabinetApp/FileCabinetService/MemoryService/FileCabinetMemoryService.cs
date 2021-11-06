@@ -200,9 +200,10 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             {
                 throw new ArgumentException("Cannot update id");
             }
-            
-            Stat.Count--;
-            return _dictionaries.Remove(attribute, value);
+
+            var deletedRecordId = new List<int>(_dictionaries.Remove(attribute, value));
+            Stat.Count-= deletedRecordId.Count;
+            return deletedRecordId;
         }
 
         public void Purge()
