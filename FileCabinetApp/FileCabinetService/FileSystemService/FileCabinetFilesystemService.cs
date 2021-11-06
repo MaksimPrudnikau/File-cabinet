@@ -288,7 +288,12 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             {
                 _reader.BaseFile.Seek(position, SeekOrigin.Begin);
                 var read = _reader.ReadAndMoveCursorBack();
-                _writer.MarkAsDeleted(read.Id);
+
+                if (!_writer.TryMarkAsDeleted(read.Id))
+                {
+                    continue;
+                }
+                
                 deletedRecordId.Add(read.Id);
             }
 

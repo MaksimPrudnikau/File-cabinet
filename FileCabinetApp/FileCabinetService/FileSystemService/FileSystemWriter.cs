@@ -87,6 +87,19 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             _file.Write(buffer);
         }
 
+        public bool TryMarkAsDeleted(int id)
+        {
+            try
+            {
+                MarkAsDeleted(id);
+                return true;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Write the record to data base
         /// </summary>
