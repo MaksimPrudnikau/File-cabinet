@@ -37,9 +37,8 @@ namespace FileCabinetApp.Handlers
                 var attribute = GetSearchAttribute(request.Parameters);
                 var value = GetValue(request.Parameters);
                 var deleted = string.Join(", #", Service.Delete(attribute, value));
-
-                //Console.WriteLine(EnglishSource.Record_is_removed, id);
-                Console.WriteLine($"Record #{deleted} are deleted");
+                
+                Console.WriteLine(EnglishSource.Records_are_deleted, deleted);
             }
             catch (Exception exception) when (exception is OverflowException or FormatException or ArgumentException)
             {

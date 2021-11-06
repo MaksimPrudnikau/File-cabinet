@@ -24,6 +24,16 @@ namespace FileCabinetApp.Export
             
             Records = new List<FileCabinetRecord>(service.GetRecords());
         }
+        
+        public FileCabinetServiceSnapshot(IEnumerable<FileCabinetRecord> record)
+        {
+            if (record is null)
+            {
+                throw new ArgumentNullException(nameof(record));
+            }
+            
+            Records = new List<FileCabinetRecord>(record);
+        }
 
         /// <summary>
         /// Create csv file to source <see cref="StreamWriter"/> file
