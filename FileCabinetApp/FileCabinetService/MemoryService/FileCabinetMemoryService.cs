@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net;
 using FileCabinetApp.Export;
+using FileCabinetApp.FileCabinetService.FileSystemService;
 using FileCabinetApp.FileCabinetService.Iterators;
 using FileCabinetApp.Results;
 using FileCabinetApp.Validators;
@@ -125,23 +127,6 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         }
 
         /// <summary>
-        /// Edit record with the source one
-        /// </summary>
-        /// <param name="record">Parameter contains new data</param>
-        public int EditRecord(FileCabinetRecord record)
-        {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-            
-            _dictionaries.Remove(record);
-            _dictionaries.Add(record);
-
-            return record.Id;
-        }
-
-        /// <summary>
         /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable first name
         /// </summary>
         /// <param name="searchValue">First name to search</param>
@@ -189,7 +174,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
                 }
                 else
                 {
-                    EditRecord(item);
+                    _dictionaries.Edit(_dictionaries.Records[item.Id], item);
                 }
             }
         }
@@ -225,9 +210,58 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             CreateRecord(record);
         }
 
-        public void Update(IEnumerable<SearchValue> values, IEnumerable<SearchValue> @where)
+        public void Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
-            throw new NotImplementedException();
+            if (values is null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
+            if (where is null || where.Count == 0)
+            {
+                throw new ArgumentNullException(nameof(where));
+            }
+
+            var recordsToUpdate = new List<FileCabinetRecord>(_dictionaries.Find(where[0]));
+            RemoveMismatch(recordsToUpdate, where);
+            
+            foreach (var item in recordsToUpdate)
+            {
+                var editRecord = item;
+                foreach (var value in values)
+                { 
+                    editRecord = RecordHelper.EditByAttribute(item, value);
+                }
+                
+                _dictionaries.Edit(item, editRecord);
+            }
+        }
+
+        private static void RemoveMismatch(IList<FileCabinetRecord> source, IEnumerable<SearchValue> match)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (match is null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+
+            for (var i = 0; i < source.Count;)
+            {
+                foreach (var attribute in match)
+                {
+                    if (!RecordHelper.Contains(source[i], attribute))
+                    {
+                        source.RemoveAt(i);
+                        break;
+                    }
+                }
+
+                i++;
+            }
         }
     }
 }

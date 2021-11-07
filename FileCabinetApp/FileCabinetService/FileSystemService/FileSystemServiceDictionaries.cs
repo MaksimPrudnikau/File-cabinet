@@ -59,18 +59,15 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             {
                 SearchValue.SearchAttribute.Id => Id[InputConverter.IdConverter(searchValue.Value).Result],
                 
-                SearchValue.SearchAttribute.FirstName => FirstNames[searchValue.Value],
+                SearchValue.SearchAttribute.FirstName => FirstNames[InputConverter.NameConverter(searchValue.Value).Result],
                 
-                SearchValue.SearchAttribute.LastName => LastNames[searchValue.Value],
+                SearchValue.SearchAttribute.LastName => LastNames[InputConverter.NameConverter(searchValue.Value).Result],
                 
-                SearchValue.SearchAttribute.DateOfBirth => DateOfBirths[
-                    InputConverter.DateOfBirthConverter(searchValue.Value).Result],
+                SearchValue.SearchAttribute.DateOfBirth => DateOfBirths[InputConverter.DateOfBirthConverter(searchValue.Value).Result],
                 
-                SearchValue.SearchAttribute.JobExperience => JobExperiences[
-                    InputConverter.JobExperienceConverter(searchValue.Value).Result],
+                SearchValue.SearchAttribute.JobExperience => JobExperiences[InputConverter.JobExperienceConverter(searchValue.Value).Result],
                 
-                SearchValue.SearchAttribute.Salary => Salaries
-                    [InputConverter.SalaryConverter(searchValue.Value).Result],
+                SearchValue.SearchAttribute.Salary => Salaries[InputConverter.SalaryConverter(searchValue.Value).Result],
                 
                 SearchValue.SearchAttribute.Rank => Ranks[InputConverter.RankConverter(searchValue.Value).Result],
                 

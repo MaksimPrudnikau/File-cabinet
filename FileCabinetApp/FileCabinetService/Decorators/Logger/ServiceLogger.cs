@@ -25,16 +25,6 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             return _logger.LogMethod(base.ReadParameters, id);
         }
 
-        public override int EditRecord(FileCabinetRecord record)
-        {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-            
-            return _logger.LogMethod(base.EditRecord, record);
-        }
-
         public override Statistic GetStat()
         {
             return _logger.LogMethod(base.GetStat);

@@ -29,18 +29,6 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             return _service.ReadParameters(id);
         }
 
-        public virtual int EditRecord(FileCabinetRecord record)
-        {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-
-            record.Id--;
-            _service.EditRecord(record);
-            return record.Id;
-        }
-
         public virtual Statistic GetStat()
         {
             return _service.GetStat();
@@ -86,7 +74,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             _service.Insert(record);
         }
 
-        public void Update(IEnumerable<SearchValue> values, IEnumerable<SearchValue> @where)
+        public void Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
             _service.Update(values, where);
         }

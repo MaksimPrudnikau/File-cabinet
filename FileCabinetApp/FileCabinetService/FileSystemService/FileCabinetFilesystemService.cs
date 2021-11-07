@@ -64,43 +64,6 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         }
 
         /// <summary>
-        /// Overwriting existing record by the source
-        /// </summary>
-        /// <param name="record">Source record</param>
-        private void Rewrite(FileCabinetRecord record)
-        {
-            CreateRecord(record);
-            _stat.Count--;
-        }
-        
-        /// <summary>
-        /// Edit already existing record with source
-        /// </summary>
-        /// <param name="record">Source for editing record</param>
-        /// <exception cref="ArgumentNullException">Parameters are null</exception>
-        /// <exception cref="ArgumentException">There is no record suitable for replacement</exception>
-        public int EditRecord(FileCabinetRecord record)
-        {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-
-            _outputFile.Seek(0, SeekOrigin.Begin);
-            while (_outputFile.Position < _outputFile.Length)
-            {
-                var read = _reader.ReadAndMoveCursorBack();
-                if (read.Id == record.Id)
-                {
-                    Rewrite(record);
-                    return record.Id;
-                }
-            }
-
-            throw new ArgumentException($"Record #{record.Id} is not found");
-        }
-
-        /// <summary>
         /// Read all records from base file convert to <see cref="FilesystemRecord"/> array
         /// </summary>
         /// <returns>Array of <see cref="FilesystemRecord"/></returns>
@@ -350,7 +313,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             }
         }
 
-        public void Update(IEnumerable<SearchValue> values, IEnumerable<SearchValue> @where)
+        public void Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
             throw new NotImplementedException();
         }

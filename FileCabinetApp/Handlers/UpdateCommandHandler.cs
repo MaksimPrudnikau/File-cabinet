@@ -30,16 +30,17 @@ namespace FileCabinetApp.Handlers.Update
 
             var searchValues = GetSearchValues(request.Parameters);
             var where = GetWhereSearchValues(request.Parameters);
+            Service.Update(searchValues, where);
         }
 
-        private static IEnumerable<SearchValue> GetWhereSearchValues(string parameters)
+        private static IList<SearchValue> GetWhereSearchValues(string parameters)
         {
             int keywordIndex = parameters.IndexOf(AttributeKeyword, StringComparison.InvariantCultureIgnoreCase);
             parameters = parameters[(keywordIndex + AttributeKeyword.Length + 1)..];
             return Extractor.ExtractSearchValues(parameters, "and");
         }
 
-        private static IEnumerable<SearchValue> GetSearchValues(string parameters)
+        private static IList<SearchValue> GetSearchValues(string parameters)
         {
             if (!parameters.Contains(ValuesKeyword, StringComparison.InvariantCultureIgnoreCase))
             {

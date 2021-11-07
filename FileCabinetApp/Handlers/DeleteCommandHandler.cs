@@ -5,11 +5,11 @@ using FileCabinetApp.Handlers.Helpers;
 
 namespace FileCabinetApp.Handlers
 {
-    public class RemoveCommandHandler : ServiceCommandHandlerBase
+    public class DeleteCommandHandler : ServiceCommandHandlerBase
     {
         private const RequestCommand Command = RequestCommand.Delete;
         
-        public RemoveCommandHandler(IFileCabinetService service) : base(service)
+        public DeleteCommandHandler(IFileCabinetService service) : base(service)
         {
         }
 

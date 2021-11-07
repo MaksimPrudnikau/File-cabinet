@@ -11,20 +11,6 @@ namespace FileCabinetApp.Handlers
         private const RequestCommand Command  = RequestCommand.Insert;
         private readonly IRecordValidator _validator = new ValidationBuilder().CreateCustom();
 
-        private class InsertValue
-        {
-            private readonly SearchValue _searchValue;
-
-            public SearchValue.SearchAttribute Attribute => _searchValue.Attribute;
-
-            public string Value => _searchValue.Value;
-
-            public InsertValue(string key, string value)
-            {
-                _searchValue = new SearchValue(key, value);
-            }
-        }
-        
         public InsertCommandHandler(IFileCabinetService service) : base(service)
         {
         }
@@ -51,7 +37,7 @@ namespace FileCabinetApp.Handlers
             Service.Insert(record);
         }
 
-        private bool TryCreateRecord(InsertValue[] values, out FileCabinetRecord record)
+        private bool TryCreateRecord(SearchValue[] values, out FileCabinetRecord record)
         {
             try
             {
@@ -67,7 +53,7 @@ namespace FileCabinetApp.Handlers
             }
         }
 
-        private static FileCabinetRecord CreateRecordFromInsertValue(InsertValue[] value)
+        private static FileCabinetRecord CreateRecordFromInsertValue(SearchValue[] value)
         {
             var record = new FileCabinetRecord();
             foreach (var item in value)
@@ -109,7 +95,7 @@ namespace FileCabinetApp.Handlers
             return record;
         }
 
-        private static bool TryExtractValues(string parameters, out InsertValue[] values)
+        private static bool TryExtractValues(string parameters, out SearchValue[] values)
         {
             try
             {
@@ -124,7 +110,7 @@ namespace FileCabinetApp.Handlers
             }
         }
 
-        private static InsertValue[] ExtractValues(string parameters)
+        private static SearchValue[] ExtractValues(string parameters)
         {
             const string keyword = "values";
             if (!parameters.Contains(keyword, StringComparison.InvariantCulture))
@@ -147,7 +133,7 @@ namespace FileCabinetApp.Handlers
                 : null;
         }
 
-        private static bool TryCreateInsertValues(IReadOnlyList<string> keys, IReadOnlyList<string> values, out InsertValue[] insertValues)
+        private static bool TryCreateInsertValues(IReadOnlyList<string> keys, IReadOnlyList<string> values, out SearchValue[] insertValues)
         {
             try
             {
@@ -162,12 +148,12 @@ namespace FileCabinetApp.Handlers
             }
         }
 
-        private static InsertValue[] CreateInsertValues(IReadOnlyList<string> keys, IReadOnlyList<string> values)
+        private static SearchValue[] CreateInsertValues(IReadOnlyList<string> keys, IReadOnlyList<string> values)
         {
-            var insertValues = new List<InsertValue>();
+            var insertValues = new List<SearchValue>();
             for (var i = 0; i < keys.Count; i++)
             {
-                insertValues.Add(new InsertValue(keys[i], values[i]));
+                insertValues.Add(new SearchValue(keys[i], values[i]));
             }
 
             return insertValues.ToArray();

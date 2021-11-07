@@ -9,9 +9,7 @@ namespace FileCabinetApp.FileCabinetService
         public int CreateRecord(FileCabinetRecord record);
 
         public FileCabinetRecord ReadParameters(int id = -1);
-
-        public int EditRecord(FileCabinetRecord record);
-
+        
         public Statistic GetStat();
 
         public IEnumerable<FileCabinetRecord> GetRecords();
@@ -30,6 +28,6 @@ namespace FileCabinetApp.FileCabinetService
 
         public void Insert(FileCabinetRecord record);
 
-        public void Update(IEnumerable<SearchValue> values, IEnumerable<SearchValue> where);
+        public void Update(IEnumerable<SearchValue> values, IList<SearchValue> where);
     }
 }

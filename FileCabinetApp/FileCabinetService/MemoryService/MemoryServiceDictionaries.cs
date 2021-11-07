@@ -91,6 +91,37 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             }
         }
 
+        public IEnumerable<FileCabinetRecord> Find(SearchValue value)
+        {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+            
+            if (value.Attribute is SearchValue.SearchAttribute.Id)
+            {
+                return new List<FileCabinetRecord>{Records[InputConverter.IdConverter(value.Value).Result]};
+            }
+
+            return value.Attribute switch
+            {
+                SearchValue.SearchAttribute.FirstName => FirstNames[InputConverter.NameConverter(value.Value).Result],
+                SearchValue.SearchAttribute.LastName => LastNames[InputConverter.NameConverter(value.Value).Result],
+                SearchValue.SearchAttribute.DateOfBirth => DateOfBirths[
+                    InputConverter.DateOfBirthConverter(value.Value).Result],
+                SearchValue.SearchAttribute.JobExperience => JobExperiences[
+                    InputConverter.JobExperienceConverter(value.Value).Result],
+                SearchValue.SearchAttribute.Salary => Salaries[InputConverter.SalaryConverter(value.Value).Result],
+                SearchValue.SearchAttribute.Rank => Ranks[InputConverter.RankConverter(value.Value).Result],
+            };
+        }
+
+        public void Edit(FileCabinetRecord from, FileCabinetRecord to)
+        {
+            Remove(from);
+            Add(to);
+        }
+
         private void AppendToAllDictionaries(FileCabinetRecord record)
         {
             Records.Add(record.Id, record);

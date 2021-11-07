@@ -18,13 +18,6 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             return id;
         }
 
-        public override int EditRecord(FileCabinetRecord record)
-        {
-            var ticks = TicksMeter.GetElapsedTicks(base.EditRecord, record, out var id);
-            Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(EditRecord), ticks);
-            return id;
-        }
-
         public override Statistic GetStat()
         {
             var ticks = TicksMeter.GetElapsedTicks(base.GetStat, out var stat);
