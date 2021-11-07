@@ -224,5 +224,10 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
 
             CreateRecord(record);
         }
+
+        public void Update(IEnumerable<SearchValue> values, IEnumerable<SearchValue> @where)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -83,7 +83,12 @@ namespace FileCabinetApp.FileCabinetService.Decorators
 
         public void Insert(FileCabinetRecord record)
         {
-            throw new NotImplementedException();
+            _service.Insert(record);
+        }
+
+        public void Update(IEnumerable<SearchValue> values, IEnumerable<SearchValue> @where)
+        {
+            _service.Update(values, where);
         }
     }
 }

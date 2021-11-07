@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using FileCabinetApp.FileCabinetService;
+using FileCabinetApp.Handlers.Helpers;
 
 namespace FileCabinetApp.Handlers
 {
@@ -33,9 +33,7 @@ namespace FileCabinetApp.Handlers
 
             try
             {
-                var attribute = GetSearchAttribute(request.Parameters);
-                var value = GetValue(request.Parameters);
-                var searchValue = new SearchValue(attribute, value);
+                var searchValue = GetSearchAttribute(request.Parameters);
                 var deleted = string.Join(", #", Service.Delete(searchValue));
                 
                 Console.WriteLine(EnglishSource.Records_are_deleted, deleted);
@@ -50,7 +48,7 @@ namespace FileCabinetApp.Handlers
             }
         }
 
-        private static string GetSearchAttribute(string parameters)
+        private static SearchValue GetSearchAttribute(string parameters)
         {
             const string keyword = "where";
             if (!parameters.Contains(keyword, StringComparison.InvariantCultureIgnoreCase))
@@ -63,15 +61,8 @@ namespace FileCabinetApp.Handlers
                 throw new ArgumentException("Cannot find equal sign");
             }
 
-            parameters = new StringBuilder(parameters).Replace(" ", string.Empty).ToString();
-            return parameters.Split("where")[1].Split('=')[0];
-        }
-
-        private static string GetValue(string parameters)
-        {
-            var firstLetter = parameters.IndexOf('\'', StringComparison.InvariantCulture) + 1;
-            var lastLetter = parameters.LastIndexOf('\'');
-            return parameters[firstLetter..lastLetter];
+            var keywordIndex = parameters.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) + keyword.Length + 1;
+            return Extractor.ExtractSearchValues(parameters[keywordIndex..])[0];
         }
     }
 }

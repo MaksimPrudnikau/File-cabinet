@@ -350,6 +350,11 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             }
         }
 
+        public void Update(IEnumerable<SearchValue> values, IEnumerable<SearchValue> @where)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
             Dispose(true);

@@ -307,48 +307,48 @@
             </summary>
             <param name="record">Source record to remove</param>
         </member>
-        <member name="M:FileCabinetApp.Handlers.CreateCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Create.CreateCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Create record in current service
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.RemoveCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Delete.RemoveCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Remove record from current service. If service storage is file, it marks the record as deleted
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.EditCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Edit.EditCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Edit the record with entered id
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.ExitCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Exit.ExitCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Exit from application
             </summary>
             <param name="request">Object contains command and it's parameters</param>
         </member>
-        <member name="M:FileCabinetApp.Handlers.ExportCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Export.ExportCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Serialize all records in file with entered format
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.FindCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Find.FindCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Prints all records with suitable attribute
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.FindCommandHandler.FindByAttribute(System.String,System.String)">
+        <member name="M:FileCabinetApp.Handlers.Find.FindCommandHandler.FindByAttribute(System.String,System.String)">
             <summary>
             Create an array where any attribute element equals searchValue
             </summary>
@@ -357,32 +357,32 @@
             <returns></returns>
             <exception cref="T:System.ArgumentException">Entered attribute is not exist</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.HelpCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Help.HelpCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Prints help message
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.ImportCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Import.ImportCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Import records from source file
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.ListCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.List.ListCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Return list of records added to current service
             </summary>
         </member>
-        <member name="M:FileCabinetApp.Handlers.PurgeCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Purge.PurgeCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Remove all records marked as deleted from source database
             </summary>
             <param name="request"></param>
         </member>
-        <member name="M:FileCabinetApp.Handlers.StatCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.Stat.StatCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Prints the amount of records
             </summary>

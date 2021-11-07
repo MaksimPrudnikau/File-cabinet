@@ -5,6 +5,7 @@ using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.FileCabinetService.Decorators.Logger;
 using FileCabinetApp.FileCabinetService.Decorators.Meter;
 using FileCabinetApp.Handlers;
+using FileCabinetApp.Handlers.Update;
 using FileCabinetApp.Printers;
 using FileCabinetApp.Validation;
 using FileCabinetApp.Validators;
@@ -91,7 +92,7 @@ namespace FileCabinetApp
 
             return new AppCommandRequest
             {
-                Command = (RequestCommand) Enum.Parse(typeof(RequestCommand), command, true),
+                Command = Enum.Parse<RequestCommand>(command, true),
                 Parameters = parameters
             };
         }
@@ -141,6 +142,7 @@ namespace FileCabinetApp
             var purgeHandler = new PurgeCommandHandler(service);
             var exitHandler = new ExitCommandHandler(x => _isRunning = x);
             var insertHandler = new InsertCommandHandler(service);
+            var updateHandler = new UpdateCommandHandler(service);
             
             helpHandler.SetNext(createHandler);
             createHandler.SetNext(editHandler);
@@ -153,6 +155,7 @@ namespace FileCabinetApp
             removeHandler.SetNext(purgeHandler);
             purgeHandler.SetNext(exitHandler);
             exitHandler.SetNext(insertHandler);
+            insertHandler.SetNext(updateHandler);
 
             return helpHandler;
         }

@@ -29,5 +29,7 @@ namespace FileCabinetApp.FileCabinetService
         public void Purge();
 
         public void Insert(FileCabinetRecord record);
+
+        public void Update(IEnumerable<SearchValue> values, IEnumerable<SearchValue> where);
     }
 }

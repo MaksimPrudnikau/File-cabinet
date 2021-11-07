@@ -8,7 +8,7 @@ namespace FileCabinetApp.Handlers
 {
     public class InsertCommandHandler : ServiceCommandHandlerBase
     {
-        public static RequestCommand Command { get; } = RequestCommand.Insert;
+        private const RequestCommand Command  = RequestCommand.Insert;
         private readonly IRecordValidator _validator = new ValidationBuilder().CreateCustom();
 
         private class InsertValue
@@ -34,6 +34,12 @@ namespace FileCabinetApp.Handlers
             if (request is null)
             {
                 throw new ArgumentNullException(nameof(request));
+            }
+
+            if (request.Command != Command)
+            {
+                NextHandler.Handle(request);
+                return;
             }
             
             var extracted = TryExtractValues(request.Parameters, out var values);

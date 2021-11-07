@@ -13,6 +13,7 @@ namespace FileCabinetApp.Handlers
         Delete,
         Purge,
         Exit,
-        Insert
+        Insert,
+        Update
     }
 }
