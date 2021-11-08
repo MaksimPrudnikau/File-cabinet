@@ -74,6 +74,30 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 _ => throw new ArgumentOutOfRangeException(nameof(searchValue))
             };
         }
+        
+        public IEnumerable<long> Find(SearchValue value)
+        {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            var dictionary = value.Attribute switch
+            {
+                SearchValue.SearchAttribute.Id => Id[InputConverter.IdConverter(value.Value).Result],
+                SearchValue.SearchAttribute.FirstName => FirstNames[value.Value],
+                SearchValue.SearchAttribute.LastName => LastNames[value.Value],
+                SearchValue.SearchAttribute.DateOfBirth => DateOfBirths[InputConverter.DateOfBirthConverter(value.Value).Result],
+                SearchValue.SearchAttribute.JobExperience => JobExperiences[InputConverter.JobExperienceConverter(value.Value).Result],
+                SearchValue.SearchAttribute.Salary => Salaries[InputConverter.SalaryConverter(value.Value).Result],
+                SearchValue.SearchAttribute.Rank => Ranks[InputConverter.RankConverter(value.Value).Result],
+            };
+
+            foreach (var item in dictionary)
+            {
+                yield return item;
+            }
+        }
 
         private void RemoveFromDictionaries(FileCabinetRecord record)
         {
@@ -93,16 +117,16 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 
         private void AddToDictionaries(FileCabinetRecord record, long position)
         {
-            UpdateDictionary(Id, record.Id, position);
-            UpdateDictionary(FirstNames, record.FirstName, position);
-            UpdateDictionary(LastNames, record.LastName, position);
-            UpdateDictionary(DateOfBirths, record.DateOfBirth, position);
-            UpdateDictionary(JobExperiences, record.JobExperience, position);
-            UpdateDictionary(Salaries, record.Salary, position);
-            UpdateDictionary(Ranks, record.Rank, position);
+            AddToDictionary(Id, record.Id, position);
+            AddToDictionary(FirstNames, record.FirstName, position);
+            AddToDictionary(LastNames, record.LastName, position);
+            AddToDictionary(DateOfBirths, record.DateOfBirth, position);
+            AddToDictionary(JobExperiences, record.JobExperience, position);
+            AddToDictionary(Salaries, record.Salary, position);
+            AddToDictionary(Ranks, record.Rank, position);
         }
 
-        private static void UpdateDictionary<T>(IDictionary<T, HashSet<long>> dictionary, T key, long position)
+        private static void AddToDictionary<T>(IDictionary<T, HashSet<long>> dictionary, T key, long position)
         {
             if (dictionary.ContainsKey(key))
             {

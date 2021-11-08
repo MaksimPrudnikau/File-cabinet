@@ -79,5 +79,24 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                     record.Rank == InputConverter.RankConverter(value.Value).Result,
             };
         }
+
+        public static FileCabinetRecord Clone(FileCabinetRecord source)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            
+            return new FileCabinetRecord
+            {
+                Id = source.Id,
+                FirstName = source.FirstName,
+                LastName = source.LastName,
+                DateOfBirth = source.DateOfBirth,
+                JobExperience = source.JobExperience,
+                Salary = source.Salary,
+                Rank = source.Rank
+            };
+        }
     }
 }

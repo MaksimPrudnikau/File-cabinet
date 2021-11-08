@@ -315,7 +315,42 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 
         public void Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
-            throw new NotImplementedException();
+            if (values is null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
+            if (where is null || where.Count == 0)
+            {
+                throw new ArgumentNullException(nameof(where));
+            }
+
+            var position = new List<long>(_dictionaries.Find(where[0]));
+
+            foreach (var pos in position)
+            {
+                _reader.BaseFile.Seek(pos, SeekOrigin.Begin);
+                var read = _reader.ReadAndMoveCursorBack();
+                var recordContainsAllWheres = true;
+                foreach (var value in where)
+                {
+                    if (!RecordHelper.Contains(read, value))
+                    {
+                        recordContainsAllWheres = false;
+                    }
+                }
+
+                if (!recordContainsAllWheres) continue;
+
+                var editRecord = RecordHelper.Clone(read);
+                foreach (var value in values)
+                {
+                    editRecord = RecordHelper.EditByAttribute(editRecord, value);
+                }
+                
+                new FilesystemRecord(editRecord).Serialize(_reader.BaseFile);
+                _dictionaries.Edit(read, editRecord, pos);
+            }
         }
 
         public void Dispose()
