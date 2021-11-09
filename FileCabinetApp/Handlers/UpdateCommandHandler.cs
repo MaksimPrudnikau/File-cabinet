@@ -30,17 +30,38 @@ namespace FileCabinetApp.Handlers.Update
 
             var searchValues = GetSearchValues(request.Parameters);
             var where = GetWhereSearchValues(request.Parameters);
-            Service.Update(searchValues, where);
+
+            var updated = TryUpdate(searchValues, where, out var recordsId);
+            var updatedRecords = string.Join(", #", recordsId);
+            if (updated)
+            {
+                Console.WriteLine(EnglishSource.Records_0_where_updated, updatedRecords);
+            }
+        }
+
+        private static bool TryUpdate(IEnumerable<SearchValue> values, IList<SearchValue> where, out IEnumerable<int> updated)
+        {
+            try
+            {
+                updated = Service.Update(values, where);
+                return true;
+            }
+            catch (SystemException exception) when (exception is ArgumentException or KeyNotFoundException)
+            {
+                Console.WriteLine(exception.Message);
+                updated = null;
+                return false;
+            }
         }
 
         private static IList<SearchValue> GetWhereSearchValues(string parameters)
         {
-            int keywordIndex = parameters.IndexOf(AttributeKeyword, StringComparison.InvariantCultureIgnoreCase);
+            var keywordIndex = parameters.IndexOf(AttributeKeyword, StringComparison.InvariantCultureIgnoreCase);
             parameters = parameters[(keywordIndex + AttributeKeyword.Length + 1)..];
             return Extractor.ExtractSearchValues(parameters, "and");
         }
 
-        private static IList<SearchValue> GetSearchValues(string parameters)
+        private static IEnumerable<SearchValue> GetSearchValues(string parameters)
         {
             if (!parameters.Contains(ValuesKeyword, StringComparison.InvariantCultureIgnoreCase))
             {

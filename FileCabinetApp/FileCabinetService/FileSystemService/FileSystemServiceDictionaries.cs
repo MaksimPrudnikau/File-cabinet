@@ -36,7 +36,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 throw new ArgumentNullException(nameof(to));
             }
             
-            RemoveFromDictionaries(from);
+            RemoveFromDictionaries(from, position);
             AddToDictionaries(to, position);
         }
         
@@ -75,14 +75,14 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             };
         }
         
-        public IEnumerable<long> Find(SearchValue value)
+        public IReadOnlyCollection<long> Find(SearchValue value)
         {
             if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var dictionary = value.Attribute switch
+            return value.Attribute switch
             {
                 SearchValue.SearchAttribute.Id => Id[InputConverter.IdConverter(value.Value).Result],
                 SearchValue.SearchAttribute.FirstName => FirstNames[value.Value],
@@ -92,27 +92,22 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 SearchValue.SearchAttribute.Salary => Salaries[InputConverter.SalaryConverter(value.Value).Result],
                 SearchValue.SearchAttribute.Rank => Ranks[InputConverter.RankConverter(value.Value).Result],
             };
-
-            foreach (var item in dictionary)
-            {
-                yield return item;
-            }
         }
 
-        private void RemoveFromDictionaries(FileCabinetRecord record)
+        private void RemoveFromDictionaries(FileCabinetRecord record, long position)
         {
             if (record is null)
             {
                 throw new ArgumentNullException(nameof(record));
             }
 
-            Id.Remove(record.Id);
-            FirstNames.Remove(record.FirstName);
-            LastNames.Remove(record.LastName);
-            DateOfBirths.Remove(record.DateOfBirth);
-            JobExperiences.Remove(record.JobExperience);
-            Salaries.Remove(record.Salary);
-            Ranks.Remove(record.Rank);
+            Id[record.Id].Remove(position);
+            FirstNames[record.FirstName].Remove(position);
+            LastNames[record.LastName].Remove(position);
+            DateOfBirths[record.DateOfBirth].Remove(position);
+            JobExperiences[record.JobExperience].Remove(position);
+            Salaries[record.Salary].Remove(position);
+            Ranks[record.Rank].Remove(position);
         }
 
         private void AddToDictionaries(FileCabinetRecord record, long position)

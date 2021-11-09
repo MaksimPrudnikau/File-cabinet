@@ -182,5 +182,11 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("Records_are_deleted", resourceCulture);
             }
         }
+        
+        internal static string Records_0_where_updated {
+            get {
+                return ResourceManager.GetString("Records_0_where_updated", resourceCulture);
+            }
+        }
     }
 }

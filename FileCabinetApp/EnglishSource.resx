@@ -186,4 +186,7 @@
   <data name="Records_are_deleted" xml:space="preserve">
     <value>Record #{0} are deleted</value>
   </data>
+  <data name="Records_0_where_updated" xml:space="preserve">
+    <value>Records #{0} where updated</value>
+  </data>
 </root>

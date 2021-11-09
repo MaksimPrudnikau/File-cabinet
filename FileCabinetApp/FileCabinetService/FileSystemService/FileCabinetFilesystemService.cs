@@ -313,7 +313,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             }
         }
 
-        public void Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        public IReadOnlyCollection<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)
             {
@@ -325,8 +325,9 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 throw new ArgumentNullException(nameof(where));
             }
 
-            var position = new List<long>(_dictionaries.Find(where[0]));
-
+            var position = _dictionaries.Find(where[0]);
+            var updated = new List<int>();
+            
             foreach (var pos in position)
             {
                 _reader.BaseFile.Seek(pos, SeekOrigin.Begin);
@@ -334,6 +335,11 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 var recordContainsAllWheres = true;
                 foreach (var value in where)
                 {
+                    if (value.Attribute is SearchValue.SearchAttribute.Id)
+                    {
+                        throw new ArgumentException("Id cannot be updated");
+                    }
+                    
                     if (!RecordHelper.Contains(read, value))
                     {
                         recordContainsAllWheres = false;
@@ -350,7 +356,10 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 
                 new FilesystemRecord(editRecord).Serialize(_reader.BaseFile);
                 _dictionaries.Edit(read, editRecord, pos);
+                updated.Add(editRecord.Id);
             }
+
+            return updated;
         }
 
         public void Dispose()

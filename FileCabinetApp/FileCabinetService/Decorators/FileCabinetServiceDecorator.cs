@@ -74,9 +74,9 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             _service.Insert(record);
         }
 
-        public void Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        public IReadOnlyCollection<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
-            _service.Update(values, where);
+            return _service.Update(values, where);
         }
     }
 }
