@@ -69,9 +69,9 @@ namespace FileCabinetApp
                 request = ReadUsersImport();
                 return true;
             }
-            catch (Exception e) when (e is ArgumentException or OverflowException)
+            catch (ArgumentOutOfRangeException exception)
             {
-                Console.WriteLine(e.Message);
+                ErrorCommandHandler.Handle($"{exception.ActualValue}");
                 return false;
             }
         }
@@ -90,9 +90,16 @@ namespace FileCabinetApp
                 ? inputs[parametersIndex + 1]
                 : inputs[parametersIndex];
 
+            var parsed = Enum.TryParse<RequestCommand>(command, true, out var request);
+
+            if (!parsed)
+            {
+                throw new ArgumentOutOfRangeException(nameof(command), command, null);
+            }
+            
             return new AppCommandRequest
             {
-                Command = Enum.Parse<RequestCommand>(command, true),
+                Command = request,
                 Parameters = parameters
             };
         }

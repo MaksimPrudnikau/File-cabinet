@@ -6,6 +6,12 @@ namespace FileCabinetApp.Handlers
     public class HelpCommandHandler : CommandHandlerBase
     {
         private const RequestCommand Command = RequestCommand.Help;
+
+        private static readonly string[][] HelpMessages = {
+            new[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
+            new[] { "exit", "exits the application", "The 'exit' command exits the application." },
+        };
+        
         /// <summary>
         /// Prints help message
         /// </summary>
@@ -24,11 +30,11 @@ namespace FileCabinetApp.Handlers
                 return;
             }
             
-            var index = Array.FindIndex(FileCabinetConsts.HelpMessages, 0, FileCabinetConsts.HelpMessages.Length,
-                i => string.Equals(i[FileCabinetConsts.CommandHelpIndex ], request.Parameters, StringComparison.OrdinalIgnoreCase));
+            var index = Array.FindIndex(HelpMessages, 0, HelpMessages.Length,
+                i => string.Equals(i[FileCabinetConsts.CommandHelpIndex], request.Parameters, StringComparison.OrdinalIgnoreCase));
             
             Console.Error.WriteLine(index >= 0
-                ? FileCabinetConsts.HelpMessages[index][FileCabinetConsts.ExplanationHelpIndex]
+                ? HelpMessages[index][FileCabinetConsts.ExplanationHelpIndex]
                 : $"There is no explanation for '{request.Parameters}' command.");
         }
     }

@@ -14,7 +14,7 @@ namespace FileCabinetApp {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class EnglishSource {
+    internal class EnglishSource {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -152,8 +152,8 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("All_records_are_exported_to_file", resourceCulture);
             }
         }
-
-        public static string records_were_written_to {
+        
+        internal static string records_were_written_to {
             get {
                 return ResourceManager.GetString("records_were_written_to", resourceCulture);
             }
@@ -186,6 +186,18 @@ namespace FileCabinetApp {
         internal static string Records_0_where_updated {
             get {
                 return ResourceManager.GetString("Records_0_where_updated", resourceCulture);
+            }
+        }
+        
+        internal static string ErrorCommandHandler_Handle_Is_Not_A_Command {
+            get {
+                return ResourceManager.GetString("ErrorCommandHandler_Handle_Is_Not_A_Command", resourceCulture);
+            }
+        }
+        
+        internal static string The_most_similar_commands_are {
+            get {
+                return ResourceManager.GetString("The_most_similar_commands_are", resourceCulture);
             }
         }
     }

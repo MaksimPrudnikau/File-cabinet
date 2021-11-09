@@ -4,7 +4,6 @@ namespace FileCabinetApp.Handlers
     {
         Help,
         Create,
-        Edit,
         Stat,
         List,
         Find,

@@ -189,4 +189,11 @@
   <data name="Records_0_where_updated" xml:space="preserve">
     <value>Records #{0} where updated</value>
   </data>
+  <data name="ErrorCommandHandler_Handle_Is_Not_A_Command" xml:space="preserve">
+    <value>'{0}' is not a command. See 'help'.
+</value>
+  </data>
+  <data name="The_most_similar_commands_are" xml:space="preserve">
+    <value>The most similar commands are</value>
+  </data>
 </root>
