@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace FileCabinetApp.Handlers
 {
@@ -15,39 +16,59 @@ namespace FileCabinetApp.Handlers
             Console.WriteLine(EnglishSource.ErrorCommandHandler_Handle_Is_Not_A_Command, command);
             Console.WriteLine(EnglishSource.The_most_similar_commands_are);
 
-            var matches = new List<Tuple<int, string>>();
+            var closestCommands = new List<Tuple<int, string>>();
             var maxMatch = 0;
 
             foreach (var item in Enum.GetNames(typeof(RequestCommand)))
             {
-                var match = GetMatchPercent(command, item);
+                var isPart = IsPartOfCommand(command, item);
+                if (isPart)
+                {
+                    closestCommands.Clear();
+                    maxMatch = 0;
+                    closestCommands.Add(new Tuple<int, string>(maxMatch, item));
+                    break;
+                }
+                
+                var match = GetStartWith(command, item);
+                
                 if (match > maxMatch)
                 {
                     maxMatch = match;
                 }
-
+                
                 if (match > 0)
                 {
-                    matches.Add(new Tuple<int, string>(match, item));   
+                    closestCommands.Add(new Tuple<int, string>(match, item));   
                 }
             }
 
-            foreach (var item in matches)
+            foreach (var (match, closestCommand) in closestCommands)
             {
-                if (item.Item1 == maxMatch)
+                if (match == maxMatch)
                 {
-                    Console.WriteLine(item.Item2);
+                    Console.WriteLine(closestCommand);
                 }
             }
         }
 
-        private static int GetMatchPercent(string source, string command)
+        private static bool IsPartOfCommand(string source, string command)
+        {
+            return command.Contains(source, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static int GetStartWith(string source, string command)
         {
             var matches = 0;
 
-            foreach (var item in source)
+            for (var i = 0; i < source.Length; i++)
             {
-                if (command.Contains(item, StringComparison.InvariantCultureIgnoreCase))
+                if (i >= command.Length)
+                {
+                    break;
+                }
+            
+                if (char.ToLowerInvariant(source[i]) == char.ToLowerInvariant(command[i]))
                 {
                     matches++;
                 }

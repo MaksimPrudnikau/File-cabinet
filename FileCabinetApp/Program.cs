@@ -128,12 +128,6 @@ namespace FileCabinetApp
                 _isRunning = false;
             }
         }
-        
-        private static void PrintMissedCommandInfo(string command)
-        {
-            Console.Error.WriteLine(EnglishSource.no_command, command);
-            Console.WriteLine();
-        }
 
         private static CommandHandlerBase CreateCommandHandlers(IFileCabinetService service)
         {
