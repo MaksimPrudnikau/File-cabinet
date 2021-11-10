@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using FileCabinetApp.Export;
-using FileCabinetApp.FileCabinetService.Iterators;
 
 namespace FileCabinetApp.FileCabinetService.Decorators
 {
@@ -30,24 +29,12 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             return _service.ReadParameters(id);
         }
 
-        public virtual int EditRecord(FileCabinetRecord record)
-        {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-
-            record.Id--;
-            _service.EditRecord(record);
-            return record.Id;
-        }
-
         public virtual Statistic GetStat()
         {
             return _service.GetStat();
         }
 
-        public virtual IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public virtual IEnumerable<FileCabinetRecord> GetRecords()
         {
             return _service.GetRecords();
         }
@@ -72,14 +59,24 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             _service.Restore(snapshot);
         }
 
-        public virtual void Remove(int id)
+        public virtual IEnumerable<int> Delete(SearchValue searchValue)
         {
-            _service.Remove(id);
+            return _service.Delete(searchValue);
         }
 
         public virtual void Purge()
         {
             _service.Purge();
+        }
+
+        public void Insert(FileCabinetRecord record)
+        {
+            _service.Insert(record);
+        }
+
+        public IReadOnlyCollection<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        {
+            return _service.Update(values, where);
         }
     }
 }

@@ -18,13 +18,6 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             return id;
         }
 
-        public override int EditRecord(FileCabinetRecord record)
-        {
-            var ticks = TicksMeter.GetElapsedTicks(base.EditRecord, record, out var id);
-            Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(EditRecord), ticks);
-            return id;
-        }
-
         public override Statistic GetStat()
         {
             var ticks = TicksMeter.GetElapsedTicks(base.GetStat, out var stat);
@@ -32,7 +25,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             return stat;
         }
 
-        public override IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public override IEnumerable<FileCabinetRecord> GetRecords()
         {
             var ticks = TicksMeter.GetElapsedTicks(base.GetRecords, out var records);
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(GetRecords), ticks);
@@ -66,10 +59,11 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Restore), ticks);
         }
 
-        public override void Remove(int id)
+        public override IEnumerable<int> Delete(SearchValue searchValue)
         {
-            var ticks = TicksMeter.GetElapsedTicks(base.Remove, id);
-            Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Remove), ticks);
+            var ticks = TicksMeter.GetElapsedTicks(base.Delete, searchValue, out var records);
+            Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Delete), ticks);
+            return records;
         }
 
         public override void Purge()

@@ -51,20 +51,6 @@
             <returns>Id of created record</returns>
             <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Rewrite(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
-            <summary>
-            Overwriting existing record by the source
-            </summary>
-            <param name="record">Source record</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.EditRecord(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
-            <summary>
-            Edit already existing record with source
-            </summary>
-            <param name="record">Source for editing record</param>
-            <exception cref="T:System.ArgumentNullException">Parameters are null</exception>
-            <exception cref="T:System.ArgumentException">There is no record suitable for replacement</exception>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.GetRecords">
             <summary>
             Read all records from base file convert to <see cref="T:FileCabinetApp.FileCabinetService.FileSystemService.FilesystemRecord"/> array
@@ -119,12 +105,6 @@
             </summary>
             <param name="snapshot">Source snapshot</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Remove(System.Int32)">
-            <summary>
-            Marks the record with input id as deleted
-            </summary>
-            <param name="id">Source record's id</param>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Purge">
             <summary>
             Delete all records marked as delete from current file by creating a new one 
@@ -177,7 +157,7 @@
             <param name="source">Source string</param>
             <returns>New string with ASCII characters</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemWriter.AppendRange(System.Collections.Generic.IReadOnlyCollection{FileCabinetApp.FileCabinetService.FileCabinetRecord})">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemWriter.AppendRange(System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.FileCabinetRecord})">
             <summary>
             Add records to the end of data base
             </summary>
@@ -233,7 +213,7 @@
             <param name="jobExperience">Source job experience</param>
             <returns>Parsed <see cref="T:System.Int16"/> object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.WageConverter(System.String)">
+        <member name="M:FileCabinetApp.FileCabinetService.InputConverter.SalaryConverter(System.String)">
             <summary>
             Converts source wage representation into it`s <see cref="T:System.Decimal"/> equivalent 
             </summary>
@@ -274,42 +254,6 @@
             <param name="converter">Source converter</param>
             <returns>Correct input object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.EditRecord(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
-            <summary>
-            Edit record with the source one
-            </summary>
-            <param name="record">Parameter contains new data</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.AppendToAllDictionaries(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
-            <summary>
-            Append record to all dictionaries
-            </summary>
-            <param name="record">Source record</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.AppendToFirstNameDictionary(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
-            <summary>
-            Append record to FirstNameDictionary
-            </summary>
-            <param name="record">Source record</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.AppendToLastNameDictionary(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
-            <summary>
-            Append record to LastNameDictionary
-            </summary>
-            <param name="record">Source record</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.AppendToDateOfBirthDictionary(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
-            <summary>
-            Append record to DateOfBirthDictionary
-            </summary>
-            <param name="record">Source record</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.RemoveFromAllDictionaries(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
-            <summary>
-            Remove record from all dictionaries
-            </summary>
-            <param name="record">Source record to remove</param>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.FindByFirstName(System.String)">
             <summary>
             Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> with suitable first name
@@ -331,11 +275,17 @@
             <param name="searchValue">Date of birth to search</param>
             <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with suitable date of birth</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.MakeSnapshot">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.MemoryServiceDictionaries.Add(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
-            Create <see cref="T:FileCabinetApp.Export.FileCabinetServiceSnapshot"/> object with current record array
+            Append record to all dictionaries
             </summary>
-            <returns><see cref="T:FileCabinetApp.Export.FileCabinetServiceSnapshot"/> object</returns>
+            <param name="record">Source record</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.MemoryServiceDictionaries.RemoveFromAllDictionaries(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
+            <summary>
+            Remove record from all dictionaries
+            </summary>
+            <param name="record">Source record to remove</param>
         </member>
         <member name="M:FileCabinetApp.Handlers.CreateCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
@@ -344,9 +294,9 @@
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.EditCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.Handlers.DeleteCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
-            Edit the record with entered id
+            Remove record from current service. If service storage is file, it marks the record as deleted
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
@@ -404,13 +354,6 @@
             Remove all records marked as deleted from source database
             </summary>
             <param name="request"></param>
-        </member>
-        <member name="M:FileCabinetApp.Handlers.RemoveCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
-            <summary>
-            Remove record from current service. If service storage is file, it marks the record as deleted
-            </summary>
-            <param name="request">Object contains command and it's parameters</param>
-            <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
         <member name="M:FileCabinetApp.Handlers.StatCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>

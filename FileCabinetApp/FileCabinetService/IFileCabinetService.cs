@@ -9,12 +9,10 @@ namespace FileCabinetApp.FileCabinetService
         public int CreateRecord(FileCabinetRecord record);
 
         public FileCabinetRecord ReadParameters(int id = -1);
-
-        public int EditRecord(FileCabinetRecord record);
-
+        
         public Statistic GetStat();
 
-        public IReadOnlyCollection<FileCabinetRecord> GetRecords();
+        public IEnumerable<FileCabinetRecord> GetRecords();
 
         public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue);
         
@@ -24,8 +22,12 @@ namespace FileCabinetApp.FileCabinetService
 
         public void Restore(FileCabinetServiceSnapshot snapshot);
 
-        public void Remove(int id);
+        public IEnumerable<int> Delete(SearchValue searchValue);
 
         public void Purge();
+
+        public void Insert(FileCabinetRecord record);
+
+        public IReadOnlyCollection<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where);
     }
 }

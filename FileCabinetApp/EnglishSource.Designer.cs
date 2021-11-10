@@ -75,12 +75,6 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string print_record {
-            get {
-                return ResourceManager.GetString("print_record", resourceCulture);
-            }
-        }
-        
         internal static string id_is_not_an_integer {
             get {
                 return ResourceManager.GetString("id_is_not_an_integer", resourceCulture);
@@ -135,39 +129,15 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string record_not_found {
-            get {
-                return ResourceManager.GetString("record_not_found", resourceCulture);
-            }
-        }
-        
         internal static string hint {
             get {
                 return ResourceManager.GetString("hint", resourceCulture);
             }
         }
         
-        internal static string Date_birth_is_null_or_whitespace {
-            get {
-                return ResourceManager.GetString("Date_birth_is_null_or_whitespace", resourceCulture);
-            }
-        }
-        
         internal static string ReadInput_Conversion_failed {
             get {
                 return ResourceManager.GetString("ReadInput_Conversion_failed", resourceCulture);
-            }
-        }
-        
-        internal static string Validation_failed {
-            get {
-                return ResourceManager.GetString("Validation_failed", resourceCulture);
-            }
-        }
-        
-        internal static string validation_rules {
-            get {
-                return ResourceManager.GetString("validation_rules", resourceCulture);
             }
         }
         
@@ -189,36 +159,6 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string Record_is_removed {
-            get {
-                return ResourceManager.GetString("Record_is_removed", resourceCulture);
-            }
-        }
-        
-        internal static string Create_method_execution_duration_ticks {
-            get {
-                return ResourceManager.GetString("Create_method_execution_duration_ticks", resourceCulture);
-            }
-        }
-        
-        internal static string Edit_method_execution_duration_ticks {
-            get {
-                return ResourceManager.GetString("Edit_method_execution_duration_ticks", resourceCulture);
-            }
-        }
-        
-        internal static string Exit_method_execution_duration_ticks {
-            get {
-                return ResourceManager.GetString("Exit_method_execution_duration_ticks", resourceCulture);
-            }
-        }
-        
-        internal static string Export_method_execution_duration_ticks {
-            get {
-                return ResourceManager.GetString("Export_method_execution_duration_ticks", resourceCulture);
-            }
-        }
-        
         internal static string method_execution_duration_ticks {
             get {
                 return ResourceManager.GetString("method_execution_duration_ticks", resourceCulture);
@@ -234,6 +174,30 @@ namespace FileCabinetApp {
         internal static string FindBy_is_not_presented_in_current_database {
             get {
                 return ResourceManager.GetString("FindBy_is_not_presented_in_current_database", resourceCulture);
+            }
+        }
+        
+        internal static string Records_are_deleted {
+            get {
+                return ResourceManager.GetString("Records_are_deleted", resourceCulture);
+            }
+        }
+        
+        internal static string Records_0_where_updated {
+            get {
+                return ResourceManager.GetString("Records_0_where_updated", resourceCulture);
+            }
+        }
+        
+        internal static string ErrorCommandHandler_Handle_Is_Not_A_Command {
+            get {
+                return ResourceManager.GetString("ErrorCommandHandler_Handle_Is_Not_A_Command", resourceCulture);
+            }
+        }
+        
+        internal static string The_most_similar_commands_are {
+            get {
+                return ResourceManager.GetString("The_most_similar_commands_are", resourceCulture);
             }
         }
     }

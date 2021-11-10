@@ -25,22 +25,12 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             return _logger.LogMethod(base.ReadParameters, id);
         }
 
-        public override int EditRecord(FileCabinetRecord record)
-        {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-            
-            return _logger.LogMethod(base.EditRecord, record);
-        }
-
         public override Statistic GetStat()
         {
             return _logger.LogMethod(base.GetStat);
         }
 
-        public override IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public override IEnumerable<FileCabinetRecord> GetRecords()
         {
             return _logger.LogMethod(base.GetRecords);
         }
@@ -65,9 +55,9 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             _logger.LogMethod(base.Restore, snapshot);
         }
 
-        public override void Remove(int id)
+        public override IEnumerable<int> Delete(SearchValue searchValue)
         {
-            _logger.LogMethod(base.Remove, id);
+            return _logger.LogMethod(base.Delete, searchValue);
         }
 
         public override void Purge()

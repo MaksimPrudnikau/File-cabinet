@@ -69,5 +69,21 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             Stopwatch.Reset();
             return ticks;
         }
+        
+        public static long GetElapsedTicks<T1In, T2In, TOut>(Func<T1In, T2In, TOut> method, T1In first, T2In second, out TOut methodsOut)
+        {
+            if (method is null)
+            {
+                throw new ArgumentNullException(nameof(method));
+            }
+            
+            Stopwatch.Start();
+            methodsOut = method.Invoke(first, second);
+            Stopwatch.Stop();
+            var ticks = Stopwatch.ElapsedTicks;
+            Stopwatch.Reset();
+            
+            return ticks;
+        }
     }
 }

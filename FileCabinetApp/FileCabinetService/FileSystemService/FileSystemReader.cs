@@ -41,7 +41,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// <returns><see cref="FileCabinetRecord"/> array</returns>
         /// <exception cref="ArgumentNullException">stream is null</exception>
         /// <exception cref="ArgumentException">The file size does not correspond to the integer number of occurrences of the records</exception>
-        public FileCabinetRecord[] Deserialize()
+        public IEnumerable<FileCabinetRecord> Deserialize()
         {
             var array = new List<FileCabinetRecord>();
 
@@ -56,7 +56,10 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 }
             }
 
-            return array.ToArray();
+            foreach (var item in array.ToArray())
+            {
+                yield return item;
+            }
         }
     }
 }

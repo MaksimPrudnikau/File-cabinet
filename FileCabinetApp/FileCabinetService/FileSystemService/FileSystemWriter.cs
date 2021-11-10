@@ -8,20 +8,20 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
     {
         private readonly FileCabinetFilesystemService _service;
         private readonly FileStream _file;
-        private readonly Index _index;
+        private readonly FileSystemServiceDictionaries _fileSystemServiceDictionaries;
 
-        public FileSystemWriter(FileCabinetFilesystemService service, FileStream stream, Index index)
+        public FileSystemWriter(FileCabinetFilesystemService service, FileStream stream, FileSystemServiceDictionaries fileSystemServiceDictionaries)
         {
             _service = service;
             _file = stream;
-            _index = index;
+            _fileSystemServiceDictionaries = fileSystemServiceDictionaries;
         }
 
         /// <summary>
         /// Add records to the end of data base
         /// </summary>
         /// <param name="records"></param>
-        public void AppendRange(IReadOnlyCollection<FileCabinetRecord> records)
+        public void AppendRange(IList<FileCabinetRecord> records)
         {
             if (records is null || records.Count == 0)
             {
@@ -56,7 +56,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             {
                 if (item.Id != read.Id) continue;
                 
-                _index.Edit(read, item, _file.Position);
+                _fileSystemServiceDictionaries.Edit(read, item, _file.Position);
                 Write(item);
                 records.Remove(item);
                 break;
@@ -85,6 +85,19 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             };
 
             _file.Write(buffer);
+        }
+
+        public bool TryMarkAsDeleted(int id)
+        {
+            try
+            {
+                MarkAsDeleted(id);
+                return true;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
         }
 
         /// <summary>

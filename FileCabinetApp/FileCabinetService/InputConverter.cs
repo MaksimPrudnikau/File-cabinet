@@ -75,7 +75,7 @@ namespace FileCabinetApp.FileCabinetService
         /// </summary>
         /// <param name="wage">Source wage</param>
         /// <returns>Parsed <see cref="decimal"/> object</returns>
-        public static ConversionResult<decimal> WageConverter(string wage)
+        public static ConversionResult<decimal> SalaryConverter(string wage)
         {
             var parsed = decimal.TryParse(
                 wage,

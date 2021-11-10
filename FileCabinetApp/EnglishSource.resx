@@ -132,9 +132,6 @@
   <data name="create" xml:space="preserve">
     <value>Record #{0} is created</value>
   </data>
-  <data name="print_record" xml:space="preserve">
-    <value>{0}, {1}, {2}, {3:yyyy-MMM-dd}, {4}, {5}, {6}</value>
-  </data>
   <data name="id_is_not_an_integer" xml:space="preserve">
     <value>Entered id is not an integer</value>
   </data>
@@ -162,23 +159,11 @@
   <data name="rank" xml:space="preserve">
     <value>Rank: </value>
   </data>
-  <data name="record_not_found" xml:space="preserve">
-    <value>#{0} record is not found.</value>
-  </data>
   <data name="hint" xml:space="preserve">
     <value>Enter your command, or enter 'help' to get help.</value>
   </data>
-  <data name="Date_birth_is_null_or_whitespace" xml:space="preserve">
-    <value>Date birth is null or whitespace</value>
-  </data>
   <data name="ReadInput_Conversion_failed" xml:space="preserve">
     <value>Conversion failed: {0}. Please, correct your input.</value>
-  </data>
-  <data name="Validation_failed" xml:space="preserve">
-    <value>Validation failed: {0}. Please, correct your input.</value>
-  </data>
-  <data name="validation_rules" xml:space="preserve">
-    <value>Validation rules = {0}</value>
   </data>
   <data name="Export_File_is_exist" xml:space="preserve">
     <value>File is exist - rewrite {0}? [Y/n]</value>
@@ -189,21 +174,6 @@
   <data name="records_were_written_to" xml:space="preserve">
     <value>{0} records were written to {1}</value>
   </data>
-  <data name="Record_is_removed" xml:space="preserve">
-    <value>Record {0} is removed</value>
-  </data>
-  <data name="Create_method_execution_duration_ticks" xml:space="preserve">
-    <value>Create method execution duration is {0} ticks.</value>
-  </data>
-  <data name="Edit_method_execution_duration_ticks" xml:space="preserve">
-    <value>Edit method execution duration is {0} ticks.</value>
-  </data>
-  <data name="Exit_method_execution_duration_ticks" xml:space="preserve">
-    <value>Exit method execution duration is {0} ticks.</value>
-  </data>
-  <data name="Export_method_execution_duration_ticks" xml:space="preserve">
-    <value>Export method execution duration is {0} ticks.</value>
-  </data>
   <data name="method_execution_duration_ticks" xml:space="preserve">
     <value>{0} method execution duration is {1} ticks.</value>
   </data>
@@ -212,5 +182,18 @@
   </data>
   <data name="FindBy_is_not_presented_in_current_database" xml:space="preserve">
     <value>{0} is not presented in current database</value>
+  </data>
+  <data name="Records_are_deleted" xml:space="preserve">
+    <value>Record #{0} are deleted</value>
+  </data>
+  <data name="Records_0_where_updated" xml:space="preserve">
+    <value>Records #{0} where updated</value>
+  </data>
+  <data name="ErrorCommandHandler_Handle_Is_Not_A_Command" xml:space="preserve">
+    <value>'{0}' is not a command. See 'help'.
+</value>
+  </data>
+  <data name="The_most_similar_commands_are" xml:space="preserve">
+    <value>The most similar commands are</value>
   </data>
 </root>

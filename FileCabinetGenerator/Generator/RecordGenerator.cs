@@ -61,7 +61,7 @@ namespace FileCabinetGenerator.Generator
         /// <param name="amount">Total amount of records to generate</param>
         /// <returns><see cref="FileCabinetRecord"/> array where firstname, lastname and date of birth
         /// are created randomly. Other properties are set as default</returns>
-        private FileCabinetRecord[] Generate(int startId, long amount)
+        private IEnumerable<FileCabinetRecord> Generate(int startId, long amount)
         {
             var records = new List<FileCabinetRecord>();
             for (int i = 0, id = startId; i < amount; i++, id++)
@@ -69,7 +69,7 @@ namespace FileCabinetGenerator.Generator
                 records.Add(GetRandomRecord(id));
             }
 
-            return records.ToArray();
+            return records;
         }
 
         /// <summary>

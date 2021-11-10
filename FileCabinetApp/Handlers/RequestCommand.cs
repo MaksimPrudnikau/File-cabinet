@@ -4,7 +4,6 @@ namespace FileCabinetApp.Handlers
     {
         Help,
         Create,
-        Edit,
         Stat,
         List,
         Find,
@@ -12,6 +11,8 @@ namespace FileCabinetApp.Handlers
         Import,
         Delete,
         Purge,
-        Exit
+        Exit,
+        Insert,
+        Update
     }
 }
