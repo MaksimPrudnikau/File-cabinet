@@ -196,4 +196,7 @@
   <data name="The_most_similar_commands_are" xml:space="preserve">
     <value>The most similar commands are</value>
   </data>
+  <data name="Cannot_resolve_with_input_logical_operand" xml:space="preserve">
+    <value>Cannot resolve with input logical operand</value>
+  </data>
 </root>

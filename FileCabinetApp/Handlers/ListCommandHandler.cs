@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
 using FileCabinetApp.FileCabinetService;
+using FileCabinetApp.Printers;
 
 namespace FileCabinetApp.Handlers
 {
     public class ListCommandHandler : ServiceCommandHandlerBase
     {
         private const RequestCommand Command = RequestCommand.List;
-        private readonly Action<IEnumerable<FileCabinetRecord>> _print;
+        private readonly IRecordPrinter _printer;
 
-        public ListCommandHandler(IFileCabinetService service, Action<IEnumerable<FileCabinetRecord>> print) :
+        public ListCommandHandler(IFileCabinetService service, IRecordPrinter printer) :
             base(service)
         {
-            _print = print;
+            _printer = printer;
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace FileCabinetApp.Handlers
                 return;
             }
             
-            _print(Service.GetRecords());
+            _printer.Print(Service.GetRecords());
         }
     }
 }

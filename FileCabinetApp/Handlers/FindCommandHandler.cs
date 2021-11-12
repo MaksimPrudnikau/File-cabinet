@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FileCabinetApp.FileCabinetService;
+using FileCabinetApp.Printers;
 
 namespace FileCabinetApp.Handlers
 {
@@ -8,12 +9,12 @@ namespace FileCabinetApp.Handlers
     public class FindCommandHandler : ServiceCommandHandlerBase
     {
         private const RequestCommand Command = RequestCommand.Find;
-        private readonly Action<IEnumerable<FileCabinetRecord>> _print;
+        private readonly IRecordPrinter _printer;
 
-        public FindCommandHandler(IFileCabinetService service, Action<IEnumerable<FileCabinetRecord>> print) :
+        public FindCommandHandler(IFileCabinetService service, IRecordPrinter printer) :
             base(service)
         {
-            _print = print;
+            _printer = printer;
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace FileCabinetApp.Handlers
             var attribute = inputs[attributeIndex];
             var searchValue = inputs[searchValueIndex];
             
-            _print(FindByAttribute(attribute, searchValue));
+            _printer.Print(FindByAttribute(attribute, searchValue));
             }
 
         /// <summary>

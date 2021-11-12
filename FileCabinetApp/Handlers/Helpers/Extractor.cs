@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using FileCabinetApp.FileCabinetService;
 
 namespace FileCabinetApp.Handlers.Helpers
@@ -24,6 +25,19 @@ namespace FileCabinetApp.Handlers.Helpers
             }
 
             return searchValues;
+        }
+        
+        public static string[] GetWords(string source)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            source = source.Replace(" ", string.Empty, StringComparison.InvariantCulture);
+            var builder = new StringBuilder(source);
+            builder.Replace("'", string.Empty);
+            return builder.ToString().Split(',');
         }
     }
 }

@@ -6,9 +6,9 @@ using FileCabinetApp.FileCabinetService;
 
 namespace FileCabinetApp.Printers
 {
-    public static class RecordsPrinter
+    public class DefaultPrinter : IRecordPrinter
     {
-        public static void Default(IEnumerable<FileCabinetRecord> records)
+        public void Print(IEnumerable<FileCabinetRecord> records)
         {
             if (records is null)
             {
