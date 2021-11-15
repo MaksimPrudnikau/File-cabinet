@@ -65,8 +65,6 @@ namespace FileCabinetApp.Handlers
                 Where = values,
                 Operand = Enum.Parse<LogicalOperand>(Delimiters[delimiterIndex], true)
             };
-            
-            _printer.Print(Service.GetRecords());
         }
 
         private static int FindDelimiter(string source, IReadOnlyCollection<string> delimiters)

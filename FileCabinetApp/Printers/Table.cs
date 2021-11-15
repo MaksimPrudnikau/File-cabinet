@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using FileCabinetApp.FileCabinetService;
@@ -11,6 +12,7 @@ namespace FileCabinetApp.Printers
     {
         private readonly List<Column> _columns;
         private int _totalRows;
+        private readonly StringBuilder _separateLine;
 
         public Table(IEnumerable<SearchValue.SearchProperty> properties)
         {
@@ -24,6 +26,9 @@ namespace FileCabinetApp.Printers
             {
                 _columns.Add(new Column(property));
             }
+
+            _separateLine = new StringBuilder();
+            _separateLine.Append('+');
         }
 
         public void Add(FileCabinetRecord record)
@@ -31,6 +36,7 @@ namespace FileCabinetApp.Printers
             foreach (var column in _columns)
             {
                 column.Add(RecordHelper.GetByAttribute(record, column.Header));
+                _separateLine.Append(GetSeparatedLine(column.MaxWidth));
             }
 
             _totalRows++;
@@ -39,23 +45,44 @@ namespace FileCabinetApp.Printers
         public override string ToString()
         {
             var table = new StringBuilder();
+            var line = new StringBuilder();
+            table.Append(GetHeader());
+            
             for (var row = 0; row < _totalRows; ++row)
             {
+                line.Append('|');
                 foreach (var column in _columns)
                 {
-                    var alignment = Alignment.Centering;
-                    if (column.Header is SearchValue.SearchProperty.Id)
-                    {
-                        alignment = Alignment.Right;
-                    }
-                    
-                    table.Append(GetValueInFormat( column.Values[row], column.MaxWidth, alignment));
-                }
+                    var alignment = column.Header == SearchValue.SearchProperty.Id 
+                        ? Alignment.Right 
+                        : Alignment.Centering;
 
-                table.AppendLine();
+                    line.Append(GetValueInFormat(column.Values[row], column.MaxWidth, alignment));
+                }
+                
+                table.AppendLine(line.ToString());
+                line.Clear();
             }
 
+            table.AppendLine(_separateLine.ToString());
             return table.ToString();
+        }
+
+        private StringBuilder GetHeader()
+        {
+            var header = new StringBuilder();
+
+            header.AppendLine(_separateLine.ToString());
+            var currentPos = header.Length;
+            foreach (var column in _columns)
+            {
+                header.Append(GetValueInFormat($"{column.Header}", column.MaxWidth, Alignment.Centering));
+            }
+
+            header.Insert(currentPos, '|');
+            header.AppendLine();
+            header.AppendLine(_separateLine.ToString());
+            return header;
         }
 
         private static StringBuilder GetValueInFormat(string value, int maxWidth, Alignment alignment)
@@ -71,7 +98,7 @@ namespace FileCabinetApp.Printers
             {
                 value = CenteredString(value, maxWidth);
             }
-            
+
             table.AppendFormat(CultureInfo.InvariantCulture, formatString, value);
             return table;
         }
@@ -87,6 +114,14 @@ namespace FileCabinetApp.Printers
             var rightPadding = width - source.Length - leftPadding;
             
             return new string(' ', leftPadding) + source + new string(' ', rightPadding);
+        }
+
+        private static string GetSeparatedLine(int length)
+        {
+            var line = new StringBuilder();
+            line.Append('-', length + 2);
+            line.Append('+');
+            return line.ToString();
         }
     }
 }
