@@ -10,6 +10,7 @@ namespace FileCabinetApp.Handlers
     {
         private const RequestCommand Command = RequestCommand.Select;
         private IRecordPrinter _printer;
+        private static readonly string[] Delimiters = {"and", "or"};
         
         public SelectCommandHandler(IFileCabinetService service, IRecordPrinter printer) : base(service)
         {
@@ -44,7 +45,7 @@ namespace FileCabinetApp.Handlers
             {
                 throw new ArgumentException($"Cannot find key word '{keyword}'");
             }
-            
+
             var split = parameters.Split(keyword);
             var keys = Extractor.GetWords(split[0]);
 
@@ -54,25 +55,39 @@ namespace FileCabinetApp.Handlers
                 names.Add(Enum.Parse<SearchValue.SearchProperty>(item, true));
             }
 
-            IList<SearchValue> values;
-            if (parameters.Contains("and", StringComparison.InvariantCultureIgnoreCase))
+            var delimiterIndex = FindDelimiter(parameters, Delimiters);
+
+            var values = Extractor.ExtractSearchValues(split[1], Delimiters[delimiterIndex]);
+
+            _printer = new TablePrinter 
             {
-                values = Extractor.ExtractSearchValues(split[1], "and");
-            }
-            else if (parameters.Contains("or", StringComparison.InvariantCultureIgnoreCase))
+                Properties = names,
+                Where = values,
+                Operand = Enum.Parse<LogicalOperand>(Delimiters[delimiterIndex], true)
+            };
+            
+            _printer.Print(Service.GetRecords());
+        }
+
+        private static int FindDelimiter(string source, IReadOnlyCollection<string> delimiters)
+        {
+            var findIndex = 0;
+            foreach (var delimiter in delimiters)
             {
-                values = Extractor.ExtractSearchValues(split[1], "or");
-            }
-            else if (split[1].Length == 1)
-            {
-                values = Extractor.ExtractSearchValues(split[1]);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(nameof(parameters), EnglishSource.Cannot_resolve_with_input_logical_operand);
+                if (source.Contains(delimiter, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    break;
+                }
+
+                findIndex++;
             }
 
-            _printer = new TablePrinter {Properties = names, Where = values};
+            if (findIndex >= delimiters.Count)
+            {
+                return 0;
+            }
+            
+            return findIndex;
         }
     }
 }

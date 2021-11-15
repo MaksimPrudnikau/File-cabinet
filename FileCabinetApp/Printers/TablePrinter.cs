@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using FileCabinetApp.FileCabinetService;
+using FileCabinetApp.FileCabinetService.FileSystemService;
 
 namespace FileCabinetApp.Printers
 {
@@ -11,84 +11,76 @@ namespace FileCabinetApp.Printers
         
         public IEnumerable<SearchValue> Where { get; set; }
 
-        public bool LogicalAnd { get; set; }
+        public LogicalOperand Operand { get; set; }
 
-        private readonly Dictionary<SearchValue.SearchProperty, int> _currentWidths = new();
+        private List<FileCabinetRecord> _correctRecords = new();
 
-        private long _width;
 
         public void Print(IEnumerable<FileCabinetRecord> records)
         {
-            FillDictionary();
-            var test = new StringBuilder();
-            Console.WriteLine(CreateHeader());
+            if (records is null)
+            {
+                throw new ArgumentNullException(nameof(records));
+            }
 
+            var table = new Table(Properties);
+
+            var correct = true;
             foreach (var record in records)
             {
-            }
-        }
-
-        private void FillDictionary()
-        {
-            foreach (var property in Properties)
-            {
-                if (!_currentWidths.ContainsKey(property))
+                switch (Operand)
                 {
-                    _currentWidths.Add(property, $"{property}".Length);
+                    case LogicalOperand.And:
+                        correct = SatisfyAll(record);
+                        break;
+                    case LogicalOperand.Or:
+                        correct = SatisfyAny(record);
+                        break;
+                }
+
+                if (correct)
+                {
+                    table.Add(record);
                 }
             }
+            
+            Console.WriteLine(table.ToString());
         }
 
-        private StringBuilder CreateHeader()
+        private IEnumerable<string> GetValues(FileCabinetRecord record)
         {
-            var line = new StringBuilder();
-            var values = new List<string>();
-
             foreach (var property in Properties)
             {
-                values.Add($"{property}");
+                yield return RecordHelper.GetByAttribute(record, property);
             }
-
-            var names = GetValues(values);
-            var separateLine = GetSeparateLine();
-            
-            line.Append(separateLine);
-            line.Append(names);
-            line.Append(separateLine);
-            return line;
         }
 
-        private StringBuilder GetValues(IEnumerable<string> values)
+        private bool SatisfyAll(FileCabinetRecord record)
         {
-            var line = new StringBuilder();
-            line.Append('|');
-
-            foreach (var record in values)
+            foreach (var item in Where)
             {
-                line.Append($" {record} |");
+                var value = RecordHelper.GetByAttribute(record, item.Property);
+                if (!SearchValue.Equals(new SearchValue($"{item.Property}", value), item))
+                {
+                    return false;
+                }
             }
 
-            if (line.Length > _width)
-            {
-                _width = line.Length;
-            }
-
-            line.AppendLine();
-            return line;
+            return true;
         }
-
-        private StringBuilder GetSeparateLine()
+        
+        private bool SatisfyAny(FileCabinetRecord record)
         {
-            var line = new StringBuilder();
-            line.Append('+');
-            foreach (var width in _currentWidths.Values)
+            foreach (var item in Where)
             {
-                line.Append('-', width + 2);
-                line.Append('+');
+                var value = RecordHelper.GetByAttribute(record, item.Property);
+                if (SearchValue.Equals(new SearchValue($"{item.Property}", value), item))
+                {
+                    return true;
+                }
             }
-            
-            line.AppendLine();
-            return line;
+
+            return false;
         }
     }
 }
