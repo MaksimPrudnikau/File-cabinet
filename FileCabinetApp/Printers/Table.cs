@@ -28,7 +28,6 @@ namespace FileCabinetApp.Printers
             }
 
             _separateLine = new StringBuilder();
-            _separateLine.Append('+');
         }
 
         public void Add(FileCabinetRecord record)
@@ -36,7 +35,6 @@ namespace FileCabinetApp.Printers
             foreach (var column in _columns)
             {
                 column.Add(RecordHelper.GetByAttribute(record, column.Header));
-                _separateLine.Append(GetSeparatedLine(column.MaxWidth));
             }
 
             _totalRows++;
@@ -46,6 +44,7 @@ namespace FileCabinetApp.Printers
         {
             var table = new StringBuilder();
             var line = new StringBuilder();
+            SetSeparatedLine();
             table.Append(GetHeader());
             
             for (var row = 0; row < _totalRows; ++row)
@@ -115,6 +114,16 @@ namespace FileCabinetApp.Printers
             
             return new string(' ', leftPadding) + source + new string(' ', rightPadding);
         }
+
+        private void SetSeparatedLine()
+        {
+            _separateLine.Append('+');
+            foreach (var column in _columns)
+            {
+                _separateLine.Append(GetSeparatedLine(column.MaxWidth));
+            }
+        }
+
 
         private static string GetSeparatedLine(int length)
         {
