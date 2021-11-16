@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+
 namespace FileCabinetApp.FileCabinetService.FileSystemService
 {
     public static class RecordHelper
@@ -98,6 +100,27 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 JobExperience = source.JobExperience,
                 Salary = source.Salary,
                 Rank = source.Rank
+            };
+        }
+
+        public static string GetByAttribute(FileCabinetRecord record, SearchValue.SearchProperty attribute)
+        {
+            if (record is null)
+            {
+                throw new ArgumentNullException(nameof(record));
+            }
+            
+            return attribute switch
+            {
+                SearchValue.SearchProperty.Id => $"{record.Id}",
+                SearchValue.SearchProperty.FirstName => record.FirstName,
+                SearchValue.SearchProperty.LastName => record.LastName,
+                SearchValue.SearchProperty.DateOfBirth => record.DateOfBirth.ToString(
+                    FileCabinetConsts.OutputDateFormat, CultureInfo.InvariantCulture),
+                SearchValue.SearchProperty.JobExperience => $"{record.JobExperience}",
+                SearchValue.SearchProperty.Salary => $"{record.Salary}",
+                SearchValue.SearchProperty.Rank => $"{record.Rank}",
+                _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
             };
         }
     }

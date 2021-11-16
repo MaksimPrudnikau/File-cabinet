@@ -5,8 +5,7 @@ using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.FileCabinetService.Decorators.Logger;
 using FileCabinetApp.FileCabinetService.Decorators.Meter;
 using FileCabinetApp.Handlers;
-using FileCabinetApp.Handlers.Update;
-using FileCabinetApp.Printers;
+using FileCabinetApp.Printers.Table;
 using FileCabinetApp.Validation;
 using FileCabinetApp.Validators;
 
@@ -133,9 +132,7 @@ namespace FileCabinetApp
         {
             var helpHandler = new HelpCommandHandler();
             var createHandler = new CreateCommandHandler(service);
-            var listHandler = new ListCommandHandler(service, RecordsPrinter.Default);
             var statHandler = new StatCommandHandler(service);
-            var findHandler = new FindCommandHandler(service, RecordsPrinter.Default);
             var exportHandler = new ExportCommandHandler(service);
             var importHandler = new ImportCommandHandler(service);
             var deleteHandler = new DeleteCommandHandler(service);
@@ -143,19 +140,19 @@ namespace FileCabinetApp
             var exitHandler = new ExitCommandHandler(x => _isRunning = x);
             var insertHandler = new InsertCommandHandler(service);
             var updateHandler = new UpdateCommandHandler(service);
+            var selectHandler = new SelectCommandHandler(service, new TablePrinter());
             
             helpHandler.SetNext(createHandler);
-            createHandler.SetNext(listHandler);
-            listHandler.SetNext(statHandler);
-            statHandler.SetNext(findHandler);
-            findHandler.SetNext(exportHandler);
+            createHandler.SetNext(statHandler);
+            statHandler.SetNext(exportHandler);
             exportHandler.SetNext(importHandler);
             importHandler.SetNext(deleteHandler);
             deleteHandler.SetNext(purgeHandler);
             purgeHandler.SetNext(exitHandler);
             exitHandler.SetNext(insertHandler);
             insertHandler.SetNext(updateHandler);
-
+            updateHandler.SetNext(selectHandler);
+            
             return helpHandler;
         }
     }

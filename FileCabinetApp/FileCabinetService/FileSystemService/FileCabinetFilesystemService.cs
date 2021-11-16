@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using FileCabinetApp.Export;
-using FileCabinetApp.FileCabinetService.Iterators;
 using FileCabinetApp.Results;
 using FileCabinetApp.Validators;
 
@@ -147,73 +145,6 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
             }
             while (true);
-        }
-
-        /// <summary>
-        /// Find all occurrences of searchValue in records of current data base file
-        /// </summary>
-        /// <param name="searchValue">Value to search</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with firstname equals searchValue</returns>
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
-        {
-            var records = new List<long>();
-            try
-            {
-                records = new List<long>(_dictionaries.FirstNames[searchValue]);
-                return new FilesystemIterator(_reader, records);
-            }
-            catch (KeyNotFoundException)
-            {
-                return new FilesystemIterator(_reader, records);
-            }
-        }
-
-        /// <summary>
-        /// Find all occurrences of searchValue in records of current data base file
-        /// </summary>
-        /// <param name="searchValue">Value to search</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with lastname equals searchValue</returns>
-        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
-        {
-            var records = new List<long>();
-            try
-            {
-                records = new List<long>(_dictionaries.LastNames[searchValue]);
-                return new FilesystemIterator(_reader, records);
-            }
-            catch (KeyNotFoundException)
-            {
-                return new FilesystemIterator(_reader, records);
-            }
-        }
-
-        /// <summary>
-        /// Find all occurrences of searchValue in records of current data base file
-        /// </summary>
-        /// <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with date of birth equals searchValue</returns>
-        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
-        {
-            var records = new List<long>();
-            
-            try
-            {
-                var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
-                    CultureInfo.InvariantCulture);
-                
-                records = new List<long>(_dictionaries.DateOfBirths[dateOfBirth]);
-                return new FilesystemIterator(_reader, records);
-            }
-            catch (SystemException exception) 
-                when (exception is ArgumentException or FormatException or KeyNotFoundException)
-            {
-                return new FilesystemIterator(_reader, records);
-            }
-            catch (KeyNotFoundException)
-            {
-                Console.Error.WriteLine(EnglishSource.FindBy_is_not_presented_in_current_database, searchValue);
-                return new FilesystemIterator(_reader, records);
-            }
         }
 
         /// <summary>

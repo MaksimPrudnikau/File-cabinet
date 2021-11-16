@@ -13,7 +13,7 @@ namespace FileCabinetApp.Handlers
         }
 
         /// <summary>
-        /// Prints the amount of records
+        /// Prints the amount of existing and deleted records
         /// </summary>
         public override void Handle(AppCommandRequest request)
         {

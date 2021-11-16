@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Net;
 using FileCabinetApp.Export;
 using FileCabinetApp.FileCabinetService.FileSystemService;
-using FileCabinetApp.FileCabinetService.Iterators;
 using FileCabinetApp.Results;
 using FileCabinetApp.Validators;
 
@@ -124,39 +121,6 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
                 Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
             }
             while (true);
-        }
-
-        /// <summary>
-        /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable first name
-        /// </summary>
-        /// <param name="searchValue">First name to search</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with suitable first name</returns>
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
-        {
-            return new MemoryIterator(_dictionaries.FirstNames[searchValue]);
-        }
-
-        /// <summary>
-        /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable last name
-        /// </summary>
-        /// <param name="searchValue">Last name to search</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with suitable last name</returns>
-        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
-        {
-            return new MemoryIterator(_dictionaries.LastNames[searchValue]);
-        }
-
-        /// <summary>
-        /// Find all occurrences of <see cref="FileCabinetRecord"/> with suitable date of birth
-        /// </summary>
-        /// <param name="searchValue">Date of birth to search</param>
-        /// <returns><see cref="FileCabinetRecord"/> array with suitable date of birth</returns>
-        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
-        {
-            var dateOfBirth = DateTime.ParseExact(searchValue, FileCabinetConsts.InputDateFormat,
-                CultureInfo.InvariantCulture);
-            
-            return new MemoryIterator(_dictionaries.DateOfBirths[dateOfBirth]);
         }
 
         public void Restore(FileCabinetServiceSnapshot snapshot)

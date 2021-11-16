@@ -200,5 +200,35 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("The_most_similar_commands_are", resourceCulture);
             }
         }
+        
+        internal static string Cannot_resolve_with_input_logical_operand {
+            get {
+                return ResourceManager.GetString("Cannot_resolve_with_input_logical_operand", resourceCulture);
+            }
+        }
+        
+        internal static string File_is_not_exist {
+            get {
+                return ResourceManager.GetString("File_is_not_exist", resourceCulture);
+            }
+        }
+        
+        internal static string Export_format_cannot_be_null {
+            get {
+                return ResourceManager.GetString("Export_format_cannot_be_null", resourceCulture);
+            }
+        }
+        
+        internal static string Export_type_is_not_supported {
+            get {
+                return ResourceManager.GetString("Export_type_is_not_supported", resourceCulture);
+            }
+        }
+        
+        internal static string Answer_must_be_either_Y_or_n {
+            get {
+                return ResourceManager.GetString("Answer_must_be_either_Y_or_n", resourceCulture);
+            }
+        }
     }
 }

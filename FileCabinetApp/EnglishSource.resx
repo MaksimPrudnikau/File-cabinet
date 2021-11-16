@@ -196,4 +196,19 @@
   <data name="The_most_similar_commands_are" xml:space="preserve">
     <value>The most similar commands are</value>
   </data>
+  <data name="Cannot_resolve_with_input_logical_operand" xml:space="preserve">
+    <value>Cannot resolve with input logical operand</value>
+  </data>
+  <data name="File_is_not_exist" xml:space="preserve">
+    <value>Cannot open file from {0}. File is not exist</value>
+  </data>
+  <data name="Export_format_cannot_be_null" xml:space="preserve">
+    <value>Export format cannot be null</value>
+  </data>
+  <data name="Export_type_is_not_supported" xml:space="preserve">
+    <value>{0}-export is not supported</value>
+  </data>
+  <data name="Answer_must_be_either_Y_or_n" xml:space="preserve">
+    <value>Answer must be either Y or n</value>
+  </data>
 </root>

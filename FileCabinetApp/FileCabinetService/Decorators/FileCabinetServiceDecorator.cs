@@ -39,21 +39,6 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             return _service.GetRecords();
         }
 
-        public virtual IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue)
-        {
-            return _service.FindByFirstName(searchValue);
-        }
-
-        public virtual IEnumerable<FileCabinetRecord> FindByLastName(string searchValue)
-        {
-            return _service.FindByLastName(searchValue);
-        }
-
-        public virtual IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue)
-        {
-            return _service.FindByDateOfBirth(searchValue);
-        }
-
         public virtual void Restore(FileCabinetServiceSnapshot snapshot)
         {
             _service.Restore(snapshot);

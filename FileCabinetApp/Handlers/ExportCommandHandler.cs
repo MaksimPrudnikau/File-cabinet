@@ -1,7 +1,9 @@
 using System;
+using System.Globalization;
 using System.IO;
 using FileCabinetApp.Export;
 using FileCabinetApp.FileCabinetService;
+using FileCabinetApp.Handlers.Helpers;
 
 namespace FileCabinetApp.Handlers
 {
@@ -12,7 +14,7 @@ namespace FileCabinetApp.Handlers
         public ExportCommandHandler(IFileCabinetService service) : base(service)
         {
         }
-        
+
         /// <summary>
         /// Serialize all records in file with entered format
         /// </summary>
@@ -24,64 +26,128 @@ namespace FileCabinetApp.Handlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            
+
             if (request.Command != Command)
             {
                 NextHandler.Handle(request);
                 return;
             }
+            
+            const int correctParametersLength = 2;
+            const int outputTypeIndex = 0;
+            const int exportPathIndex = 1;
 
             var parametersSplited = request.Parameters.Split(' ');
-            
-            if (parametersSplited.Length != 2)
+
+            if (parametersSplited.Length != correctParametersLength)
             {
                 Console.Error.WriteLine("Wrong data format");
                 return;
             }
-            
-            var exportFormat = parametersSplited[0];
-            var directory =  parametersSplited[1];
-            
-            if (File.Exists(directory))
+
+            var outFormatIsCorrect = TryGetExportFormat(parametersSplited[outputTypeIndex], out var exportFormat);
+            var pathIsCorrect = GetDirectory(parametersSplited[exportPathIndex]);
+            if (!outFormatIsCorrect || !pathIsCorrect)
             {
-                Console.Error.WriteLine(EnglishSource.Export_File_is_exist, directory);
-                
+                return;
+            }
+
+            var directory = parametersSplited[exportPathIndex];
+            var exported = TryExport(directory, exportFormat);
+            if (exported)
+            {
+                Console.WriteLine(EnglishSource.All_records_are_exported_to_file, directory);
+            }
+        }
+
+        private static bool TryExport(string path, ExportFormat? format)
+        {
+            try
+            {
+                Export(path, format);
+                return true;
+            }
+            catch (ArgumentException exception)
+            {
+                Console.WriteLine(exception.Message);
+                return false;
+            }
+        }
+
+        private static void Export(string path, ExportFormat? format)
+        {
+            if (format is null)
+            {
+                throw new ArgumentNullException(nameof(format), EnglishSource.Export_format_cannot_be_null);
+            }
+            
+            using var file = new StreamWriter(path);
+            var snapshot = new FileCabinetServiceSnapshot(Service);
+            switch (format)
+            {
+                case ExportFormat.Csv:
+                    snapshot.SaveToCsv(file);
+                    break;
+                case ExportFormat.Xml:
+                    snapshot.SaveToXml(file);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(format),
+                        string.Format(CultureInfo.CurrentCulture, EnglishSource.Export_type_is_not_supported, format));
+            }
+
+            Console.WriteLine(EnglishSource.Export_type_is_not_supported, format);
+            
+            file.Close();
+        }
+
+        private static bool GetDirectory(string sourceDirectory)
+        {
+            if (!File.Exists(sourceDirectory))
+            {
+                return true;
+            }
+
+            Console.WriteLine(EnglishSource.Export_File_is_exist);
+            return AllowRewriteIfExist();
+        }
+
+        private static bool AllowRewriteIfExist()
+        {
+            while (true)
+            {
                 switch (Console.ReadLine())
                 {
                     case "Y":
-                        break;
+                        return true;
                     case "n":
                         Console.WriteLine();
-                        return;
+                        return false;
                     default:
-                        Console.Error.WriteLine("Answer must be either Y or n");
-                        return;
+                        Console.WriteLine(EnglishSource.Answer_must_be_either_Y_or_n);
+                        continue;
                 }
             }
+        }
 
-            using (var file = new StreamWriter(directory))
+        private static bool TryGetExportFormat(string parameters, out ExportFormat? format)
+        {
+            try
             {
-                if (!File.Exists(directory))
-                {
-                    Console.Error.WriteLine($"Export failed: can`t open file {directory}");
-                }
-
-                var snapshot = new FileCabinetServiceSnapshot(Service);
-
-                switch (exportFormat)
-                {
-                    case "csv":
-                        snapshot.SaveToCsv(file);
-                        break;
-                    case "xml":
-                        snapshot.SaveToXml(file);
-                        break;
-                }
-                
-                file.Close();
+                format = GetExportFormat(parameters);
+                return true;
             }
-            
-            Console.WriteLine(EnglishSource.All_records_are_exported_to_file, directory);
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+                format = null;
+                return false;
+            }
+        }
+
+        private static ExportFormat GetExportFormat(string parameters)
+        {
+            return Enum.Parse<ExportFormat>(parameters, true);
         }
     }
 }

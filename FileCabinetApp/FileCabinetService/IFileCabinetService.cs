@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using FileCabinetApp.Export;
-using FileCabinetApp.FileCabinetService.Iterators;
 
 namespace FileCabinetApp.FileCabinetService
 {
@@ -13,12 +12,6 @@ namespace FileCabinetApp.FileCabinetService
         public Statistic GetStat();
 
         public IEnumerable<FileCabinetRecord> GetRecords();
-
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string searchValue);
-        
-        public IEnumerable<FileCabinetRecord> FindByLastName(string searchValue);
-        
-        public IEnumerable<FileCabinetRecord> FindByDateOfBirth(string searchValue);
 
         public void Restore(FileCabinetServiceSnapshot snapshot);
 
