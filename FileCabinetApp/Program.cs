@@ -5,7 +5,7 @@ using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.FileCabinetService.Decorators.Logger;
 using FileCabinetApp.FileCabinetService.Decorators.Meter;
 using FileCabinetApp.Handlers;
-using FileCabinetApp.Printers;
+using FileCabinetApp.Printers.Table;
 using FileCabinetApp.Validation;
 using FileCabinetApp.Validators;
 
@@ -132,9 +132,7 @@ namespace FileCabinetApp
         {
             var helpHandler = new HelpCommandHandler();
             var createHandler = new CreateCommandHandler(service);
-            var listHandler = new ListCommandHandler(service, new DefaultPrinter());
             var statHandler = new StatCommandHandler(service);
-            var findHandler = new FindCommandHandler(service, new DefaultPrinter());
             var exportHandler = new ExportCommandHandler(service);
             var importHandler = new ImportCommandHandler(service);
             var deleteHandler = new DeleteCommandHandler(service);
@@ -145,10 +143,8 @@ namespace FileCabinetApp
             var selectHandler = new SelectCommandHandler(service, new TablePrinter());
             
             helpHandler.SetNext(createHandler);
-            createHandler.SetNext(listHandler);
-            listHandler.SetNext(statHandler);
-            statHandler.SetNext(findHandler);
-            findHandler.SetNext(exportHandler);
+            createHandler.SetNext(statHandler);
+            statHandler.SetNext(exportHandler);
             exportHandler.SetNext(importHandler);
             importHandler.SetNext(deleteHandler);
             deleteHandler.SetNext(purgeHandler);

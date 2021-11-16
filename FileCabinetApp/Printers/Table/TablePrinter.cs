@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.FileCabinetService.FileSystemService;
 
-namespace FileCabinetApp.Printers
+namespace FileCabinetApp.Printers.Table
 {
     public class TablePrinter : IRecordPrinter
     {   
-        public IEnumerable<SearchValue.SearchProperty> Properties { get; set; }
+        public IEnumerable<SearchValue.SearchProperty> Properties { get; init; }
         
-        public IEnumerable<SearchValue> Where { get; set; }
+        public IEnumerable<SearchValue> Where { get; init; }
 
-        public LogicalOperand Operand { get; set; }
-
-        private List<FileCabinetRecord> _correctRecords = new();
+        public LogicalOperand Operand { get; init; }
 
 
         public void Print(IEnumerable<FileCabinetRecord> records)
@@ -23,7 +21,7 @@ namespace FileCabinetApp.Printers
                 throw new ArgumentNullException(nameof(records));
             }
 
-            var table = new Table(Properties);
+            var table = new RecordsTable(Properties);
 
             var correct = true;
             foreach (var record in records)
@@ -45,14 +43,6 @@ namespace FileCabinetApp.Printers
             }
             
             Console.WriteLine(table.ToString());
-        }
-
-        private IEnumerable<string> GetValues(FileCabinetRecord record)
-        {
-            foreach (var property in Properties)
-            {
-                yield return RecordHelper.GetByAttribute(record, property);
-            }
         }
 
         private bool SatisfyAll(FileCabinetRecord record)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.Handlers.Helpers;
 using FileCabinetApp.Printers;
+using FileCabinetApp.Printers.Table;
 
 namespace FileCabinetApp.Handlers
 {

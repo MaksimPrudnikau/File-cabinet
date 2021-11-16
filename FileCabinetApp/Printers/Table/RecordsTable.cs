@@ -1,20 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.FileCabinetService.FileSystemService;
 
-namespace FileCabinetApp.Printers
+namespace FileCabinetApp.Printers.Table
 {
-    public class Table
+    public class RecordsTable
     {
         private readonly List<Column> _columns;
         private int _totalRows;
         private readonly StringBuilder _separateLine;
 
-        public Table(IEnumerable<SearchValue.SearchProperty> properties)
+        public RecordsTable(IEnumerable<SearchValue.SearchProperty> properties)
         {
             if (properties is null)
             {

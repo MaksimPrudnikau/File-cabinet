@@ -10,7 +10,6 @@ namespace FileCabinetApp.Handlers
         public CreateCommandHandler(IFileCabinetService service) : base(service)
         {
         }
-        
 
         /// <summary>
         /// Create record in current service
