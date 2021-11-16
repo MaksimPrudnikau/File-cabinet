@@ -14,7 +14,7 @@ namespace FileCabinetApp {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class EnglishSource {
+    internal class EnglishSource {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -152,8 +152,8 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("All_records_are_exported_to_file", resourceCulture);
             }
         }
-
-        public static string records_were_written_to {
+        
+        internal static string records_were_written_to {
             get {
                 return ResourceManager.GetString("records_were_written_to", resourceCulture);
             }
@@ -204,6 +204,30 @@ namespace FileCabinetApp {
         internal static string Cannot_resolve_with_input_logical_operand {
             get {
                 return ResourceManager.GetString("Cannot_resolve_with_input_logical_operand", resourceCulture);
+            }
+        }
+        
+        internal static string File_is_not_exist {
+            get {
+                return ResourceManager.GetString("File_is_not_exist", resourceCulture);
+            }
+        }
+        
+        internal static string Export_format_cannot_be_null {
+            get {
+                return ResourceManager.GetString("Export_format_cannot_be_null", resourceCulture);
+            }
+        }
+        
+        internal static string Export_type_is_not_supported {
+            get {
+                return ResourceManager.GetString("Export_type_is_not_supported", resourceCulture);
+            }
+        }
+        
+        internal static string Answer_must_be_either_Y_or_n {
+            get {
+                return ResourceManager.GetString("Answer_must_be_either_Y_or_n", resourceCulture);
             }
         }
     }
