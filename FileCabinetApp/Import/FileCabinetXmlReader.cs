@@ -30,9 +30,7 @@ namespace FileCabinetApp.Import
         public IList<FileCabinetRecord> ReadAll()
         {
             using var xmlReader = XmlReader.Create(_reader);
-
             var records = (RecordsXml) _serializer.Deserialize(xmlReader) ?? new RecordsXml();
-
             var fileCabinetRecords = new List<FileCabinetRecord>();
             
             foreach (var item in records.Records)
