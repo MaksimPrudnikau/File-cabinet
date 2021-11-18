@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FileCabinetApp.Handlers
 {
@@ -21,17 +20,13 @@ namespace FileCabinetApp.Handlers
 
             foreach (var item in Enum.GetNames(typeof(RequestCommand)))
             {
-                var isPart = IsPartOfCommand(command, item);
-                if (isPart)
+                if (IsPartOfCommand(command, item))
                 {
-                    closestCommands.Clear();
-                    maxMatch = 0;
-                    closestCommands.Add(new Tuple<int, string>(maxMatch, item));
-                    break;
+                    Console.WriteLine(item);
+                    return;
                 }
                 
                 var match = GetStartWith(command, item);
-                
                 if (match > maxMatch)
                 {
                     maxMatch = match;
@@ -42,21 +37,43 @@ namespace FileCabinetApp.Handlers
                     closestCommands.Add(new Tuple<int, string>(match, item));   
                 }
             }
+            
+            PrintWithMaxMatch(closestCommands, maxMatch);
+        }
 
-            foreach (var (match, closestCommand) in closestCommands)
+        /// <summary>
+        /// Prints all items from source record where match equals searchMatch
+        /// </summary>
+        /// <param name="matches">Source array of matches</param>
+        /// <param name="searchMatch">Match to search</param>
+        private static void PrintWithMaxMatch(IEnumerable<Tuple<int, string>> matches, int searchMatch)
+        {
+            foreach (var (match, closestCommand) in matches)
             {
-                if (match == maxMatch)
+                if (match == searchMatch)
                 {
                     Console.WriteLine(closestCommand);
                 }
             }
         }
 
+        /// <summary>
+        /// Determine if input command is a part of the source string
+        /// </summary>
+        /// <param name="source">Source string</param>
+        /// <param name="command">Command to search</param>
+        /// <returns>True if the input command is a part of the source</returns>
         private static bool IsPartOfCommand(string source, string command)
         {
             return command.Contains(source, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        /// <summary>
+        /// Counts the number of identical characters of command from the beginning of source 
+        /// </summary>
+        /// <param name="source">Source string</param>
+        /// <param name="command">Source command</param>
+        /// <returns>Total number of matches</returns>
         private static int GetStartWith(string source, string command)
         {
             var matches = 0;
