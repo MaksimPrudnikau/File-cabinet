@@ -81,6 +81,15 @@ namespace FileCabinetApp.Handlers
             return false;
         }
 
+        /// <summary>
+        /// Import records from file with source directory and format
+        /// </summary>
+        /// <param name="directory">Absolute path to the file</param>
+        /// <param name="format">File's extension</param>
+        /// <returns><see cref="FileCabinetServiceSnapshot"/> created by import records</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The format of import file is not supported</exception>
+        /// <exception cref="InvalidOperationException">An error occurred during deserialization</exception>
+        /// <exception cref="ArgumentException">Some record's value cannot be parsed or not satisfy validation-rules</exception>
         private static FileCabinetServiceSnapshot Import(string directory, ExportFormat? format)
         {
             var snapshot = new FileCabinetServiceSnapshot();
@@ -103,6 +112,12 @@ namespace FileCabinetApp.Handlers
             return snapshot;
         }
 
+        /// <summary>
+        /// Try parse source string to <see cref="ExportFormat"/>
+        /// </summary>
+        /// <param name="source">Source string</param>
+        /// <param name="format">Output format</param>
+        /// <returns>True is parsing was successful</returns>
         private static bool TryGetExportFormat(string source, out ExportFormat? format)
         {
             try
@@ -118,11 +133,16 @@ namespace FileCabinetApp.Handlers
             }
         }
         
-        private static bool TryGetDirectory(string source)
+        /// <summary>
+        /// Determine whether file with source directory is exist
+        /// </summary>
+        /// <param name="directory">Source directory</param>
+        /// <returns>True if file is exist</returns>
+        private static bool TryGetDirectory(string directory)
         {
             try
             {
-                DirectoryIsCorrect(source);
+                DirectoryIsCorrect(directory);
                 return true;
             }
             catch (ArgumentException e)
@@ -131,7 +151,11 @@ namespace FileCabinetApp.Handlers
                 return false;
             }
         }
-
+        
+        /// <summary>
+        /// Determine whether file with source directory is exist
+        /// </summary>
+        /// <param name="directory">Source directory</param>
         private static void DirectoryIsCorrect(string directory)
         {
             if (!File.Exists(directory))
