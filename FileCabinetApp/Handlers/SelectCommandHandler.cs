@@ -11,7 +11,7 @@ namespace FileCabinetApp.Handlers
     {
         private const RequestCommand Command = RequestCommand.Select;
         private IRecordPrinter _printer;
-        private static readonly string[] Delimiters = {"and", "or"};
+        private static readonly LogicalOperand[] Delimiters = {LogicalOperand.And, LogicalOperand.Or};
         
         public SelectCommandHandler(IFileCabinetService service, IRecordPrinter printer) : base(service)
         {
@@ -41,39 +41,44 @@ namespace FileCabinetApp.Handlers
 
         private void SetPrinterAsTable(string parameters)
         {
-            const string keyword = "where";
-            if (!parameters.Contains(keyword, StringComparison.InvariantCulture))
+            if (string.IsNullOrEmpty(parameters))
             {
-                throw new ArgumentException($"Cannot find key word '{keyword}'");
+                _printer = new TablePrinter();
+                return;
             }
-
+            
+            const string keyword = "where";
             var split = parameters.Split(keyword);
             var keys = DefaultLineExtractor.GetWords(split[0]);
+            var delimiterIndex = FindDelimiter(parameters, Delimiters);
 
+            if (split.Length == 1)
+            {
+                _printer = new TablePrinter(GetProperties(keys), null, Delimiters[delimiterIndex]);
+                return;
+            }
+
+            var values = DefaultLineExtractor.ExtractSearchValues(split[1], $"{Delimiters[delimiterIndex]}");
+            _printer = new TablePrinter(GetProperties(keys), values, Delimiters[delimiterIndex]);
+        }
+
+        private static ICollection<SearchValue.SearchProperty> GetProperties(IEnumerable<string> keys)
+        {
             var names = new List<SearchValue.SearchProperty>();
             foreach (var item in keys)
             {
                 names.Add(Enum.Parse<SearchValue.SearchProperty>(item, true));
             }
 
-            var delimiterIndex = FindDelimiter(parameters, Delimiters);
-
-            var values = DefaultLineExtractor.ExtractSearchValues(split[1], Delimiters[delimiterIndex]);
-
-            _printer = new TablePrinter 
-            {
-                Properties = names,
-                Where = values,
-                Operand = Enum.Parse<LogicalOperand>(Delimiters[delimiterIndex], true)
-            };
+            return names;
         }
 
-        private static int FindDelimiter(string source, IReadOnlyCollection<string> delimiters)
+        private static int FindDelimiter(string source, IReadOnlyCollection<LogicalOperand> delimiters)
         {
             var findIndex = 0;
             foreach (var delimiter in delimiters)
             {
-                if (source.Contains(delimiter, StringComparison.InvariantCultureIgnoreCase))
+                if (source.Contains($"{delimiter}", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
                 }

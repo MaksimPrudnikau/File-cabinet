@@ -29,9 +29,9 @@ namespace FileCabinetApp.Handlers.Helpers
         
         public static string[] GetWords(string source)
         {
-            if (source is null)
+            if (string.IsNullOrWhiteSpace(source))
             {
-                throw new ArgumentNullException(nameof(source));
+                return Array.Empty<string>();
             }
 
             source = source.Replace(" ", string.Empty, StringComparison.InvariantCulture);
