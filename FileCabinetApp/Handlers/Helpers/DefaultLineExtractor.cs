@@ -20,13 +20,18 @@ namespace FileCabinetApp.Handlers.Helpers
             {
                 throw new ArgumentNullException(nameof(source));
             }
-            
+
             source = source.Replace(" ", string.Empty, StringComparison.InvariantCultureIgnoreCase);
             source = source.Replace("'", string.Empty, StringComparison.InvariantCultureIgnoreCase);
             var valuesSplited = source.Split(delimiter);
             var searchValues = new List<SearchValue>();
             foreach (var item in valuesSplited)
             {
+                if (!item.Contains("=", StringComparison.Ordinal))
+                {
+                    throw new ArgumentException("Cannot find equal sign");
+                }
+                
                 var itemSplited = item.Split('=');
                 searchValues.Add(new SearchValue(itemSplited[0], itemSplited[1]));
             }
