@@ -273,6 +273,15 @@
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
+        <member name="M:FileCabinetApp.Handlers.Helpers.DefaultLineExtractor.ExtractSearchValues(System.String,System.String)">
+            <summary>
+            Create <see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetService.SearchValue"/> from source string with values enumerated by source delimiter
+            </summary>
+            <param name="source">source string</param>
+            <param name="delimiter">source delimiter</param>
+            <returns><see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetService.SearchValue"/></returns>
+            <exception cref="T:System.ArgumentNullException">Source string is null or empty</exception>
+        </member>
         <member name="M:FileCabinetApp.Handlers.ImportCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Import records from source file
@@ -285,6 +294,27 @@
             Remove all records marked as deleted from source database
             </summary>
             <param name="request"></param>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.SelectCommandHandler.SetPrinterAsTable(System.String)">
+            <summary>
+            Create table printer by parsing parameters
+            </summary>
+            <param name="parameters">Command line parameters</param>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.SelectCommandHandler.GetProperties(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Cast array of string properties to array of <see cref="T:FileCabinetApp.FileCabinetService.SearchValue.SearchProperty"/>
+            </summary>
+            <param name="keys">Array of string representation of properties</param>
+            <returns>Source array parsed to <see cref="T:FileCabinetApp.FileCabinetService.SearchValue.SearchProperty"/></returns>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.SelectCommandHandler.FindDelimiter(System.String,System.Collections.Generic.IReadOnlyCollection{FileCabinetApp.Printers.LogicalOperand})">
+            <summary>
+            Determine whether the source string contains any from delimiters
+            </summary>
+            <param name="source">source string</param>
+            <param name="delimiters">Array of delimiters to search</param>
+            <returns>Index of find delimiter</returns>
         </member>
         <member name="M:FileCabinetApp.Handlers.StatCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
@@ -330,6 +360,28 @@
             </summary>
             <param name="record">Source record</param>
             <returns>Suitable <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> object</returns>
+        </member>
+        <member name="M:FileCabinetApp.Printers.Table.TablePrinter.Print(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetService.FileCabinetRecord})">
+            <summary>
+            Find the suitable records from source array and print them in table. If properties to search wasn't not specified it prints
+            all the properties of record. If 'where' wasn't not specified it prints all records from source array
+            </summary>
+            <param name="records">Source record</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:FileCabinetApp.Printers.Table.TablePrinter.SatisfyAll(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
+            <summary>
+            Determine whether the source record properties are equals to current ones
+            </summary>
+            <param name="record"></param>
+            <returns>False if it's not equals to any</returns>
+        </member>
+        <member name="M:FileCabinetApp.Printers.Table.TablePrinter.SatisfyAny(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
+            <summary>
+            Determine whether the source record properties are equals to any from current ones
+            </summary>
+            <param name="record"></param>
+            <returns>True if it's equals to any</returns>
         </member>
         <member name="M:FileCabinetApp.Validation.CommandLineParser.SetValidationRule(System.Collections.Generic.IEnumerable{System.String})">
             <summary>

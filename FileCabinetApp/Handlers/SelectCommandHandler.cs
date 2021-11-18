@@ -39,6 +39,10 @@ namespace FileCabinetApp.Handlers
             _printer.Print(Service.GetRecords());
         }
 
+        /// <summary>
+        /// Create table printer by parsing parameters
+        /// </summary>
+        /// <param name="parameters">Command line parameters</param>
         private void SetPrinterAsTable(string parameters)
         {
             if (string.IsNullOrEmpty(parameters))
@@ -62,6 +66,11 @@ namespace FileCabinetApp.Handlers
             _printer = new TablePrinter(GetProperties(keys), values, Delimiters[delimiterIndex]);
         }
 
+        /// <summary>
+        /// Cast array of string properties to array of <see cref="SearchValue.SearchProperty"/>
+        /// </summary>
+        /// <param name="keys">Array of string representation of properties</param>
+        /// <returns>Source array parsed to <see cref="SearchValue.SearchProperty"/></returns>
         private static ICollection<SearchValue.SearchProperty> GetProperties(IEnumerable<string> keys)
         {
             var names = new List<SearchValue.SearchProperty>();
@@ -73,6 +82,12 @@ namespace FileCabinetApp.Handlers
             return names;
         }
 
+        /// <summary>
+        /// Determine whether the source string contains any from delimiters
+        /// </summary>
+        /// <param name="source">source string</param>
+        /// <param name="delimiters">Array of delimiters to search</param>
+        /// <returns>Index of find delimiter</returns>
         private static int FindDelimiter(string source, IReadOnlyCollection<LogicalOperand> delimiters)
         {
             var findIndex = 0;

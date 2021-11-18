@@ -7,31 +7,34 @@ namespace FileCabinetApp.Printers.Table
 {
     public class TablePrinter : IRecordPrinter
     {
-        private IEnumerable<SearchValue.SearchProperty> Properties;
-        private IEnumerable<SearchValue> Where;
-        private LogicalOperand Operand;
+        private readonly IEnumerable<SearchValue.SearchProperty> _properties ;
+        private readonly IEnumerable<SearchValue> _where;
+        private readonly LogicalOperand _operand;
 
         public TablePrinter()
         {
-            
+            _properties = Enum.GetValues<SearchValue.SearchProperty>();
+            _where = new List<SearchValue>();
+            _operand = LogicalOperand.Or;
         }
-
-        public TablePrinter(ICollection<SearchValue.SearchProperty> properties, ICollection<SearchValue> where, LogicalOperand operand = LogicalOperand.Or)
+        
+        public TablePrinter(ICollection<SearchValue.SearchProperty> properties, ICollection<SearchValue> where, LogicalOperand operand)
         {
-            if (properties is null || properties.Count == 0)
+            if (properties is not null && properties.Count > 0)
             {
-                Properties = Enum.GetValues<SearchValue.SearchProperty>();
-            }
-            else
-            {
-                Properties = properties;
+                _properties = properties;
             }
 
-            Where = where ?? new List<SearchValue>();
-            Operand = operand;
+            _where = where ?? new List<SearchValue>();
+            _operand = operand;
         }
-
-
+        
+        /// <summary>
+        /// Find the suitable records from source array and print them in table. If properties to search wasn't not specified it prints
+        /// all the properties of record. If 'where' wasn't not specified it prints all records from source array
+        /// </summary>
+        /// <param name="records">Source record</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public void Print(IEnumerable<FileCabinetRecord> records)
         {
             if (records is null)
@@ -39,12 +42,12 @@ namespace FileCabinetApp.Printers.Table
                 throw new ArgumentNullException(nameof(records));
             }
 
-            var table = new RecordsTable(Properties);
+            var table = new RecordsTable(_properties);
 
             var correct = true;
             foreach (var record in records)
             {
-                switch (Operand)
+                switch (_operand)
                 {
                     case LogicalOperand.And:
                         correct = SatisfyAll(record);
@@ -63,9 +66,14 @@ namespace FileCabinetApp.Printers.Table
             Console.WriteLine(table.ToString());
         }
 
+        /// <summary>
+        /// Determine whether the source record properties are equals to current ones
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns>False if it's not equals to any</returns>
         private bool SatisfyAll(FileCabinetRecord record)
         {
-            foreach (var item in Where)
+            foreach (var item in _where)
             {
                 var value = RecordHelper.GetByAttribute(record, item.Property);
                 if (!SearchValue.Equals(new SearchValue($"{item.Property}", value), item))
@@ -77,9 +85,14 @@ namespace FileCabinetApp.Printers.Table
             return true;
         }
         
+        /// <summary>
+        /// Determine whether the source record properties are equals to any from current ones
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns>True if it's equals to any</returns>
         private bool SatisfyAny(FileCabinetRecord record)
         {
-            foreach (var item in Where)
+            foreach (var item in _where)
             {
                 var value = RecordHelper.GetByAttribute(record, item.Property);
                 if (SearchValue.Equals(new SearchValue($"{item.Property}", value), item))

@@ -7,9 +7,16 @@ namespace FileCabinetApp.Handlers.Helpers
 {
     public static class DefaultLineExtractor
     {
+        /// <summary>
+        /// Create <see cref="IList{T}"/> of <see cref="SearchValue"/> from source string with values enumerated by source delimiter
+        /// </summary>
+        /// <param name="source">source string</param>
+        /// <param name="delimiter">source delimiter</param>
+        /// <returns><see cref="IList{T}"/> of <see cref="SearchValue"/></returns>
+        /// <exception cref="ArgumentNullException">Source string is null or empty</exception>
         public static IList<SearchValue> ExtractSearchValues(string source, string delimiter = ",")
         {
-            if (source is null)
+            if (string.IsNullOrEmpty(source))
             {
                 throw new ArgumentNullException(nameof(source));
             }

@@ -87,7 +87,7 @@ namespace FileCabinetApp
 
             var parameters = inputs.Length == 2
                 ? inputs[parametersIndex + 1]
-                : inputs[parametersIndex];
+                : string.Empty;
 
             var parsed = Enum.TryParse<RequestCommand>(command, true, out var request);
 
