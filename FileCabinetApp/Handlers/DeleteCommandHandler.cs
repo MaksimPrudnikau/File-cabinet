@@ -8,6 +8,7 @@ namespace FileCabinetApp.Handlers
     public class DeleteCommandHandler : ServiceCommandHandlerBase
     {
         private const RequestCommand Command = RequestCommand.Delete;
+        private const string Keyword = "where";
         
         public DeleteCommandHandler(IFileCabinetService service) : base(service)
         {
@@ -48,20 +49,21 @@ namespace FileCabinetApp.Handlers
             }
         }
 
+        /// <summary>
+        /// Extract <see cref="SearchValue"/> from source parameters
+        /// </summary>
+        /// <param name="parameters">Source parameters</param>
+        /// <returns><see cref="SearchValue"/> extracted from source string</returns>
+        /// <exception cref="ArgumentException">Cant find delimiter <see cref="Keyword"/></exception>
         private static SearchValue GetSearchAttribute(string parameters)
         {
-            const string keyword = "where";
-            if (!parameters.Contains(keyword, StringComparison.InvariantCultureIgnoreCase))
+            if (!parameters.Contains(Keyword, StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new ArgumentException($"Cant find keyword '{keyword}'");
+                throw new ArgumentException($"Cant find keyword '{Keyword}'");
             }
 
-            if (!parameters.Contains("=", StringComparison.Ordinal))
-            {
-                throw new ArgumentException("Cannot find equal sign");
-            }
-
-            var keywordIndex = parameters.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) + keyword.Length + 1;
+            var keywordIndex = parameters.IndexOf(Keyword, StringComparison.InvariantCultureIgnoreCase) + Keyword.Length + 1;
+            
             return DefaultLineExtractor.ExtractSearchValues(parameters[keywordIndex..])[0];
         }
     }
