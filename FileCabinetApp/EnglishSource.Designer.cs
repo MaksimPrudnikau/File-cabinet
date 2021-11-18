@@ -14,7 +14,7 @@ namespace FileCabinetApp {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class EnglishSource {
+    internal class EnglishSource {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -152,8 +152,8 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("All_records_are_exported_to_file", resourceCulture);
             }
         }
-
-        public static string records_were_written_to {
+        
+        internal static string records_were_written_to {
             get {
                 return ResourceManager.GetString("records_were_written_to", resourceCulture);
             }
@@ -282,6 +282,18 @@ namespace FileCabinetApp {
         internal static string Parameter_values_should_be_enclosed_in_brackets {
             get {
                 return ResourceManager.GetString("Parameter_values_should_be_enclosed_in_brackets", resourceCulture);
+            }
+        }
+        
+        internal static string Record_with_id_is_already_exist {
+            get {
+                return ResourceManager.GetString("Record_with_id_is_already_exist", resourceCulture);
+            }
+        }
+        
+        internal static string Id_cannot_be_updated {
+            get {
+                return ResourceManager.GetString("Id_cannot_be_updated", resourceCulture);
             }
         }
     }

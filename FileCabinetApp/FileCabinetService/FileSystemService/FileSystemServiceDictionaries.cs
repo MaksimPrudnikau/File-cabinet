@@ -19,6 +19,12 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         
         public Dictionary<char, HashSet<long>> Ranks { get; } = new();
 
+        /// <summary>
+        /// Add the source record and it's position in base file to dictionaries 
+        /// </summary>
+        /// <param name="record">The source record</param>
+        /// <param name="position">Record's position on database file</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public void Add(FileCabinetRecord record, long position)
         {
             if (record is null)
@@ -28,7 +34,14 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             
             AddToDictionaries(record, position);
         }
-
+        
+        /// <summary>
+        /// Edit the existing record with the new one
+        /// </summary>
+        /// <param name="from">The already existing record</param>
+        /// <param name="to">The new record</param>
+        /// <param name="position">New record's position in database file</param>
+        /// <exception cref="ArgumentNullException">At least one of the source values is null</exception>
         public void Edit(FileCabinetRecord from, FileCabinetRecord to, long position)
         {
             if (to is null)
@@ -40,6 +53,9 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             AddToDictionaries(to, position);
         }
         
+        /// <summary>
+        /// Clear all dictionaries
+        /// </summary>
         public void Clear()
         {
             Id.Clear();
@@ -48,6 +64,13 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             DateOfBirths.Clear();
         }
 
+        /// <summary>
+        /// Return all the record's satisfy source value
+        /// </summary>
+        /// <param name="searchValue">Source value to search</param>
+        /// <returns><see cref="HashSet{T}"/> of records positions in database file</returns>
+        /// <exception cref="ArgumentNullException">The search value is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The attribute is out from the existing ones</exception>
         public HashSet<long> GetPositionsByValue(SearchValue searchValue)
         {
             if (searchValue is null)
@@ -75,7 +98,14 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             };
         }
         
-        public IReadOnlyCollection<long> Find(SearchValue value)
+        /// <summary>
+        /// Find all records satisfy the source value
+        /// </summary>
+        /// <param name="value">Source value to search</param>
+        /// <returns>An array of records satisfy the source value</returns>
+        /// <exception cref="ArgumentNullException">The search value is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The attribute is out from the existing ones</exception>
+        public IEnumerable<long> Find(SearchValue value)
         {
             if (value is null)
             {
@@ -96,6 +126,12 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             };
         }
 
+        /// <summary>
+        /// Remove the source record and it's position in file from all dictionaries
+        /// </summary>
+        /// <param name="record">Source record to remove</param>
+        /// <param name="position">Record's position in database file</param>
+        /// <exception cref="ArgumentNullException">At least one the source values is null</exception>
         private void RemoveFromDictionaries(FileCabinetRecord record, long position)
         {
             if (record is null)
@@ -112,6 +148,12 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             Ranks[record.Rank].Remove(position);
         }
 
+        /// <summary>
+        /// Add the source record and it's position in file to all dictionaries
+        /// </summary>
+        /// <param name="record">Source record to remove</param>
+        /// <param name="position">Record's position in database file</param>
+        /// <exception cref="ArgumentNullException">At least one the source values is null</exception>
         private void AddToDictionaries(FileCabinetRecord record, long position)
         {
             AddToDictionary(Id, record.Id, position);
@@ -123,6 +165,12 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             AddToDictionary(Ranks, record.Rank, position);
         }
 
+        /// <summary>
+        /// Add the source record and it's position in file to source dictionary
+        /// </summary>
+        /// <param name="dictionary">The dictionary to add</param>
+        /// <param name="position">Record's position in database file</param>
+        /// <exception cref="ArgumentNullException">At least one the source values is null</exception>
         private static void AddToDictionary<T>(IDictionary<T, HashSet<long>> dictionary, T key, long position)
         {
             if (dictionary.ContainsKey(key))

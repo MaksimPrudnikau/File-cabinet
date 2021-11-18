@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using FileCabinetApp.Export;
 using FileCabinetApp.Results;
@@ -174,6 +175,11 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             _writer.AppendRange(records);
         }
 
+        /// <summary>
+        /// Delete all records satisfy the source value
+        /// </summary>
+        /// <param name="searchValue">Source value to search</param>
+        /// <returns>Identifications of deleted records</returns>
         public IEnumerable<int> Delete(SearchValue searchValue)
         {
             var positions = _dictionaries.GetPositionsByValue(searchValue);
@@ -214,6 +220,12 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             _writer.AppendRange(snapshot.Records);
         }
 
+        /// <summary>
+        /// Insert the source record to service by it's id
+        /// </summary>
+        /// <param name="record">The source record to insert</param>
+        /// <exception cref="ArgumentNullException">The source record is null</exception>
+        /// <exception cref="ArgumentException">The record with id equals the source one is already exist</exception>
         public void Insert(FileCabinetRecord record)
         {
             if (record is null)
@@ -223,7 +235,8 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             
             if (_dictionaries.Id.ContainsKey(record.Id))
             {
-                throw new ArgumentException($"Record with id = '{record.Id}' is already exist");
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                    EnglishSource.Record_with_id_is_already_exist, record.Id));
             }
 
             _dictionaries.Clear();
@@ -244,6 +257,13 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             }
         }
 
+        /// <summary>
+        /// Find all records suitable with source values
+        /// </summary>
+        /// <param name="values">The new values of records</param>
+        /// <param name="where">An array of search values for which the record will be considered as suitable</param>
+        /// <returns>Identifications of updated records</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)
@@ -267,7 +287,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 {
                     if (value.Property is SearchValue.SearchProperty.Id)
                     {
-                        throw new ArgumentException("Id cannot be updated");
+                        throw new ArgumentException(EnglishSource.Id_cannot_be_updated);
                     }
                     
                     if (!RecordHelper.Contains(read, value))
