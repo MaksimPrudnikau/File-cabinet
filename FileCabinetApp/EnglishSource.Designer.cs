@@ -266,5 +266,23 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("Record_number_error", resourceCulture);
             }
         }
+        
+        internal static string Cannot_find_keyword {
+            get {
+                return ResourceManager.GetString("Cannot_find_keyword", resourceCulture);
+            }
+        }
+        
+        internal static string Number_of_keys_doesnt_correspond_to_number_of_values {
+            get {
+                return ResourceManager.GetString("Number_of_keys_doesnt_correspond_to_number_of_values", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_values_should_be_enclosed_in_brackets {
+            get {
+                return ResourceManager.GetString("Parameter_values_should_be_enclosed_in_brackets", resourceCulture);
+            }
+        }
     }
 }

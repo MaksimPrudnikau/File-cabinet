@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.Handlers.Helpers;
 using FileCabinetApp.Validators;
@@ -38,7 +37,7 @@ namespace FileCabinetApp.Handlers
             Service.Insert(record);
         }
 
-        private bool TryCreateRecord(SearchValue[] values, out FileCabinetRecord record)
+        private bool TryCreateRecord(IEnumerable<SearchValue> values, out FileCabinetRecord record)
         {
             try
             {
@@ -54,7 +53,12 @@ namespace FileCabinetApp.Handlers
             }
         }
 
-        private static FileCabinetRecord CreateRecordFromInsertValue(SearchValue[] value)
+        /// <summary>
+        /// Create a new <see cref="FileCabinetRecord"/> and fill it with source values
+        /// </summary>
+        /// <param name="value">An array of values to fill</param>
+        /// <returns><see cref="FileCabinetRecord"/> record</returns>
+        private static FileCabinetRecord CreateRecordFromInsertValue(IEnumerable<SearchValue> value)
         {
             var record = new FileCabinetRecord();
             foreach (var item in value)
@@ -88,15 +92,19 @@ namespace FileCabinetApp.Handlers
                     case SearchValue.SearchProperty.Rank:
                         record.Rank = InputConverter.RankConverter(item.Value).Result;
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(value));
                 }
             }
 
             return record;
         }
 
-        private static bool TryExtractValues(string parameters, out SearchValue[] values)
+        /// <summary>
+        /// Try extract 
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        private static bool TryExtractValues(string parameters, out ICollection<SearchValue> values)
         {
             try
             {

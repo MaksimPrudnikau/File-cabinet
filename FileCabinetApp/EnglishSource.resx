@@ -229,4 +229,13 @@
   <data name="Record_number_error" xml:space="preserve">
     <value>Record #{0}: {1}</value>
   </data>
+  <data name="Cannot_find_keyword" xml:space="preserve">
+    <value>Cannot find key word '{0}'</value>
+  </data>
+  <data name="Number_of_keys_doesnt_correspond_to_number_of_values" xml:space="preserve">
+    <value>Number of keys doesnt correspond to number of values</value>
+  </data>
+  <data name="Parameter_values_should_be_enclosed_in_brackets" xml:space="preserve">
+    <value>Parameter values should be enclosed in brackets</value>
+  </data>
 </root>
