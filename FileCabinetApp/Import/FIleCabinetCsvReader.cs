@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.Results;
@@ -30,19 +31,34 @@ namespace FileCabinetApp.Import
             for (var i = 1; i < readLines.Length; i++)
             {
                 if (readLines[i].Length == 0) continue;
-                
-                try
+
+                if (TryDeserializeFromCsvLine(readLines[i], i, out var record))
                 {
-                    var record = DeserializeFromCsvLine(readLines[i]);
                     records.Add(record);
-                }
-                catch (ArgumentException e)
-                {
-                    Console.Error.WriteLine($"Record at line {i} Error: {e.Message}");
                 }
             }
 
             return records;
+        }
+
+        /// <summary>
+        /// Deserialize <see cref="FileCabinetRecord"/> from source line
+        /// </summary>
+        /// <param name="csvLine">Source line in csv format</param>
+        /// <returns>True if import is successful</returns>
+        private static bool TryDeserializeFromCsvLine(string csvLine, in int lineNumber, out FileCabinetRecord record)
+        {
+            try
+            {
+                record = DeserializeFromCsvLine(csvLine);
+                return true;
+            }
+            catch (ArgumentException exception)
+            {
+                Console.Error.WriteLine(EnglishSource.Record_at_line_Error, lineNumber, exception.Message);
+                record = null;
+                return false;
+            }
         }
 
         /// <summary>
@@ -68,7 +84,8 @@ namespace FileCabinetApp.Import
 
             if (split.Length != parametersCount)
             {
-                throw new ArgumentException($"{csvLine} missing one parameter");
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                    EnglishSource.missing_one_parameter, csvLine));
             }
             
             var record = new FileCabinetRecord
@@ -102,7 +119,8 @@ namespace FileCabinetApp.Import
 
             if (!conversionResult.Parsed)
             {
-                throw new ArgumentException($"{source} Error: wrong conversion");
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                    EnglishSource.Error__wrong_conversion, source));
             }
 
             return conversionResult.Result;

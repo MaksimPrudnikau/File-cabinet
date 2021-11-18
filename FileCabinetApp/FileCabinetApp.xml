@@ -253,6 +253,37 @@
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
+        <member name="M:FileCabinetApp.Handlers.DeleteCommandHandler.GetSearchAttribute(System.String)">
+            <summary>
+            Extract <see cref="T:FileCabinetApp.FileCabinetService.SearchValue"/> from source parameters
+            </summary>
+            <param name="parameters">Source parameters</param>
+            <returns><see cref="T:FileCabinetApp.FileCabinetService.SearchValue"/> extracted from source string</returns>
+            <exception cref="T:System.ArgumentException">Cant find delimiter <see cref="F:FileCabinetApp.Handlers.DeleteCommandHandler.Keyword"/></exception>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ErrorCommandHandler.PrintWithMaxMatch(System.Collections.Generic.IEnumerable{System.Tuple{System.Int32,System.String}},System.Int32)">
+            <summary>
+            Prints all items from source record where match equals searchMatch
+            </summary>
+            <param name="matches">Source array of matches</param>
+            <param name="searchMatch">Match to search</param>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ErrorCommandHandler.IsPartOfCommand(System.String,System.String)">
+            <summary>
+            Determine if input command is a part of the source string
+            </summary>
+            <param name="source">Source string</param>
+            <param name="command">Command to search</param>
+            <returns>True if the input command is a part of the source</returns>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ErrorCommandHandler.GetStartWith(System.String,System.String)">
+            <summary>
+            Counts the number of identical characters of command from the beginning of source 
+            </summary>
+            <param name="source">Source string</param>
+            <param name="command">Source command</param>
+            <returns>Total number of matches</returns>
+        </member>
         <member name="M:FileCabinetApp.Handlers.ExitCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Exit from application
@@ -265,6 +296,37 @@
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ExportCommandHandler.Export(System.String,System.Nullable{FileCabinetApp.Handlers.Helpers.ExportFormat})">
+            <summary>
+            Export all records from current service in file with the input path and input format. If file is not exist
+            it will be created
+            </summary>
+            <param name="path">Absolute path to the export file</param>
+            <param name="format">Format of the export file</param>
+            <exception cref="T:System.ArgumentNullException">Export format is null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Export format is not supported</exception>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ExportCommandHandler.DirectoryIsAllowed(System.String)">
+            <summary>
+            Determine whether the directory is allowed, file of source directory is exist and if it is
+            request permission to rewrite
+            </summary>
+            <param name="sourceDirectory">Source directory</param>
+            <returns>True if file is not exist or rewrite is allowed</returns>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ExportCommandHandler.AllowRewriteIfExist">
+            <summary>
+            Get the permission to rewrite the file
+            </summary>
+            <returns>True of allowed</returns>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ExportCommandHandler.GetExportFormat(System.String)">
+            <summary>
+            Parse string representation of <see cref="T:FileCabinetApp.Handlers.Helpers.ExportFormat"/>
+            </summary>
+            <param name="parameters">Source string to parse</param>
+            <returns>Parsed <see cref="T:FileCabinetApp.Handlers.Helpers.ExportFormat"/></returns>
         </member>
         <member name="M:FileCabinetApp.Handlers.HelpCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
@@ -326,6 +388,13 @@
             Read all records from current base file written in csv
             </summary>
             <returns><see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/></returns>
+        </member>
+        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.TryDeserializeFromCsvLine(System.String,System.Int32@,FileCabinetApp.FileCabinetService.FileCabinetRecord@)">
+            <summary>
+            Deserialize <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> from source line
+            </summary>
+            <param name="csvLine">Source line in csv format</param>
+            <returns>True if import is successful</returns>
         </member>
         <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.DeserializeFromCsvLine(System.String)">
             <summary>

@@ -211,4 +211,22 @@
   <data name="Answer_must_be_either_Y_or_n" xml:space="preserve">
     <value>Answer must be either Y or n</value>
   </data>
+  <data name="Cant_deserialize" xml:space="preserve">
+    <value>Error: cant deserialize {0}! {1}: {2}</value>
+  </data>
+  <data name="Record_at_line_Error" xml:space="preserve">
+    <value>Record at line {0} Error: {1}</value>
+  </data>
+  <data name="Error__wrong_conversion" xml:space="preserve">
+    <value>{0} Error: wrong conversion</value>
+  </data>
+  <data name="missing_one_parameter" xml:space="preserve">
+    <value>{0} missing one parameter</value>
+  </data>
+  <data name="Wrong_data_format" xml:space="preserve">
+    <value>Wrong data format</value>
+  </data>
+  <data name="Record_number_error" xml:space="preserve">
+    <value>Record #{0}: {1}</value>
+  </data>
 </root>

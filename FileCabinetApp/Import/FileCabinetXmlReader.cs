@@ -43,7 +43,7 @@ namespace FileCabinetApp.Import
                 }
                 catch (Exception exception) when (exception is ArgumentException or FormatException)
                 {
-                    Console.Error.WriteLine($"Record #{item.Id}: {exception.Message}");
+                    Console.Error.WriteLine(EnglishSource.Record_number_error, item.Id, exception.Message);
                     continue;
                 }
                 

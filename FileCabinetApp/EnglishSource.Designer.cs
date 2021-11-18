@@ -230,5 +230,41 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("Answer_must_be_either_Y_or_n", resourceCulture);
             }
         }
+        
+        internal static string Cant_deserialize {
+            get {
+                return ResourceManager.GetString("Cant_deserialize", resourceCulture);
+            }
+        }
+        
+        internal static string Record_at_line_Error {
+            get {
+                return ResourceManager.GetString("Record_at_line_Error", resourceCulture);
+            }
+        }
+        
+        internal static string Error__wrong_conversion {
+            get {
+                return ResourceManager.GetString("Error__wrong_conversion", resourceCulture);
+            }
+        }
+        
+        internal static string missing_one_parameter {
+            get {
+                return ResourceManager.GetString("missing_one_parameter", resourceCulture);
+            }
+        }
+        
+        internal static string Wrong_data_format {
+            get {
+                return ResourceManager.GetString("Wrong_data_format", resourceCulture);
+            }
+        }
+        
+        internal static string Record_number_error {
+            get {
+                return ResourceManager.GetString("Record_number_error", resourceCulture);
+            }
+        }
     }
 }
