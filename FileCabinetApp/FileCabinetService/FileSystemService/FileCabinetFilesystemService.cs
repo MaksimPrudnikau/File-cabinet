@@ -244,7 +244,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             }
         }
 
-        public IReadOnlyCollection<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        public IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)
             {
@@ -257,7 +257,6 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             }
 
             var position = _dictionaries.Find(where[0]);
-            var updated = new List<int>();
             
             foreach (var pos in position)
             {
@@ -287,10 +286,9 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 
                 new FilesystemRecord(editRecord).Serialize(_reader.BaseFile);
                 _dictionaries.Edit(read, editRecord, pos);
-                updated.Add(editRecord.Id);
+                
+                yield return editRecord.Id;
             }
-
-            return updated;
         }
 
         public void Dispose()

@@ -48,7 +48,7 @@ namespace FileCabinetApp.Handlers
             }
 
             var split = parameters.Split(keyword);
-            var keys = Extractor.GetWords(split[0]);
+            var keys = DefaultLineExtractor.GetWords(split[0]);
 
             var names = new List<SearchValue.SearchProperty>();
             foreach (var item in keys)
@@ -58,7 +58,7 @@ namespace FileCabinetApp.Handlers
 
             var delimiterIndex = FindDelimiter(parameters, Delimiters);
 
-            var values = Extractor.ExtractSearchValues(split[1], Delimiters[delimiterIndex]);
+            var values = DefaultLineExtractor.ExtractSearchValues(split[1], Delimiters[delimiterIndex]);
 
             _printer = new TablePrinter 
             {

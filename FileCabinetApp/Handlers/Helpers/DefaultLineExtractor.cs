@@ -5,7 +5,7 @@ using FileCabinetApp.FileCabinetService;
 
 namespace FileCabinetApp.Handlers.Helpers
 {
-    public static class Extractor
+    public static class DefaultLineExtractor
     {
         public static IList<SearchValue> ExtractSearchValues(string source, string delimiter = ",")
         {

@@ -78,27 +78,6 @@
             <param name="converter">Source converter</param>
             <returns>Correct input object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.FindByFirstName(System.String)">
-            <summary>
-            Find all occurrences of searchValue in records of current data base file
-            </summary>
-            <param name="searchValue">Value to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with firstname equals searchValue</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.FindByLastName(System.String)">
-            <summary>
-            Find all occurrences of searchValue in records of current data base file
-            </summary>
-            <param name="searchValue">Value to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with lastname equals searchValue</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.FindByDateOfBirth(System.String)">
-            <summary>
-            Find all occurrences of searchValue in records of current data base file
-            </summary>
-            <param name="searchValue">Date of birth in format dd/MM/yyyy</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with date of birth equals searchValue</returns>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Restore(FileCabinetApp.Export.FileCabinetServiceSnapshot)">
             <summary>
             Update current records with snapshot. If record is exist it will be overwritten, else append to end
@@ -254,38 +233,11 @@
             <param name="converter">Source converter</param>
             <returns>Correct input object</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.FindByFirstName(System.String)">
-            <summary>
-            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> with suitable first name
-            </summary>
-            <param name="searchValue">First name to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with suitable first name</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.FindByLastName(System.String)">
-            <summary>
-            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> with suitable last name
-            </summary>
-            <param name="searchValue">Last name to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with suitable last name</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.FindByDateOfBirth(System.String)">
-            <summary>
-            Find all occurrences of <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> with suitable date of birth
-            </summary>
-            <param name="searchValue">Date of birth to search</param>
-            <returns><see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> array with suitable date of birth</returns>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetService.MemoryService.MemoryServiceDictionaries.Add(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Append record to all dictionaries
             </summary>
             <param name="record">Source record</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.MemoryServiceDictionaries.RemoveFromAllDictionaries(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
-            <summary>
-            Remove record from all dictionaries
-            </summary>
-            <param name="record">Source record to remove</param>
         </member>
         <member name="M:FileCabinetApp.Handlers.CreateCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
@@ -314,22 +266,6 @@
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.FindCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
-            <summary>
-            Prints all records with suitable attribute
-            </summary>
-            <param name="request">Object contains command and it's parameters</param>
-            <exception cref="T:System.ArgumentNullException">Request in null</exception>
-        </member>
-        <member name="M:FileCabinetApp.Handlers.FindCommandHandler.FindByAttribute(System.String,System.String)">
-            <summary>
-            Create an array where any attribute element equals searchValue
-            </summary>
-            <param name="attribute">Search property</param>
-            <param name="searchValue">Value to search</param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentException">Entered attribute is not exist</exception>
-        </member>
         <member name="M:FileCabinetApp.Handlers.HelpCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Prints help message
@@ -344,11 +280,6 @@
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
         </member>
-        <member name="M:FileCabinetApp.Handlers.ListCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
-            <summary>
-            Return list of records added to current service
-            </summary>
-        </member>
         <member name="M:FileCabinetApp.Handlers.PurgeCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Remove all records marked as deleted from source database
@@ -357,7 +288,7 @@
         </member>
         <member name="M:FileCabinetApp.Handlers.StatCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
-            Prints the amount of records
+            Prints the amount of existing and deleted records
             </summary>
         </member>
         <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.ReadAll">

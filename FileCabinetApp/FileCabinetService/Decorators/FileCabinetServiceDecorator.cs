@@ -4,7 +4,7 @@ using FileCabinetApp.Export;
 
 namespace FileCabinetApp.FileCabinetService.Decorators
 {
-    public class FileCabinetServiceDecorator : IFileCabinetService
+    public abstract class FileCabinetServiceDecorator : IFileCabinetService
     {
         private readonly IFileCabinetService _service;
 
@@ -54,12 +54,12 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             _service.Purge();
         }
 
-        public void Insert(FileCabinetRecord record)
+        public virtual void Insert(FileCabinetRecord record)
         {
             _service.Insert(record);
         }
 
-        public IReadOnlyCollection<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        public virtual IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
             return _service.Update(values, where);
         }

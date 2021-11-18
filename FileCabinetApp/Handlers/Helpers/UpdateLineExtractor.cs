@@ -18,7 +18,7 @@ namespace FileCabinetApp.Handlers.Helpers
             
             var keywordIndex = parameters.IndexOf(AttributeKeyword, StringComparison.InvariantCultureIgnoreCase);
             parameters = parameters[(keywordIndex + AttributeKeyword.Length + 1)..];
-            return Extractor.ExtractSearchValues(parameters, "and");
+            return DefaultLineExtractor.ExtractSearchValues(parameters, "and");
         }
 
         public static IEnumerable<SearchValue> GetSearchValues(string parameters)
@@ -46,7 +46,7 @@ namespace FileCabinetApp.Handlers.Helpers
                     $"The location of '{ValuesKeyword}' is arranged previous '{AttributeKeyword}'");
             }
 
-            return Extractor.ExtractSearchValues(parameters[(valuesIndex + ValuesKeyword.Length + 1)..attributeIndex]);
+            return DefaultLineExtractor.ExtractSearchValues(parameters[(valuesIndex + ValuesKeyword.Length + 1)..attributeIndex]);
         }
     }
 }

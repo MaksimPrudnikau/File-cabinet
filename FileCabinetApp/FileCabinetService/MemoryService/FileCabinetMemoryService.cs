@@ -174,7 +174,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             CreateRecord(record);
         }
 
-        public IReadOnlyCollection<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        public IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)
             {
@@ -188,7 +188,6 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             
             var recordsToUpdate = new List<FileCabinetRecord>(_dictionaries.Find(where[0]));
             RemoveMismatch(recordsToUpdate, where);
-            var updated = new List<int>();
             foreach (var item in recordsToUpdate)
             {
                 var editRecord = item;
@@ -198,10 +197,9 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
                 }
                 
                 _dictionaries.Edit(item, editRecord);
-                updated.Add(editRecord.Id);
+                
+                yield return editRecord.Id;
             }
-
-            return updated;
         }
 
         private static void RemoveMismatch(IList<FileCabinetRecord> source, IEnumerable<SearchValue> match)

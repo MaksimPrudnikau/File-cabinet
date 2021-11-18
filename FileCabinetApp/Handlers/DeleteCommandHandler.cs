@@ -62,7 +62,7 @@ namespace FileCabinetApp.Handlers
             }
 
             var keywordIndex = parameters.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) + keyword.Length + 1;
-            return Extractor.ExtractSearchValues(parameters[keywordIndex..])[0];
+            return DefaultLineExtractor.ExtractSearchValues(parameters[keywordIndex..])[0];
         }
     }
 }

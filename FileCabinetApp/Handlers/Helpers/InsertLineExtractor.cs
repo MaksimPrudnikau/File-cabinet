@@ -67,7 +67,7 @@ namespace FileCabinetApp.Handlers.Helpers
                 throw new ArgumentException("Parameter values should be enclosed in brackets");
             }
             
-            return Extractor.GetWords(source[1..^1]);
+            return DefaultLineExtractor.GetWords(source[1..^1]);
         }
     }
 }

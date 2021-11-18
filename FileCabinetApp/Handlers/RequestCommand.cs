@@ -5,8 +5,6 @@ namespace FileCabinetApp.Handlers
         Help,
         Create,
         Stat,
-        List,
-        Find,
         Export,
         Import,
         Delete,
