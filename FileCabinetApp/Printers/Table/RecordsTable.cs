@@ -29,6 +29,10 @@ namespace FileCabinetApp.Printers.Table
             _separateLine = new StringBuilder();
         }
 
+        /// <summary>
+        /// Add source record to table
+        /// </summary>
+        /// <param name="record">Source record</param>
         public void Add(FileCabinetRecord record)
         {
             foreach (var column in _columns)
@@ -39,6 +43,10 @@ namespace FileCabinetApp.Printers.Table
             _totalRows++;
         }
 
+        /// <summary>
+        /// Represents the table as a string
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var table = new StringBuilder();
@@ -66,6 +74,10 @@ namespace FileCabinetApp.Printers.Table
             return table.ToString();
         }
 
+        /// <summary>
+        /// Create a header consists of the names of columns
+        /// </summary>
+        /// <returns><see cref="string"/> representation of header</returns>
         private StringBuilder GetHeader()
         {
             var header = new StringBuilder();
@@ -83,6 +95,13 @@ namespace FileCabinetApp.Printers.Table
             return header;
         }
 
+        /// <summary>
+        /// Create a cell with a given value, expands it with width and orients by alignment
+        /// </summary>
+        /// <param name="value">Value to place</param>
+        /// <param name="maxWidth">The width of the cell</param>
+        /// <param name="alignment">Value alignment</param>
+        /// <returns><see cref="string"/> representation of the created cell</returns>
         private static StringBuilder GetValueInFormat(string value, int maxWidth, Alignment alignment)
         {
             var table = new StringBuilder();
@@ -101,6 +120,12 @@ namespace FileCabinetApp.Printers.Table
             return table;
         }
         
+        /// <summary>
+        /// Create a new string with the source string and place the source value to the center
+        /// </summary>
+        /// <param name="source">Source value to centering</param>
+        /// <param name="width">The source width</param>
+        /// <returns><see cref="string"/> with the source string and place the source value to the center</returns>
         private static string CenteredString(string source, int width)
         {
             if (source.Length >= width)
@@ -114,6 +139,9 @@ namespace FileCabinetApp.Printers.Table
             return new string(' ', leftPadding) + source + new string(' ', rightPadding);
         }
 
+        /// <summary>
+        /// Set the separated line
+        /// </summary>
         private void SetSeparatedLine()
         {
             _separateLine.Append('+');
@@ -123,7 +151,11 @@ namespace FileCabinetApp.Printers.Table
             }
         }
 
-
+        /// <summary>
+        /// Creates a section of the separate line with the specified length meaning the length of the intended value
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns>Return the <see cref="string"/> section of a separate line</returns>
         private static string GetSeparatedLine(int length)
         {
             var line = new StringBuilder();

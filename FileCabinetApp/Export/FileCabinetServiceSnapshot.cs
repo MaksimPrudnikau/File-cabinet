@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -71,12 +70,20 @@ namespace FileCabinetApp.Export
             classWriter.Write((FileCabinetRecord[]) Records);
         }
 
+        /// <summary>
+        /// Read all records from source reader written in csv format
+        /// </summary>
+        /// <param name="reader">Source stream to read</param>
         public void LoadFromCsv(StreamReader reader)
         {
             var csvReader = new FIleCabinetCsvReader(reader);
             Records = csvReader.ReadAll();
         }
 
+        /// <summary>
+        /// Read all records from source reader written in xml format
+        /// </summary>
+        /// <param name="reader">Source stream to read</param>
         public void LoadFromXml(StreamReader reader)
         {
             var xmlReader = new FileCabinetXmlReader(reader);
