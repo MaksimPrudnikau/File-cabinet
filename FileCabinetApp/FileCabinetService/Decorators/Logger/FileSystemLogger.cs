@@ -5,12 +5,12 @@ using FileCabinetApp.FileCabinetService.Decorators.Meter;
 
 namespace FileCabinetApp.FileCabinetService.Decorators.Logger
 {
-    public class FileLogger : IDisposable
+    public class FileSystemLogger : IDisposable
     {
         private readonly TextWriter _outputFile;
         private bool _disposed;
         
-        public FileLogger(string path)
+        public FileSystemLogger(string path)
         {
             _outputFile = new StreamWriter(File.OpenWrite(path)) {AutoFlush = true};
         }

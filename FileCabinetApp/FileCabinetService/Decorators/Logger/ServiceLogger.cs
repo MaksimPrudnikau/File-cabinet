@@ -6,47 +6,57 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
 {
     public sealed class ServiceLogger : FileCabinetServiceDecorator, IDisposable
     {
-        private readonly FileLogger _logger;
+        private readonly FileSystemLogger _systemLogger;
         private bool _disposed;
 
         public ServiceLogger(IFileCabinetService service, string path) : base(service)
         {
-            _logger = new FileLogger(path);
+            _systemLogger = new FileSystemLogger(path);
         }
 
         public override int CreateRecord(FileCabinetRecord record)
         {
-            return _logger.LogMethod(base.CreateRecord, record);
+            return _systemLogger.LogMethod(base.CreateRecord, record);
         }
         
         public override FileCabinetRecord ReadParameters(int id = -1)
         {
-            return _logger.LogMethod(base.ReadParameters, id);
+            return _systemLogger.LogMethod(base.ReadParameters, id);
         }
 
         public override Statistic GetStat()
         {
-            return _logger.LogMethod(base.GetStat);
+            return _systemLogger.LogMethod(base.GetStat);
         }
 
         public override IEnumerable<FileCabinetRecord> GetRecords()
         {
-            return _logger.LogMethod(base.GetRecords);
+            return _systemLogger.LogMethod(base.GetRecords);
         }
 
         public override void Restore(FileCabinetServiceSnapshot snapshot)
         {
-            _logger.LogMethod(base.Restore, snapshot);
+            _systemLogger.LogMethod(base.Restore, snapshot);
         }
 
         public override IEnumerable<int> Delete(SearchValue searchValue)
         {
-            return _logger.LogMethod(base.Delete, searchValue);
+            return _systemLogger.LogMethod(base.Delete, searchValue);
         }
 
         public override void Purge()
         {
-            _logger.LogMethod(base.Purge);
+            _systemLogger.LogMethod(base.Purge);
+        }
+
+        public override void Insert(FileCabinetRecord record)
+        {
+            _systemLogger.LogMethod(base.Insert, record);
+        }
+
+        public override IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> @where)
+        {
+            return _systemLogger.LogMethod(base.Update, values, where);
         }
 
         public void Dispose()
@@ -61,7 +71,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             { 
                 if(disposing)
                 {
-                    _logger.Dispose();
+                    _systemLogger.Dispose();
                 }
                 
                 _disposed = true;
