@@ -244,4 +244,13 @@
   <data name="Id_cannot_be_updated" xml:space="preserve">
     <value>Id cannot be updated</value>
   </data>
+  <data name="Method_With_Return_Value_Message" xml:space="preserve">
+    <value>{0} - {1}() returned '{2}'</value>
+  </data>
+  <data name="Method_With_Parameter_Message" xml:space="preserve">
+    <value>{0} - Calling {1}() with parameter '{2}'</value>
+  </data>
+  <data name="Action_Message" xml:space="preserve">
+    <value>{0} - Calling {1}()</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using FileCabinetApp.FileCabinetService.Decorators.Meter;
@@ -33,7 +34,8 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
         /// <returns><see cref="string"/> object</returns>
         private static string GetActionMessage(string methodName)
         {
-            return $"{GetCurrentTime()} - Calling {methodName}()";
+            return string.Format(CultureInfo.CurrentCulture,
+                EnglishSource.Action_Message, GetCurrentTime(), methodName);
         }
 
         /// <summary>
@@ -66,7 +68,8 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
         /// <returns><see cref="string"/> object</returns>
         private static string GetMethodWithParameterMessage<T>(string methodName, T parameter)
         {
-            return $"{GetCurrentTime()} - Calling {methodName}() with parameter '{parameter}'";
+            return string.Format(CultureInfo.CurrentCulture,
+                EnglishSource.Method_With_Parameter_Message, GetCurrentTime(), methodName, parameter);
         }
 
 
@@ -80,11 +83,8 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
         /// <returns><see cref="string"/> message</returns>
         private static string GetMethodWithReturnValueMessage<T>(string functionName, T returnValue)
         {
-            var message = new StringBuilder();
-            message.Append($"{GetCurrentTime()} - ");
-            message.Append($"{functionName}() returned '{returnValue}'");
-
-            return message.ToString();
+            return string.Format(CultureInfo.CurrentCulture,
+                EnglishSource.Method_With_Return_Value_Message, GetCurrentTime(), functionName, returnValue);
         }
 
         /// <summary>

@@ -296,5 +296,23 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("Id_cannot_be_updated", resourceCulture);
             }
         }
+        
+        internal static string Method_With_Return_Value_Message {
+            get {
+                return ResourceManager.GetString("Method_With_Return_Value_Message", resourceCulture);
+            }
+        }
+        
+        internal static string Method_With_Parameter_Message {
+            get {
+                return ResourceManager.GetString("Method_With_Parameter_Message", resourceCulture);
+            }
+        }
+        
+        internal static string Action_Message {
+            get {
+                return ResourceManager.GetString("Action_Message", resourceCulture);
+            }
+        }
     }
 }
