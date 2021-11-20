@@ -57,12 +57,6 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string no_command {
-            get {
-                return ResourceManager.GetString("no_command", resourceCulture);
-            }
-        }
-        
         internal static string stat {
             get {
                 return ResourceManager.GetString("stat", resourceCulture);
@@ -72,18 +66,6 @@ namespace FileCabinetApp {
         internal static string create {
             get {
                 return ResourceManager.GetString("create", resourceCulture);
-            }
-        }
-        
-        internal static string id_is_not_an_integer {
-            get {
-                return ResourceManager.GetString("id_is_not_an_integer", resourceCulture);
-            }
-        }
-        
-        internal static string update {
-            get {
-                return ResourceManager.GetString("update", resourceCulture);
             }
         }
         
@@ -171,12 +153,6 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string FindBy_is_not_presented_in_current_database {
-            get {
-                return ResourceManager.GetString("FindBy_is_not_presented_in_current_database", resourceCulture);
-            }
-        }
-        
         internal static string Records_are_deleted {
             get {
                 return ResourceManager.GetString("Records_are_deleted", resourceCulture);
@@ -198,12 +174,6 @@ namespace FileCabinetApp {
         internal static string The_most_similar_commands_are {
             get {
                 return ResourceManager.GetString("The_most_similar_commands_are", resourceCulture);
-            }
-        }
-        
-        internal static string Cannot_resolve_with_input_logical_operand {
-            get {
-                return ResourceManager.GetString("Cannot_resolve_with_input_logical_operand", resourceCulture);
             }
         }
         
@@ -297,9 +267,75 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string Method_With_Return_Value_Message {
+        internal static string Id_is_less_than_zero {
             get {
-                return ResourceManager.GetString("Method_With_Return_Value_Message", resourceCulture);
+                return ResourceManager.GetString("Id_is_less_than_zero", resourceCulture);
+            }
+        }
+        
+        internal static string The_name_is_null_or_whitespace {
+            get {
+                return ResourceManager.GetString("The_name_is_null_or_whitespace", resourceCulture);
+            }
+        }
+        
+        internal static string NameWrongLength {
+            get {
+                return ResourceManager.GetString("NameWrongLength", resourceCulture);
+            }
+        }
+        
+        internal static string The_name_contains_non_letter_characters {
+            get {
+                return ResourceManager.GetString("The_name_contains_non_letter_characters", resourceCulture);
+            }
+        }
+        
+        internal static string Date_Of_Birth_Is_Less_Than_Minimal {
+            get {
+                return ResourceManager.GetString("Date_Of_Birth_Is_Less_Than_Minimal", resourceCulture);
+            }
+        }
+        
+        internal static string Date_Of_Birth_Is_Greater_Than_Maximal {
+            get {
+                return ResourceManager.GetString("Date_Of_Birth_Is_Greater_Than_Maximal", resourceCulture);
+            }
+        }
+        
+        internal static string Job_Experience_Is_Less_Than_Minimal {
+            get {
+                return ResourceManager.GetString("Job_Experience_Is_Less_Than_Minimal", resourceCulture);
+            }
+        }
+        
+        internal static string JobExperience_Is_Greater_Than_Maximal {
+            get {
+                return ResourceManager.GetString("JobExperience_Is_Greater_Than_Maximal", resourceCulture);
+            }
+        }
+        
+        internal static string Salary_Is_Less_Than_Minimal {
+            get {
+                return ResourceManager.GetString("Salary_Is_Less_Than_Minimal", resourceCulture);
+            }
+        }
+        
+        internal static string Salary_Is_Greater_Than_Maximal {
+            get {
+                return ResourceManager.GetString("Salary_Is_Greater_Than_Maximal", resourceCulture);
+            }
+        }
+        
+        internal static string Rank_Is_Not_Defined_In_Grades {
+            get {
+                return ResourceManager.GetString("Rank_Is_Not_Defined_In_Grades", resourceCulture);
+            }
+        }
+        
+        internal static string Action_Message {
+            get {
+                return ResourceManager.GetString("Action_Message", resourceCulture);
             }
         }
         
@@ -309,9 +345,9 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string Action_Message {
+        internal static string Method_With_Return_Value_Message {
             get {
-                return ResourceManager.GetString("Action_Message", resourceCulture);
+                return ResourceManager.GetString("Method_With_Return_Value_Message", resourceCulture);
             }
         }
     }

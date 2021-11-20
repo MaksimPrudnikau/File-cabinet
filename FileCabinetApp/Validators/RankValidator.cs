@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FileCabinetApp.FileCabinetService;
 
@@ -6,17 +7,11 @@ namespace FileCabinetApp.Validators
 {
     public class RankValidator : IRecordValidator
     {
-        private readonly char[] _grades;
+        private readonly IList<char> _grades;
         
         public RankValidator(Collection<char> grades)
         {
-            if (grades is null)
-            {
-                throw new ArgumentNullException(nameof(grades));
-            }
-
-            _grades = new char[grades.Count];
-            grades.CopyTo(_grades, 0);
+            _grades = grades ?? throw new ArgumentNullException(nameof(grades));
         }
         /// <summary>
         /// Validate current record's rank
@@ -31,9 +26,9 @@ namespace FileCabinetApp.Validators
                 throw new ArgumentNullException(nameof(record));
             }
             
-            if (Array.IndexOf(_grades, record.Rank) == -1)
+            if (_grades.IndexOf(record.Rank) == -1)
             {
-                throw new ArgumentException(RecordValidatorConsts.RankIsNotDefinedInGrades);
+                throw new ArgumentException(EnglishSource.Rank_Is_Not_Defined_In_Grades);
             }
         }
     }

@@ -18,7 +18,7 @@ namespace FileCabinetApp.Validators
             
             if (record.Id < 0)
             {
-                throw new ArgumentException(RecordValidatorConsts.IdIsLessThenZero);
+                throw new ArgumentException(EnglishSource.Id_is_less_than_zero);
             }
         }
     }

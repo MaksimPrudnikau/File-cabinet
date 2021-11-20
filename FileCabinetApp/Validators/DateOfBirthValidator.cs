@@ -32,12 +32,12 @@ namespace FileCabinetApp.Validators
             
             if (dateOfBirth < _from)
             {
-                throw new ArgumentException(RecordValidatorConsts.DateOfBirthIsLessThanMinimal);
+                throw new ArgumentException(EnglishSource.Date_Of_Birth_Is_Less_Than_Minimal);
             }
 
             if (dateOfBirth > _to)
             {
-                throw new ArgumentException(RecordValidatorConsts.DateOfBirthIsGreaterThanMaximal);
+                throw new ArgumentException(EnglishSource.Date_Of_Birth_Is_Greater_Than_Maximal);
             }
         }
     }

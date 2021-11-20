@@ -28,19 +28,19 @@ namespace FileCabinetApp.Validators
             
             if (string.IsNullOrWhiteSpace(record.FirstName))
             {
-                throw new ArgumentException(RecordValidatorConsts.NameIsNullOrWhiteSpace);
+                throw new ArgumentException(EnglishSource.The_name_is_null_or_whitespace);
             }
 
             if (record.FirstName.Length < _minLength || record.FirstName.Length > _maxLength)
             {
-                throw new ArgumentException(RecordValidatorConsts.NameWrongLength);
+                throw new ArgumentException(EnglishSource.NameWrongLength);
             }
 
             foreach (var item in record.FirstName)
             {
                 if (!char.IsLetter(item))
                 {
-                    throw new ArgumentException(RecordValidatorConsts.TheNameIsNotLettersOnly);
+                    throw new ArgumentException(EnglishSource.The_name_contains_non_letter_characters);
                 }
             }
         }
