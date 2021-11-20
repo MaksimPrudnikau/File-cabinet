@@ -22,8 +22,8 @@ namespace FileCabinetGenerator.Generator
             var fileCabinetDir = new DirectoryInfo(Environment.CurrentDirectory);
             var fileCabinetGeneratorDir = fileCabinetDir.Parent?.Parent?.Parent?.FullName;
             
-            var firstNamesFilePath = Path.Combine(fileCabinetGeneratorDir!, "RecordGenerator", FirstNamesFile);
-            var lastNamesFilePath = Path.Combine(fileCabinetGeneratorDir, "RecordGenerator", LastNamesFile);
+            var firstNamesFilePath = Path.Combine(fileCabinetGeneratorDir!, "Generator", FirstNamesFile);
+            var lastNamesFilePath = Path.Combine(fileCabinetGeneratorDir, "Generator", LastNamesFile);
 
             try
             {
@@ -33,7 +33,6 @@ namespace FileCabinetGenerator.Generator
             catch (Exception exception) when (exception is ArgumentException or IOException)
             {
                 Console.Error.WriteLine(exception.Message);
-                throw;
             }
         }
 

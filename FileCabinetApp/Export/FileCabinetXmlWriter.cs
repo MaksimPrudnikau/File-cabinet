@@ -21,7 +21,7 @@ namespace FileCabinetApp.Export
         /// Serialize record to xml format
         /// </summary>
         /// <param name="records">Source record</param>
-        public void Write(FileCabinetRecord[] records)
+        public void Write(IEnumerable<FileCabinetRecord> records)
         {
             if (records is null)
             {

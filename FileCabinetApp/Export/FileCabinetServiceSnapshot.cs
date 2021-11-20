@@ -41,7 +41,7 @@ namespace FileCabinetApp.Export
         public void SaveToCsv(StreamWriter file)
         {
             var csvWriter = new FIleCabinetCsvWriter(file);
-            csvWriter.Write((FileCabinetRecord[]) Records);
+            csvWriter.Write(Records);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace FileCabinetApp.Export
 
             var classWriter = new FileCabinetXmlWriter(XmlWriter.Create(file, settings));
 
-            classWriter.Write((FileCabinetRecord[]) Records);
+            classWriter.Write(Records);
         }
 
         /// <summary>
