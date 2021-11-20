@@ -350,5 +350,11 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("Method_With_Return_Value_Message", resourceCulture);
             }
         }
+        
+        internal static string Service_And_Validator_info {
+            get {
+                return ResourceManager.GetString("Service_And_Validator_info", resourceCulture);
+            }
+        }
     }
 }

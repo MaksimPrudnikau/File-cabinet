@@ -26,7 +26,7 @@ namespace FileCabinetApp
         {
             SetValidationRules(args);
             
-            Console.WriteLine($@"Service = {_service}, Validator = {_validator}");
+            Console.WriteLine(EnglishSource.Service_And_Validator_info, _service, _validator);
             Console.WriteLine(EnglishSource.developed_by, FileCabinetConsts.DeveloperName); 
             Console.WriteLine(EnglishSource.hint);
 

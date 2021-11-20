@@ -271,4 +271,7 @@
   <data name="Method_With_Return_Value_Message" xml:space="preserve">
     <value>{0} - method {1}() return '{2}'</value>
   </data>
+  <data name="Service_And_Validator_info" xml:space="preserve">
+    <value>Service = {0}, Validator = {1}</value>
+  </data>
 </root>
