@@ -12,6 +12,10 @@ namespace FileCabinetApp.Validators
             _validators = (List<IRecordValidator>) validators;
         }
 
+        /// <summary>
+        /// Validate the source record with all current validators
+        /// </summary>
+        /// <param name="record">Source record to validate</param>
         public void Validate(FileCabinetRecord record)
         {
             foreach (var validator in _validators)

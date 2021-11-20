@@ -45,28 +45,54 @@ namespace FileCabinetApp.Validation
             UseLogger = IsUseLogger(commandLine);
         }
 
+        /// <summary>
+        /// Determine whether the command line contains custom validation rules argument
+        /// </summary>
+        /// <param name="commandLine"></param>
+        /// <returns>True when command line contains the custom validation rules argument either in full or short form</returns>
         private static bool IsCustomService(string commandLine)
         {
             return HasCommand(commandLine, FileCabinetConsts.CustomValidationRuleFullForm)
                    || HasCommand(commandLine, FileCabinetConsts.CustomValidationRuleShortForm);
         }
 
+        /// <summary>
+        /// Determine whether the command line contains filesystem service argument
+        /// </summary>
+        /// <param name="commandLine"></param>
+        /// <returns>True when command line contains the filesystem service argument either in full or short form</returns>
         private static bool IsFileSystemService(string commandLine)
         {
             return HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileFullForm)
                    || HasCommand(commandLine, FileCabinetConsts.ServiceStorageFileShortForm);
         }
 
+        /// <summary>
+        /// Determine whether the command line contains logger argument
+        /// </summary>
+        /// <param name="commandLine"></param>
+        /// <returns>True when command line contains the logger argument</returns>
         private static bool IsUseLogger(string commandLine)
         {
             return HasCommand(commandLine, FileCabinetConsts.UseLogger);
         }
         
+        /// <summary>
+        /// Determine whether the command line contains stopwatch argument
+        /// </summary>
+        /// <param name="commandLine"></param>
+        /// <returns>True when command line contains the stopwatch argument</returns>
         private static bool IsUseStopWatch(string commandLine)
         {
             return HasCommand(commandLine, FileCabinetConsts.UseStopWatch);
         }
 
+        /// <summary>
+        /// Determine whether the command line contains source command
+        /// </summary>
+        /// <param name="commandLine">Command line</param>
+        /// <param name="command">Source command</param>
+        /// <returns>True when the command line contains source command</returns>
         private static bool HasCommand(string commandLine, string command)
         {
             return commandLine.Contains(command, StringComparison.InvariantCultureIgnoreCase);
