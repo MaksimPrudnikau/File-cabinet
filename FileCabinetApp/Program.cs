@@ -112,6 +112,7 @@ namespace FileCabinetApp
                 _service = commandLineParser.Service;
                 _useStopwatch = commandLineParser.UseStopWatch;
                 _useLogger = commandLineParser.UseLogger;
+                
                 if (_useStopwatch)
                 {
                     _service = new ServiceMeter(_service);

@@ -10,7 +10,7 @@
             </summary>
             <param name="file">Source stream</param>
         </member>
-        <member name="M:FileCabinetApp.Export.FIleCabinetCsvWriter.Write(FileCabinetApp.FileCabinetService.FileCabinetRecord[])">
+        <member name="M:FileCabinetApp.Export.FIleCabinetCsvWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetService.FileCabinetRecord})">
             <summary>
             Serialize source record to current <see cref="T:System.IO.TextWriter"/>
             </summary>

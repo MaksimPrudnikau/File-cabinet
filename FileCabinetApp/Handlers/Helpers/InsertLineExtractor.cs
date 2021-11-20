@@ -82,6 +82,7 @@ namespace FileCabinetApp.Handlers.Helpers
         /// <exception cref="ArgumentException">Parameter values should be enclosed in brackets</exception>
         private static IList<string> GetKeys(string source)
         {
+            source = source.TrimStart(' ').TrimEnd(' ');
             if (source[0] != '(' || source[^1] != ')')
             {
                 throw new ArgumentException(EnglishSource.Parameter_values_should_be_enclosed_in_brackets);

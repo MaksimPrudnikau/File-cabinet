@@ -18,7 +18,8 @@ namespace FileCabinetApp.Printers.Table
             _operand = LogicalOperand.Or;
         }
         
-        public TablePrinter(ICollection<SearchValue.SearchProperty> properties, ICollection<SearchValue> where, LogicalOperand operand)
+        public TablePrinter(ICollection<SearchValue.SearchProperty> properties, ICollection<SearchValue> where, LogicalOperand operand):
+            this()
         {
             if (properties is not null && properties.Count > 0)
             {
