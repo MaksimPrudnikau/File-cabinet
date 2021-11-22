@@ -362,5 +362,11 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("Too_much_parameters", resourceCulture);
             }
         }
+        
+        internal static string Suitable_records_not_found {
+            get {
+                return ResourceManager.GetString("Suitable_records_not_found", resourceCulture);
+            }
+        }
     }
 }

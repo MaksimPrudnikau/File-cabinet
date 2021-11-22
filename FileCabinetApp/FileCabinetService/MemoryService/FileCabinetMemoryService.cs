@@ -159,7 +159,9 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         {
             var deletedRecordId = new List<int>(_dictionaries.Remove(searchValue));
             Stat.Count-= deletedRecordId.Count;
-            return deletedRecordId;
+            return deletedRecordId.Count > 0
+                ? deletedRecordId
+                : null;
         }
 
         public void Purge()

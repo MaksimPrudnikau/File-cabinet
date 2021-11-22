@@ -195,7 +195,9 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 
             _stat.Count -= deletedRecordId.Count;
             _stat.Deleted += deletedRecordId.Count;
-            return deletedRecordId;
+            return deletedRecordId.Count > 0
+                ? deletedRecordId
+                : null;
         }
 
         /// <summary>
