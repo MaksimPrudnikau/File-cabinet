@@ -46,9 +46,13 @@ namespace FileCabinetApp.Handlers
             }
 
             var outputFormatIsCorrect = TryGetExportFormat(parametersSplited[outputTypeIndex], out var exportFormat);
-            var pathIsCorrect = DirectoryIsAllowed(parametersSplited[exportPathIndex]);
+            if (!outputFormatIsCorrect)
+            {
+                return;
+            }
             
-            if (!outputFormatIsCorrect || !pathIsCorrect)
+            var pathIsCorrect = DirectoryIsAllowed(parametersSplited[exportPathIndex]);
+            if (!pathIsCorrect)
             {
                 return;
             }
@@ -105,8 +109,6 @@ namespace FileCabinetApp.Handlers
                         string.Format(CultureInfo.CurrentCulture, EnglishSource.Export_type_is_not_supported, format));
             }
 
-            Console.WriteLine(EnglishSource.Export_type_is_not_supported, format);
-            
             file.Close();
         }
 
