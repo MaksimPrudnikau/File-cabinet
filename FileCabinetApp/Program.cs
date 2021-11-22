@@ -33,9 +33,13 @@ namespace FileCabinetApp
             while (_isRunning)
             {
                 var read = TryReadUsersImport(out var request);
+                if (!read)
+                {
+                    continue;
+                }
+                
                 var created = TryCreateCommandHandlers(_service, out var handler);
-
-                if (!read || !created)
+                if (!created)
                 {
                     continue;
                 }
@@ -44,6 +48,12 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Try <see cref="CreateCommandHandlers"/>
+        /// </summary>
+        /// <param name="service">Current service</param>
+        /// <param name="handler">The first element from created chain of handlers</param>
+        /// <returns>True if handlers were created successfully</returns>
         private static bool TryCreateCommandHandlers(IFileCabinetService service, out CommandHandlerBase handler)
         {
             try
@@ -59,6 +69,11 @@ namespace FileCabinetApp
             return true;
         }
 
+        /// <summary>
+        /// Try <see cref="ReadUsersImport"/>
+        /// </summary>
+        /// <param name="request">Parsed request</param>
+        /// <returns>True if parsing was successful</returns>
         private static bool TryReadUsersImport(out AppCommandRequest request)
         {
             request = null;
@@ -75,6 +90,11 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Get users command from keyboard, split it by whitespace and parse to <see cref="AppCommandRequest"/>
+        /// </summary>
+        /// <returns>parsed <see cref="AppCommandRequest"/> object</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Input command is not defined in current <see cref="RequestCommand"/></exception>
         private static AppCommandRequest ReadUsersImport()
         {
             const int commandIndex = 0;
@@ -93,7 +113,7 @@ namespace FileCabinetApp
 
             if (!parsed)
             {
-                throw new ArgumentOutOfRangeException(nameof(command), command, null);
+                throw new ArgumentOutOfRangeException(nameof(command));
             }
             
             return new AppCommandRequest
@@ -103,6 +123,10 @@ namespace FileCabinetApp
             };
         }
 
+        /// <summary>
+        /// Parse command line arguments and create the suitable <see cref="IFileCabinetService"/> and <see cref="ValidationRules"/>
+        /// </summary>
+        /// <param name="args">Line arguments split by whitespace</param>
         private static void SetValidationRules(IEnumerable<string> args)
         {
             try
@@ -129,6 +153,12 @@ namespace FileCabinetApp
             }
         }
 
+        /// <summary>
+        /// Create the chain of command handlers starts from <see cref="CreateCommandHandler"/>
+        /// and ends by <see cref="UpdateCommandHandler"/>
+        /// </summary>
+        /// <param name="service">Current service</param>
+        /// <returns>The command handlers chain</returns>
         private static CommandHandlerBase CreateCommandHandlers(IFileCabinetService service)
         {
             var helpHandler = new HelpCommandHandler();
