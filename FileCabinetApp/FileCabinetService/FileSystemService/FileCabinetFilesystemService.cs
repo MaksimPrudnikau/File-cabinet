@@ -275,8 +275,8 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             {
                 throw new ArgumentNullException(nameof(where));
             }
-
-            var position = _dictionaries.Find(where[0]);
+            
+            var position = new List<long>(_dictionaries.Find(where[0]));
             
             foreach (var pos in position)
             {
@@ -298,6 +298,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 
                 if (!recordContainsAllWheres) continue;
 
+                
                 var editRecord = RecordHelper.Clone(read);
                 foreach (var value in values)
                 {
@@ -306,7 +307,6 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 
                 new FilesystemRecord(editRecord).Serialize(_reader.BaseFile);
                 _dictionaries.Edit(read, editRecord, pos);
-                
                 yield return editRecord.Id;
             }
         }

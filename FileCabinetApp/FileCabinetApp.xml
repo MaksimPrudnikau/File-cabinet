@@ -791,7 +791,7 @@
             </summary>
             <param name="request"></param>
         </member>
-        <member name="M:FileCabinetApp.Handlers.SelectCommandHandler.SetPrinterAsTable(System.String)">
+        <member name="M:FileCabinetApp.Handlers.SelectCommandHandler.SetTablePrinterProperties(System.String)">
             <summary>
             Create table printer by parsing parameters
             </summary>

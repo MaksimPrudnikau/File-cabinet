@@ -26,7 +26,7 @@ namespace FileCabinetApp.Handlers
                 return;
             }
 
-            var searchValues = UpdateLineExtractor.GetSearchValues(request.Parameters);
+            var searchValues = new List<SearchValue>(UpdateLineExtractor.GetSearchValues(request.Parameters));
             var where = UpdateLineExtractor.GetWhereSearchValues(request.Parameters);
 
             var updated = TryUpdate(searchValues, where, out var recordsId);
