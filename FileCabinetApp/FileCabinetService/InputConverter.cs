@@ -31,7 +31,7 @@ namespace FileCabinetApp.FileCabinetService
         /// <returns>Parsed <see cref="string"/> object</returns>
         public static ConversionResult<string> NameConverter(string source)
         {
-            return new ConversionResult<string> 
+            return new ConversionResult<string>
                 {Parsed = true, Result = source, StringRepresentation = source};
         }
 

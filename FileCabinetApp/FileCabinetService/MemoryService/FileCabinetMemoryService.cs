@@ -113,19 +113,15 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// <returns>Correct input object</returns>
         private static T ReadInput<T>(Func<string, ConversionResult<T>> converter)
         {
-            do
+            var input = Console.ReadLine();
+            var conversionResult = converter(input);
+
+            if (!conversionResult.Parsed)
             {
-                var input = Console.ReadLine();
-                var conversionResult = converter(input);
-
-                if (conversionResult.Parsed)
-                {
-                    return conversionResult.Result;
-                }
-
                 Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
             }
-            while (true);
+
+            return conversionResult.Result;
         }
 
         /// <summary>

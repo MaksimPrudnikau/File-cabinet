@@ -933,6 +933,42 @@
             <param name="record"></param>
             <returns>True if it's equals to any</returns>
         </member>
+        <member name="M:FileCabinetApp.Program.TryCreateCommandHandlers(FileCabinetApp.FileCabinetService.IFileCabinetService,FileCabinetApp.Handlers.CommandHandlerBase@)">
+            <summary>
+            Try <see cref="M:FileCabinetApp.Program.CreateCommandHandlers(FileCabinetApp.FileCabinetService.IFileCabinetService)"/>
+            </summary>
+            <param name="service">Current service</param>
+            <param name="handler">The first element from created chain of handlers</param>
+            <returns>True if handlers were created successfully</returns>
+        </member>
+        <member name="M:FileCabinetApp.Program.TryReadUsersImport(FileCabinetApp.Handlers.AppCommandRequest@)">
+            <summary>
+            Try <see cref="M:FileCabinetApp.Program.ReadUsersImport"/>
+            </summary>
+            <param name="request">Parsed request</param>
+            <returns>True if parsing was successful</returns>
+        </member>
+        <member name="M:FileCabinetApp.Program.ReadUsersImport">
+            <summary>
+            Get users command from keyboard, split it by whitespace and parse to <see cref="T:FileCabinetApp.Handlers.AppCommandRequest"/>
+            </summary>
+            <returns>parsed <see cref="T:FileCabinetApp.Handlers.AppCommandRequest"/> object</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Input command is not defined in current <see cref="T:FileCabinetApp.Handlers.RequestCommand"/></exception>
+        </member>
+        <member name="M:FileCabinetApp.Program.SetValidationRules(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Parse command line arguments and create the suitable <see cref="T:FileCabinetApp.FileCabinetService.IFileCabinetService"/> and <see cref="T:FileCabinetApp.Validation.ValidationRules"/>
+            </summary>
+            <param name="args">Line arguments split by whitespace</param>
+        </member>
+        <member name="M:FileCabinetApp.Program.CreateCommandHandlers(FileCabinetApp.FileCabinetService.IFileCabinetService)">
+            <summary>
+            Create the chain of command handlers starts from <see cref="T:FileCabinetApp.Handlers.CreateCommandHandler"/>
+            and ends by <see cref="T:FileCabinetApp.Handlers.UpdateCommandHandler"/>
+            </summary>
+            <param name="service">Current service</param>
+            <returns>The command handlers chain</returns>
+        </member>
         <member name="M:FileCabinetApp.Validation.CommandLineParser.SetValidationRule(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Create <see cref="T:FileCabinetApp.FileCabinetService.IFileCabinetService"/> object according to entered command parameter
