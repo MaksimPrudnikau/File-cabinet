@@ -20,6 +20,10 @@ namespace FileCabinetApp.Handlers
         /// </summary>
         /// <param name="request">Object contains command and it's parameters</param>
         /// <exception cref="ArgumentNullException">Request in null</exception>
+        /// <example>
+        /// delete where id='1'
+        /// delete where rank = 'A'
+        /// </example>
         public override void Handle(AppCommandRequest request)
         {
             if (request is null)

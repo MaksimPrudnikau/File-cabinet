@@ -87,6 +87,10 @@ namespace FileCabinetApp.Handlers
         /// <param name="format">Format of the export file</param>
         /// <exception cref="ArgumentNullException">Export format is null</exception>
         /// <exception cref="ArgumentOutOfRangeException">Export format is not supported</exception>
+        /// <example>
+        /// export xml records.xml
+        /// export csv /usr/src/records.csv
+        /// </example>
         private static void Export(string path, ExportFormat? format)
         {
             if (format is null)

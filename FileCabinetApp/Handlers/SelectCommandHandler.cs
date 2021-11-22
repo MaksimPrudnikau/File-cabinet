@@ -18,6 +18,19 @@ namespace FileCabinetApp.Handlers
             _printer = printer;
         }
 
+        /// <summary>
+        /// Prints all suitable records by using current printer. By default printer uses <see cref="TablePrinter"/>.
+        /// The search is case-sensitive
+        /// </summary>
+        /// <param name="request">Default command request</param>
+        /// <exception cref="ArgumentNullException">Request is null</exception>
+        /// <example>
+        /// select ----> prints parameters and all records
+        /// select firstname, lastname ----> prints only first names and last names
+        /// select firstname, lastname where id = '1' ----> prints only first names and last names from records where id equals '1'
+        /// select where firstname = 'Ivan' ----> prints all records where firstname equals 'Ivan'
+        /// select where rank = 'A' and/or lastname = 'Ivanov' ----> prints all properties from records where rank equals 'A' AND/OR last name equals 'Ivan'
+        /// </example>
         public override void Handle(AppCommandRequest request)
         {
             if (request is null)

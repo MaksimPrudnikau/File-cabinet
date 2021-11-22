@@ -13,6 +13,15 @@ namespace FileCabinetApp.Handlers
         {
         }
 
+        /// <summary>
+        /// Update suitable records with input values
+        /// </summary>
+        /// <param name="request">Source command request</param>
+        /// <exception cref="ArgumentNullException">Source request is null</exception>
+        /// <example>
+        /// update set firstname = 'John', lastname = 'Doe' , dateofbirth = '5/18/1986' where id = '1'
+        /// update set DateOfBirth='05/18/1986' where FirstName = 'Stan' and LastName='Smith'
+        /// </example>
         public override void Handle(AppCommandRequest request)
         {
             if (request is null)

@@ -12,7 +12,8 @@ namespace FileCabinetApp.Handlers
         }
 
         /// <summary>
-        /// Create record in current service
+        /// Create record in current service. If default service is selected, parameters from the custom one
+        /// are not requested
         /// </summary>
         /// <param name="request">Object contains command and it's parameters</param>
         /// <exception cref="ArgumentNullException">Request in null</exception>

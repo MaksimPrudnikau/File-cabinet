@@ -15,6 +15,17 @@ namespace FileCabinetApp.Handlers
         {
         }
 
+        /// <summary>
+        /// Insert a new value to the current service. The value is inserted before the first record with a greater ID.
+        /// The identificator, first name, last name and date of birth values are required because the are initial for
+        /// any record.Number of the properties must be correspond with values. Quotes in values are optional
+        /// </summary>
+        /// <param name="request">Source command request</param>
+        /// <exception cref="ArgumentNullException">Request is null</exception>
+        /// <example>
+        /// insert (id, firstname, lastname, dateofbirth) values ('1', 'John', 'Doe', '05/18/1986')
+        /// insert (firstname, id, lastname, dateofbirth, rank) values (Ivan, 4, Ivanov, 13/05/2001, A)
+        /// </example>
         public override void Handle(AppCommandRequest request)
         {
             if (request is null)

@@ -602,7 +602,8 @@
         </member>
         <member name="M:FileCabinetApp.Handlers.CreateCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
-            Create record in current service
+            Create record in current service. If default service is selected, parameters from the custom one
+            are not requested
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
@@ -613,6 +614,11 @@
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
+            <example>
+            delete where id='1'
+            delete where id = '1'
+            delete where rank = 'A'
+            </example>
         </member>
         <member name="M:FileCabinetApp.Handlers.DeleteCommandHandler.GetSearchAttribute(System.String)">
             <summary>

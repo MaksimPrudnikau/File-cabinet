@@ -14,7 +14,7 @@ namespace FileCabinetApp.Handlers
         /// <summary>
         /// Remove all records marked as deleted from source database
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">Source command request</param>
         public override void Handle(AppCommandRequest request)
         {
             if (request is null)

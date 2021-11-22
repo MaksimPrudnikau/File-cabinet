@@ -5,6 +5,12 @@ namespace FileCabinetApp.Handlers
 {
     public static class ErrorCommandHandler
     {
+        
+        /// <summary>
+        /// Prints the most suitable existing command to the input one 
+        /// </summary>
+        /// <param name="command">Source command request</param>
+        /// <exception cref="ArgumentNullException">Source request is null</exception>
         public static void Handle(string command)
         {
             if (command is null)

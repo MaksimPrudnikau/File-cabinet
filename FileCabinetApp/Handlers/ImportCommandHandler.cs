@@ -21,6 +21,10 @@ namespace FileCabinetApp.Handlers
         /// </summary>
         /// <param name="request">Object contains command and it's parameters</param>
         /// <exception cref="ArgumentNullException">Request in null</exception>
+        /// <example>
+        /// import xml records.xml
+        /// export csv /usr/src/records.csv
+        /// </example>
         public override void Handle(AppCommandRequest request)
         {
             if (request is null)

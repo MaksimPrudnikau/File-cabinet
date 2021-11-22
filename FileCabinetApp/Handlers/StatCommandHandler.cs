@@ -11,10 +11,12 @@ namespace FileCabinetApp.Handlers
         {
             Service = service;
         }
-
+        
         /// <summary>
         /// Prints the amount of existing and deleted records
         /// </summary>
+        /// <param name="request">Source command request</param>
+        /// <exception cref="ArgumentNullException">Source request is null</exception>
         public override void Handle(AppCommandRequest request)
         {
             if (request is null)
