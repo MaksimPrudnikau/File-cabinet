@@ -356,5 +356,11 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("Service_And_Validator_info", resourceCulture);
             }
         }
+        
+        internal static string Too_much_parameters {
+            get {
+                return ResourceManager.GetString("Too_much_parameters", resourceCulture);
+            }
+        }
     }
 }

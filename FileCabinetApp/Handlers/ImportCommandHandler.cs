@@ -46,11 +46,14 @@ namespace FileCabinetApp.Handlers
             const int directoryIndex = 1;
 
             var outputFormatIsCorrect = TryGetExportFormat(parametersSplited[exportFormatIndex], out var exportFormat);
+            if (!outputFormatIsCorrect)
+            {
+                return;
+            }
 
             var directory = parametersSplited[directoryIndex];
             var directoryIsCorrect = TryGetDirectory(directory);
-
-            if (!outputFormatIsCorrect || !directoryIsCorrect)
+            if (!directoryIsCorrect)
             {
                 return;
             }
