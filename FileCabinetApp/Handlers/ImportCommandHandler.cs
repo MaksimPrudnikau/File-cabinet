@@ -130,7 +130,7 @@ namespace FileCabinetApp.Handlers
             }
             catch (ArgumentException exception)
             {
-                Console.WriteLine(exception.Message);
+                Console.Error.WriteLine(exception.Message);
                 format = null;
                 return false;
             }
@@ -150,7 +150,7 @@ namespace FileCabinetApp.Handlers
             }
             catch (ArgumentException e)
             {
-                Console.WriteLine(e.Message);
+                Console.Error.WriteLine(e.Message);
                 return false;
             }
         }

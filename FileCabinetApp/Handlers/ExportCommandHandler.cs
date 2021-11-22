@@ -160,7 +160,7 @@ namespace FileCabinetApp.Handlers
             }
             catch (ArgumentException e)
             {
-                Console.WriteLine(e.Message);
+                Console.Error.WriteLine(e.Message);
                 format = null;
                 return false;
             }
