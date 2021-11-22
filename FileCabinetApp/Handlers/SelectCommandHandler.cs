@@ -50,16 +50,19 @@ namespace FileCabinetApp.Handlers
                 _printer = new TablePrinter();
                 return;
             }
-            
+
+            const int headerNamesIndex = 0; 
+            const int whereValuesIndex = 1;
             const string keyword = "where";
+            
             var split = parameters.TrimStart(' ').TrimEnd(' ').Split(keyword);
-            var properties = DefaultLineExtractor.GetWords(split[0]);
+            var properties = DefaultLineExtractor.GetWords(split[headerNamesIndex]);
             var delimiterIndex = FindDelimiter(parameters, Delimiters);
             IList<SearchValue> wheres = new List<SearchValue>();
 
             if (split.Length > 1)
             {
-                wheres = DefaultLineExtractor.ExtractSearchValues(split[1], $"{Delimiters[delimiterIndex]}");
+                wheres = DefaultLineExtractor.ExtractSearchValues(split[whereValuesIndex], $"{Delimiters[delimiterIndex]}");
             }
             
             _printer = new TablePrinter(GetProperties(properties), wheres, Delimiters[delimiterIndex]);
