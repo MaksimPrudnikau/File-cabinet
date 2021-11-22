@@ -21,7 +21,7 @@ namespace FileCabinetApp.Export
         /// Serialize record to xml format
         /// </summary>
         /// <param name="records">Source record</param>
-        public void Write(FileCabinetRecord[] records)
+        public void Write(IEnumerable<FileCabinetRecord> records)
         {
             if (records is null)
             {
@@ -42,7 +42,7 @@ namespace FileCabinetApp.Export
                 {
                     Id = item.Id,
                     Name = new NameXml{First = item.FirstName, Last = item.LastName},
-                    DateOfBirth = item.DateOfBirth.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+                    DateOfBirth = item.DateOfBirth.ToString(FileCabinetConsts.InputDateFormat, CultureInfo.InvariantCulture),
                     JobExperience = item.JobExperience,
                     Wage = item.Salary,
                     Rank = item.Rank

@@ -30,9 +30,7 @@ namespace FileCabinetApp.Import
         public IList<FileCabinetRecord> ReadAll()
         {
             using var xmlReader = XmlReader.Create(_reader);
-
             var records = (RecordsXml) _serializer.Deserialize(xmlReader) ?? new RecordsXml();
-
             var fileCabinetRecords = new List<FileCabinetRecord>();
             
             foreach (var item in records.Records)
@@ -43,7 +41,7 @@ namespace FileCabinetApp.Import
                 }
                 catch (Exception exception) when (exception is ArgumentException or FormatException)
                 {
-                    Console.Error.WriteLine($"Record #{item.Id}: {exception.Message}");
+                    Console.Error.WriteLine(EnglishSource.Record_number_error, item.Id, exception.Message);
                     continue;
                 }
                 

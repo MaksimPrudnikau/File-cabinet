@@ -29,12 +29,12 @@ namespace FileCabinetApp.Validators
             
             if (record.Salary < _minimal)
             {
-                throw new ArgumentException(RecordValidatorConsts.WageIsLessThanMinimal);
+                throw new ArgumentException(EnglishSource.Salary_Is_Less_Than_Minimal);
             }
             
             if (record.Salary > _maximal)
             {
-                throw new ArgumentException(RecordValidatorConsts.WageIsGreaterThanMaximal);
+                throw new ArgumentException(EnglishSource.Salary_Is_Greater_Than_Maximal);
             }
         }
     }

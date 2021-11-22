@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
-using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.Validation;
-using FileCabinetApp.Validators;
 
-namespace FileCabinetApp
+namespace FileCabinetApp.Validators
 {
     public class ValidationBuilder
     {
@@ -19,6 +17,10 @@ namespace FileCabinetApp
             _validationRules = ValidationRulesReader.ReadRules(RulesPath);
         }
 
+        /// <summary>
+        /// Create <see cref="CompositeValidator"/> corresponding to the default parameters
+        /// </summary>
+        /// <returns><see cref="CompositeValidator"/> as <see cref="IRecordValidator"/></returns>
         public IRecordValidator CreateDefault()
         {
             _validators = new List<IRecordValidator>
@@ -32,6 +34,10 @@ namespace FileCabinetApp
             return new CompositeValidator(_validators);
         }
 
+        /// <summary>
+        /// Create <see cref="CompositeValidator"/> corresponding to the custom parameters
+        /// </summary>
+        /// <returns><see cref="CompositeValidator"/> as <see cref="IRecordValidator"/></returns>
         public IRecordValidator CreateCustom()
         {
             _validators = new List<IRecordValidator>

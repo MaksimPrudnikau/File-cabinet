@@ -57,12 +57,6 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string no_command {
-            get {
-                return ResourceManager.GetString("no_command", resourceCulture);
-            }
-        }
-        
         internal static string stat {
             get {
                 return ResourceManager.GetString("stat", resourceCulture);
@@ -72,18 +66,6 @@ namespace FileCabinetApp {
         internal static string create {
             get {
                 return ResourceManager.GetString("create", resourceCulture);
-            }
-        }
-        
-        internal static string id_is_not_an_integer {
-            get {
-                return ResourceManager.GetString("id_is_not_an_integer", resourceCulture);
-            }
-        }
-        
-        internal static string update {
-            get {
-                return ResourceManager.GetString("update", resourceCulture);
             }
         }
         
@@ -171,12 +153,6 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string FindBy_is_not_presented_in_current_database {
-            get {
-                return ResourceManager.GetString("FindBy_is_not_presented_in_current_database", resourceCulture);
-            }
-        }
-        
         internal static string Records_are_deleted {
             get {
                 return ResourceManager.GetString("Records_are_deleted", resourceCulture);
@@ -201,12 +177,6 @@ namespace FileCabinetApp {
             }
         }
         
-        internal static string Cannot_resolve_with_input_logical_operand {
-            get {
-                return ResourceManager.GetString("Cannot_resolve_with_input_logical_operand", resourceCulture);
-            }
-        }
-        
         internal static string File_is_not_exist {
             get {
                 return ResourceManager.GetString("File_is_not_exist", resourceCulture);
@@ -228,6 +198,162 @@ namespace FileCabinetApp {
         internal static string Answer_must_be_either_Y_or_n {
             get {
                 return ResourceManager.GetString("Answer_must_be_either_Y_or_n", resourceCulture);
+            }
+        }
+        
+        internal static string Cant_deserialize {
+            get {
+                return ResourceManager.GetString("Cant_deserialize", resourceCulture);
+            }
+        }
+        
+        internal static string Record_at_line_Error {
+            get {
+                return ResourceManager.GetString("Record_at_line_Error", resourceCulture);
+            }
+        }
+        
+        internal static string Error__wrong_conversion {
+            get {
+                return ResourceManager.GetString("Error__wrong_conversion", resourceCulture);
+            }
+        }
+        
+        internal static string missing_one_parameter {
+            get {
+                return ResourceManager.GetString("missing_one_parameter", resourceCulture);
+            }
+        }
+        
+        internal static string Wrong_data_format {
+            get {
+                return ResourceManager.GetString("Wrong_data_format", resourceCulture);
+            }
+        }
+        
+        internal static string Record_number_error {
+            get {
+                return ResourceManager.GetString("Record_number_error", resourceCulture);
+            }
+        }
+        
+        internal static string Cannot_find_keyword {
+            get {
+                return ResourceManager.GetString("Cannot_find_keyword", resourceCulture);
+            }
+        }
+        
+        internal static string Number_of_keys_doesnt_correspond_to_number_of_values {
+            get {
+                return ResourceManager.GetString("Number_of_keys_doesnt_correspond_to_number_of_values", resourceCulture);
+            }
+        }
+        
+        internal static string Parameter_values_should_be_enclosed_in_brackets {
+            get {
+                return ResourceManager.GetString("Parameter_values_should_be_enclosed_in_brackets", resourceCulture);
+            }
+        }
+        
+        internal static string Record_with_id_is_already_exist {
+            get {
+                return ResourceManager.GetString("Record_with_id_is_already_exist", resourceCulture);
+            }
+        }
+        
+        internal static string Id_cannot_be_updated {
+            get {
+                return ResourceManager.GetString("Id_cannot_be_updated", resourceCulture);
+            }
+        }
+        
+        internal static string Id_is_less_than_zero {
+            get {
+                return ResourceManager.GetString("Id_is_less_than_zero", resourceCulture);
+            }
+        }
+        
+        internal static string The_name_is_null_or_whitespace {
+            get {
+                return ResourceManager.GetString("The_name_is_null_or_whitespace", resourceCulture);
+            }
+        }
+        
+        internal static string NameWrongLength {
+            get {
+                return ResourceManager.GetString("NameWrongLength", resourceCulture);
+            }
+        }
+        
+        internal static string The_name_contains_non_letter_characters {
+            get {
+                return ResourceManager.GetString("The_name_contains_non_letter_characters", resourceCulture);
+            }
+        }
+        
+        internal static string Date_Of_Birth_Is_Less_Than_Minimal {
+            get {
+                return ResourceManager.GetString("Date_Of_Birth_Is_Less_Than_Minimal", resourceCulture);
+            }
+        }
+        
+        internal static string Date_Of_Birth_Is_Greater_Than_Maximal {
+            get {
+                return ResourceManager.GetString("Date_Of_Birth_Is_Greater_Than_Maximal", resourceCulture);
+            }
+        }
+        
+        internal static string Job_Experience_Is_Less_Than_Minimal {
+            get {
+                return ResourceManager.GetString("Job_Experience_Is_Less_Than_Minimal", resourceCulture);
+            }
+        }
+        
+        internal static string JobExperience_Is_Greater_Than_Maximal {
+            get {
+                return ResourceManager.GetString("JobExperience_Is_Greater_Than_Maximal", resourceCulture);
+            }
+        }
+        
+        internal static string Salary_Is_Less_Than_Minimal {
+            get {
+                return ResourceManager.GetString("Salary_Is_Less_Than_Minimal", resourceCulture);
+            }
+        }
+        
+        internal static string Salary_Is_Greater_Than_Maximal {
+            get {
+                return ResourceManager.GetString("Salary_Is_Greater_Than_Maximal", resourceCulture);
+            }
+        }
+        
+        internal static string Rank_Is_Not_Defined_In_Grades {
+            get {
+                return ResourceManager.GetString("Rank_Is_Not_Defined_In_Grades", resourceCulture);
+            }
+        }
+        
+        internal static string Action_Message {
+            get {
+                return ResourceManager.GetString("Action_Message", resourceCulture);
+            }
+        }
+        
+        internal static string Method_With_Parameter_Message {
+            get {
+                return ResourceManager.GetString("Method_With_Parameter_Message", resourceCulture);
+            }
+        }
+        
+        internal static string Method_With_Return_Value_Message {
+            get {
+                return ResourceManager.GetString("Method_With_Return_Value_Message", resourceCulture);
+            }
+        }
+        
+        internal static string Service_And_Validator_info {
+            get {
+                return ResourceManager.GetString("Service_And_Validator_info", resourceCulture);
             }
         }
     }

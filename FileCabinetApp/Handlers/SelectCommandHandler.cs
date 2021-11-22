@@ -33,7 +33,7 @@ namespace FileCabinetApp.Handlers
 
             if (_printer is TablePrinter)
             {
-                SetPrinterAsTable(request.Parameters);
+                SetTablePrinterProperties(request.Parameters);
             }
 
             _printer.Print(Service.GetRecords());
@@ -43,27 +43,29 @@ namespace FileCabinetApp.Handlers
         /// Create table printer by parsing parameters
         /// </summary>
         /// <param name="parameters">Command line parameters</param>
-        private void SetPrinterAsTable(string parameters)
+        private void SetTablePrinterProperties(string parameters)
         {
             if (string.IsNullOrEmpty(parameters))
             {
                 _printer = new TablePrinter();
                 return;
             }
-            
+
+            const int headerNamesIndex = 0; 
+            const int whereValuesIndex = 1;
             const string keyword = "where";
-            var split = parameters.Split(keyword);
-            var keys = DefaultLineExtractor.GetWords(split[0]);
+            
+            var split = parameters.TrimStart(' ').TrimEnd(' ').Split(keyword);
+            var properties = DefaultLineExtractor.GetWords(split[headerNamesIndex]);
             var delimiterIndex = FindDelimiter(parameters, Delimiters);
+            IList<SearchValue> wheres = new List<SearchValue>();
 
-            if (split.Length == 1)
+            if (split.Length > 1)
             {
-                _printer = new TablePrinter(GetProperties(keys), null, Delimiters[delimiterIndex]);
-                return;
+                wheres = DefaultLineExtractor.ExtractSearchValues(split[whereValuesIndex], $"{Delimiters[delimiterIndex]}");
             }
-
-            var values = DefaultLineExtractor.ExtractSearchValues(split[1], $"{Delimiters[delimiterIndex]}");
-            _printer = new TablePrinter(GetProperties(keys), values, Delimiters[delimiterIndex]);
+            
+            _printer = new TablePrinter(GetProperties(properties), wheres, Delimiters[delimiterIndex]);
         }
 
         /// <summary>

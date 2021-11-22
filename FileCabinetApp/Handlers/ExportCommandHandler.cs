@@ -45,9 +45,14 @@ namespace FileCabinetApp.Handlers
                 return;
             }
 
-            var outFormatIsCorrect = TryGetExportFormat(parametersSplited[outputTypeIndex], out var exportFormat);
-            var pathIsCorrect = GetDirectory(parametersSplited[exportPathIndex]);
-            if (!outFormatIsCorrect || !pathIsCorrect)
+            var outputFormatIsCorrect = TryGetExportFormat(parametersSplited[outputTypeIndex], out var exportFormat);
+            if (!outputFormatIsCorrect)
+            {
+                return;
+            }
+            
+            var pathIsCorrect = DirectoryIsAllowed(parametersSplited[exportPathIndex]);
+            if (!pathIsCorrect)
             {
                 return;
             }
@@ -74,6 +79,14 @@ namespace FileCabinetApp.Handlers
             }
         }
 
+        /// <summary>
+        /// Export all records from current service in file with the input path and input format. If file is not exist
+        /// it will be created
+        /// </summary>
+        /// <param name="path">Absolute path to the export file</param>
+        /// <param name="format">Format of the export file</param>
+        /// <exception cref="ArgumentNullException">Export format is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Export format is not supported</exception>
         private static void Export(string path, ExportFormat? format)
         {
             if (format is null)
@@ -96,12 +109,16 @@ namespace FileCabinetApp.Handlers
                         string.Format(CultureInfo.CurrentCulture, EnglishSource.Export_type_is_not_supported, format));
             }
 
-            Console.WriteLine(EnglishSource.Export_type_is_not_supported, format);
-            
             file.Close();
         }
 
-        private static bool GetDirectory(string sourceDirectory)
+        /// <summary>
+        /// Determine whether the directory is allowed, file of source directory is exist and if it is
+        /// request permission to rewrite
+        /// </summary>
+        /// <param name="sourceDirectory">Source directory</param>
+        /// <returns>True if file is not exist or rewrite is allowed</returns>
+        private static bool DirectoryIsAllowed(string sourceDirectory)
         {
             if (!File.Exists(sourceDirectory))
             {
@@ -112,6 +129,10 @@ namespace FileCabinetApp.Handlers
             return AllowRewriteIfExist();
         }
 
+        /// <summary>
+        /// Get the permission to rewrite the file
+        /// </summary>
+        /// <returns>True of allowed</returns>
         private static bool AllowRewriteIfExist()
         {
             while (true)
@@ -145,6 +166,11 @@ namespace FileCabinetApp.Handlers
             }
         }
 
+        /// <summary>
+        /// Parse string representation of <see cref="ExportFormat"/>
+        /// </summary>
+        /// <param name="parameters">Source string to parse</param>
+        /// <returns>Parsed <see cref="ExportFormat"/></returns>
         private static ExportFormat GetExportFormat(string parameters)
         {
             return Enum.Parse<ExportFormat>(parameters, true);

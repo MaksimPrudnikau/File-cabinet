@@ -30,12 +30,12 @@ namespace FileCabinetApp.Validators
             
             if (record.JobExperience < _minimal)
             {
-                throw new ArgumentException(RecordValidatorConsts.JobExperienceIsLessThanMinimal);
+                throw new ArgumentException(EnglishSource.Job_Experience_Is_Less_Than_Minimal);
             }
 
             if (record.JobExperience > _maximal)
             {
-                throw new ArgumentException(RecordValidatorConsts.JobExperienceIsGreaterThanMaximal);
+                throw new ArgumentException(EnglishSource.JobExperience_Is_Greater_Than_Maximal);
             }
         }
     }

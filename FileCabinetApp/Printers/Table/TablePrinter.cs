@@ -8,7 +8,7 @@ namespace FileCabinetApp.Printers.Table
     public class TablePrinter : IRecordPrinter
     {
         private readonly IEnumerable<SearchValue.SearchProperty> _properties ;
-        private readonly IEnumerable<SearchValue> _where;
+        private readonly ICollection<SearchValue> _where;
         private readonly LogicalOperand _operand;
 
         public TablePrinter()
@@ -18,7 +18,8 @@ namespace FileCabinetApp.Printers.Table
             _operand = LogicalOperand.Or;
         }
         
-        public TablePrinter(ICollection<SearchValue.SearchProperty> properties, ICollection<SearchValue> where, LogicalOperand operand)
+        public TablePrinter(ICollection<SearchValue.SearchProperty> properties, ICollection<SearchValue> where, LogicalOperand operand):
+            this()
         {
             if (properties is not null && properties.Count > 0)
             {
@@ -92,6 +93,11 @@ namespace FileCabinetApp.Printers.Table
         /// <returns>True if it's equals to any</returns>
         private bool SatisfyAny(FileCabinetRecord record)
         {
+            if (_where.Count == 0)
+            {
+                return true;
+            }
+            
             foreach (var item in _where)
             {
                 var value = RecordHelper.GetByAttribute(record, item.Property);

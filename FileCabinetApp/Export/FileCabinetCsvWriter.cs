@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using FileCabinetApp.FileCabinetService;
@@ -22,7 +23,7 @@ namespace FileCabinetApp.Export
         /// Serialize source record to current <see cref="TextWriter"/>
         /// </summary>
         /// <param name="record"></param>
-        public void Write(FileCabinetRecord[] record)
+        public void Write(IEnumerable<FileCabinetRecord> record)
         {
             if (record is null)
             {

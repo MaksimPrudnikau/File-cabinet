@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using FileCabinetApp.Export;
 using FileCabinetApp.FileCabinetService.FileSystemService;
 using FileCabinetApp.Results;
@@ -46,6 +47,10 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             return record.Id;
         }
 
+        /// <summary>
+        /// Read all the records from current service
+        /// </summary>
+        /// <returns>An array of <see cref="FileCabinetRecord"/></returns>
         public IEnumerable<FileCabinetRecord> GetRecords()
         {
             foreach (var item in _dictionaries.Records.Values)
@@ -123,6 +128,12 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             while (true);
         }
 
+        /// <summary>
+        /// Add the records from snapshot to current service. Records from snapshot that are already exist will be
+        /// edited. The others will be added
+        /// </summary>
+        /// <param name="snapshot"></param>
+        /// <exception cref="ArgumentNullException">The source snapshot is null</exception>
         public void Restore(FileCabinetServiceSnapshot snapshot)
         {
             if (snapshot is null)
@@ -143,6 +154,11 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             }
         }
 
+        /// <summary>
+        /// Delete all records satisfy the source value
+        /// </summary>
+        /// <param name="searchValue">Source value to search</param>
+        /// <returns>Identifications of deleted records</returns>
         public IEnumerable<int> Delete(SearchValue searchValue)
         {
             var deletedRecordId = new List<int>(_dictionaries.Remove(searchValue));
@@ -154,6 +170,12 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         {
         }
 
+        /// <summary>
+        /// Insert the source record to service by it's id
+        /// </summary>
+        /// <param name="record">The source record to insert</param>
+        /// <exception cref="ArgumentNullException">The source record is null</exception>
+        /// <exception cref="ArgumentException">The record with id equals the source one is already exist</exception>
         public void Insert(FileCabinetRecord record)
         {
             if (record is null)
@@ -163,7 +185,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
 
             if (_dictionaries.Records.ContainsKey(record.Id))
             {
-                throw new ArgumentException($"Record with id = '{record.Id}' is already exist");
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, EnglishSource.Record_with_id_is_already_exist, record.Id));
             }
 
             if (record.Id == default)
@@ -174,6 +196,13 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             CreateRecord(record);
         }
 
+        /// <summary>
+        /// Find all records suitable records with source values
+        /// </summary>
+        /// <param name="values">The new values of records</param>
+        /// <param name="where">An array of search values for which the record will be considered as suitable</param>
+        /// <returns>Identifications of updated records</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)
@@ -202,6 +231,12 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             }
         }
 
+        /// <summary>
+        /// Delete records from source array that satisfy match
+        /// </summary>
+        /// <param name="source">Source records</param>
+        /// <param name="match">Source values to remove</param>
+        /// <exception cref="ArgumentNullException">At least on of the source values is null</exception>
         private static void RemoveMismatch(IList<FileCabinetRecord> source, IEnumerable<SearchValue> match)
         {
             if (source is null)

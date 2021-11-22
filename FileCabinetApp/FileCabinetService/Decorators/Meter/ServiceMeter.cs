@@ -49,5 +49,18 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             var ticks = TicksMeter.GetElapsedTicks(base.Purge);
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Purge), ticks);
         }
+
+        public override void Insert(FileCabinetRecord record)
+        {
+            var ticks = TicksMeter.GetElapsedTicks(base.Insert, record);
+            Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Insert), ticks);
+        }
+
+        public override IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        {
+            var ticks = TicksMeter.GetElapsedTicks(base.Update, values, where, out var ids);
+            Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Update), ticks);
+            return ids;
+        }
     }
 }

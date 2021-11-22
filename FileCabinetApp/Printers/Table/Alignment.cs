@@ -1,4 +1,4 @@
-﻿namespace FileCabinetApp.Printers
+﻿namespace FileCabinetApp.Printers.Table
 {
     public enum Alignment
     {

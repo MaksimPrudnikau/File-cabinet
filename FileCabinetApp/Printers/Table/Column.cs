@@ -2,7 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using FileCabinetApp.FileCabinetService;
 
-namespace FileCabinetApp.Printers
+namespace FileCabinetApp.Printers.Table
 {
     public class Column
     {

@@ -1,12 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using FileCabinetApp.FileCabinetService;
 
 namespace FileCabinetApp.Handlers.Helpers
 {
     public static class InsertLineExtractor
     {
-        public static SearchValue[] ExtractValues(string parameters)
+        /// <summary>
+        /// Extract search values from source parameters
+        /// </summary>
+        /// <param name="parameters">Source string to extract from</param>
+        /// <returns>An array of <see cref="SearchValue"/></returns>
+        /// <exception cref="ArgumentNullException">Source string is null</exception>
+        /// <exception cref="ArgumentException">Cannot find values keyword</exception>
+        /// <exception cref="ArgumentException">Number of keys doesnt correspond to number of values</exception>
+        public static ICollection<SearchValue> ExtractValues(string parameters)
         {
             if (parameters is null)
             {
@@ -16,16 +26,17 @@ namespace FileCabinetApp.Handlers.Helpers
             const string keyword = "values";
             if (!parameters.Contains(keyword, StringComparison.InvariantCulture))
             {
-                throw new ArgumentException($"Cannot find key word '{keyword}'");
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, 
+                    EnglishSource.Cannot_find_keyword, keyword));
             }
 
             var split = parameters.Split(keyword);
-            var keys = GetWords(split[0]);
-            var values = GetWords(split[1]);
+            var keys = GetKeys(split[0]);
+            var values = GetKeys(split[1]);
 
-            if (keys.Length != values.Length)
+            if (keys.Count != values.Count)
             {
-                throw new ArgumentException("Number of keys doesnt correspond to number of values");
+                throw new ArgumentException(EnglishSource.Number_of_keys_doesnt_correspond_to_number_of_values);
             }
 
             var created = TryCreateInsertValues(keys, values, out var insertValues);
@@ -33,12 +44,12 @@ namespace FileCabinetApp.Handlers.Helpers
                 ? insertValues 
                 : null;
         }
-
-        private static bool TryCreateInsertValues(IReadOnlyList<string> keys, IReadOnlyList<string> values, out SearchValue[] insertValues)
+        
+        private static bool TryCreateInsertValues(IList<string> keys, IList<string> values, out ICollection<SearchValue> insertValues)
         {
             try
             {
-                insertValues = CreateInsertValues(keys, values);
+                insertValues = new List<SearchValue>(CreateInsertValues(keys, values));
                 return true;
             }
             catch (ArgumentException exception)
@@ -49,22 +60,32 @@ namespace FileCabinetApp.Handlers.Helpers
             }
         }
 
-        private static SearchValue[] CreateInsertValues(IReadOnlyList<string> keys, IReadOnlyList<string> values)
+        /// <summary>
+        /// Create <see cref="SearchValue"/> from source keys and values. The number of them must be equal
+        /// </summary>
+        /// <param name="keys">Source keys representing record properties</param>
+        /// <param name="values">The values that the properties will be filled with</param>
+        /// <returns>An array of <see cref="SearchValue"/></returns>
+        private static IEnumerable<SearchValue> CreateInsertValues(IList<string> keys, IList<string> values)
         {
-            var insertValues = new List<SearchValue>();
             for (var i = 0; i < keys.Count; i++)
             {
-                insertValues.Add(new SearchValue(keys[i], values[i]));
+                yield return new SearchValue(keys[i], values[i]);
             }
-
-            return insertValues.ToArray();
         }
 
-        private static string[] GetWords(string source)
+        /// <summary>
+        /// Get keys from source string
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns>An array of keys</returns>
+        /// <exception cref="ArgumentException">Parameter values should be enclosed in brackets</exception>
+        private static IList<string> GetKeys(string source)
         {
+            source = source.TrimStart(' ').TrimEnd(' ');
             if (source[0] != '(' || source[^1] != ')')
             {
-                throw new ArgumentException("Parameter values should be enclosed in brackets");
+                throw new ArgumentException(EnglishSource.Parameter_values_should_be_enclosed_in_brackets);
             }
             
             return DefaultLineExtractor.GetWords(source[1..^1]);
