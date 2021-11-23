@@ -82,12 +82,16 @@ namespace FileCabinetApp.Import
 
             var split = csvLine.Split(FileCabinetConsts.CsvDelimiter);
 
-            if (split.Length != parametersCount)
+            switch (split.Length)
             {
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
-                    EnglishSource.missing_one_parameter, csvLine));
+                case < parametersCount:
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                        EnglishSource.missing_one_parameter, csvLine));
+                case > parametersCount:
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, 
+                        EnglishSource.Too_much_parameters, csvLine));
             }
-            
+
             var record = new FileCabinetRecord
             {
                 Id = Parse(split[idIndex], InputConverter.IdConverter),

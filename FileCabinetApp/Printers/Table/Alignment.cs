@@ -3,6 +3,7 @@
     public enum Alignment
     {
         Centering,
-        Right
+        Right,
+        Left
     }
 }

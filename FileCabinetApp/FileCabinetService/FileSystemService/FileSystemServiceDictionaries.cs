@@ -24,7 +24,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// </summary>
         /// <param name="record">The source record</param>
         /// <param name="position">Record's position on database file</param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">Source record is null</exception>
         public void Add(FileCabinetRecord record, long position)
         {
             if (record is null)

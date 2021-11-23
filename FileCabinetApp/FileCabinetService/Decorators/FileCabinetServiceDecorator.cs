@@ -13,20 +13,9 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             _service = service;
         }
 
-        public virtual int CreateRecord(FileCabinetRecord record)
+        public virtual int CreateRecord()
         {
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
-
-            _service.CreateRecord(record);
-            return record.Id;
-        }
-
-        public virtual FileCabinetRecord ReadParameters(int id = -1)
-        {
-            return _service.ReadParameters(id);
+            return _service.CreateRecord();
         }
 
         public virtual Statistic GetStat()
@@ -59,7 +48,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             _service.Insert(record);
         }
 
-        public virtual IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        public virtual IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where)
         {
             return _service.Update(values, where);
         }

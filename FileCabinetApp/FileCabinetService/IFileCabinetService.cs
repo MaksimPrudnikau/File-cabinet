@@ -5,10 +5,8 @@ namespace FileCabinetApp.FileCabinetService
 {
     public interface IFileCabinetService
     {
-        public int CreateRecord(FileCabinetRecord record);
+        public int CreateRecord();
 
-        public FileCabinetRecord ReadParameters(int id = -1);
-        
         public Statistic GetStat();
 
         public IEnumerable<FileCabinetRecord> GetRecords();
@@ -21,6 +19,6 @@ namespace FileCabinetApp.FileCabinetService
 
         public void Insert(FileCabinetRecord record);
 
-        public IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where);
+        public IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where);
     }
 }

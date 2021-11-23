@@ -77,7 +77,7 @@ namespace FileCabinetApp.Handlers.Helpers
         /// <summary>
         /// Get keys from source string
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="source">Source string</param>
         /// <returns>An array of keys</returns>
         /// <exception cref="ArgumentException">Parameter values should be enclosed in brackets</exception>
         private static IList<string> GetKeys(string source)

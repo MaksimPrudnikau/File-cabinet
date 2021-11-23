@@ -93,8 +93,8 @@ namespace FileCabinetApp.Export
         /// <summary>
         /// Read all records from source file and delete it 
         /// </summary>
-        /// <param name="file"></param>2
-        /// <param name="service"></param>
+        /// <param name="file">Source stream</param>
+        /// <param name="service">Current <see cref="IFileCabinetService"/> service</param>
         /// <returns><see cref="FileCabinetServiceSnapshot"/> snapshot created from source file</returns>
         /// <exception cref="ArgumentNullException">Source file or service are null</exception>
         public static FileCabinetServiceSnapshot CopyAndDelete(FileStream file, IFileCabinetService service)

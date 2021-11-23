@@ -25,10 +25,21 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         }
 
         /// <summary>
+        /// Create a new record from user's input id
+        /// </summary>
+        /// <returns>Created record's id</returns>
+        public int CreateRecord()
+        {
+            var record = ReadParameters();
+            CreateRecord(record);
+            return record.Id;
+        }
+
+        /// <summary>
         /// The method create new record from source record and return its id
         /// </summary>
         /// <returns>An id of current record</returns>
-        public int CreateRecord(FileCabinetRecord record)
+        private void CreateRecord(FileCabinetRecord record)
         {
             if (record is null)
             {
@@ -43,8 +54,6 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             _dictionaries.Add(record);
             
             Stat.Count++;
-
-            return record.Id;
         }
 
         /// <summary>
@@ -73,7 +82,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// </summary>
         /// <param name="id">Source id of read parameter</param>
         /// <returns><see cref="FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
-        public FileCabinetRecord ReadParameters(int id = -1)
+        private static FileCabinetRecord ReadParameters(int id = -1)
         {
             var record = new FileCabinetRecord
             {
@@ -113,26 +122,22 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// <returns>Correct input object</returns>
         private static T ReadInput<T>(Func<string, ConversionResult<T>> converter)
         {
-            do
+            var input = Console.ReadLine();
+            var conversionResult = converter(input);
+
+            if (!conversionResult.Parsed)
             {
-                var input = Console.ReadLine();
-                var conversionResult = converter(input);
-
-                if (conversionResult.Parsed)
-                {
-                    return conversionResult.Result;
-                }
-
                 Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
             }
-            while (true);
+
+            return conversionResult.Result;
         }
 
         /// <summary>
         /// Add the records from snapshot to current service. Records from snapshot that are already exist will be
         /// edited. The others will be added
         /// </summary>
-        /// <param name="snapshot"></param>
+        /// <param name="snapshot">Source snapshot</param>
         /// <exception cref="ArgumentNullException">The source snapshot is null</exception>
         public void Restore(FileCabinetServiceSnapshot snapshot)
         {
@@ -163,7 +168,9 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         {
             var deletedRecordId = new List<int>(_dictionaries.Remove(searchValue));
             Stat.Count-= deletedRecordId.Count;
-            return deletedRecordId;
+            return deletedRecordId.Count > 0
+                ? deletedRecordId
+                : null;
         }
 
         public void Purge()
@@ -202,8 +209,8 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// <param name="values">The new values of records</param>
         /// <param name="where">An array of search values for which the record will be considered as suitable</param>
         /// <returns>Identifications of updated records</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        /// <exception cref="ArgumentNullException">One of the source arguments is null</exception>
+        public IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)
             {
@@ -232,12 +239,12 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         }
 
         /// <summary>
-        /// Delete records from source array that satisfy match
+        /// Delete records from source array that not satisfy match
         /// </summary>
         /// <param name="source">Source records</param>
         /// <param name="match">Source values to remove</param>
         /// <exception cref="ArgumentNullException">At least on of the source values is null</exception>
-        private static void RemoveMismatch(IList<FileCabinetRecord> source, IEnumerable<SearchValue> match)
+        private static void RemoveMismatch(IList<FileCabinetRecord> source, IList<SearchValue> match)
         {
             if (source is null)
             {

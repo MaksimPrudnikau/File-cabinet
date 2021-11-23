@@ -146,6 +146,8 @@ namespace FileCabinetGenerator.Generator
                     case OutputType.Xml:
                         snapshot.SaveToXml(outputFile);
                         break;
+                    default:
+                        throw new ArgumentException(EnglishSource.Export_type_is_not_supported);
                 }
             }
             catch (Exception exception) when (exception is ArgumentException or IOException)

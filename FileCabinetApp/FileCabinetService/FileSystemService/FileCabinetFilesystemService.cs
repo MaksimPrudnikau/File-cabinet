@@ -34,12 +34,23 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         }
 
         /// <summary>
+        /// Create a new record from user's input id
+        /// </summary>
+        /// <returns>Created record's id</returns>
+        public int CreateRecord()
+        {
+            var record = ReadParameters();
+            CreateRecord(record);
+            return record.Id;
+        }
+
+        /// <summary>
         /// Create new record in base file with source parameters
         /// </summary>
         /// <param name="record">Source parameters to add</param>
         /// <returns>Id of created record</returns>
         /// <exception cref="ArgumentNullException">Parameters are null</exception>
-        public int CreateRecord(FileCabinetRecord record)
+        public void CreateRecord(FileCabinetRecord record)
         {
             if (record is null)
             {
@@ -58,8 +69,6 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             fileSystemRecord.Serialize(_outputFile);
 
             _stat.Count++;
-
-            return record.Id;
         }
 
         /// <summary>
@@ -93,7 +102,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// </summary>
         /// <param name="id">Source id of read parameter</param>
         /// <returns><see cref="FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
-        public FileCabinetRecord ReadParameters(int id = -1)
+        private FileCabinetRecord ReadParameters(int id = -1)
         {
             var record = new FileCabinetRecord
             {
@@ -133,19 +142,15 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// <returns>Correct input object</returns>
         private static T ReadInput<T>(Func<string, ConversionResult<T>> converter)
         {
-            do
+            var input = Console.ReadLine();
+            var conversionResult = converter(input);
+
+            if (!conversionResult.Parsed)
             {
-                var input = Console.ReadLine();
-                var conversionResult = converter(input);
-
-                if (conversionResult.Parsed)
-                {
-                    return conversionResult.Result;
-                }
-
                 Console.WriteLine(EnglishSource.ReadInput_Conversion_failed, conversionResult.StringRepresentation);
             }
-            while (true);
+
+            return conversionResult.Result;
         }
 
         /// <summary>
@@ -199,7 +204,9 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
 
             _stat.Count -= deletedRecordId.Count;
             _stat.Deleted += deletedRecordId.Count;
-            return deletedRecordId;
+            return deletedRecordId.Count > 0
+                ? deletedRecordId
+                : null;
         }
 
         /// <summary>
@@ -263,8 +270,8 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// <param name="values">The new values of records</param>
         /// <param name="where">An array of search values for which the record will be considered as suitable</param>
         /// <returns>Identifications of updated records</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        /// <exception cref="ArgumentNullException">One of the source arguments is null</exception>
+        public IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)
             {

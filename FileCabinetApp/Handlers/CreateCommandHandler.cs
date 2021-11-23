@@ -12,7 +12,8 @@ namespace FileCabinetApp.Handlers
         }
 
         /// <summary>
-        /// Create record in current service
+        /// Create record in current service. If default service is selected, parameters from the custom one
+        /// are not requested
         /// </summary>
         /// <param name="request">Object contains command and it's parameters</param>
         /// <exception cref="ArgumentNullException">Request in null</exception>
@@ -31,8 +32,7 @@ namespace FileCabinetApp.Handlers
             
             try
             {
-                var record = Service.ReadParameters();
-                Console.WriteLine(EnglishSource.create, Service.CreateRecord(record));
+                Console.WriteLine(EnglishSource.create, Service.CreateRecord());
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {

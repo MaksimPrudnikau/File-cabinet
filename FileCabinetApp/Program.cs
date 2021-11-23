@@ -136,6 +136,11 @@ namespace FileCabinetApp
                 _service = commandLineParser.Service;
                 _useStopwatch = commandLineParser.UseStopWatch;
                 _useLogger = commandLineParser.UseLogger;
+
+                if (_useLogger && _useStopwatch)
+                {
+                    throw new ArgumentException(EnglishSource.Cannot_use_both_logger_and_stopwatch);
+                }
                 
                 if (_useStopwatch)
                 {

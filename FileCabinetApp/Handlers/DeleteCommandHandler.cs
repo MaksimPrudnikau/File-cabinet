@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.Handlers.Helpers;
 
@@ -19,6 +20,10 @@ namespace FileCabinetApp.Handlers
         /// </summary>
         /// <param name="request">Object contains command and it's parameters</param>
         /// <exception cref="ArgumentNullException">Request in null</exception>
+        /// <example>
+        /// delete where id='1'
+        /// delete where rank = 'A'
+        /// </example>
         public override void Handle(AppCommandRequest request)
         {
             if (request is null)
@@ -31,21 +36,35 @@ namespace FileCabinetApp.Handlers
                 NextHandler.Handle(request);
                 return;
             }
+            var deleted = TryDelete(request.Parameters, out var deletedId);
+            if (!deleted)
+            {
+                return;
+            }
 
+            Console.WriteLine(EnglishSource.Records_are_deleted, string.Join(", #", deletedId));
+        }
+
+        private static bool TryDelete(string parameters, out IEnumerable<int> deleted)
+        {
             try
             {
-                var searchValue = GetSearchAttribute(request.Parameters);
-                var deleted = string.Join(", #", Service.Delete(searchValue));
-                
-                Console.WriteLine(EnglishSource.Records_are_deleted, deleted);
+                var searchValue = GetSearchAttribute(parameters);
+                deleted = Service.Delete(searchValue);
+                if (deleted is null)
+                {
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                        EnglishSource.Suitable_records_not_found, searchValue.Property, searchValue.Value));
+                }
+
+                return true;
             }
-            catch (Exception exception) when (exception is OverflowException or FormatException or ArgumentException)
+            catch (Exception exception) when (exception is OverflowException or FormatException
+                or ArgumentException or KeyNotFoundException)
             {
                 Console.Error.WriteLine(exception.Message);
-            }
-            catch (KeyNotFoundException exception)
-            {
-                Console.Error.WriteLine(exception.Message);
+                deleted = null;
+                return false;
             }
         }
 

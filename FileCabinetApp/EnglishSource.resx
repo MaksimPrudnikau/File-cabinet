@@ -274,4 +274,13 @@
   <data name="Service_And_Validator_info" xml:space="preserve">
     <value>Service = {0}, Validator = {1}</value>
   </data>
+  <data name="Too_much_parameters" xml:space="preserve">
+    <value>Too much parameters: {0}</value>
+  </data>
+  <data name="Suitable_records_not_found" xml:space="preserve">
+    <value>Record with {0} = '{1}' are not found</value>
+  </data>
+  <data name="Cannot_use_both_logger_and_stopwatch" xml:space="preserve">
+    <value>Cannot use both logger and stopwatch</value>
+  </data>
 </root>

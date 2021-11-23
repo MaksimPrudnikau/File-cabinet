@@ -21,6 +21,10 @@ namespace FileCabinetApp.Handlers
         /// </summary>
         /// <param name="request">Object contains command and it's parameters</param>
         /// <exception cref="ArgumentNullException">Request in null</exception>
+        /// <example>
+        /// import xml records.xml
+        /// export csv /usr/src/records.csv
+        /// </example>
         public override void Handle(AppCommandRequest request)
         {
             if (request is null)
@@ -46,11 +50,14 @@ namespace FileCabinetApp.Handlers
             const int directoryIndex = 1;
 
             var outputFormatIsCorrect = TryGetExportFormat(parametersSplited[exportFormatIndex], out var exportFormat);
+            if (!outputFormatIsCorrect)
+            {
+                return;
+            }
 
             var directory = parametersSplited[directoryIndex];
             var directoryIsCorrect = TryGetDirectory(directory);
-
-            if (!outputFormatIsCorrect || !directoryIsCorrect)
+            if (!directoryIsCorrect)
             {
                 return;
             }
@@ -127,7 +134,7 @@ namespace FileCabinetApp.Handlers
             }
             catch (ArgumentException exception)
             {
-                Console.WriteLine(exception.Message);
+                Console.Error.WriteLine(exception.Message);
                 format = null;
                 return false;
             }
@@ -147,7 +154,7 @@ namespace FileCabinetApp.Handlers
             }
             catch (ArgumentException e)
             {
-                Console.WriteLine(e.Message);
+                Console.Error.WriteLine(e.Message);
                 return false;
             }
         }

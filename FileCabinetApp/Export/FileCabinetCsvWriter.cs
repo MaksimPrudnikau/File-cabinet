@@ -20,17 +20,16 @@ namespace FileCabinetApp.Export
         }
 
         /// <summary>
-        /// Serialize source record to current <see cref="TextWriter"/>
+        /// Serialize source records to current <see cref="TextWriter"/>
         /// </summary>
-        /// <param name="record"></param>
-        public void Write(IEnumerable<FileCabinetRecord> record)
+        /// <param name="record">Source records to write</param>
+        public void Write(IEnumerable<FileCabinetRecord> record, char delimiter = FileCabinetConsts.CsvDelimiter)
         {
             if (record is null)
             {
                 return;
             }
-
-            var delimiter = FileCabinetConsts.CsvDelimiter;
+            
             foreach (var item in record)
             {
                 _file.WriteLine($"{item.Id}{delimiter}" +

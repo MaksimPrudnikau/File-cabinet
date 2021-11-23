@@ -46,7 +46,7 @@ namespace FileCabinetApp.Printers.Table
         /// <summary>
         /// Represents the table as a string
         /// </summary>
-        /// <returns></returns>
+        /// <returns><see cref="string"/> representation of current table</returns>
         public override string ToString()
         {
             var table = new StringBuilder();
@@ -59,9 +59,11 @@ namespace FileCabinetApp.Printers.Table
                 line.Append('|');
                 foreach (var column in _columns)
                 {
-                    var alignment = column.Header == SearchValue.SearchProperty.Id 
+                    var alignment = column.Header is SearchValue.SearchProperty.Id 
+                        or SearchValue.SearchProperty.JobExperience
+                        or SearchValue.SearchProperty.Salary
                         ? Alignment.Right 
-                        : Alignment.Centering;
+                        : Alignment.Left;
 
                     line.Append(GetValueInFormat(column.Values[row], column.MaxWidth, alignment));
                 }
@@ -107,38 +109,14 @@ namespace FileCabinetApp.Printers.Table
             var table = new StringBuilder();
             var formatString = alignment switch
             {
-                Alignment.Right => string.Format(CultureInfo.InvariantCulture, " {{0, {0}}} |", maxWidth),
-                _ => string.Format(CultureInfo.InvariantCulture, " {{0, -{0}}} |", maxWidth)
+                Alignment.Right => string.Format(CultureInfo.CurrentCulture, " {{0, {0}}} |", maxWidth),
+                _ => string.Format(CultureInfo.CurrentCulture, " {{0, -{0}}} |", maxWidth)
             };
 
-            if (alignment is Alignment.Centering)
-            {
-                value = CenteredString(value, maxWidth);
-            }
-
-            table.AppendFormat(CultureInfo.InvariantCulture, formatString, value);
+            table.AppendFormat(CultureInfo.CurrentCulture, formatString, value);
             return table;
         }
         
-        /// <summary>
-        /// Create a new string with the source string and place the source value to the center
-        /// </summary>
-        /// <param name="source">Source value to centering</param>
-        /// <param name="width">The source width</param>
-        /// <returns><see cref="string"/> with the source string and place the source value to the center</returns>
-        private static string CenteredString(string source, int width)
-        {
-            if (source.Length >= width)
-            {
-                return source;
-            }
-
-            var leftPadding = (width - source.Length) / 2;
-            var rightPadding = width - source.Length - leftPadding;
-            
-            return new string(' ', leftPadding) + source + new string(' ', rightPadding);
-        }
-
         /// <summary>
         /// Set the separated line
         /// </summary>
@@ -154,7 +132,8 @@ namespace FileCabinetApp.Printers.Table
         /// <summary>
         /// Creates a section of the separate line with the specified length meaning the length of the intended value
         /// </summary>
-        /// <param name="length"></param>
+        /// <param name="length">The estimated length of the inserted value.
+        /// Additionally, the left and right are supplemented with one space</param>
         /// <returns>Return the <see cref="string"/> section of a separate line</returns>
         private static string GetSeparatedLine(int length)
         {

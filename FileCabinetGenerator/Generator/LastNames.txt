@@ -33,7 +33,6 @@ Luo
 Akter
 Gao
 Zheng
-da Silva
 Tang
 Liang
 Das
@@ -68,7 +67,6 @@ Cai
 Xiao
 Tran
 Pan
-dos Santos
 Cheng
 Yuan
 Rahman
@@ -136,7 +134,6 @@ Xiong
 Zou
 Alam
 Prasad
-de Oliveira
 Qin
 Choe
 Ji
@@ -152,7 +149,6 @@ Xue
 Lei
 Patil
 Torres
-de Souza
 Qi
 Lai
 Cruz
@@ -226,7 +222,6 @@ Martins
 Ortiz
 Vu
 Moreno
-de Jesus
 Malik
 Ribeiro
 Lee
@@ -346,11 +341,9 @@ Taylor
 Geng
 Ngo
 Hossen
-de Sousa
 Jahan
 Salazar
 Yun
-da Costa
 Kone
 Tanaka
 Moussa
@@ -412,11 +405,9 @@ Chandra
 Thompson
 Contreras
 Caudhari
-da Conceiao
 Hua
 Aslam
 Ei
-de Lima
 Araujo
 Rocha
 Shaik
@@ -459,7 +450,6 @@ Raj
 So
 Barry
 Ramadan
-do Nascimento
 Vega
 Saad
 Alvarado
@@ -519,7 +509,6 @@ Haruna
 Sinh
 Santiago
 Min
-de Almeida
 Hwang
 Pandit
 Ta
@@ -577,7 +566,6 @@ Kabir
 Kamble
 Bashir
 Manjhi
-Ou yang
 Sousa
 Aye
 Cha
@@ -672,7 +660,6 @@ Quispe
 Gayakwad
 Sinha
 Yousef
-de La Cruz
 Lara
 Hill
 Valencia
@@ -752,7 +739,6 @@ Rong
 Mitchell
 Tudu
 De
-Al Numan
 Sunday
 Velazquez
 Matsumoto
@@ -762,7 +748,6 @@ Setiawan
 Khalaf
 Adhikari
 Jan
-de Araujo
 Tiwari
 Khine
 Javed
@@ -805,7 +790,6 @@ Anh
 Mallik
 Salas
 Bravo
-de Carvalho
 Parra
 Paek
 Stewart
@@ -833,7 +817,6 @@ Bux
 Adel
 ahin
 Wagner
-dela Cruz
 Akpan
 Weber
 Dube
@@ -946,7 +929,6 @@ Ao
 Thanh
 ztrk
 Alonso
-da Cruz
 Yahya
 Gou
 Gogoi

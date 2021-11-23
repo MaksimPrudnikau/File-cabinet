@@ -14,14 +14,9 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             _systemLogger = new FileSystemLogger(path);
         }
 
-        public override int CreateRecord(FileCabinetRecord record)
+        public override int CreateRecord()
         {
-            return _systemLogger.LogMethod(base.CreateRecord, record);
-        }
-        
-        public override FileCabinetRecord ReadParameters(int id = -1)
-        {
-            return _systemLogger.LogMethod(base.ReadParameters, id);
+            return _systemLogger.LogMethod(base.CreateRecord);
         }
 
         public override Statistic GetStat()
@@ -54,7 +49,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             _systemLogger.LogMethod(base.Insert, record);
         }
 
-        public override IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> @where)
+        public override IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> @where)
         {
             return _systemLogger.LogMethod(base.Update, values, where);
         }

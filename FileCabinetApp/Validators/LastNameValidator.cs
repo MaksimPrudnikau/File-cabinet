@@ -26,7 +26,7 @@ namespace FileCabinetApp.Validators
                 throw new ArgumentNullException(nameof(record));
             }
             
-            if (string.IsNullOrWhiteSpace(record.FirstName))
+            if (string.IsNullOrWhiteSpace(record.LastName))
             {
                 throw new ArgumentException(EnglishSource.The_name_is_null_or_whitespace);
             }
@@ -36,7 +36,7 @@ namespace FileCabinetApp.Validators
                 throw new ArgumentException(EnglishSource.NameWrongLength);
             }
 
-            foreach (var item in record.FirstName)
+            foreach (var item in record.LastName)
             {
                 if (!char.IsLetter(item))
                 {
