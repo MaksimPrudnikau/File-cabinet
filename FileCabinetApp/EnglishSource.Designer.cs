@@ -188,8 +188,8 @@ namespace FileCabinetApp {
                 return ResourceManager.GetString("Export_format_cannot_be_null", resourceCulture);
             }
         }
-        
-        internal static string Export_type_is_not_supported {
+
+        public static string Export_type_is_not_supported {
             get {
                 return ResourceManager.GetString("Export_type_is_not_supported", resourceCulture);
             }
@@ -366,6 +366,12 @@ namespace FileCabinetApp {
         internal static string Suitable_records_not_found {
             get {
                 return ResourceManager.GetString("Suitable_records_not_found", resourceCulture);
+            }
+        }
+        
+        internal static string Cannot_use_both_logger_and_stopwatch {
+            get {
+                return ResourceManager.GetString("Cannot_use_both_logger_and_stopwatch", resourceCulture);
             }
         }
     }

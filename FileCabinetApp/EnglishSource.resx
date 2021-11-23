@@ -280,4 +280,7 @@
   <data name="Suitable_records_not_found" xml:space="preserve">
     <value>Record with {0} = '{1}' are not found</value>
   </data>
+  <data name="Cannot_use_both_logger_and_stopwatch" xml:space="preserve">
+    <value>Cannot use both logger and stopwatch</value>
+  </data>
 </root>
