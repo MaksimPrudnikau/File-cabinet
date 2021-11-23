@@ -46,7 +46,7 @@ namespace FileCabinetApp.Printers.Table
         /// <summary>
         /// Represents the table as a string
         /// </summary>
-        /// <returns></returns>
+        /// <returns><see cref="string"/> representation of current table</returns>
         public override string ToString()
         {
             var table = new StringBuilder();
@@ -154,7 +154,8 @@ namespace FileCabinetApp.Printers.Table
         /// <summary>
         /// Creates a section of the separate line with the specified length meaning the length of the intended value
         /// </summary>
-        /// <param name="length"></param>
+        /// <param name="length">The estimated length of the inserted value.
+        /// Additionally, the left and right are supplemented with one space</param>
         /// <returns>Return the <see cref="string"/> section of a separate line</returns>
         private static string GetSeparatedLine(int length)
         {

@@ -129,7 +129,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// </summary>
         /// <param name="record">The source record</param>
         /// <param name="attribute">Attribute to extract</param>
-        /// <returns></returns>
+        /// <returns><see cref="string"/> representation record's attribute value </returns>
         /// <exception cref="ArgumentNullException">At least one of the source values is null</exception>
         /// <exception cref="ArgumentOutOfRangeException">The attribute is out of the existing ones</exception>
         public static string GetByAttribute(FileCabinetRecord record, SearchValue.SearchProperty attribute)

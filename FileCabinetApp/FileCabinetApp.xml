@@ -10,11 +10,11 @@
             </summary>
             <param name="file">Source stream</param>
         </member>
-        <member name="M:FileCabinetApp.Export.FIleCabinetCsvWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetService.FileCabinetRecord})">
+        <member name="M:FileCabinetApp.Export.FIleCabinetCsvWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetService.FileCabinetRecord},System.Char)">
             <summary>
-            Serialize source record to current <see cref="T:System.IO.TextWriter"/>
+            Serialize source records to current <see cref="T:System.IO.TextWriter"/>
             </summary>
-            <param name="record"></param>
+            <param name="record">Source records to write</param>
         </member>
         <member name="M:FileCabinetApp.Export.FileCabinetServiceSnapshot.SaveToCsv(System.IO.StreamWriter)">
             <summary>
@@ -44,8 +44,8 @@
             <summary>
             Read all records from source file and delete it 
             </summary>
-            <param name="file"></param>2
-            <param name="service"></param>
+            <param name="file">Source stream</param>
+            <param name="service">Current <see cref="T:FileCabinetApp.FileCabinetService.IFileCabinetService"/> service</param>
             <returns><see cref="T:FileCabinetApp.Export.FileCabinetServiceSnapshot"/> snapshot created from source file</returns>
             <exception cref="T:System.ArgumentNullException">Source file or service are null</exception>
         </member>
@@ -203,6 +203,12 @@
             <returns>Method's execution time in elapsed ticks</returns>
             <exception cref="T:System.ArgumentNullException">The delegate is null</exception>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.CreateRecord">
+            <summary>
+            Create a new record from user's input id
+            </summary>
+            <returns>Created record's id</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Create new record in base file with source parameters
@@ -264,20 +270,20 @@
             <exception cref="T:System.ArgumentNullException">The source record is null</exception>
             <exception cref="T:System.ArgumentException">The record with id equals the source one is already exist</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Update(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetService.SearchValue},System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.SearchValue})">
+        <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileCabinetFilesystemService.Update(System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.SearchValue},System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.SearchValue})">
             <summary>
             Find all records suitable with source values
             </summary>
             <param name="values">The new values of records</param>
             <param name="where">An array of search values for which the record will be considered as suitable</param>
             <returns>Identifications of updated records</returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentNullException">One of the source arguments is null</exception>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemReader.ReadAndMoveCursorBack">
             <summary>
             Read the record and move cursor to it's beginning
             </summary>
-            <returns></returns>
+            <returns>Read <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> record</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemReader.ReadRecord">
             <summary>
@@ -326,7 +332,7 @@
             </summary>
             <param name="record">The source record</param>
             <param name="position">Record's position on database file</param>
-            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentNullException">Source record is null</exception>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemServiceDictionaries.Edit(FileCabinetApp.FileCabinetService.FileCabinetRecord,FileCabinetApp.FileCabinetService.FileCabinetRecord,System.Int64)">
             <summary>
@@ -388,7 +394,7 @@
             <summary>
             Add records to the end of data base
             </summary>
-            <param name="records"></param>
+            <param name="records">Records to append</param>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.FileSystemService.FileSystemWriter.RewriteWithAny(FileCabinetApp.FileCabinetService.FileCabinetRecord,System.Collections.Generic.ICollection{FileCabinetApp.FileCabinetService.FileCabinetRecord})">
             <summary>
@@ -445,7 +451,7 @@
             </summary>
             <param name="record">The source record</param>
             <param name="attribute">Attribute to extract</param>
-            <returns></returns>
+            <returns><see cref="T:System.String"/> representation record's attribute value </returns>
             <exception cref="T:System.ArgumentNullException">At least one of the source values is null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">The attribute is out of the existing ones</exception>
         </member>
@@ -491,6 +497,12 @@
             <param name="rank">Source rank</param>
             <returns>Parsed <see cref="T:System.Char"/> object</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.CreateRecord">
+            <summary>
+            Create a new record from user's input id
+            </summary>
+            <returns>Created record's id</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.CreateRecord(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             The method create new record from source record and return its id
@@ -529,7 +541,7 @@
             Add the records from snapshot to current service. Records from snapshot that are already exist will be
             edited. The others will be added
             </summary>
-            <param name="snapshot"></param>
+            <param name="snapshot">Source snapshot</param>
             <exception cref="T:System.ArgumentNullException">The source snapshot is null</exception>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.Delete(FileCabinetApp.FileCabinetService.SearchValue)">
@@ -547,18 +559,18 @@
             <exception cref="T:System.ArgumentNullException">The source record is null</exception>
             <exception cref="T:System.ArgumentException">The record with id equals the source one is already exist</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.Update(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetService.SearchValue},System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.SearchValue})">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.Update(System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.SearchValue},System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.SearchValue})">
             <summary>
             Find all records suitable records with source values
             </summary>
             <param name="values">The new values of records</param>
             <param name="where">An array of search values for which the record will be considered as suitable</param>
             <returns>Identifications of updated records</returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentNullException">One of the source arguments is null</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.RemoveMismatch(System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.FileCabinetRecord},System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetService.SearchValue})">
+        <member name="M:FileCabinetApp.FileCabinetService.MemoryService.FileCabinetMemoryService.RemoveMismatch(System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.FileCabinetRecord},System.Collections.Generic.IList{FileCabinetApp.FileCabinetService.SearchValue})">
             <summary>
-            Delete records from source array that satisfy match
+            Delete records from source array that not satisfy match
             </summary>
             <param name="source">Source records</param>
             <param name="match">Source values to remove</param>
@@ -616,7 +628,6 @@
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
             <example>
             delete where id='1'
-            delete where id = '1'
             delete where rank = 'A'
             </example>
         </member>
@@ -627,6 +638,13 @@
             <param name="parameters">Source parameters</param>
             <returns><see cref="T:FileCabinetApp.FileCabinetService.SearchValue"/> extracted from source string</returns>
             <exception cref="T:System.ArgumentException">Cant find delimiter <see cref="F:FileCabinetApp.Handlers.DeleteCommandHandler.Keyword"/></exception>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.ErrorCommandHandler.Handle(System.String)">
+            <summary>
+            Prints the most suitable existing command to the input one 
+            </summary>
+            <param name="command">Source command request</param>
+            <exception cref="T:System.ArgumentNullException">Source request is null</exception>
         </member>
         <member name="M:FileCabinetApp.Handlers.ErrorCommandHandler.PrintWithMaxMatch(System.Collections.Generic.IEnumerable{System.Tuple{System.Int32,System.String}},System.Int32)">
             <summary>
@@ -673,6 +691,10 @@
             <param name="format">Format of the export file</param>
             <exception cref="T:System.ArgumentNullException">Export format is null</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">Export format is not supported</exception>
+            <example>
+            export xml records.xml
+            export csv /usr/src/records.csv
+            </example>
         </member>
         <member name="M:FileCabinetApp.Handlers.ExportCommandHandler.DirectoryIsAllowed(System.String)">
             <summary>
@@ -733,7 +755,7 @@
             <summary>
             Get keys from source string
             </summary>
-            <param name="source"></param>
+            <param name="source">Source string</param>
             <returns>An array of keys</returns>
             <exception cref="T:System.ArgumentException">Parameter values should be enclosed in brackets</exception>
         </member>
@@ -743,6 +765,10 @@
             </summary>
             <param name="request">Object contains command and it's parameters</param>
             <exception cref="T:System.ArgumentNullException">Request in null</exception>
+            <example>
+            import xml records.xml
+            export csv /usr/src/records.csv
+            </example>
         </member>
         <member name="M:FileCabinetApp.Handlers.ImportCommandHandler.Import(System.String,System.Nullable{FileCabinetApp.Handlers.Helpers.ExportFormat})">
             <summary>
@@ -776,6 +802,19 @@
             </summary>
             <param name="directory">Source directory</param>
         </member>
+        <member name="M:FileCabinetApp.Handlers.InsertCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            Insert a new value to the current service. The value is inserted before the first record with a greater ID.
+            The identificator, first name, last name and date of birth values are required because the are initial for
+            any record.Number of the properties must be correspond with values. Quotes in values are optional
+            </summary>
+            <param name="request">Source command request</param>
+            <exception cref="T:System.ArgumentNullException">Request is null</exception>
+            <example>
+            insert (id, firstname, lastname, dateofbirth) values ('1', 'John', 'Doe', '05/18/1986')
+            insert (firstname, id, lastname, dateofbirth, rank) values (Ivan, 4, Ivanov, 13/05/2001, A)
+            </example>
+        </member>
         <member name="M:FileCabinetApp.Handlers.InsertCommandHandler.CreateRecordFromInsertValue(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetService.SearchValue})">
             <summary>
             Create a new <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> and fill it with source values
@@ -787,15 +826,30 @@
             <summary>
             Try extract 
             </summary>
-            <param name="parameters"></param>
-            <param name="values"></param>
-            <returns></returns>
+            <param name="parameters">Source parameters line</param>
+            <param name="values">Values to extract</param>
+            <returns>True if extracting was successful</returns>
         </member>
         <member name="M:FileCabinetApp.Handlers.PurgeCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
             <summary>
             Remove all records marked as deleted from source database
             </summary>
-            <param name="request"></param>
+            <param name="request">Source command request</param>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.SelectCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            Prints all suitable records by using current printer. By default printer uses <see cref="T:FileCabinetApp.Printers.Table.TablePrinter"/>.
+            The search is case-sensitive
+            </summary>
+            <param name="request">Default command request</param>
+            <exception cref="T:System.ArgumentNullException">Request is null</exception>
+            <example>
+            select ----> prints parameters and all records
+            select firstname, lastname ----> prints only first names and last names
+            select firstname, lastname where id = '1' ----> prints only first names and last names from records where id equals '1'
+            select where firstname = 'Ivan' ----> prints all records where firstname equals 'Ivan'
+            select where rank = 'A' and/or lastname = 'Ivanov' ----> prints all properties from records where rank equals 'A' AND/OR last name equals 'Ivan'
+            </example>
         </member>
         <member name="M:FileCabinetApp.Handlers.SelectCommandHandler.SetTablePrinterProperties(System.String)">
             <summary>
@@ -822,6 +876,19 @@
             <summary>
             Prints the amount of existing and deleted records
             </summary>
+            <param name="request">Source command request</param>
+            <exception cref="T:System.ArgumentNullException">Source request is null</exception>
+        </member>
+        <member name="M:FileCabinetApp.Handlers.UpdateCommandHandler.Handle(FileCabinetApp.Handlers.AppCommandRequest)">
+            <summary>
+            Update suitable records with input values
+            </summary>
+            <param name="request">Source command request</param>
+            <exception cref="T:System.ArgumentNullException">Source request is null</exception>
+            <example>
+            update set firstname = 'John', lastname = 'Doe' , dateofbirth = '5/18/1986' where id = '1'
+            update set DateOfBirth='05/18/1986' where FirstName = 'Stan' and LastName='Smith'
+            </example>
         </member>
         <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.ReadAll">
             <summary>
@@ -880,7 +947,7 @@
             <summary>
             Represents the table as a string
             </summary>
-            <returns></returns>
+            <returns><see cref="T:System.String"/> representation of current table</returns>
         </member>
         <member name="M:FileCabinetApp.Printers.Table.RecordsTable.GetHeader">
             <summary>
@@ -914,7 +981,8 @@
             <summary>
             Creates a section of the separate line with the specified length meaning the length of the intended value
             </summary>
-            <param name="length"></param>
+            <param name="length">The estimated length of the inserted value.
+            Additionally, the left and right are supplemented with one space</param>
             <returns>Return the <see cref="T:System.String"/> section of a separate line</returns>
         </member>
         <member name="M:FileCabinetApp.Printers.Table.TablePrinter.Print(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetService.FileCabinetRecord})">
@@ -923,20 +991,20 @@
             all the properties of record. If 'where' wasn't not specified it prints all records from source array
             </summary>
             <param name="records">Source record</param>
-            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentNullException">Records array is null</exception>
         </member>
         <member name="M:FileCabinetApp.Printers.Table.TablePrinter.SatisfyAll(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Determine whether the source record properties are equals to current ones
             </summary>
-            <param name="record"></param>
+            <param name="record">Source record</param>
             <returns>False if it's not equals to any</returns>
         </member>
         <member name="M:FileCabinetApp.Printers.Table.TablePrinter.SatisfyAny(FileCabinetApp.FileCabinetService.FileCabinetRecord)">
             <summary>
             Determine whether the source record properties are equals to any from current ones
             </summary>
-            <param name="record"></param>
+            <param name="record">Source record</param>
             <returns>True if it's equals to any</returns>
         </member>
         <member name="M:FileCabinetApp.Program.TryCreateCommandHandlers(FileCabinetApp.FileCabinetService.IFileCabinetService,FileCabinetApp.Handlers.CommandHandlerBase@)">
@@ -981,34 +1049,33 @@
             </summary>
             <param name="args">Source command parameter</param>
             <exception cref="T:System.ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
-            <returns></returns>
         </member>
         <member name="M:FileCabinetApp.Validation.CommandLineParser.IsCustomService(System.String)">
             <summary>
             Determine whether the command line contains custom validation rules argument
             </summary>
-            <param name="commandLine"></param>
+            <param name="commandLine">Source command line</param>
             <returns>True when command line contains the custom validation rules argument either in full or short form</returns>
         </member>
         <member name="M:FileCabinetApp.Validation.CommandLineParser.IsFileSystemService(System.String)">
             <summary>
             Determine whether the command line contains filesystem service argument
             </summary>
-            <param name="commandLine"></param>
+            <param name="commandLine">Source command line</param>
             <returns>True when command line contains the filesystem service argument either in full or short form</returns>
         </member>
         <member name="M:FileCabinetApp.Validation.CommandLineParser.IsUseLogger(System.String)">
             <summary>
             Determine whether the command line contains logger argument
             </summary>
-            <param name="commandLine"></param>
+            <param name="commandLine">Source command line</param>
             <returns>True when command line contains the logger argument</returns>
         </member>
         <member name="M:FileCabinetApp.Validation.CommandLineParser.IsUseStopWatch(System.String)">
             <summary>
             Determine whether the command line contains stopwatch argument
             </summary>
-            <param name="commandLine"></param>
+            <param name="commandLine">Source command line</param>
             <returns>True when command line contains the stopwatch argument</returns>
         </member>
         <member name="M:FileCabinetApp.Validation.CommandLineParser.HasCommand(System.String,System.String)">

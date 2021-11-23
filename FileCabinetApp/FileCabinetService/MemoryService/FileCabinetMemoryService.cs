@@ -137,7 +137,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// Add the records from snapshot to current service. Records from snapshot that are already exist will be
         /// edited. The others will be added
         /// </summary>
-        /// <param name="snapshot"></param>
+        /// <param name="snapshot">Source snapshot</param>
         /// <exception cref="ArgumentNullException">The source snapshot is null</exception>
         public void Restore(FileCabinetServiceSnapshot snapshot)
         {
@@ -209,7 +209,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// <param name="values">The new values of records</param>
         /// <param name="where">An array of search values for which the record will be considered as suitable</param>
         /// <returns>Identifications of updated records</returns>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">One of the source arguments is null</exception>
         public IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)

@@ -20,7 +20,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// <summary>
         /// Add records to the end of data base
         /// </summary>
-        /// <param name="records"></param>
+        /// <param name="records">Records to append</param>
         public void AppendRange(IList<FileCabinetRecord> records)
         {
             if (records is null || records.Count == 0)

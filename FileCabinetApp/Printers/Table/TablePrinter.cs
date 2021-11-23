@@ -35,7 +35,7 @@ namespace FileCabinetApp.Printers.Table
         /// all the properties of record. If 'where' wasn't not specified it prints all records from source array
         /// </summary>
         /// <param name="records">Source record</param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">Records array is null</exception>
         public void Print(IEnumerable<FileCabinetRecord> records)
         {
             if (records is null)
@@ -70,7 +70,7 @@ namespace FileCabinetApp.Printers.Table
         /// <summary>
         /// Determine whether the source record properties are equals to current ones
         /// </summary>
-        /// <param name="record"></param>
+        /// <param name="record">Source record</param>
         /// <returns>False if it's not equals to any</returns>
         private bool SatisfyAll(FileCabinetRecord record)
         {
@@ -89,7 +89,7 @@ namespace FileCabinetApp.Printers.Table
         /// <summary>
         /// Determine whether the source record properties are equals to any from current ones
         /// </summary>
-        /// <param name="record"></param>
+        /// <param name="record">Source record</param>
         /// <returns>True if it's equals to any</returns>
         private bool SatisfyAny(FileCabinetRecord record)
         {

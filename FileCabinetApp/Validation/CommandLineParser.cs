@@ -27,7 +27,6 @@ namespace FileCabinetApp.Validation
         /// </summary>
         /// <param name="args">Source command parameter</param>
         /// <exception cref="ArgumentException">Thrown when there is no such command parameter, or it is not exist.</exception>
-        /// <returns></returns>
         private void SetValidationRule(IEnumerable<string> args)
         {
             var commandLine = string.Concat(args);
@@ -48,7 +47,7 @@ namespace FileCabinetApp.Validation
         /// <summary>
         /// Determine whether the command line contains custom validation rules argument
         /// </summary>
-        /// <param name="commandLine"></param>
+        /// <param name="commandLine">Source command line</param>
         /// <returns>True when command line contains the custom validation rules argument either in full or short form</returns>
         private static bool IsCustomService(string commandLine)
         {
@@ -59,7 +58,7 @@ namespace FileCabinetApp.Validation
         /// <summary>
         /// Determine whether the command line contains filesystem service argument
         /// </summary>
-        /// <param name="commandLine"></param>
+        /// <param name="commandLine">Source command line</param>
         /// <returns>True when command line contains the filesystem service argument either in full or short form</returns>
         private static bool IsFileSystemService(string commandLine)
         {
@@ -70,7 +69,7 @@ namespace FileCabinetApp.Validation
         /// <summary>
         /// Determine whether the command line contains logger argument
         /// </summary>
-        /// <param name="commandLine"></param>
+        /// <param name="commandLine">Source command line</param>
         /// <returns>True when command line contains the logger argument</returns>
         private static bool IsUseLogger(string commandLine)
         {
@@ -80,7 +79,7 @@ namespace FileCabinetApp.Validation
         /// <summary>
         /// Determine whether the command line contains stopwatch argument
         /// </summary>
-        /// <param name="commandLine"></param>
+        /// <param name="commandLine">Source command line</param>
         /// <returns>True when command line contains the stopwatch argument</returns>
         private static bool IsUseStopWatch(string commandLine)
         {

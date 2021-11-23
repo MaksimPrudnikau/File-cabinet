@@ -16,7 +16,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// <summary>
         /// Read the record and move cursor to it's beginning
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Read <see cref="FileCabinetRecord"/> record</returns>
         public FileCabinetRecord ReadAndMoveCursorBack()
         {
             var read = ReadRecord().ToFileCabinetRecord();

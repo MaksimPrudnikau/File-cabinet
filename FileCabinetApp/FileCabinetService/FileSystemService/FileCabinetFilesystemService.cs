@@ -270,7 +270,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// <param name="values">The new values of records</param>
         /// <param name="where">An array of search values for which the record will be considered as suitable</param>
         /// <returns>Identifications of updated records</returns>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">One of the source arguments is null</exception>
         public IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)

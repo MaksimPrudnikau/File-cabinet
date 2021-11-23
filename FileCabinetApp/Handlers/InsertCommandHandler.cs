@@ -112,9 +112,9 @@ namespace FileCabinetApp.Handlers
         /// <summary>
         /// Try extract 
         /// </summary>
-        /// <param name="parameters"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
+        /// <param name="parameters">Source parameters line</param>
+        /// <param name="values">Values to extract</param>
+        /// <returns>True if extracting was successful</returns>
         private static bool TryExtractValues(string parameters, out ICollection<SearchValue> values)
         {
             try
