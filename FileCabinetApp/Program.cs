@@ -83,9 +83,9 @@ namespace FileCabinetApp
                 request = ReadUsersImport();
                 return true;
             }
-            catch (ArgumentOutOfRangeException exception)
+            catch (ArgumentException exception)
             {
-                ErrorCommandHandler.Handle($"{exception.ActualValue}");
+                ErrorCommandHandler.Handle(exception.Source);
                 return false;
             }
         }
@@ -113,7 +113,8 @@ namespace FileCabinetApp
 
             if (!parsed)
             {
-                throw new ArgumentOutOfRangeException(nameof(command));
+                throw new ArgumentException(EnglishSource.ErrorCommandHandler_Handle_Is_Not_A_Command)
+                    {Source = command};
             }
             
             return new AppCommandRequest
