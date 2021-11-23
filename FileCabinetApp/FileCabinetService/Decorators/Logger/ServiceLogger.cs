@@ -49,7 +49,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             _systemLogger.LogMethod(base.Insert, record);
         }
 
-        public override IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> @where)
+        public override IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> @where)
         {
             return _systemLogger.LogMethod(base.Update, values, where);
         }

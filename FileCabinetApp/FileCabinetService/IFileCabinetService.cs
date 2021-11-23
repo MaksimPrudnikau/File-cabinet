@@ -19,6 +19,6 @@ namespace FileCabinetApp.FileCabinetService
 
         public void Insert(FileCabinetRecord record);
 
-        public IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where);
+        public IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where);
     }
 }

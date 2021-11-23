@@ -56,7 +56,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Insert), ticks);
         }
 
-        public override IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        public override IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where)
         {
             var ticks = TicksMeter.GetElapsedTicks(base.Update, values, where, out var ids);
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(Update), ticks);

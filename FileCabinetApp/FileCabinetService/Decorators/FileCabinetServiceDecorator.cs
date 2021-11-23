@@ -48,7 +48,7 @@ namespace FileCabinetApp.FileCabinetService.Decorators
             _service.Insert(record);
         }
 
-        public virtual IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        public virtual IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where)
         {
             return _service.Update(values, where);
         }

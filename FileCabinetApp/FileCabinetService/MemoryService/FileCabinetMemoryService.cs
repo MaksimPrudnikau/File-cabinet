@@ -210,7 +210,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// <param name="where">An array of search values for which the record will be considered as suitable</param>
         /// <returns>Identifications of updated records</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public IEnumerable<int> Update(IEnumerable<SearchValue> values, IList<SearchValue> where)
+        public IEnumerable<int> Update(IList<SearchValue> values, IList<SearchValue> where)
         {
             if (values is null)
             {
@@ -244,7 +244,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// <param name="source">Source records</param>
         /// <param name="match">Source values to remove</param>
         /// <exception cref="ArgumentNullException">At least on of the source values is null</exception>
-        private static void RemoveMismatch(IList<FileCabinetRecord> source, IEnumerable<SearchValue> match)
+        private static void RemoveMismatch(IList<FileCabinetRecord> source, IList<SearchValue> match)
         {
             if (source is null)
             {

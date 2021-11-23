@@ -46,7 +46,7 @@ namespace FileCabinetApp.Handlers
             }
         }
 
-        private static bool TryUpdate(IEnumerable<SearchValue> values, IList<SearchValue> where, out IEnumerable<int> updated)
+        private static bool TryUpdate(IList<SearchValue> values, IList<SearchValue> where, out IEnumerable<int> updated)
         {
             try
             {
