@@ -239,7 +239,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         }
 
         /// <summary>
-        /// Delete records from source array that satisfy match
+        /// Delete records from source array that not satisfy match
         /// </summary>
         /// <param name="source">Source records</param>
         /// <param name="match">Source values to remove</param>
