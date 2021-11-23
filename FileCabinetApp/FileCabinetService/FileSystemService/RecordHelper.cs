@@ -27,8 +27,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             switch (attribute.Property)
             {
                 case SearchValue.SearchProperty.Id:
-                    record.Id = InputConverter.IdConverter(attribute.Value).Result;
-                    break;
+                    throw new ArgumentException(EnglishSource.Id_cannot_be_updated);
                 case SearchValue.SearchProperty.FirstName:
                     record.FirstName = attribute.Value;
                     break;
