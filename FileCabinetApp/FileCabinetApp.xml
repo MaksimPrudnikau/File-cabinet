@@ -964,14 +964,6 @@
             <param name="alignment">Value alignment</param>
             <returns><see cref="T:System.String"/> representation of the created cell</returns>
         </member>
-        <member name="M:FileCabinetApp.Printers.Table.RecordsTable.CenteredString(System.String,System.Int32)">
-            <summary>
-            Create a new string with the source string and place the source value to the center
-            </summary>
-            <param name="source">Source value to centering</param>
-            <param name="width">The source width</param>
-            <returns><see cref="T:System.String"/> with the source string and place the source value to the center</returns>
-        </member>
         <member name="M:FileCabinetApp.Printers.Table.RecordsTable.SetSeparatedLine">
             <summary>
             Set the separated line

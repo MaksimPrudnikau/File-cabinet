@@ -59,9 +59,11 @@ namespace FileCabinetApp.Printers.Table
                 line.Append('|');
                 foreach (var column in _columns)
                 {
-                    var alignment = column.Header == SearchValue.SearchProperty.Id 
+                    var alignment = column.Header is SearchValue.SearchProperty.Id 
+                        or SearchValue.SearchProperty.JobExperience
+                        or SearchValue.SearchProperty.Salary
                         ? Alignment.Right 
-                        : Alignment.Centering;
+                        : Alignment.Left;
 
                     line.Append(GetValueInFormat(column.Values[row], column.MaxWidth, alignment));
                 }
@@ -111,39 +113,10 @@ namespace FileCabinetApp.Printers.Table
                 _ => string.Format(CultureInfo.CurrentCulture, " {{0, -{0}}} |", maxWidth)
             };
 
-            if (alignment is Alignment.Centering)
-            {
-                value = CenteredString(value, maxWidth);
-            }
-
             table.AppendFormat(CultureInfo.CurrentCulture, formatString, value);
             return table;
         }
         
-        /// <summary>
-        /// Create a new string with the source string and place the source value to the center
-        /// </summary>
-        /// <param name="source">Source value to centering</param>
-        /// <param name="width">The source width</param>
-        /// <returns><see cref="string"/> with the source string and place the source value to the center</returns>
-        private static string CenteredString(string source, int width)
-        {
-            if (source.Length >= width)
-            {
-                return source;
-            }
-
-            var leftPadding = (width - source.Length) / 2;
-            var rightPadding = width - source.Length - leftPadding;
-
-            var builder = new StringBuilder();
-            builder.Append(' ', leftPadding);
-            builder.Append(source);
-            builder.Append(' ', rightPadding);
-            
-            return builder.ToString();
-        }
-
         /// <summary>
         /// Set the separated line
         /// </summary>
