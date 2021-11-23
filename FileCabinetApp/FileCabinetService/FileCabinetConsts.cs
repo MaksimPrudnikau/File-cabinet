@@ -10,10 +10,6 @@ namespace FileCabinetApp.FileCabinetService
         public const string FileSystemFileName = "cabinet-records.db";
         public const string LogsFileName = "Logs.txt";
 
-        // Constants in charge of running the application
-        public const int CommandHelpIndex = 0;
-        public const int ExplanationHelpIndex = 2;
-
         // Constants for 'SetValidationRule'
         public const string CustomValidationRuleFullForm = "--validation-rules=custom";
         public const string CustomValidationRuleShortForm = "-vcustom";
@@ -30,8 +26,6 @@ namespace FileCabinetApp.FileCabinetService
         public const int MinimalSalary = 250;
         public static readonly DateTime MinimalDateOfBirth = new (1950, 1, 1);
         public static readonly DateTime MaximalDateOfBirth = DateTime.Now;
-
-        public const char CsvDelimiter = ',';
         public static readonly char[] Grades = {'F', 'D', 'C', 'B', 'A'};
     }
 }
