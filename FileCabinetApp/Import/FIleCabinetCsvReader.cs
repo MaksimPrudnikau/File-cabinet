@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using FileCabinetApp.Export;
 using FileCabinetApp.FileCabinetService;
 using FileCabinetApp.Results;
 using FileCabinetApp.Validators;
@@ -12,10 +13,12 @@ namespace FileCabinetApp.Import
     {
         private readonly StreamReader _reader;
         private static readonly IRecordValidator Validator = new ValidationBuilder().CreateCustom();
+        private readonly char _delimiter;
         
-        public FIleCabinetCsvReader(StreamReader reader)
+        public FIleCabinetCsvReader(StreamReader reader, char delimiter = FIleCabinetCsvWriter.Delimiter)
         {
             _reader = reader;
+            _delimiter = delimiter;
         }
 
         /// <summary>
@@ -46,11 +49,11 @@ namespace FileCabinetApp.Import
         /// </summary>
         /// <param name="csvLine">Source line in csv format</param>
         /// <returns>True if import is successful</returns>
-        private static bool TryDeserializeFromCsvLine(string csvLine, in int lineNumber, out FileCabinetRecord record)
+        private bool TryDeserializeFromCsvLine(string csvLine, in int lineNumber, out FileCabinetRecord record)
         {
             try
             {
-                record = DeserializeFromCsvLine(csvLine);
+                record = DeserializeFromCsvLine(csvLine, _delimiter);
                 return true;
             }
             catch (ArgumentException exception)
@@ -68,7 +71,7 @@ namespace FileCabinetApp.Import
         /// <returns><see cref="FileCabinetRecord"/> object</returns>
         /// <exception cref="ArgumentException">The amount of parameters in line doesn't correspond
         /// to <see cref="FileCabinetRecord"/></exception>
-        private static FileCabinetRecord DeserializeFromCsvLine(string csvLine)
+        private static FileCabinetRecord DeserializeFromCsvLine(string csvLine, char delimiter)
         {
             const int parametersCount = 7;
 
@@ -80,7 +83,7 @@ namespace FileCabinetApp.Import
             const int wageIndex = 5;
             const int rankIndex = 6;
 
-            var split = csvLine.Split(FileCabinetConsts.CsvDelimiter);
+            var split = csvLine.Split(delimiter);
 
             switch (split.Length)
             {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -83,8 +84,18 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
         /// <returns><see cref="string"/> message</returns>
         private static string GetMethodWithReturnValueMessage<T>(string functionName, T returnValue)
         {
+            var value = new StringBuilder($"{returnValue}");
+            if (returnValue is IEnumerable values)
+            {
+                value.Clear();
+                foreach (var val in values)
+                {
+                    value.Append($"{val}, ");
+                }
+            }
+
             return string.Format(CultureInfo.CurrentCulture,
-                EnglishSource.Method_With_Return_Value_Message, GetCurrentTime(), functionName, returnValue);
+                EnglishSource.Method_With_Return_Value_Message, GetCurrentTime(), functionName, value.ToString());
         }
 
         /// <summary>

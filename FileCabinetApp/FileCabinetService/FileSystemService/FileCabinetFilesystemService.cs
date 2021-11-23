@@ -292,11 +292,6 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
                 var recordContainsAllWheres = true;
                 foreach (var value in where)
                 {
-                    if (value.Property is SearchValue.SearchProperty.Id)
-                    {
-                        throw new ArgumentException(EnglishSource.Id_cannot_be_updated);
-                    }
-                    
                     if (!RecordHelper.Contains(read, value))
                     {
                         recordContainsAllWheres = false;

@@ -903,7 +903,7 @@
             <param name="csvLine">Source line in csv format</param>
             <returns>True if import is successful</returns>
         </member>
-        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.DeserializeFromCsvLine(System.String)">
+        <member name="M:FileCabinetApp.Import.FIleCabinetCsvReader.DeserializeFromCsvLine(System.String,System.Char)">
             <summary>
             Deserialize <see cref="T:FileCabinetApp.FileCabinetService.FileCabinetRecord"/> from source line
             </summary>

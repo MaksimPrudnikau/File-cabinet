@@ -7,6 +7,8 @@ namespace FileCabinetApp.Export
 {
     public class FIleCabinetCsvWriter
     {
+        public const char Delimiter = ',';
+        
         private readonly TextWriter _file;
 
         /// <summary>
@@ -23,7 +25,7 @@ namespace FileCabinetApp.Export
         /// Serialize source records to current <see cref="TextWriter"/>
         /// </summary>
         /// <param name="record">Source records to write</param>
-        public void Write(IEnumerable<FileCabinetRecord> record, char delimiter = FileCabinetConsts.CsvDelimiter)
+        public void Write(IEnumerable<FileCabinetRecord> record, char delimiter = Delimiter)
         {
             if (record is null)
             {

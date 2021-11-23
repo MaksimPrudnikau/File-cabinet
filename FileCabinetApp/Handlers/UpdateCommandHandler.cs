@@ -39,11 +39,13 @@ namespace FileCabinetApp.Handlers
             var where = UpdateLineExtractor.GetWhereSearchValues(request.Parameters);
 
             var updated = TryUpdate(searchValues, where, out var recordsId);
-            var updatedRecords = string.Join(", #", recordsId);
-            if (updated)
+            if (!updated)
             {
-                Console.WriteLine(EnglishSource.Records_0_where_updated, updatedRecords);
+                return;
             }
+            
+            var updatedRecords = string.Join(", #", recordsId);
+            Console.WriteLine(EnglishSource.Records_0_where_updated, updatedRecords);
         }
 
         private static bool TryUpdate(IList<SearchValue> values, IList<SearchValue> where, out IEnumerable<int> updated)
@@ -55,7 +57,7 @@ namespace FileCabinetApp.Handlers
             }
             catch (SystemException exception) when (exception is ArgumentException or KeyNotFoundException)
             {
-                Console.WriteLine(exception.Message);
+                Console.Error.WriteLine(exception.Message);
                 updated = null;
                 return false;
             }

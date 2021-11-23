@@ -40,5 +40,10 @@ namespace FileCabinetApp.FileCabinetService
             return val1.Property == val2.Property &&
                    string.Equals(val1.Value, val2.Value, StringComparison.OrdinalIgnoreCase);
         }
+
+        public override string ToString()
+        {
+            return Value;
+        }
     }
 }
