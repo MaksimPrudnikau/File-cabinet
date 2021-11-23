@@ -107,8 +107,8 @@ namespace FileCabinetApp.Printers.Table
             var table = new StringBuilder();
             var formatString = alignment switch
             {
-                Alignment.Right => string.Format(CultureInfo.InvariantCulture, " {{0, {0}}} |", maxWidth),
-                _ => string.Format(CultureInfo.InvariantCulture, " {{0, -{0}}} |", maxWidth)
+                Alignment.Right => string.Format(CultureInfo.CurrentCulture, " {{0, {0}}} |", maxWidth),
+                _ => string.Format(CultureInfo.CurrentCulture, " {{0, -{0}}} |", maxWidth)
             };
 
             if (alignment is Alignment.Centering)
@@ -116,7 +116,7 @@ namespace FileCabinetApp.Printers.Table
                 value = CenteredString(value, maxWidth);
             }
 
-            table.AppendFormat(CultureInfo.InvariantCulture, formatString, value);
+            table.AppendFormat(CultureInfo.CurrentCulture, formatString, value);
             return table;
         }
         
