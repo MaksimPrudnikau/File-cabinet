@@ -135,8 +135,13 @@ namespace FileCabinetApp.Printers.Table
 
             var leftPadding = (width - source.Length) / 2;
             var rightPadding = width - source.Length - leftPadding;
+
+            var builder = new StringBuilder();
+            builder.Append(' ', leftPadding);
+            builder.Append(source);
+            builder.Append(' ', rightPadding);
             
-            return new string(' ', leftPadding) + source + new string(' ', rightPadding);
+            return builder.ToString();
         }
 
         /// <summary>
