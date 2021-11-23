@@ -34,12 +34,23 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         }
 
         /// <summary>
+        /// Create a new record from user's input id
+        /// </summary>
+        /// <returns>Created record's id</returns>
+        public int CreateRecord()
+        {
+            var record = ReadParameters();
+            CreateRecord(record);
+            return record.Id;
+        }
+
+        /// <summary>
         /// Create new record in base file with source parameters
         /// </summary>
         /// <param name="record">Source parameters to add</param>
         /// <returns>Id of created record</returns>
         /// <exception cref="ArgumentNullException">Parameters are null</exception>
-        public int CreateRecord(FileCabinetRecord record)
+        public void CreateRecord(FileCabinetRecord record)
         {
             if (record is null)
             {
@@ -58,8 +69,6 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
             fileSystemRecord.Serialize(_outputFile);
 
             _stat.Count++;
-
-            return record.Id;
         }
 
         /// <summary>
@@ -93,7 +102,7 @@ namespace FileCabinetApp.FileCabinetService.FileSystemService
         /// </summary>
         /// <param name="id">Source id of read parameter</param>
         /// <returns><see cref="FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
-        public FileCabinetRecord ReadParameters(int id = -1)
+        private FileCabinetRecord ReadParameters(int id = -1)
         {
             var record = new FileCabinetRecord
             {

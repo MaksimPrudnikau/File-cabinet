@@ -14,14 +14,9 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Logger
             _systemLogger = new FileSystemLogger(path);
         }
 
-        public override int CreateRecord(FileCabinetRecord record)
+        public override int CreateRecord()
         {
-            return _systemLogger.LogMethod(base.CreateRecord, record);
-        }
-        
-        public override FileCabinetRecord ReadParameters(int id = -1)
-        {
-            return _systemLogger.LogMethod(base.ReadParameters, id);
+            return _systemLogger.LogMethod(base.CreateRecord);
         }
 
         public override Statistic GetStat()

@@ -25,10 +25,21 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         }
 
         /// <summary>
+        /// Create a new record from user's input id
+        /// </summary>
+        /// <returns>Created record's id</returns>
+        public int CreateRecord()
+        {
+            var record = ReadParameters();
+            CreateRecord(record);
+            return record.Id;
+        }
+
+        /// <summary>
         /// The method create new record from source record and return its id
         /// </summary>
         /// <returns>An id of current record</returns>
-        public int CreateRecord(FileCabinetRecord record)
+        private void CreateRecord(FileCabinetRecord record)
         {
             if (record is null)
             {
@@ -43,8 +54,6 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
             _dictionaries.Add(record);
             
             Stat.Count++;
-
-            return record.Id;
         }
 
         /// <summary>
@@ -73,7 +82,7 @@ namespace FileCabinetApp.FileCabinetService.MemoryService
         /// </summary>
         /// <param name="id">Source id of read parameter</param>
         /// <returns><see cref="FileCabinetServiceSnapshot"/> object equivalent for read parameters</returns>
-        public FileCabinetRecord ReadParameters(int id = -1)
+        private static FileCabinetRecord ReadParameters(int id = -1)
         {
             var record = new FileCabinetRecord
             {

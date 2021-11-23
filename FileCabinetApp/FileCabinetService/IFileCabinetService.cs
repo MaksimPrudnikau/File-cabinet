@@ -5,10 +5,8 @@ namespace FileCabinetApp.FileCabinetService
 {
     public interface IFileCabinetService
     {
-        public int CreateRecord(FileCabinetRecord record);
+        public int CreateRecord();
 
-        public FileCabinetRecord ReadParameters(int id = -1);
-        
         public Statistic GetStat();
 
         public IEnumerable<FileCabinetRecord> GetRecords();

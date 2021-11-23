@@ -32,8 +32,7 @@ namespace FileCabinetApp.Handlers
             
             try
             {
-                var record = Service.ReadParameters();
-                Console.WriteLine(EnglishSource.create, Service.CreateRecord(record));
+                Console.WriteLine(EnglishSource.create, Service.CreateRecord());
             }
             catch (Exception exception) when(exception is ArgumentException or ArgumentNullException)
             {

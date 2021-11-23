@@ -10,9 +10,9 @@ namespace FileCabinetApp.FileCabinetService.Decorators.Meter
         {
         }
 
-        public override int CreateRecord(FileCabinetRecord record)
+        public override int CreateRecord()
         {
-            var ticks = TicksMeter.GetElapsedTicks(base.CreateRecord, record, out var id);
+            var ticks = TicksMeter.GetElapsedTicks(base.CreateRecord, out var id);
             Console.WriteLine(EnglishSource.method_execution_duration_ticks, nameof(CreateRecord), ticks);
             return id;
         }
