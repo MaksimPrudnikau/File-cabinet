@@ -4,6 +4,335 @@
         <name>FileCabinetApp</name>
     </assembly>
     <members>
+        <member name="T:FileCabinetApp.EnglishSource">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Action_Message">
+            <summary>
+              Looks up a localized string similar to {0} - Calling method {1}().
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.All_records_are_exported_to_file">
+            <summary>
+              Looks up a localized string similar to All records are exported to file {0}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Answer_must_be_either_Y_or_n">
+            <summary>
+              Looks up a localized string similar to Answer must be either Y or n.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Cannot_find_keyword">
+            <summary>
+              Looks up a localized string similar to Cannot find key word &apos;{0}&apos;.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Cannot_use_both_logger_and_stopwatch">
+            <summary>
+              Looks up a localized string similar to Cannot use both logger and stopwatch.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Cant_deserialize">
+            <summary>
+              Looks up a localized string similar to Error: cant deserialize {0}! {1}: {2}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.console">
+            <summary>
+              Looks up a localized string similar to &gt; .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.create">
+            <summary>
+              Looks up a localized string similar to Record #{0} is created.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Create_description">
+            <summary>
+              Looks up a localized string similar to Create record in current service. If default service is selected, parameters from the custom one.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.date_of_birth">
+            <summary>
+              Looks up a localized string similar to Date of birth: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Date_Of_Birth_Is_Greater_Than_Maximal">
+            <summary>
+              Looks up a localized string similar to The date of birth is greater than it`s maximal value.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Date_Of_Birth_Is_Less_Than_Minimal">
+            <summary>
+              Looks up a localized string similar to The date of birth is less than it`s minimal value.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Delete_description">
+            <summary>
+              Looks up a localized string similar to Remove record from current service. If service storage is file, it marks the record as deleted.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.developed_by">
+            <summary>
+              Looks up a localized string similar to File Cabinet Application, developed by {0}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Error__wrong_conversion">
+            <summary>
+              Looks up a localized string similar to {0} Error: wrong conversion.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.ErrorCommandHandler_Handle_Is_Not_A_Command">
+             <summary>
+               Looks up a localized string similar to &apos;{0}&apos; is not a command. See &apos;help&apos;.
+            .
+             </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.exit">
+            <summary>
+              Looks up a localized string similar to Exiting an application....
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Exit_decription">
+            <summary>
+              Looks up a localized string similar to Exit from application.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Export_description">
+            <summary>
+              Looks up a localized string similar to Serialize all records in file with entered format.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Export_File_is_exist">
+            <summary>
+              Looks up a localized string similar to File is exist - rewrite? [Y/n].
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Export_format_cannot_be_null">
+            <summary>
+              Looks up a localized string similar to Export format cannot be null.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Export_type_is_not_supported">
+            <summary>
+              Looks up a localized string similar to {0}-export is not supported.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.File_is_not_exist">
+            <summary>
+              Looks up a localized string similar to Cannot open file from {0}. File is not exist.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.first_name">
+            <summary>
+              Looks up a localized string similar to First name: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Help_description">
+            <summary>
+              Looks up a localized string similar to Prints help message.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.hint">
+            <summary>
+              Looks up a localized string similar to Enter your command, or enter &apos;help&apos; to get help..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Id_cannot_be_updated">
+            <summary>
+              Looks up a localized string similar to Id cannot be updated.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Id_is_less_than_zero">
+            <summary>
+              Looks up a localized string similar to Id is less than zero.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Import_description">
+            <summary>
+              Looks up a localized string similar to Import records from source file.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.ImportCommandHandler_The_format_is_not_supported">
+            <summary>
+              Looks up a localized string similar to The format {0} is not supported.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Insert_description">
+             <summary>
+               Looks up a localized string similar to Insert a new value to the current service. The value is inserted before the first record with a greater ID.
+            The identificator, first name, last name and date of birth values are required because the are initial for
+            any record. Number of the properties must be correspond with values. Quotes in values are optional.
+             </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.job_experience">
+            <summary>
+              Looks up a localized string similar to Job experience: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Job_Experience_Is_Less_Than_Minimal">
+            <summary>
+              Looks up a localized string similar to The job experience is less than it`s minimal value.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.JobExperience_Is_Greater_Than_Maximal">
+            <summary>
+              Looks up a localized string similar to The job experience is greater than it`s minimal value.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.last_name">
+            <summary>
+              Looks up a localized string similar to Last name: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.method_execution_duration_ticks">
+            <summary>
+              Looks up a localized string similar to {0} method execution duration is {1} ticks..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Method_With_Parameter_Message">
+            <summary>
+              Looks up a localized string similar to {0} - Calling method {1}() with parameter &apos;{2}&apos;.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Method_With_Return_Value_Message">
+            <summary>
+              Looks up a localized string similar to {0} - method {1}() return &apos;{2}&apos;.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.missing_one_parameter">
+            <summary>
+              Looks up a localized string similar to {0} missing one parameter.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.NameWrongLength">
+            <summary>
+              Looks up a localized string similar to The name&apos;s length is less than minimal or greater than it&apos;s maximal value.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Number_of_keys_doesnt_correspond_to_number_of_values">
+            <summary>
+              Looks up a localized string similar to Number of keys doesnt correspond to number of values.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Parameter_values_should_be_enclosed_in_brackets">
+            <summary>
+              Looks up a localized string similar to Parameter values should be enclosed in brackets.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.rank">
+            <summary>
+              Looks up a localized string similar to Rank: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Rank_Is_Not_Defined_In_Grades">
+            <summary>
+              Looks up a localized string similar to Rank is not defined in current grades.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.ReadInput_Conversion_failed">
+            <summary>
+              Looks up a localized string similar to Conversion failed: {0}. Please, correct your input..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Record_at_line_Error">
+            <summary>
+              Looks up a localized string similar to Record at line {0} Error: {1}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Record_number_error">
+            <summary>
+              Looks up a localized string similar to Record #{0}: {1}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Record_with_id_is_already_exist">
+            <summary>
+              Looks up a localized string similar to Record with id = &apos;{0}&apos; is already exist.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Records_0_where_updated">
+            <summary>
+              Looks up a localized string similar to Records #{0} where updated.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Records_are_deleted">
+            <summary>
+              Looks up a localized string similar to Record #{0} are deleted.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.records_were_written_to">
+            <summary>
+              Looks up a localized string similar to {0} records were written to {1}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Salary_Is_Greater_Than_Maximal">
+            <summary>
+              Looks up a localized string similar to Wage is greater than it`s maximal value.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Salary_Is_Less_Than_Minimal">
+            <summary>
+              Looks up a localized string similar to Wage is less than it`s minimal value.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Service_And_Validator_info">
+            <summary>
+              Looks up a localized string similar to Service = {0}, Validator = {1}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.stat">
+            <summary>
+              Looks up a localized string similar to {0} record(s), {1} deleted..
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Suitable_records_not_found">
+            <summary>
+              Looks up a localized string similar to Record with {0} = &apos;{1}&apos; are not found.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.The_most_similar_commands_are">
+            <summary>
+              Looks up a localized string similar to The most similar commands are.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.The_name_contains_non_letter_characters">
+            <summary>
+              Looks up a localized string similar to The name contains non-letter characters.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.The_name_is_null_or_whitespace">
+            <summary>
+              Looks up a localized string similar to The name is null or whitespace.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Too_much_parameters">
+            <summary>
+              Looks up a localized string similar to Too much parameters: {0}.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.wage">
+            <summary>
+              Looks up a localized string similar to Wage: .
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.EnglishSource.Wrong_data_format">
+            <summary>
+              Looks up a localized string similar to Wrong data format.
+            </summary>
+        </member>
         <member name="M:FileCabinetApp.Export.FIleCabinetCsvWriter.#ctor(System.IO.TextWriter)">
             <summary>
             Create <see cref="T:FileCabinetApp.Export.FIleCabinetCsvWriter"/> object by source <see cref="T:System.IO.TextWriter"/> stream
@@ -806,7 +1135,7 @@
             <summary>
             Insert a new value to the current service. The value is inserted before the first record with a greater ID.
             The identificator, first name, last name and date of birth values are required because the are initial for
-            any record.Number of the properties must be correspond with values. Quotes in values are optional
+            any record. Number of the properties must be correspond with values. Quotes in values are optional
             </summary>
             <param name="request">Source command request</param>
             <exception cref="T:System.ArgumentNullException">Request is null</exception>
@@ -999,7 +1328,7 @@
             <param name="record">Source record</param>
             <returns>True if it's equals to any</returns>
         </member>
-        <member name="M:FileCabinetApp.Program.TryCreateCommandHandlers(FileCabinetApp.FileCabinetService.IFileCabinetService,FileCabinetApp.Handlers.CommandHandlerBase@)">
+        <member name="M:FileCabinetApp.Program.TryCreateCommandHandlers(FileCabinetApp.FileCabinetService.IFileCabinetService,FileCabinetApp.Handlers.ICommandHandler@)">
             <summary>
             Try <see cref="M:FileCabinetApp.Program.CreateCommandHandlers(FileCabinetApp.FileCabinetService.IFileCabinetService)"/>
             </summary>

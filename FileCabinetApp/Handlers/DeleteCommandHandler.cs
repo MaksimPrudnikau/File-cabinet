@@ -8,7 +8,8 @@ namespace FileCabinetApp.Handlers
 {
     public class DeleteCommandHandler : ServiceCommandHandlerBase
     {
-        private const RequestCommand Command = RequestCommand.Delete;
+        public override RequestCommand Command => RequestCommand.Delete;
+
         private const string Keyword = "where";
         
         public DeleteCommandHandler(IFileCabinetService service) : base(service)
@@ -31,11 +32,6 @@ namespace FileCabinetApp.Handlers
                 throw new ArgumentNullException(nameof(request));
             }
             
-            if (request.Command != Command)
-            {
-                NextHandler.Handle(request);
-                return;
-            }
             var deleted = TryDelete(request.Parameters, out var deletedId);
             if (!deleted)
             {

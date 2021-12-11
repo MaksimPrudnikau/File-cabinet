@@ -5,8 +5,8 @@ namespace FileCabinetApp.Handlers
 {
     public class PurgeCommandHandler : ServiceCommandHandlerBase
     {
-        private const RequestCommand Command = RequestCommand.Purge;
-        
+        public override RequestCommand Command => RequestCommand.Purge;
+
         public PurgeCommandHandler(IFileCabinetService service) : base(service)
         {
         }
@@ -21,13 +21,7 @@ namespace FileCabinetApp.Handlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            
-            if (request.Command != Command)
-            {
-                NextHandler.Handle(request);
-                return;
-            }
-            
+
             try
             { 
                 Service.Purge();

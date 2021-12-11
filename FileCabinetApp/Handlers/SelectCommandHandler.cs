@@ -9,7 +9,7 @@ namespace FileCabinetApp.Handlers
 {
     public class SelectCommandHandler : ServiceCommandHandlerBase
     {
-        private const RequestCommand Command = RequestCommand.Select;
+        public override RequestCommand Command => RequestCommand.Select;
         private IRecordPrinter _printer;
         private static readonly LogicalOperand[] Delimiters = {LogicalOperand.And, LogicalOperand.Or};
         
@@ -36,12 +36,6 @@ namespace FileCabinetApp.Handlers
             if (request is null)
             {
                 throw new ArgumentNullException(nameof(request));
-            }
-            
-            if (request.Command != Command)
-            {
-                NextHandler.Handle(request);
-                return;
             }
 
             if (_printer is TablePrinter)

@@ -7,7 +7,7 @@ namespace FileCabinetApp.Handlers
 {
     public class UpdateCommandHandler: ServiceCommandHandlerBase
     {
-        private const RequestCommand Command = RequestCommand.Update;
+        public override RequestCommand Command => RequestCommand.Update;
 
         public UpdateCommandHandler(IFileCabinetService service) : base(service)
         {
@@ -27,12 +27,6 @@ namespace FileCabinetApp.Handlers
             if (request is null)
             {
                 throw new ArgumentNullException(nameof(request));
-            }
-            
-            if (request.Command != Command)
-            {
-                NextHandler.Handle(request);
-                return;
             }
 
             var searchValues = new List<SearchValue>(UpdateLineExtractor.GetSearchValues(request.Parameters));

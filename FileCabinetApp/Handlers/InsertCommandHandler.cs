@@ -8,7 +8,8 @@ namespace FileCabinetApp.Handlers
 {
     public class InsertCommandHandler : ServiceCommandHandlerBase
     {
-        private const RequestCommand Command  = RequestCommand.Insert;
+        public override RequestCommand Command => RequestCommand.Insert;
+        
         private readonly IRecordValidator _validator = new ValidationBuilder().CreateCustom();
 
         public InsertCommandHandler(IFileCabinetService service) : base(service)
@@ -18,7 +19,7 @@ namespace FileCabinetApp.Handlers
         /// <summary>
         /// Insert a new value to the current service. The value is inserted before the first record with a greater ID.
         /// The identificator, first name, last name and date of birth values are required because the are initial for
-        /// any record.Number of the properties must be correspond with values. Quotes in values are optional
+        /// any record. Number of the properties must be correspond with values. Quotes in values are optional
         /// </summary>
         /// <param name="request">Source command request</param>
         /// <exception cref="ArgumentNullException">Request is null</exception>
@@ -33,12 +34,6 @@ namespace FileCabinetApp.Handlers
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (request.Command != Command)
-            {
-                NextHandler.Handle(request);
-                return;
-            }
-            
             var extracted = TryExtractValues(request.Parameters, out var values);
             if (!extracted) return;
             

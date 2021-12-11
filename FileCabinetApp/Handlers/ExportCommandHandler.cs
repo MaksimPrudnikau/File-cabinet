@@ -9,11 +9,13 @@ namespace FileCabinetApp.Handlers
 {
     public class ExportCommandHandler : ServiceCommandHandlerBase
     {
-        private const RequestCommand Command = RequestCommand.Export;
+        public override RequestCommand Command => RequestCommand.Export;
         
         public ExportCommandHandler(IFileCabinetService service) : base(service)
         {
         }
+
+        
 
         /// <summary>
         /// Serialize all records in file with entered format
@@ -27,12 +29,6 @@ namespace FileCabinetApp.Handlers
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (request.Command != Command)
-            {
-                NextHandler.Handle(request);
-                return;
-            }
-            
             const int correctParametersLength = 2;
             const int outputTypeIndex = 0;
             const int exportPathIndex = 1;

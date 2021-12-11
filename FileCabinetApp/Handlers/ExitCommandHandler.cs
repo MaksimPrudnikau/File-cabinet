@@ -4,14 +4,14 @@ namespace FileCabinetApp.Handlers
 {
     public class ExitCommandHandler : CommandHandlerBase
     {
-        private const RequestCommand Command = RequestCommand.Exit;
+        public override RequestCommand Command => RequestCommand.Exit;
         private readonly Action<bool> _runner;
 
         public ExitCommandHandler(Action<bool> appRunner)
         {
             _runner = appRunner;
         }
-        
+
         /// <summary>
         /// Exit from application
         /// </summary>
@@ -21,12 +21,6 @@ namespace FileCabinetApp.Handlers
             if (request is null)
             {
                 throw new ArgumentNullException(nameof(request));
-            }
-            
-            if (request.Command != Command)
-            {
-                NextHandler.Handle(request);
-                return;
             }
             
             Console.WriteLine(EnglishSource.exit);

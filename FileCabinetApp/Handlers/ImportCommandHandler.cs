@@ -9,11 +9,11 @@ namespace FileCabinetApp.Handlers
 {
     public class ImportCommandHandler : ServiceCommandHandlerBase
     {
-        private const RequestCommand Command = RequestCommand.Import;
+        public override RequestCommand Command => RequestCommand.Import;
 
         public ImportCommandHandler(IFileCabinetService service) : base(service)
         {
-            
+
         }
 
         /// <summary>
@@ -31,13 +31,7 @@ namespace FileCabinetApp.Handlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            
-            if (request.Command != Command)
-            {
-                NextHandler.Handle(request);
-                return;
-            }
-            
+
             var parametersSplited = request.Parameters.Split(' ');
 
             if (parametersSplited.Length != 2)

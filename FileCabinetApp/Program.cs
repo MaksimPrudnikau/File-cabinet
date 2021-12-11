@@ -54,7 +54,7 @@ namespace FileCabinetApp
         /// <param name="service">Current service</param>
         /// <param name="handler">The first element from created chain of handlers</param>
         /// <returns>True if handlers were created successfully</returns>
-        private static bool TryCreateCommandHandlers(IFileCabinetService service, out CommandHandlerBase handler)
+        private static bool TryCreateCommandHandlers(IFileCabinetService service, out ICommandHandler handler)
         {
             try
             {
@@ -165,32 +165,22 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="service">Current service</param>
         /// <returns>The command handlers chain</returns>
-        private static CommandHandlerBase CreateCommandHandlers(IFileCabinetService service)
+        private static ICommandHandler CreateCommandHandlers(IFileCabinetService service)
         {
-            var helpHandler = new HelpCommandHandler();
-            var createHandler = new CreateCommandHandler(service);
-            var statHandler = new StatCommandHandler(service);
-            var exportHandler = new ExportCommandHandler(service);
-            var importHandler = new ImportCommandHandler(service);
-            var deleteHandler = new DeleteCommandHandler(service);
-            var purgeHandler = new PurgeCommandHandler(service);
-            var exitHandler = new ExitCommandHandler(x => _isRunning = x);
-            var insertHandler = new InsertCommandHandler(service);
-            var updateHandler = new UpdateCommandHandler(service);
-            var selectHandler = new SelectCommandHandler(service, new TablePrinter());
+            var compositor = new HandlersCompositor();
+            compositor.Add(new HelpCommandHandler());
+            compositor.Add(new CreateCommandHandler(service));
+            compositor.Add(new StatCommandHandler(service));
+            compositor.Add(new ExportCommandHandler(service));
+            compositor.Add(new ImportCommandHandler(service));
+            compositor.Add(new DeleteCommandHandler(service));
+            compositor.Add(new PurgeCommandHandler(service));
+            compositor.Add(new ExitCommandHandler(x => _isRunning = x));
+            compositor.Add(new InsertCommandHandler(service));
+            compositor.Add(new UpdateCommandHandler(service));
+            compositor.Add(new SelectCommandHandler(service, new TablePrinter()));
             
-            helpHandler.SetNext(createHandler);
-            createHandler.SetNext(statHandler);
-            statHandler.SetNext(exportHandler);
-            exportHandler.SetNext(importHandler);
-            importHandler.SetNext(deleteHandler);
-            deleteHandler.SetNext(purgeHandler);
-            purgeHandler.SetNext(exitHandler);
-            exitHandler.SetNext(insertHandler);
-            insertHandler.SetNext(updateHandler);
-            updateHandler.SetNext(selectHandler);
-            
-            return helpHandler;
+            return compositor;
         }
     }
 }

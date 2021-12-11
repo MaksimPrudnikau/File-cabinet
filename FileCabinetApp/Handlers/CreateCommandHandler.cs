@@ -5,7 +5,7 @@ namespace FileCabinetApp.Handlers
 {
     public class CreateCommandHandler : ServiceCommandHandlerBase
     {
-        private const RequestCommand Command = RequestCommand.Create;
+        public override RequestCommand Command => RequestCommand.Create;
 
         public CreateCommandHandler(IFileCabinetService service) : base(service)
         {
@@ -23,13 +23,7 @@ namespace FileCabinetApp.Handlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            
-            if (request.Command != Command)
-            {
-                NextHandler.Handle(request);
-                return;
-            }
-            
+
             try
             {
                 Console.WriteLine(EnglishSource.create, Service.CreateRecord());

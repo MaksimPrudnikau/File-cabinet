@@ -283,4 +283,27 @@
   <data name="Cannot_use_both_logger_and_stopwatch" xml:space="preserve">
     <value>Cannot use both logger and stopwatch</value>
   </data>
+  <data name="Create_description" xml:space="preserve">
+    <value>Create record in current service. If default service is selected, parameters from the custom one</value>
+  </data>
+  <data name="Delete_description" xml:space="preserve">
+    <value>Remove record from current service. If service storage is file, it marks the record as deleted</value>
+  </data>
+  <data name="Exit_decription" xml:space="preserve">
+    <value>Exit from application</value>
+  </data>
+  <data name="Export_description" xml:space="preserve">
+    <value>Serialize all records in file with entered format</value>
+  </data>
+  <data name="Help_description" xml:space="preserve">
+    <value>Prints help message</value>
+  </data>
+  <data name="Import_description" xml:space="preserve">
+    <value>Import records from source file</value>
+  </data>
+  <data name="Insert_description" xml:space="preserve">
+    <value>Insert a new value to the current service. The value is inserted before the first record with a greater ID.
+The identificator, first name, last name and date of birth values are required because the are initial for
+any record. Number of the properties must be correspond with values. Quotes in values are optional</value>
+  </data>
 </root>
